@@ -58,10 +58,12 @@ export function DashboardNav({
   const filteredNavItems = items.filter((item) => {
     // Ensure userRole is a valid string and fallback to 'mobilizer' if not a valid role
     const role =
+      //@ts-ignore
       typeof userRole === 'string' && excludeTitles[userRole]
         ? userRole
         : 'mobilizer';
 
+    // @ts-ignore
     const titlesToExclude = excludeTitles[role] || [];
 
     return !titlesToExclude.includes(item.title.toLowerCase()); // Return true if the title is not in the exclusion list

@@ -1,13 +1,10 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import ThemeProvider from '@components/layout/ThemeToggle/theme-provider';
 import { showToast } from '@src/components/ui/show-toast';
-import {
-  FailedToastTitle,
-  SuccessToastTitle
-} from '@src/constants/toast-message';
+import { FailedToastTitle } from '@src/constants/toast-message';
 import { useCMutation } from '@src/hooks';
 import { Props } from '@src/types';
 import { AuthContext, UserType } from './auth-context';
