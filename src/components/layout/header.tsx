@@ -5,6 +5,7 @@ import { cn } from '@src/lib/utils';
 
 import { MobileSidebar } from './mobile-sidebar';
 import { UserNav } from './user-nav';
+import { Typography } from '@components/typography';
 
 export default function Header() {
   return (
@@ -24,6 +25,9 @@ export default function Header() {
             >
               <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
             </svg>
+            <Typography size={'h2'} weight={'bold'} colors="primary">
+              BIDS
+            </Typography>
           </Link>
         </div>
         <div className={cn('block lg:!hidden')}>
