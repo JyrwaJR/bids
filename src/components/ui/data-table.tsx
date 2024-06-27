@@ -1,10 +1,19 @@
 'use client';
 
 import {
-    Table, TableBody, TableCell, TableHead, TableHeader, TableRow
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
 } from '@src/components/ui/table';
 import {
-    ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  useReactTable
 } from '@tanstack/react-table';
 
 import { Button } from './button';

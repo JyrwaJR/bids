@@ -44,8 +44,6 @@ export const AddStaff = ({ onClose, open }: Props) => {
   });
   const onSubmitAddStaff: SubmitHandler<StaffModelType> = async (data) => {
     try {
-      console.log(data);
-
       await mutateAsync(data);
     } catch (error: any) {
       showToast(FailedToastTitle, error.message);
