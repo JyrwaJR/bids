@@ -1,5 +1,5 @@
 {
-  "name": "nextshcdndashboardstarter",
+  "name": "bids",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -14,9 +14,7 @@
     "**/*": [
       "prettier --write --ignore-unknown"
     ],
-    "scripts": {
-      "build": "next build"
-    }
+    "lint": "next lint"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.6.0",
