@@ -15,7 +15,7 @@
       "prettier --write --ignore-unknown"
     ],
     "scripts": {
-      "build": "npm run build"
+      "build": "next build"
     }
   },
   "dependencies": {
