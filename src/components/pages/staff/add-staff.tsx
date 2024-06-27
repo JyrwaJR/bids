@@ -25,18 +25,18 @@ type Props = {
 export const AddStaff = ({ onClose, open }: Props) => {
   const form = useForm<StaffModelType>({
     resolver: zodResolver(StaffModel),
-    mode: 'onBlur'
+    mode: 'all'
   });
   const { isLoading: cLoading, data: cData } = useCQuery({
     url: 'centre',
-    queryKey: []
+    queryKey: ['get', 'center']
   });
 
   const { isLoading: scLoading, data: scData } = useCQuery({
     url: 'staffcategory',
-
-    queryKey: []
+    queryKey: ['get', 'staff', 'category']
   });
+
   const { isLoading, mutateAsync } = useCMutation({
     url: 'staff/save',
     method: 'POST',
@@ -44,10 +44,10 @@ export const AddStaff = ({ onClose, open }: Props) => {
   });
   const onSubmitAddStaff: SubmitHandler<StaffModelType> = async (data) => {
     try {
+      console.log(data);
+
       await mutateAsync(data);
     } catch (error: any) {
-      console.log(error);
-
       showToast(FailedToastTitle, error.message);
     }
   };

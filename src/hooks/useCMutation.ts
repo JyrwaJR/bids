@@ -11,7 +11,7 @@ import {
 } from '@src/constants/toast-message';
 
 interface CMutationProps {
-  queryKey: any[];
+  queryKey: string[];
   url: string;
   method: 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 }

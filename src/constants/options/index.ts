@@ -16,3 +16,14 @@ export const gender: OptionsT[] = [
   { label: 'Female', value: 'Female' },
   { label: 'Other', value: 'Other' }
 ];
+
+export const StatusOptions: OptionsT[] = [
+  {
+    label: 'Active',
+    value: 'Active'
+  },
+  {
+    label: 'InActive',
+    value: 'InActive'
+  }
+];

@@ -56,7 +56,7 @@ export const CenterModel = z.object({
       message: 'Contact Should container only number'
     })
     .min(10, {
-      message: 'Should be more than 3 in length'
+      message: 'Should be more than 10 in length'
     })
     .max(50, {
       message: 'Should be less than 50 in length'

@@ -20,10 +20,10 @@ export const navItems: NavItem[] = [
     label: 'staff'
   },
   {
-    title: 'User',
-    href: '/dashboard/user',
+    title: 'Domain',
+    href: '/dashboard/domain',
     icon: 'user',
-    label: 'user'
+    label: 'domain'
   },
   {
     title: 'Employee',

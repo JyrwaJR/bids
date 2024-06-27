@@ -38,7 +38,11 @@ export const StaffModel = z
     gender: z.enum(['Male', 'Female', 'Other'], {
       required_error: 'Invalid gender'
     }),
-    emergency_no: z.string().optional().nullable(),
+    emergency_no: z
+      .string()
+      .max(10, 'Phone number must be at most 10 characters long')
+      .optional()
+      .nullable(),
     dob: z
       .string()
       .refine((date) => !isNaN(Date.parse(date)), 'Invalid date of birth'),
