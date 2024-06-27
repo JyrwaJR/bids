@@ -2,8 +2,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@src/components/ui/avatar';
 import { Button } from '@src/components/ui/button';
 import {
-    DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel,
-    DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger
 } from '@src/components/ui/dropdown-menu';
 
 export function UserNav() {
@@ -12,11 +18,8 @@ export function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage
-            // src={session.user?.image ?? ''}
-            // alt={session.user?.name ?? ''}
-            />
-            <AvatarFallback>Fall back avatar</AvatarFallback>
+            <AvatarImage src="/avatars/01.png" alt="Avatar" />
+            <AvatarFallback>OM</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
