@@ -1,4 +1,5 @@
-import { Icons } from '@/src/components/icons';
+import { Icons } from '@src/components/icons';
+import React from 'react';
 
 export interface NavItem {
   title: string;
@@ -30,3 +31,7 @@ export interface FooterItem {
 export type MainNavItem = NavItemWithOptionalChildren;
 
 export type SidebarNavItem = NavItemWithChildren;
+
+export interface Props {
+  children: React.ReactNode;
+}

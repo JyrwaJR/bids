@@ -10,15 +10,15 @@ import {
 } from '@tanstack/react-table';
 import React from 'react';
 
-import { Button } from '@/src/components/ui/button';
-import { Input } from '@/src/components/ui/input';
+import { Button } from '@src/components/ui/button';
+import { Input } from '@src/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@/src/components/ui/select';
+} from '@src/components/ui/select';
 import {
   Table,
   TableBody,
@@ -26,14 +26,14 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/src/components/ui/table';
+} from '@src/components/ui/table';
 import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { ScrollArea, ScrollBar } from '@/src/components/ui/scroll-area';
+import { ScrollArea, ScrollBar } from '@src/components/ui/scroll-area';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

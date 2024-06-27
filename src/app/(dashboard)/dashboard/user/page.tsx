@@ -1,6 +1,6 @@
-import BreadCrumb from '@/src/components/breadcrumb';
-import { UserClient } from '@/src/components/tables/user-tables/client';
-import { users } from '@/src/constants/data';
+import BreadCrumb from '@src/components/breadcrumb';
+import { UserClient } from '@src/components/tables/user-tables/client';
+import { users } from '@src/constants/data';
 
 const breadcrumbItems = [{ title: 'User', link: '/dashboard/user' }];
 export default function page() {

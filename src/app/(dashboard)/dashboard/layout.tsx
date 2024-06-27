@@ -1,12 +1,6 @@
-import Header from '@/src/components/layout/header';
-import Sidebar from '@/src/components/layout/sidebar';
-
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Next Shadcn Dashboard Starter',
-  description: 'Basic dashboard with Next.js and Shadcn'
-};
+'use client';
+import Header from '@src/components/layout/header';
+import Sidebar from '@src/components/layout/sidebar';
 
 export default function DashboardLayout({
   children

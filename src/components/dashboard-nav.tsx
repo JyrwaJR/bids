@@ -3,11 +3,11 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { Icons } from '@/src/components/icons';
-import { cn } from '@/src/lib/utils';
-import { NavItem } from '@/src/types';
+import { Icons } from '@src/components/icons';
+import { cn } from '@src/lib/utils';
+import { NavItem } from '@src/types';
 import { Dispatch, SetStateAction } from 'react';
-import { useSidebar } from '@/src/hooks/useSidebar';
+import { useSidebar } from '@src/hooks/useSidebar';
 import {
   Tooltip,
   TooltipContent,

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import BreadCrumb from '@/src/components/breadcrumb';
-import { ProductForm } from '@/src/components/forms/product-form';
-import { ScrollArea } from '@/src/components/ui/scroll-area';
+import BreadCrumb from '@src/components/breadcrumb';
+import { ProductForm } from '@src/components/forms/product-form';
+import { ScrollArea } from '@src/components/ui/scroll-area';
 
 export default function Page() {
   const breadcrumbItems = [

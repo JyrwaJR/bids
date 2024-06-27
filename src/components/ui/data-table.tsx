@@ -15,7 +15,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/src/components/ui/table';
+} from '@src/components/ui/table';
 import { Input } from './input';
 import { Button } from './button';
 import { ScrollArea, ScrollBar } from './scroll-area';

@@ -1,5 +1,5 @@
 'use client';
-import { OurFileRouter } from '@/src/app/api/uploadthing/core';
+import { OurFileRouter } from '@src/app/api/uploadthing/core';
 import { UploadDropzone } from '@uploadthing/react';
 import { Trash } from 'lucide-react';
 import Image from 'next/image';

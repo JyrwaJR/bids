@@ -1,14 +1,14 @@
 'use client';
-import { AlertModal } from '@/src/components/modal/alert-modal';
-import { Button } from '@/src/components/ui/button';
+import { AlertModal } from '@src/components/modal/alert-modal';
+import { Button } from '@src/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger
-} from '@/src/components/ui/dropdown-menu';
-import { User } from '@/src/constants/data';
+} from '@src/components/ui/dropdown-menu';
+import { User } from '@src/constants/data';
 import { Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

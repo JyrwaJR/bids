@@ -1,5 +1,5 @@
 'use client';
-import { Button } from '@/src/components/ui/button';
+import { Button } from '@src/components/ui/button';
 import {
   Form,
   FormControl,
@@ -7,17 +7,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '@/src/components/ui/form';
-import { Heading } from '@/src/components/ui/heading';
-import { Input } from '@/src/components/ui/input';
+} from '@src/components/ui/form';
+import { Heading } from '@src/components/ui/heading';
+import { Input } from '@src/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@/src/components/ui/select';
-import { Separator } from '@/src/components/ui/separator';
+} from '@src/components/ui/select';
+import { Separator } from '@src/components/ui/separator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';

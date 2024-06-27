@@ -1,14 +1,14 @@
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 
-import BreadCrumb from '@/src/components/breadcrumb';
-import { columns } from '@/src/components/tables/employee-tables/columns';
-import { EmployeeTable } from '@/src/components/tables/employee-tables/employee-table';
-import { buttonVariants } from '@/src/components/ui/button';
-import { Heading } from '@/src/components/ui/heading';
-import { Separator } from '@/src/components/ui/separator';
-import { Employee } from '@/src/constants/data';
-import { cn } from '@/src/lib/utils';
+import BreadCrumb from '@src/components/breadcrumb';
+import { columns } from '@src/components/tables/employee-tables/columns';
+import { EmployeeTable } from '@src/components/tables/employee-tables/employee-table';
+import { buttonVariants } from '@src/components/ui/button';
+import { Heading } from '@src/components/ui/heading';
+import { Separator } from '@src/components/ui/separator';
+import { Employee } from '@src/constants/data';
+import { cn } from '@src/lib/utils';
 
 const breadcrumbItems = [{ title: 'Employee', link: '/dashboard/employee' }];
 

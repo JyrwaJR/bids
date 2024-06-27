@@ -5,8 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
-import { Input } from '@/src/components/ui/input';
-import { Button } from '@/src/components/ui/button';
+import { Input } from '@src/components/ui/input';
+import { Button } from '@src/components/ui/button';
 import {
   Form,
   FormControl,
@@ -15,17 +15,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '@/src/components/ui/form';
-import { Separator } from '@/src/components/ui/separator';
-import { Heading } from '@/src/components/ui/heading';
+} from '@src/components/ui/form';
+import { Separator } from '@src/components/ui/separator';
+import { Heading } from '@src/components/ui/heading';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@/src/components/ui/select';
-import { Checkbox } from '@/src/components/ui/checkbox';
+} from '@src/components/ui/select';
+import { Checkbox } from '@src/components/ui/checkbox';
 // import FileUpload from "@/components/FileUpload";
 import { useToast } from '../ui/use-toast';
 import FileUpload from '../file-upload';

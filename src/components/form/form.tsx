@@ -50,7 +50,7 @@ export const Form = <T,>({
   btnText = 'Submit'
 }: FormProps<T>) => {
   const style = cn(
-    'col-span-full md:col-span-full sm:col-span-full  space-y-2 p-1 rounded-lg',
+    'col-span-full md:col-span-full sm:col-span-full w-full space-y-2 p-1 rounded-lg',
     className
   );
   const [showPassword, setShowPassword] = useState(false);
@@ -59,7 +59,6 @@ export const Form = <T,>({
     <FormTag
       form={form}
       onSubmit={form.handleSubmit(onSubmit)}
-      className={className}
       isLoading={loading}
       btnStyle={btnStyle}
       buttonTitle={btnText}
@@ -110,7 +109,7 @@ export const Form = <T,>({
                             </FormDescription>
                           </Select>
                         </FormItem>
-                      ) : input.type === 'date' ? (
+                      ) : input.type === 'dates' ? (
                         <FormItem className="flex h-full flex-col justify-center">
                           <FormLabel>
                             {input.label}{' '}
@@ -189,7 +188,7 @@ export const Form = <T,>({
                 />
               </div>
             ))}
-            <div className="col-span-full w-full px-3">
+            <div className="col-span-full flex w-full px-3 md:justify-end">
               {fields.find((input) => input.type === 'password') && (
                 <Button
                   variant="link"

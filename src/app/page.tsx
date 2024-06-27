@@ -1,20 +1,28 @@
 'use client';
 import Link from 'next/link';
-import { buttonVariants } from '@/src/components/ui/button';
-import { cn } from '@/src/lib/utils';
+import { buttonVariants } from '@src/components/ui/button';
+import { cn } from '@src/lib/utils';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { LoginModel, LoginModelType } from '@/src/models';
+import { LoginModel, LoginModelType } from '@src/models';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form } from '@/src/components';
-import { loginFields } from '@/src/constants/input-fields';
+import { Form } from '@src/components';
+import { loginFields } from '@src/constants/input-fields';
+import { useAuthContext } from '@src/context/auth';
+import { showToast } from '@src/components/ui/show-toast';
+import { FailedToastTitle } from '@src/constants/toast-message';
 
 export default function AuthenticationPage() {
+  const { onLogin, isLoading } = useAuthContext();
   const form = useForm<LoginModelType>({
     resolver: zodResolver(LoginModel)
   });
 
-  const onSubmit: SubmitHandler<LoginModelType> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<LoginModelType> = async (data) => {
+    try {
+      await onLogin(data.email, data.password);
+    } catch (error: any) {
+      showToast(FailedToastTitle, error.message);
+    }
   };
 
   return (
@@ -66,14 +74,13 @@ export default function AuthenticationPage() {
               Enter your email below to create your account
             </p>
           </div>
-          {/* <UserAuthForm /> */}
           <Form
             form={form}
             fields={loginFields}
             onSubmit={onSubmit}
-            loading={false}
+            loading={isLoading}
             btnStyle="w-full md:w-full"
-            butt
+            btnText="Continue"
           />
           <p className="px-8 text-center text-sm text-muted-foreground">
             By clicking continue, you agree to our{' '}

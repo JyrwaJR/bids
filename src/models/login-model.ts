@@ -25,18 +25,18 @@ export const LoginModel = z.object({
     })
     .max(100)
 
-    .regex(oneLowerCaseRegex, {
-      message: 'Should contain at least one lowercase letter'
-    })
-    .regex(oneNumberRegex, {
-      message: 'Should contain at least one number'
-    })
-    .regex(oneSpecialCharacterOrSpace, {
-      message: 'Should contain at least one special character'
-    })
-    .regex(oneUpperCaseRegex, {
-      message: 'Should contain at least one uppercase letter'
-    })
+  // .regex(oneLowerCaseRegex, {
+  //   message: 'Should contain at least one lowercase letter'
+  // })
+  // .regex(oneNumberRegex, {
+  //   message: 'Should contain at least one number'
+  // })
+  // .regex(oneSpecialCharacterOrSpace, {
+  //   message: 'Should contain at least one special character'
+  // })
+  // .regex(oneUpperCaseRegex, {
+  //   message: 'Should contain at least one uppercase letter'
+  // })
 });
 
 export type LoginModelType = z.infer<typeof LoginModel>;

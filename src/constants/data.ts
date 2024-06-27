@@ -1,5 +1,4 @@
-import { Icons } from '@/src/components/icons';
-import { NavItem, SidebarNavItem } from '@/src/types';
+import { Icons } from '@src/components/icons';
 
 export type User = {
   id: number;
@@ -110,42 +109,3 @@ export type Employee = {
   job: string;
   profile_picture?: string | null; // Profile picture can be a string (URL) or null (if no picture)
 };
-
-export const navItems: NavItem[] = [
-  {
-    title: 'Dashboard',
-    href: '/dashboard',
-    icon: 'dashboard',
-    label: 'Dashboard'
-  },
-  {
-    title: 'User',
-    href: '/dashboard/user',
-    icon: 'user',
-    label: 'user'
-  },
-  {
-    title: 'Employee',
-    href: '/dashboard/employee',
-    icon: 'employee',
-    label: 'employee'
-  },
-  {
-    title: 'Profile',
-    href: '/dashboard/profile',
-    icon: 'profile',
-    label: 'profile'
-  },
-  {
-    title: 'Kanban',
-    href: '/dashboard/kanban',
-    icon: 'kanban',
-    label: 'kanban'
-  },
-  {
-    title: 'Login',
-    href: '/',
-    icon: 'login',
-    label: 'login'
-  }
-];

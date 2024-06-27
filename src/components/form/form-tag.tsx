@@ -25,7 +25,10 @@ export const FormTag = <T,>({
   buttonTitle = 'Submit',
   btnStyle
 }: FormTagProps<T>) => {
-  const styles = cn('grid w-full grid-cols-12 gap-2 px-2', className);
+  const styles = cn(
+    'grid w-full grid-cols-12 gap-2 px-2 overflow-y-auto',
+    className
+  );
   const buttonStyle = cn('w-full md:w-auto', btnStyle);
   return (
     <Form {...form}>
@@ -36,7 +39,7 @@ export const FormTag = <T,>({
           className={styles}
         >
           {children}
-          <div className="col-span-full flex md:justify-end">
+          <div className="col-span-full flex overflow-auto md:justify-end">
             <Button
               disabled={!form.formState.isDirty || isLoading}
               type="submit"

@@ -1,2 +1,2 @@
-export { Login } from '@components/pages/authentication/login';
-export { DashBoard } from '@components/pages/dashboard/dashboard';
+export { AddCentre } from '@components/pages/centre/add-center';
+export { CentrePage } from '@components/pages/centre';
