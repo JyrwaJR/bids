@@ -1,7 +1,7 @@
 'use client';
-import React from 'react';
-import ThemeProvider from './ThemeToggle/theme-provider';
 import { SessionProvider, SessionProviderProps } from 'next-auth/react';
+import React from 'react';
+
 export default function Providers({
   session,
   children

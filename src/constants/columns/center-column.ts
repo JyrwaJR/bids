@@ -1,5 +1,6 @@
 import { CenterModelType } from '@src/models';
 import { ColumnDef } from '@tanstack/react-table';
+
 export const CentreColumn: ColumnDef<CenterModelType>[] = [
   {
     accessorKey: 'name',

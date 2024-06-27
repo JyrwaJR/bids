@@ -1,4 +1,8 @@
 'use client';
+import { Edit, MoreHorizontal, Trash } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
 import { AlertModal } from '@src/components/modal/alert-modal';
 import { Button } from '@src/components/ui/button';
 import {
@@ -9,9 +13,6 @@ import {
   DropdownMenuTrigger
 } from '@src/components/ui/dropdown-menu';
 import { User } from '@src/constants/data';
-import { Edit, MoreHorizontal, Trash } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 
 interface CellActionProps {
   data: User;
@@ -22,7 +23,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  const onConfirm = async () => {};
+  const onConfirm = async () => {
+    setLoading(!loading);
+  };
 
   return (
     <>

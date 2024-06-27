@@ -1,5 +1,6 @@
-import { Icons } from '@src/components/icons';
 import React from 'react';
+
+import { Icons } from '@src/components/icons';
 
 export interface NavItem {
   title: string;

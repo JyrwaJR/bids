@@ -1,12 +1,14 @@
 'use client';
-import React, { useState } from 'react';
-import { Heading } from '@src/components/ui/heading';
-import { Button } from '@src/components/ui/button';
 import { Plus } from 'lucide-react';
-import { Separator } from '@src/components/ui/separator';
-import { DataTable } from '@src/components/ui/data-table';
-import BreadCrumb from '@src/components/breadcrumb';
+import React, { useState } from 'react';
+
 import { CentreColumn } from '@constants/columns';
+import BreadCrumb from '@src/components/breadcrumb';
+import { Button } from '@src/components/ui/button';
+import { DataTable } from '@src/components/ui/data-table';
+import { Heading } from '@src/components/ui/heading';
+import { Separator } from '@src/components/ui/separator';
+
 import { AddStaff } from './add-staff';
 
 export const StaffPage = () => {

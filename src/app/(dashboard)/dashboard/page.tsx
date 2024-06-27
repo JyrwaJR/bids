@@ -2,20 +2,9 @@ import { CalendarDateRangePicker } from '@src/components/date-range-picker';
 import { Overview } from '@src/components/overview';
 import { RecentSales } from '@src/components/recent-sales';
 import { Button } from '@src/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@src/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@src/components/ui/card';
 import { ScrollArea } from '@src/components/ui/scroll-area';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger
-} from '@src/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@src/components/ui/tabs';
 
 export default function page() {
   return (

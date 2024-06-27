@@ -1,10 +1,6 @@
 'use client';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle
+    Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle
 } from '@src/components/ui/dialog';
 
 interface ModalProps {

@@ -1,4 +1,4 @@
-import { FormFieldType } from "@src/components/form";
+import { FormFieldType } from '@src/components/form';
 
 export const loginFields: FormFieldType[] = [
   {

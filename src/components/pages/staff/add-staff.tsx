@@ -1,20 +1,18 @@
 import React from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle
-} from '@components/ui/dialog';
-import { Form, FormFieldType } from '@components/form';
-import { FailedToastTitle } from '@src/constants/toast-message';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useCMutation, useCQuery } from '@src/hooks';
+
+import { Form, FormFieldType } from '@components/form';
+import { Typography } from '@components/typography';
+import {
+    Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle
+} from '@components/ui/dialog';
+import { staffFields } from '@constants/input-fields/staff/staff-fields';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showToast } from '@src/components/ui/show-toast';
-import { staffFields } from '@constants/input-fields/staff/staff-fields';
+import { FailedToastTitle } from '@src/constants/toast-message';
+import { useCMutation, useCQuery } from '@src/hooks';
 import { CenterModelType, StaffModel, StaffModelType } from '@src/models';
-import { Typography } from '@components/typography';
+
 type Props = {
   open: boolean;
   onClose: () => void;

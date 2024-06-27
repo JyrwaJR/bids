@@ -1,10 +1,10 @@
 'use client';
 
 import * as React from 'react';
-import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 
-import { cn } from '@src/lib/utils';
+import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 import { buttonVariants } from '@src/components/ui/button';
+import { cn } from '@src/lib/utils';
 
 const AlertDialog = AlertDialogPrimitive.Root;
 

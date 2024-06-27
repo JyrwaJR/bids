@@ -1,4 +1,5 @@
-import { NavItem, SidebarNavItem } from '@src/types';
+import { NavItem } from '@src/types';
+
 export const navItems: NavItem[] = [
   {
     title: 'Dashboard',

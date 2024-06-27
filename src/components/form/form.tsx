@@ -9,22 +9,11 @@ import { cn } from '@src/lib/utils';
 
 import { Button } from '../ui/button';
 import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
+    FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage
 } from '../ui/form';
 import { Input } from '../ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '../ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { FormTag } from './form-tag';
 import { FormFieldType, OptionsT } from './type';
 

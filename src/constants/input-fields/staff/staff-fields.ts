@@ -1,5 +1,6 @@
 import { FormFieldType } from '@components/form/type';
 import { gender, yesNoOptions } from '@constants/options';
+
 export const staffFields: FormFieldType[] = [
   {
     name: 'name',

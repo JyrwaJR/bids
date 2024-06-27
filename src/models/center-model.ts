@@ -1,7 +1,10 @@
 import { z } from 'zod';
-import { FieldsIsRequired } from '@src/constants';
+
 import { lettersAndSpacesRegex } from '@constants/regex';
+import { FieldsIsRequired } from '@src/constants';
+
 import { numberRegex } from '../constants/regex/number-regex';
+
 export const CenterModel = z.object({
   id: z.string().uuid().optional(),
   name: z

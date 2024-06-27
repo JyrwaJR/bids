@@ -1,15 +1,16 @@
 'use client';
 import Link from 'next/link';
-import { buttonVariants } from '@src/components/ui/button';
-import { cn } from '@src/lib/utils';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { LoginModel, LoginModelType } from '@src/models';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '@src/components';
-import { loginFields } from '@src/constants/input-fields';
-import { useAuthContext } from '@src/context/auth';
+import { buttonVariants } from '@src/components/ui/button';
 import { showToast } from '@src/components/ui/show-toast';
+import { loginFields } from '@src/constants/input-fields';
 import { FailedToastTitle } from '@src/constants/toast-message';
+import { useAuthContext } from '@src/context/auth';
+import { cn } from '@src/lib/utils';
+import { LoginModel, LoginModelType } from '@src/models';
 
 export default function AuthenticationPage() {
   const { onLogin, isLoading } = useAuthContext();

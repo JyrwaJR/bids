@@ -1,5 +1,3 @@
-import { Icons } from '@src/components/icons';
-
 export type User = {
   id: number;
   name: string;

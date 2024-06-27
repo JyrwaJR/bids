@@ -1,8 +1,9 @@
+import { z } from 'zod';
+
 import { FieldsIsRequired } from '@constants/index';
 import { yesNoOptions } from '@constants/options';
 import { lettersAndSpacesRegex } from '@constants/regex';
 import { PasswordRegex } from '@constants/regex/password-regex';
-import { z } from 'zod';
 
 export const StaffModel = z
   .object({

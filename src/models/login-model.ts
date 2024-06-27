@@ -1,11 +1,8 @@
 import z from 'zod';
 
-import {
-  oneLowerCaseRegex,
-  oneNumberRegex,
-  oneSpecialCharacterOrSpace,
-  oneUpperCaseRegex
-} from '@src/constants/regex';
+// import {
+//     oneLowerCaseRegex, oneNumberRegex, oneSpecialCharacterOrSpace, oneUpperCaseRegex
+// } from '@src/constants/regex';
 
 export const LoginModel = z.object({
   email: z

@@ -1,23 +1,14 @@
 'use client';
 
 import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  useReactTable
+    Table, TableBody, TableCell, TableHead, TableHeader, TableRow
+} from '@src/components/ui/table';
+import {
+    ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable
 } from '@tanstack/react-table';
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@src/components/ui/table';
-import { Input } from './input';
 import { Button } from './button';
+import { Input } from './input';
 import { ScrollArea, ScrollBar } from './scroll-area';
 
 interface DataTableProps<TData, TValue> {

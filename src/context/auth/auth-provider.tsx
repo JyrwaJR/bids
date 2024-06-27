@@ -1,22 +1,25 @@
-import { Props } from '@src/types';
-import React, { useEffect, useState } from 'react';
-import { AuthContext } from './auth-context';
-import { useCookies } from 'react-cookie';
-import { useCMutation } from '@src/hooks';
 import { AxiosError } from 'axios';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+
+import ThemeProvider from '@components/layout/ThemeToggle/theme-provider';
 import { showToast } from '@src/components/ui/show-toast';
 import {
   FailedToastTitle,
   SuccessToastTitle
 } from '@src/constants/toast-message';
-import { usePathname, useRouter } from 'next/navigation';
-import ThemeProvider from '@components/layout/ThemeToggle/theme-provider';
+import { useCMutation } from '@src/hooks';
+import { Props } from '@src/types';
+
+import { AuthContext } from './auth-context';
+
 interface LoginTProps {
   email: string;
   password: string;
 }
 export const AuthProvider = ({ children }: Props) => {
-  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const [cookies, setCookie] = useCookies(['token']);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isToken, setIsToken] = useState<string>(cookies?.token);

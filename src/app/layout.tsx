@@ -4,10 +4,11 @@ import './globals.css';
 
 import { Inter } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { Toaster } from '@src/components/ui/toaster';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import { AuthProvider } from '@src/context/auth';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({

@@ -1,4 +1,8 @@
 'use client';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@src/components/ui/button';
 import {
   Form,
@@ -9,12 +13,7 @@ import {
   FormMessage
 } from '@src/components/ui/form';
 import { Input } from '@src/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
-import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+
 import GoogleSignInButton from '../github-auth-button';
 
 const formSchema = z.object({
@@ -24,9 +23,6 @@ const formSchema = z.object({
 type UserFormValue = z.infer<typeof formSchema>;
 
 export default function UserAuthForm() {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl');
-  const [loading, setLoading] = useState(false);
   const defaultValues = {
     email: 'demo@gmail.com'
   };
@@ -54,7 +50,6 @@ export default function UserAuthForm() {
                   <Input
                     type="email"
                     placeholder="Enter your email..."
-                    disabled={loading}
                     {...field}
                   />
                 </FormControl>
@@ -63,7 +58,7 @@ export default function UserAuthForm() {
             )}
           />
 
-          <Button disabled={loading} className="ml-auto w-full" type="submit">
+          <Button className="ml-auto w-full" type="submit">
             Continue With Email
           </Button>
         </form>

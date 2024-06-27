@@ -1,9 +1,10 @@
 'use client';
+import { MenuIcon } from 'lucide-react';
+import { useState } from 'react';
+
 import { DashboardNav } from '@src/components/dashboard-nav';
 import { Sheet, SheetContent, SheetTrigger } from '@src/components/ui/sheet';
 import { navItems } from '@src/constants';
-import { MenuIcon } from 'lucide-react';
-import { useState } from 'react';
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   // playlists: Playlist[];

@@ -1,39 +1,22 @@
 'use client';
-import {
-  ColumnDef,
-  PaginationState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable
-} from '@tanstack/react-table';
-import React from 'react';
-
-import { Button } from '@src/components/ui/button';
-import { Input } from '@src/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@src/components/ui/select';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@src/components/ui/table';
-import {
-  DoubleArrowLeftIcon,
-  DoubleArrowRightIcon
-} from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import React from 'react';
+
+import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
+import { Button } from '@src/components/ui/button';
+import { Input } from '@src/components/ui/input';
 import { ScrollArea, ScrollBar } from '@src/components/ui/scroll-area';
+import {
+    Select, SelectContent, SelectItem, SelectTrigger, SelectValue
+} from '@src/components/ui/select';
+import {
+    Table, TableBody, TableCell, TableHead, TableHeader, TableRow
+} from '@src/components/ui/table';
+import {
+    ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel,
+    PaginationState, useReactTable
+} from '@tanstack/react-table';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

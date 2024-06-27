@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Dispatch, SetStateAction } from 'react';
 
 import { Icons } from '@src/components/icons';
+import { useSidebar } from '@src/hooks/useSidebar';
 import { cn } from '@src/lib/utils';
 import { NavItem } from '@src/types';
-import { Dispatch, SetStateAction } from 'react';
-import { useSidebar } from '@src/hooks/useSidebar';
+
 import {
   Tooltip,
   TooltipContent,
@@ -33,6 +34,7 @@ export function DashboardNav({
     return null;
   }
 
+  // @ts-ignore
   console.log('isActive', isMobileNav, isMinimized);
 
   return (
