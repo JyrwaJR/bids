@@ -5,7 +5,10 @@ import { useCookies } from 'react-cookie';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { showToast } from '@src/components/ui/show-toast';
-import { FailedToastTitle, SuccessToastTitle } from '@src/constants/toast-message';
+import {
+  FailedToastTitle,
+  SuccessToastTitle
+} from '@src/constants/toast-message';
 
 interface CMutationProps {
   queryKey: any[];
@@ -70,6 +73,7 @@ const mutationFn = async ({ token, data = {}, method, url }: MutationProps) => {
     return response.data;
   } catch (error: any) {
     if (error instanceof AxiosError) {
+      console.log('Mutation Axios Error => ', error.message);
       showToast(
         FailedToastTitle,
         error.response?.data.message || error.response?.data.errors.name

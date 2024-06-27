@@ -1,6 +1,6 @@
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 
 import ThemeProvider from '@components/layout/ThemeToggle/theme-provider';
@@ -12,14 +12,16 @@ import {
 import { useCMutation } from '@src/hooks';
 import { Props } from '@src/types';
 
-import { AuthContext } from './auth-context';
-
+import { AuthContext, UserType } from './auth-context';
+const baseUrl: string = process.env.NEXT_PUBLIC_API_BASE_URL!;
 interface LoginTProps {
   email: string;
   password: string;
 }
+
 export const AuthProvider = ({ children }: Props) => {
-  const [cookies, setCookie] = useCookies(['token']);
+  const [user, setUser] = useState<UserType | null>(null);
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isToken, setIsToken] = useState<string>(cookies?.token);
@@ -30,6 +32,58 @@ export const AuthProvider = ({ children }: Props) => {
     queryKey: [],
     url: 'login'
   });
+
+  const headers = useCallback(() => {
+    return {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${cookies?.token}`
+      }
+    };
+  }, [cookies?.token]);
+
+  const onLogout = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const res = await axios.post(
+        `${baseUrl}/logout`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${cookies?.token}`
+          }
+        }
+      );
+
+      if (res.status === 200) {
+        removeCookie('token');
+        router.push('/');
+        setIsLoggedIn(false);
+        setIsToken('');
+        setUser(null);
+        showToast(SuccessToastTitle, res.data.message);
+      }
+      showToast(FailedToastTitle, 'Something went wrong');
+    } catch (error: any) {
+      if (error instanceof AxiosError) {
+        showToast(
+          FailedToastTitle,
+          error.response?.data.message || 'An error occurred'
+        );
+        return;
+      }
+      showToast(
+        FailedToastTitle,
+        error.message || 'An error occurred',
+        'destructive'
+      );
+      return;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [removeCookie, router, cookies.token]);
+
   const onLogin = async ({ email, password }: LoginTProps) => {
     try {
       setIsLoading(true);
@@ -66,13 +120,49 @@ export const AuthProvider = ({ children }: Props) => {
       setIsLoading(false);
     }
   };
-  const onLogout = () => {};
+
+  const verifyToken = useCallback(async () => {
+    try {
+      const res = await axios.get(`${baseUrl}/user`, headers());
+      if (!!res.data.data.id) {
+        const data = res.data.data;
+        setUser({
+          email: data.email,
+          id: data.id,
+          name: data.name,
+          role: data.role
+        });
+      }
+    } catch (error: any) {
+      if (error instanceof AxiosError) {
+        showToast(
+          FailedToastTitle,
+          error.response?.data.message || 'An error occurred'
+        );
+        return;
+      }
+      showToast(
+        FailedToastTitle,
+        error.message || 'An error occurred',
+        'destructive'
+      );
+      return;
+    }
+  }, [headers]);
+
+  useEffect(() => {
+    if (cookies?.token) {
+      verifyToken();
+    }
+  }, [cookies, verifyToken]);
+
   useEffect(() => {
     if (cookies?.token) {
       setIsToken(cookies?.token);
       setIsLoggedIn(!!cookies?.token);
     }
   }, [cookies]);
+
   if (isLoggedIn && pathName === '/') {
     console.log('Authenticated => ', pathName);
     router.replace('/dashboard');
@@ -88,6 +178,7 @@ export const AuthProvider = ({ children }: Props) => {
             await onLogin({ email: email, password: password }),
           onLogout: onLogout,
           token: isToken,
+          user: user,
           isLoggedIn: isLoggedIn
         }}
       >

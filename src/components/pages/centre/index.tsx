@@ -10,10 +10,16 @@ import { Heading } from '@src/components/ui/heading';
 import { Separator } from '@src/components/ui/separator';
 
 import { AddCentre } from './add-center';
+import { useCQuery } from '@hooks/useCQuery';
 
 export const CentrePage = () => {
   const breadcrumbItems = [{ title: 'User', link: '/dashboard/user' }];
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { data, isLoading } = useCQuery({
+    url: 'centre',
+    queryKey: ['get Cetner']
+  });
+
   return (
     <>
       <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
@@ -28,7 +34,11 @@ export const CentrePage = () => {
           </Button>
         </div>
         <Separator />
-        <DataTable searchKey="name" columns={CentreColumn} data={[]} />
+        <DataTable
+          searchKey="name"
+          columns={CentreColumn}
+          data={isLoading ? [] : data.data.data}
+        />
       </div>
       {isOpen && <AddCentre open={isOpen} onClose={() => setIsOpen(false)} />}
     </>

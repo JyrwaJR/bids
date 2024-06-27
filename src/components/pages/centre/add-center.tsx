@@ -10,7 +10,11 @@ import { CenterModel, CenterModelType } from '@src/models';
 
 import { Form } from '../../form';
 import {
-    Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
 } from '../../ui/dialog';
 
 type Props = {
@@ -37,8 +41,8 @@ export const AddCentre = ({ onClose, open }: Props) => {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle asChild>Lorem ipsum dolor sit amet</DialogTitle>
-          <DialogDescription asChild>
+          <DialogTitle>Center</DialogTitle>
+          <DialogDescription>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
             reprehenderit sit quisquam
           </DialogDescription>

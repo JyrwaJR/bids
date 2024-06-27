@@ -2,15 +2,15 @@ import { FormFieldType } from '@src/components';
 
 export const addCenterFields: FormFieldType[] = [
   {
+    name: 'name',
+    label: 'Name',
+    required: true
+  },
+  {
     name: 'email',
     label: 'Email Address',
     required: true,
     type: 'email'
-  },
-  {
-    name: 'name',
-    label: 'Name',
-    required: true
   },
   {
     name: 'address',
@@ -19,13 +19,12 @@ export const addCenterFields: FormFieldType[] = [
   },
   {
     name: 'gps',
-    label: 'GPS',
+    label: 'GPS Location',
     required: true
   },
   {
     name: 'contact',
-    label: 'Contact No',
-    required: true,
-    type: 'tel'
+    label: 'Contact No.',
+    required: true
   }
 ];

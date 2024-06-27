@@ -1,4 +1,7 @@
 'use client';
+import { showToast } from '@components/ui/show-toast';
+import { FailedToastTitle } from '@constants/toast-message';
+import { useAuthContext } from '@context/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@src/components/ui/avatar';
 import { Button } from '@src/components/ui/button';
 import {
@@ -13,6 +16,14 @@ import {
 } from '@src/components/ui/dropdown-menu';
 
 export function UserNav() {
+  const { onLogout } = useAuthContext();
+  const onClickLogout = async () => {
+    try {
+      await onLogout();
+    } catch (error: any) {
+      showToast(FailedToastTitle, error.message);
+    }
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -49,7 +60,7 @@ export function UserNav() {
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => {}}>
+        <DropdownMenuItem onClick={() => onClickLogout()}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

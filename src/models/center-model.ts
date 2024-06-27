@@ -58,9 +58,19 @@ export const CenterModel = z.object({
     .min(10, {
       message: 'Should be more than 3 in length'
     })
-    .max(10, {
+    .max(50, {
       message: 'Should be less than 50 in length'
+    }),
+  state: z
+    .string({
+      required_error: FieldsIsRequired
     })
+    .max(100, 'State must be 100 characters or less'),
+  district: z
+    .string({
+      required_error: FieldsIsRequired
+    })
+    .max(100, 'District must be 100 characters or less')
 });
 
 export type CenterModelType = z.infer<typeof CenterModel>;

@@ -1,8 +1,17 @@
 import { createContext } from 'react';
+export type UserType = {
+  id: string;
+  role: string;
+  name: string;
+  email: string;
+  center?: string;
+  staff?: string;
+};
 
-type AuthContextT = {
+export type AuthContextT = {
   token: string;
   id: string;
+  user: UserType | null;
   onLogout: () => void;
   onLogin: (email: string, password: string) => Promise<void>;
   isLoading: boolean;
@@ -12,6 +21,14 @@ type AuthContextT = {
 
 export const AuthContext = createContext<AuthContextT | null>({
   id: '',
+  user: {
+    center: '',
+    email: '',
+    id: '',
+    name: '',
+    role: '',
+    staff: ''
+  } as UserType,
   isLoggedIn: false,
   onLogout: () => {},
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

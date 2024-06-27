@@ -6,7 +6,7 @@ import { useQuery } from 'react-query';
 import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
 import { showToast } from '@src/components/ui/show-toast';
 
-interface BalangQueryProps {
+interface CQueryProps {
   queryKey: any[];
   url: string;
   enabled?: boolean;
@@ -62,7 +62,7 @@ const queryFn = async ({ token, url }: QueryFNProps) => {
   }
 };
 
-export function useCQuery({ queryKey, url, enabled = true }: BalangQueryProps) {
+export function useCQuery({ queryKey, url, enabled = true }: CQueryProps) {
   const [cookies] = useCookies(['token']);
   const isEnableQuery: boolean = enabled && !!cookies?.token;
   const query = useQuery<ApiResponse, any, any, any>({

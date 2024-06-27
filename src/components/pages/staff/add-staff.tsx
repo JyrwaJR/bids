@@ -4,7 +4,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Form, FormFieldType } from '@components/form';
 import { Typography } from '@components/typography';
 import {
-    Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
 } from '@components/ui/dialog';
 import { staffFields } from '@constants/input-fields/staff/staff-fields';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -37,8 +41,11 @@ export const AddStaff = ({ onClose, open }: Props) => {
   });
   const onSubmitAddStaff: SubmitHandler<StaffModelType> = async (data) => {
     try {
+      console.log(data);
       await mutateAsync(data);
     } catch (error: any) {
+      console.log(error);
+
       showToast(FailedToastTitle, error.message);
     }
   };
@@ -55,17 +62,20 @@ export const AddStaff = ({ onClose, open }: Props) => {
       label: item.name,
       value: item.id
     }));
+
   const staffFormWithCenterId: FormFieldType[] = [
     {
       name: 'centre_id',
       label: 'Center',
       select: true,
-      options: centerOptions
+      options: centerOptions,
+      required: true
     },
     {
       name: 'staff_category_id',
       label: 'Staff Category',
       select: true,
+      required: true,
       options: StaffCategoryOption
     },
     ...staffFields
