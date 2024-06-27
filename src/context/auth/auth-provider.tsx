@@ -92,6 +92,7 @@ export const AuthProvider = ({ children }: Props) => {
         password: password
       });
       if (res.success === true) {
+        // TODO Add more field to save token
         setCookie('token', res.data.token, { path: '/' });
         setIsToken(cookies?.token);
         setIsLoggedIn(!!cookies?.token);
