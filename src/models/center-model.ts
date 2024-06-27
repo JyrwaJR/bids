@@ -61,12 +61,12 @@ export const CenterModel = z.object({
     .max(50, {
       message: 'Should be less than 50 in length'
     }),
-  state: z
+  state_id: z
     .string({
       required_error: FieldsIsRequired
     })
     .max(100, 'State must be 100 characters or less'),
-  district: z
+  district_id: z
     .string({
       required_error: FieldsIsRequired
     })

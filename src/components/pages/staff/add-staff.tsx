@@ -1,5 +1,5 @@
 import React from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, RegisterOptions } from 'react-hook-form';
 
 import { Form, FormFieldType } from '@components/form';
 import { Typography } from '@components/typography';
@@ -21,9 +21,11 @@ type Props = {
   open: boolean;
   onClose: () => void;
 };
+
 export const AddStaff = ({ onClose, open }: Props) => {
   const form = useForm<StaffModelType>({
-    resolver: zodResolver(StaffModel)
+    resolver: zodResolver(StaffModel),
+    mode: 'onBlur'
   });
   const { isLoading: cLoading, data: cData } = useCQuery({
     url: 'centre',
@@ -32,6 +34,7 @@ export const AddStaff = ({ onClose, open }: Props) => {
 
   const { isLoading: scLoading, data: scData } = useCQuery({
     url: 'staffcategory',
+
     queryKey: []
   });
   const { isLoading, mutateAsync } = useCMutation({
@@ -41,7 +44,6 @@ export const AddStaff = ({ onClose, open }: Props) => {
   });
   const onSubmitAddStaff: SubmitHandler<StaffModelType> = async (data) => {
     try {
-      console.log(data);
       await mutateAsync(data);
     } catch (error: any) {
       console.log(error);
@@ -78,7 +80,16 @@ export const AddStaff = ({ onClose, open }: Props) => {
       required: true,
       options: StaffCategoryOption
     },
-    ...staffFields
+    ...staffFields,
+    ...(form.getValues('create_username') === 'Yes'
+      ? [
+          {
+            name: 'password',
+            label: 'Password',
+            type: 'password'
+          }
+        ]
+      : [])
   ];
   return (
     <Dialog open={open} onOpenChange={onClose}>

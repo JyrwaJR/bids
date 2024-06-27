@@ -48,11 +48,6 @@ export const staffFields: FormFieldType[] = [
     type: 'date'
   },
   {
-    name: 'password',
-    label: 'Password',
-    type: 'password'
-  },
-  {
     name: 'create_username',
     label: 'Create Username',
     select: true,
