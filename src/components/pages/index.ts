@@ -6,3 +6,4 @@ export { default as CenterDomainPage } from '@components/pages/centre/domain';
 export { AddCentreDomain } from '@components/pages/centre/domain/add-center-domain';
 export { CenterPageComponents } from '@components/pages/centre/center';
 export { default as StaffPage } from '@components/pages/staff';
+export { default as ProjectsPage } from '@components/pages/projects';
