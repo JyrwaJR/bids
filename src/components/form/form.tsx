@@ -75,42 +75,48 @@ export const Form = <T,>({
                   render={({ field }) => (
                     <div className="w-full">
                       {input.select ? (
-                        <FormItem className="w-full">
-                          <FormLabel>
-                            {input.label}{' '}
-                            {input.required && (
-                              <span className="text-red-500">*</span>
-                            )}
-                          </FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={defaultValue?.[input.name]}
-                            value={field.value}
-                          >
-                            <FormControl className="w-full">
-                              <SelectTrigger>
-                                <SelectValue placeholder={'Select an option'} />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {input.options?.map(
-                                (option: OptionsT, i: number) => (
-                                  <React.Fragment key={i}>
-                                    <SelectItem value={option.value as string}>
-                                      {option.label}
-                                    </SelectItem>
-                                  </React.Fragment>
-                                )
+                        <>
+                          <FormItem className="w-full">
+                            <FormLabel>
+                              {input.label}{' '}
+                              {input.required && (
+                                <span className="text-red-500">*</span>
                               )}
-                            </SelectContent>
-                            <FormMessage />
-                            <FormDescription>
-                              {input.helperText}
-                            </FormDescription>
-                          </Select>
-                        </FormItem>
+                            </FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={defaultValue?.[input.name]}
+                              value={field.value}
+                            >
+                              <FormControl className="w-full">
+                                <SelectTrigger>
+                                  <SelectValue
+                                    placeholder={'Select an option'}
+                                  />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {input.options?.map(
+                                  (option: OptionsT, i: number) => (
+                                    <React.Fragment key={i}>
+                                      <SelectItem
+                                        value={option.value as string}
+                                      >
+                                        {option.label}
+                                      </SelectItem>
+                                    </React.Fragment>
+                                  )
+                                )}
+                              </SelectContent>
+                              <FormMessage />
+                              <FormDescription>
+                                {input.helperText}
+                              </FormDescription>
+                            </Select>
+                          </FormItem>
+                        </>
                       ) : input.type === 'dates' ? (
-                        <FormItem className="flex h-full flex-col justify-center">
+                        <FormItem className="flex flex-col justify-center h-full">
                           <FormLabel>
                             {input.label}{' '}
                             {input.required && (
@@ -132,7 +138,7 @@ export const Form = <T,>({
                                   ) : (
                                     <span>Pick a date</span>
                                   )}
-                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                  <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
                                 </Button>
                               </FormControl>
                             </PopoverTrigger>
@@ -188,7 +194,7 @@ export const Form = <T,>({
                 />
               </div>
             ))}
-            <div className="col-span-full flex w-full px-3 md:justify-end">
+            <div className="flex w-full px-3 col-span-full md:justify-end">
               {fields.find((input) => input.type === 'password') && (
                 <Button
                   variant="link"
@@ -205,7 +211,7 @@ export const Form = <T,>({
           <React.Fragment>
             {fields.map((input, i) => (
               <div key={input.name + i} className={style}>
-                <div className="h-12 w-full animate-pulse rounded-lg bg-gray-200" />
+                <div className="w-full h-12 bg-gray-200 rounded-lg animate-pulse" />
               </div>
             ))}
           </React.Fragment>

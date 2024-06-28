@@ -125,14 +125,16 @@ export const AuthProvider = ({ children }: Props) => {
   const verifyToken = useCallback(async () => {
     try {
       const res = await axios.get(`${baseUrl}/user`, headers());
-      if (!!res.data.data.id) {
+      if (!!res.data.data.id || res.status === 200) {
         const data = res.data.data;
         setUser({
           email: data.email,
           id: data.id,
           name: data.name,
-          role: data.role
+          role: data.role[0]
         });
+        setIsToken(cookies?.token);
+        setIsLoggedIn(!!cookies?.token);
       }
     } catch (error: any) {
       if (error instanceof AxiosError) {
@@ -149,7 +151,7 @@ export const AuthProvider = ({ children }: Props) => {
       );
       return;
     }
-  }, [headers]);
+  }, [headers, cookies?.token]);
 
   useEffect(() => {
     if (cookies?.token) {
@@ -157,16 +159,13 @@ export const AuthProvider = ({ children }: Props) => {
     }
   }, [cookies, verifyToken]);
 
-  useEffect(() => {
-    if (cookies?.token) {
-      setIsToken(cookies?.token);
-      setIsLoggedIn(!!cookies?.token);
-    }
-  }, [cookies]);
-
   if (isLoggedIn && pathName === '/') {
-    console.log('Authenticated => ', pathName);
+    console.log('Authenticated =>', pathName);
     router.replace('/dashboard');
+  }
+  if (!isLoggedIn && pathName === '/dashboard') {
+    console.log('Authenticated =>', pathName);
+    router.replace('/');
   }
 
   return (

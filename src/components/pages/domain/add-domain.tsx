@@ -17,7 +17,7 @@ import { showToast } from '@components/ui/show-toast';
 import { FailedToastTitle } from '@constants/toast-message';
 
 type Props = {
-  open: boolean;
+  open: true | false;
   onClose: () => void;
 };
 

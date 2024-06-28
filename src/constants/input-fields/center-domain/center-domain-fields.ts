@@ -1,5 +1,5 @@
 import { FormFieldType } from '@components/index';
 
 export const centerDomainFields: FormFieldType[] = [
-  // TODO
+  // TODO: Add more fields
 ];

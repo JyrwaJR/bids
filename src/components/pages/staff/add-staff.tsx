@@ -1,5 +1,5 @@
 import React from 'react';
-import { SubmitHandler, useForm, RegisterOptions } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { Form, FormFieldType } from '@components/form';
 import { Typography } from '@components/typography';
@@ -27,7 +27,11 @@ export const AddStaff = ({ onClose, open }: Props) => {
     resolver: zodResolver(StaffModel),
     mode: 'all'
   });
-  const { isLoading: cLoading, data: cData } = useCQuery({
+  const {
+    isLoading: cLoading,
+    data: cData,
+    isFetched: isCFetch
+  } = useCQuery({
     url: 'centre',
     queryKey: ['get', 'center']
   });
@@ -55,10 +59,12 @@ export const AddStaff = ({ onClose, open }: Props) => {
       label: item.name,
       value: item.id
     }));
+  console.log(cData);
 
   const centerOptions =
     !cLoading &&
-    cData.data.data.map((item: CenterModelType) => ({
+    isCFetch &&
+    cData.data.map((item: CenterModelType) => ({
       label: item.name,
       value: item.id
     }));

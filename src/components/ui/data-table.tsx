@@ -24,21 +24,23 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchKey: string;
+  isLoading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  searchKey
+  searchKey,
+  isLoading
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
-    data,
+    data: isLoading ? [] : data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel()
   });
 
-  /* this can be used to get the selectedrows 
+  /* this can be used to get the selectedrows
   console.log("value", table.getFilteredSelectedRowModel()); */
 
   return (
@@ -102,7 +104,7 @@ export function DataTable<TData, TValue>({
         </Table>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-end py-4 space-x-2">
         <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.

@@ -17,9 +17,10 @@ export const DomainPage = () => {
     url: 'domain',
     queryKey: ['get', 'domain']
   });
+
   return (
     <>
-      <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
+      <div className="flex-1 p-4 pt-6 space-y-4 md:p-8">
         <BreadCrumb items={breadcrumbItems} />
         <div className="flex items-start justify-between">
           <Heading title={`Domain`} description="Manage ur Domain table" />
@@ -27,7 +28,7 @@ export const DomainPage = () => {
             className="text-xs md:text-sm"
             onClick={() => setIsOpen(true)}
           >
-            <Plus className="mr-2 h-4 w-4" /> Add New
+            <Plus className="w-4 h-4 mr-2" /> Add Domain
           </Button>
         </div>
         <Separator />
@@ -37,7 +38,7 @@ export const DomainPage = () => {
           data={isLoading ? [] : data.data}
         />
       </div>
-      {isOpen && <AddDomain open onClose={() => setIsOpen(false)} />}
+      {isOpen && <AddDomain open={open} onClose={() => setIsOpen(false)} />}
     </>
   );
 };
