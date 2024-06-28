@@ -10,13 +10,15 @@ import React from 'react';
 type Props = {
   open: boolean;
   onClose: () => void;
+  domain_id: string[] | string;
 };
 const AddCentreDomain = ({ onClose, open }: Props) => {
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Center Domain</DialogTitle>
+
           <DialogDescription>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam totam
             magnam pariatur maxime, autem quibusdam!
