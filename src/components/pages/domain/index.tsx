@@ -38,7 +38,7 @@ export const DomainPage = () => {
           data={isLoading ? [] : data.data}
         />
       </div>
-      {isOpen && <AddDomain open={open} onClose={() => setIsOpen(false)} />}
+      {isOpen && <AddDomain open={isOpen} onClose={() => setIsOpen(false)} />}
     </>
   );
 };
