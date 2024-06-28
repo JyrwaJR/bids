@@ -116,7 +116,7 @@ export const Form = <T,>({
                           </FormItem>
                         </>
                       ) : input.type === 'dates' ? (
-                        <FormItem className="flex flex-col justify-center h-full">
+                        <FormItem className="flex h-full flex-col justify-center">
                           <FormLabel>
                             {input.label}{' '}
                             {input.required && (
@@ -138,7 +138,7 @@ export const Form = <T,>({
                                   ) : (
                                     <span>Pick a date</span>
                                   )}
-                                  <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                 </Button>
                               </FormControl>
                             </PopoverTrigger>
@@ -194,7 +194,7 @@ export const Form = <T,>({
                 />
               </div>
             ))}
-            <div className="flex w-full px-3 col-span-full md:justify-end">
+            <div className="col-span-full flex w-full px-3 md:justify-end">
               {fields.find((input) => input.type === 'password') && (
                 <Button
                   variant="link"
@@ -211,7 +211,7 @@ export const Form = <T,>({
           <React.Fragment>
             {fields.map((input, i) => (
               <div key={input.name + i} className={style}>
-                <div className="w-full h-12 bg-gray-200 rounded-lg animate-pulse" />
+                <div className="h-12 w-full animate-pulse rounded-lg bg-gray-200" />
               </div>
             ))}
           </React.Fragment>

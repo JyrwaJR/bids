@@ -9,12 +9,12 @@ import { useCQuery } from '@hooks/useCQuery';
 import { ColumnDef } from '@tanstack/react-table';
 import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
-import { AddCentreDomain } from './add-center-domain';
+import { AddCentreDomain } from '@components/pages/centre/domain/add-center-domain';
 import { DomainModelType } from '@src/models';
 interface ColumnType extends DomainModelType {
   id: string;
 }
-export const CenterDomainPage = () => {
+const CenterDomainPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isLoading } = useCQuery({
     url: 'domain',
@@ -89,3 +89,5 @@ export const CenterDomainPage = () => {
     </>
   );
 };
+
+export default CenterDomainPage;

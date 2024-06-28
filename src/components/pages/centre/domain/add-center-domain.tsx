@@ -66,6 +66,7 @@ export const AddCentreDomain = ({ onClose, open, domain_id }: Props) => {
       onClose();
     }
   }, [user, form, onSubmit, onClose]);
+
   const centreOptions: OptionsT[] | undefined =
     isFetched &&
     !isLoading &&

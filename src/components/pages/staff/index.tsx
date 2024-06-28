@@ -12,10 +12,10 @@ import { Separator } from '@src/components/ui/separator';
 import { AddStaff } from './add-staff';
 import { useCQuery } from '@hooks/useCQuery';
 
-export const StaffPage = () => {
+const StaffPage = () => {
   const breadcrumbItems = [{ title: 'User', link: '/dashboard/user' }];
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { data, isLoading } = useCQuery({
+  const { data, isFetched } = useCQuery({
     url: 'staff',
     queryKey: ['get', 'staff']
   });
@@ -37,10 +37,11 @@ export const StaffPage = () => {
         <DataTable
           searchKey="name"
           columns={staffColumn}
-          data={!isLoading ? data.data.data : []}
+          data={isFetched && data.data.data}
         />
       </div>
       {isOpen && <AddStaff open={isOpen} onClose={() => setIsOpen(false)} />}
     </>
   );
 };
+export default StaffPage;
