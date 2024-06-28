@@ -27,3 +27,14 @@ export const StatusOptions: OptionsT[] = [
     value: 'InActive'
   }
 ];
+
+export const SectorsOptions: OptionsT[] = [
+  {
+    label: 'Rural',
+    value: 'Rural'
+  },
+  {
+    label: 'Urban',
+    value: 'Urban'
+  }
+];

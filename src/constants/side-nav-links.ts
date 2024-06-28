@@ -26,10 +26,10 @@ export const navItems: NavItem[] = [
     label: 'domain'
   },
   {
-    title: 'Employee',
-    href: '/dashboard/employee',
-    icon: 'employee',
-    label: 'employee'
+    title: 'Project',
+    href: '/dashboard/projects',
+    icon: 'kanban',
+    label: 'kanban'
   },
   {
     title: 'Profile',

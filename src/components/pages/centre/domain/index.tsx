@@ -67,7 +67,10 @@ const CenterDomainPage = () => {
     <>
       <div className="flex-1 p-4 pt-6 space-y-4 md:p-8">
         <div className="flex items-start justify-between">
-          <Heading title={`Center`} description="Manage ur center table" />
+          <Heading
+            title={`Add Domain`}
+            description="Add domain to your center"
+          />
           <Button className="text-xs md:text-sm" onClick={onCLickAddDomain}>
             <Plus className="w-4 h-4 mr-2" /> Add New
           </Button>
