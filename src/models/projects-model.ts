@@ -4,19 +4,28 @@ import { format } from 'date-fns';
 import { z } from 'zod';
 
 export const ProjectModel = z.object({
+  centre_id: z.string().uuid().optional(),
+  domain_id: z
+    .string({
+      required_error: FieldsIsRequired
+    })
+    .uuid()
+    .array(),
   name: z
     .string({
       required_error: FieldsIsRequired
     })
     .max(250),
-  target: z.number().transform((value) => Number(value)),
-  start_date: z.date().transform((value) => format(value, 'yyyy-MM-dd')),
+  target: z.string().refine((value) => Number(value)),
+  start_date: z
+    .string()
+    .refine((value) => format(new Date(value), 'yyyy-MM-dd')),
   end_date: z
-    .date()
-    .transform((value) => format(value, 'yyyy-MM-dd'))
+    .string()
+    .refine((value) => format(new Date(value), 'yyyy-MM-dd'))
     .nullable(),
   status: z.string().max(20),
-  duration: z.number().transform((value) => Number(value)),
+  duration: z.string().transform((value) => Number(value)),
   target_sector: z
     .string()
     .max(20)

@@ -23,7 +23,7 @@ export const StatusOptions: OptionsT[] = [
     value: 'Active'
   },
   {
-    label: 'InActive',
+    label: 'In-Active',
     value: 'InActive'
   }
 ];

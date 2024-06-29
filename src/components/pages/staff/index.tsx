@@ -2,7 +2,7 @@
 import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { staffColumn } from '@constants/columns';
+import { ProjectColumn } from '@constants/columns';
 import BreadCrumb from '@src/components/breadcrumb';
 import { Button } from '@src/components/ui/button';
 import { DataTable } from '@src/components/ui/data-table';
@@ -13,7 +13,7 @@ import { AddStaff } from './add-staff';
 import { useCQuery } from '@hooks/useCQuery';
 
 const StaffPage = () => {
-  const breadcrumbItems = [{ title: 'User', link: '/dashboard/user' }];
+  const breadcrumbItems = [{ title: 'Projects', link: '/dashboard/projects' }];
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isFetched } = useCQuery({
     url: 'staff',
@@ -36,7 +36,7 @@ const StaffPage = () => {
         <Separator />
         <DataTable
           searchKey="name"
-          columns={staffColumn}
+          columns={ProjectColumn}
           data={isFetched && data.data.data}
         />
       </div>

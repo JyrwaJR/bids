@@ -1,3 +1,4 @@
+'use client';
 import { ProjectsPage } from '@components/pages';
 import React from 'react';
 

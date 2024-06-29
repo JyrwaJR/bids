@@ -4,6 +4,7 @@ export { CenterModel, type CenterModelType } from './center-model';
 export { StaffModel, type StaffModelType } from './staff-model';
 export { DomainModel, type DomainModelType } from './domain-model';
 export { ProjectModel, type ProjectModelType } from './projects-model';
+export { BatchModel, type BatchModelType } from './batch-model';
 export {
   CenterDomainModel,
   type CenterDomainModelType

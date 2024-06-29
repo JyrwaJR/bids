@@ -27,12 +27,14 @@ export const projectsFields: FormFieldType[] = [
   {
     name: 'start_date',
     label: 'Start Date',
-    required: true
+    required: true,
+    type: 'date'
   },
   {
     name: 'end_date',
     label: 'End Date',
-    required: false
+    required: false,
+    type: 'date'
   },
   {
     name: 'status',
