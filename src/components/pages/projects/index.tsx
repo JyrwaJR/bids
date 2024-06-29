@@ -26,7 +26,7 @@ const ProjectsPage = () => {
   const [isSelectedIds, setSelectedIds] = useState<string[]>([]);
   const url =
     user?.role === 'superadmin' ? 'project' : 'project-centre/get-projects';
-  const { data, isFetched } = useCQuery({
+  const { data, isFetched, isError } = useCQuery({
     url: url,
     queryKey: ['get', 'project']
   });
@@ -78,10 +78,10 @@ const ProjectsPage = () => {
   ];
   const onClickAddProject = () => {
     setSelectedIds([]);
-
     setIsOpen(false);
     return;
   };
+
   return (
     <>
       <ScrollArea className="h-full">
@@ -100,13 +100,17 @@ const ProjectsPage = () => {
               <BreadCrumb items={breadcrumbItems} />
               <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
                 <div className="flex items-start justify-between">
-                  <Heading title={`Projects`} description="Manage ur project" />
+                  <Heading title={`Projects`} description="Manage ur Staff" />
                 </div>
                 <Separator />
                 <DataTable
                   searchKey="name"
                   columns={ProjectColumn}
-                  data={isFetched && data.data}
+                  data={
+                    isFetched && !isError && user?.role === 'superadmin'
+                      ? data.data
+                      : data ?? []
+                  }
                 />
               </div>
             </TabsContent>

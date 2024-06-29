@@ -39,7 +39,8 @@ const StaffPage = () => {
           searchKey="name"
           columns={staffColumn}
           isLoading={isLoading}
-          data={isFetched && !isError ? data.data.data : []}
+          // data={isFetched && !isError ? data.data : []}
+          data={[]}
         />
       </div>
       {isOpen && <AddStaff open={isOpen} onClose={() => setIsOpen(false)} />}

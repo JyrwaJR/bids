@@ -16,6 +16,7 @@ import { showToast } from '@src/components/ui/show-toast';
 import { FailedToastTitle } from '@src/constants/toast-message';
 import { useCMutation, useCQuery } from '@src/hooks';
 import { CenterModelType, StaffModel, StaffModelType } from '@src/models';
+import { ScrollArea } from '@components/ui/scroll-area';
 
 type Props = {
   open: boolean;
@@ -59,7 +60,6 @@ export const AddStaff = ({ onClose, open }: Props) => {
       label: item.name,
       value: item.id
     }));
-  console.log(cData);
 
   const centerOptions =
     !cLoading &&
@@ -97,7 +97,7 @@ export const AddStaff = ({ onClose, open }: Props) => {
   ];
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="w-full max-w-[1200px]">
+      <DialogContent className="max-h-screen  w-full max-w-[1200px]">
         <DialogHeader>
           <DialogTitle>
             <Typography
@@ -116,13 +116,15 @@ export const AddStaff = ({ onClose, open }: Props) => {
             </Typography>
           </DialogDescription>
         </DialogHeader>
-        <Form
-          onSubmit={onSubmitAddStaff}
-          fields={staffFormWithCenterId}
-          form={form}
-          loading={isLoading || cLoading || scLoading}
-          className=" md:col-span-6 md:w-full lg:col-span-4"
-        />
+        <ScrollArea>
+          <Form
+            onSubmit={onSubmitAddStaff}
+            fields={staffFormWithCenterId}
+            form={form}
+            loading={isLoading || cLoading || scLoading}
+            className=" md:col-span-6 md:w-full lg:col-span-4"
+          />
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
