@@ -16,7 +16,8 @@ import {
 } from '@src/components/ui/dropdown-menu';
 
 export function UserNav() {
-  const { onLogout } = useAuthContext();
+  const { onLogout, user } = useAuthContext();
+
   const onClickLogout = async () => {
     try {
       await onLogout();
@@ -24,22 +25,24 @@ export function UserNav() {
       showToast(FailedToastTitle, error.message);
     }
   };
+  const userName = user?.name?.split(' ')[0] || '';
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+        <Button variant="secondary" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src="/avatars/01.png" alt="Avatar" />
-            <AvatarFallback>OM</AvatarFallback>
+            <AvatarFallback>
+              {userName && userName.charAt(0).toUpperCase()}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">Username</p>
+            <p className="text-sm font-medium leading-none">{user?.name}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              demo@gmail.com
+              {user?.email}
             </p>
           </div>
         </DropdownMenuLabel>

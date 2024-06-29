@@ -8,14 +8,16 @@ import React, { useState } from 'react';
 import { AddBatch } from './add-batch';
 import { useAuthContext } from '@context/auth';
 import { useCQuery } from '@hooks/useCQuery';
+import { isError } from 'react-query';
 
 const BatchPage = () => {
   const { user } = useAuthContext();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isFetched, isLoading } = useCQuery({
-    url: 'centre',
-    queryKey: ['get', 'centre']
+    url: 'batch',
+    queryKey: ['get', 'batch']
   });
+
   return (
     <>
       <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
@@ -34,7 +36,7 @@ const BatchPage = () => {
           searchKey="name"
           isLoading={isLoading}
           columns={BatchColumn}
-          data={isFetched ? data.data : []}
+          data={isFetched && !isError ? data.data : []}
         />
       </div>
       {isOpen && <AddBatch open={isOpen} onClose={() => setIsOpen(false)} />}
