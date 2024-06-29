@@ -7,7 +7,7 @@ import { domainColumn, ProjectColumn } from '@constants/columns';
 import { useCQuery } from '@hooks/useCQuery';
 import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
-import { AddBatch, AddProjects } from '@components/pages';
+import { AddProjects } from '@components/pages';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ColumnDef } from '@tanstack/react-table';
@@ -15,7 +15,6 @@ import { DomainModelType } from '@src/models';
 import { Checkbox } from '@components/ui/checkbox';
 import { showToast } from '@components/ui/show-toast';
 import { useAuthContext } from '@context/auth';
-import { z } from 'zod';
 import { FailedToastTitle } from '@constants/toast-message';
 interface ColType extends DomainModelType {
   id: string;
@@ -25,8 +24,10 @@ const ProjectsPage = () => {
   const breadcrumbItems = [{ title: 'User', link: '/dashboard/user' }];
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isSelectedIds, setSelectedIds] = useState<string[]>([]);
+  const url =
+    user?.role === 'superadmin' ? 'project' : 'project-centre/get-projects';
   const { data, isFetched } = useCQuery({
-    url: 'project',
+    url: url,
     queryKey: ['get', 'project']
   });
   const { data: domain, isFetched: isDomainFetch } = useCQuery({
@@ -99,7 +100,7 @@ const ProjectsPage = () => {
               <BreadCrumb items={breadcrumbItems} />
               <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
                 <div className="flex items-start justify-between">
-                  <Heading title={`Projects`} description="Manage ur Staff" />
+                  <Heading title={`Projects`} description="Manage ur project" />
                 </div>
                 <Separator />
                 <DataTable

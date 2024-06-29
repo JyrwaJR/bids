@@ -23,7 +23,13 @@ export const BatchModel = z.object({
     .max(10, {
       message: 'Batch code must be 10 characters or less'
     }),
-  batchid: z.string().optional(),
+  batchid: z
+    .string({
+      required_error: FieldsIsRequired
+    })
+    .refine((val) => !isNaN(Number(val)), {
+      message: 'Batch ID must be a number'
+    }),
   start_date: z
     .string({
       required_error: FieldsIsRequired

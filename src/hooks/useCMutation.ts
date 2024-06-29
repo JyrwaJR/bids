@@ -73,14 +73,14 @@ const mutationFn = async ({ token, data = {}, method, url }: MutationProps) => {
     return response.data;
   } catch (error: any) {
     if (error instanceof AxiosError) {
-      console.log('Mutation Axios Error => ', error.message);
+      console.log('Mutation Axios Error => ', error.response?.data);
       showToast(
         FailedToastTitle,
         error.response?.data.message || error.response?.data.errors.name
       );
       return error.response;
     }
-    console.log('Mutation Error => ', error.message);
+    console.log('Mutation Error => ', error);
     showToast(
       FailedToastTitle,
       error.message || 'An error occurred',

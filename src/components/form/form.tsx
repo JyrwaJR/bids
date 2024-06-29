@@ -27,6 +27,7 @@ import {
 } from '../ui/select';
 import { FormTag } from './form-tag';
 import { FormFieldType, OptionsT } from './type';
+import { ScrollArea } from '@components/ui/scroll-area';
 
 type FormProps<T> = {
   onSubmit: SubmitHandler<T | any>;
@@ -96,17 +97,19 @@ export const Form = <T,>({
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                {input.options?.map(
-                                  (option: OptionsT, i: number) => (
-                                    <React.Fragment key={i}>
-                                      <SelectItem
-                                        value={option.value as string}
-                                      >
-                                        {option.label}
-                                      </SelectItem>
-                                    </React.Fragment>
-                                  )
-                                )}
+                                <ScrollArea>
+                                  {input.options?.map(
+                                    (option: OptionsT, i: number) => (
+                                      <React.Fragment key={i}>
+                                        <SelectItem
+                                          value={option.value as string}
+                                        >
+                                          {option.label}
+                                        </SelectItem>
+                                      </React.Fragment>
+                                    )
+                                  )}
+                                </ScrollArea>
                               </SelectContent>
                               <FormMessage />
                               <FormDescription>
