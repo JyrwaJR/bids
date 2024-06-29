@@ -28,6 +28,8 @@ import {
 import { FormTag } from './form-tag';
 import { FormFieldType, OptionsT } from './type';
 import { ScrollArea } from '@components/ui/scroll-area';
+import { Checkbox } from '@components/ui/checkbox';
+import { Label } from '@components/ui/label';
 
 type FormProps<T> = {
   onSubmit: SubmitHandler<T | any>;
@@ -64,162 +66,166 @@ export const Form = <T,>({
       btnStyle={btnStyle}
       buttonTitle={btnText}
     >
-      <React.Fragment>
-        {!loading ? (
-          <React.Fragment>
-            {fields.map((input: FormFieldType, i) => (
-              <div key={i} className={style}>
-                <FormField
-                  name={input.name}
-                  control={form.control}
-                  defaultValue={defaultValue?.[input.name]}
-                  render={({ field }) => (
-                    <div className="w-full">
-                      {input.select ? (
-                        <>
-                          <FormItem className="w-full">
+      <ScrollArea>
+        <div className="grid max-h-[80vh] min-w-full grid-cols-12 gap-4 py-2 ">
+          {!loading ? (
+            <React.Fragment>
+              {fields.map((input: FormFieldType, i) => (
+                <div key={i} className={style}>
+                  <FormField
+                    name={input.name}
+                    control={form.control}
+                    defaultValue={defaultValue?.[input.name]}
+                    render={({ field }) => (
+                      <div className="w-full">
+                        {input.select ? (
+                          <>
+                            <FormItem className="w-full">
+                              <FormLabel>
+                                {input.label}{' '}
+                                {input.required && (
+                                  <span className="text-red-500">*</span>
+                                )}
+                              </FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={defaultValue?.[input.name]}
+                                value={field.value}
+                              >
+                                <FormControl className="w-full">
+                                  <SelectTrigger>
+                                    <SelectValue
+                                      placeholder={'Select an option'}
+                                    />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <ScrollArea>
+                                    {input.options?.map(
+                                      (option: OptionsT, i: number) => (
+                                        <React.Fragment key={i}>
+                                          <SelectItem
+                                            value={option.value as string}
+                                          >
+                                            {option.label}
+                                          </SelectItem>
+                                        </React.Fragment>
+                                      )
+                                    )}
+                                  </ScrollArea>
+                                </SelectContent>
+                                <FormMessage />
+                                <FormDescription>
+                                  {input.helperText}
+                                </FormDescription>
+                              </Select>
+                            </FormItem>
+                          </>
+                        ) : input.type === 'dates' ? (
+                          <FormItem className="flex h-full flex-col justify-center">
                             <FormLabel>
                               {input.label}{' '}
                               {input.required && (
                                 <span className="text-red-500">*</span>
                               )}
                             </FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={defaultValue?.[input.name]}
-                              value={field.value}
-                            >
-                              <FormControl className="w-full">
-                                <SelectTrigger>
-                                  <SelectValue
-                                    placeholder={'Select an option'}
-                                  />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <ScrollArea>
-                                  {input.options?.map(
-                                    (option: OptionsT, i: number) => (
-                                      <React.Fragment key={i}>
-                                        <SelectItem
-                                          value={option.value as string}
-                                        >
-                                          {option.label}
-                                        </SelectItem>
-                                      </React.Fragment>
-                                    )
-                                  )}
-                                </ScrollArea>
-                              </SelectContent>
-                              <FormMessage />
-                              <FormDescription>
-                                {input.helperText}
-                              </FormDescription>
-                            </Select>
-                          </FormItem>
-                        </>
-                      ) : input.type === 'dates' ? (
-                        <FormItem className="flex h-full flex-col justify-center">
-                          <FormLabel>
-                            {input.label}{' '}
-                            {input.required && (
-                              <span className="text-red-500">*</span>
-                            )}
-                          </FormLabel>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <Button
-                                  variant={'outline'}
-                                  className={cn(
-                                    'w-[240px] pl-3 text-left font-normal',
-                                    !field.value && 'text-muted-foreground'
-                                  )}
-                                >
-                                  {field.value ? (
-                                    format(field.value, 'PPP')
-                                  ) : (
-                                    <span>Pick a date</span>
-                                  )}
-                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                              </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent
-                              className="w-auto p-0"
-                              align="start"
-                            >
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
-                                // disabled={(date) =>
-                                //   date > new Date() ||
-                                //   date < new Date("1900-01-01")
-                                // }
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
-                          <FormMessage />
-                          <FormDescription>{input.helperText}</FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      ) : (
-                        <React.Fragment key={i}>
-                          <FormItem className="w-full">
-                            <FormLabel>
-                              {input.label}{' '}
-                              {input.required && (
-                                <span className="text-red-500">*</span>
-                              )}
-                            </FormLabel>
-                            <Input
-                              {...field}
-                              className="flex"
-                              placeholder={'Please enter a value'}
-                              disabled={input.readOnly}
-                              type={
-                                input.type === 'password' && showPassword
-                                  ? 'text'
-                                  : input.type
-                              }
-                            />
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <FormControl>
+                                  <Button
+                                    variant={'outline'}
+                                    className={cn(
+                                      'w-[240px] pl-3 text-left font-normal',
+                                      !field.value && 'text-muted-foreground'
+                                    )}
+                                  >
+                                    {field.value ? (
+                                      format(field.value, 'PPP')
+                                    ) : (
+                                      <span>Pick a date</span>
+                                    )}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                  </Button>
+                                </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-auto p-0"
+                                align="start"
+                              >
+                                <Calendar
+                                  mode="single"
+                                  selected={field.value}
+                                  onSelect={field.onChange}
+                                  // disabled={(date) =>
+                                  //   date > new Date() ||
+                                  //   date < new Date("1900-01-01")
+                                  // }
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                            <FormMessage />
                             <FormDescription>
                               {input.helperText}
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
-                        </React.Fragment>
-                      )}
-                    </div>
-                  )}
-                />
+                        ) : (
+                          <React.Fragment key={i}>
+                            <FormItem className="w-full">
+                              <FormLabel>
+                                {input.label}{' '}
+                                {input.required && (
+                                  <span className="text-red-500">*</span>
+                                )}
+                              </FormLabel>
+                              <Input
+                                {...field}
+                                className="flex"
+                                placeholder={'Please enter a value'}
+                                disabled={input.readOnly}
+                                type={
+                                  input.type === 'password' && showPassword
+                                    ? 'text'
+                                    : input.type
+                                }
+                              />
+                              <FormDescription>
+                                {input.helperText}
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          </React.Fragment>
+                        )}
+                      </div>
+                    )}
+                  />
+                </div>
+              ))}
+              <div className="col-span-full flex h-full w-full items-center px-3 pb-5 md:justify-start md:pb-0">
+                {fields.find((input) => input.type === 'password') && (
+                  <Label className="flex h-full">
+                    <Checkbox
+                      checked={showPassword}
+                      onCheckedChange={onClickShowPassword}
+                      title="Show Password"
+                    />
+                    <span className="ml-2">Show Password</span>
+                  </Label>
+                )}
               </div>
-            ))}
-            <div className="col-span-full flex w-full px-3 md:justify-end">
-              {fields.find((input) => input.type === 'password') && (
-                <Button
-                  variant="link"
-                  className="px-0 text-sm"
-                  type="button"
-                  onClick={onClickShowPassword}
-                >
-                  {showPassword ? 'Hide' : 'Show'} password
-                </Button>
-              )}
-            </div>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            {fields.map((input, i) => (
-              <div key={input.name + i} className={style}>
-                <div className="h-12 w-full animate-pulse rounded-lg bg-gray-200" />
-              </div>
-            ))}
-          </React.Fragment>
-        )}
-      </React.Fragment>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              {fields.map((input, i) => (
+                <div key={input.name + i} className={style}>
+                  <div className="h-12 w-full animate-pulse rounded-lg bg-gray-200" />
+                </div>
+              ))}
+            </React.Fragment>
+          )}
+        </div>
+      </ScrollArea>
     </FormTag>
   );
 };
