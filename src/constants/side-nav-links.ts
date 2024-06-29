@@ -32,10 +32,10 @@ export const navItems: NavItem[] = [
     label: 'kanban'
   },
   {
-    title: 'Profile',
-    href: '/dashboard/profile',
-    icon: 'profile',
-    label: 'profile'
+    title: 'Batch',
+    href: '/dashboard/batch',
+    icon: 'chevronLeft',
+    label: 'batch'
   },
   {
     title: 'Login',

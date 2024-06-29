@@ -57,8 +57,15 @@ const ProjectsPage = () => {
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value) => {
-            row.getToggleSelectedHandler()(!!value);
-            setSelectedIds([...isSelectedIds, row.original.id]);
+            if (value) {
+              row.getToggleSelectedHandler()(!!value);
+              setSelectedIds([...isSelectedIds, row.original.id]);
+            } else {
+              row.getToggleSelectedHandler()(!!value);
+              setSelectedIds([
+                ...isSelectedIds.filter((id) => id !== row.original.id)
+              ]);
+            }
           }}
           aria-label="Select row"
         />
@@ -69,11 +76,8 @@ const ProjectsPage = () => {
     ...domainColumn
   ];
   const onClickAddProject = () => {
-    if (isSelectedIds.length > 0) {
-      setIsOpen(!isOpen);
-      return;
-    }
-    showToast(FailedToastTitle, 'Please select domain to add to a Project');
+    setSelectedIds([]);
+
     setIsOpen(false);
     return;
   };
@@ -96,14 +100,6 @@ const ProjectsPage = () => {
               <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
                 <div className="flex items-start justify-between">
                   <Heading title={`Projects`} description="Manage ur Staff" />
-                  {user?.role !== 'superadmin' && (
-                    <Button
-                      className="text-xs md:text-sm"
-                      onClick={() => setIsOpen(true)}
-                    >
-                      <Plus className="mr-2 h-4 w-4" /> New Project
-                    </Button>
-                  )}
                 </div>
                 <Separator />
                 <DataTable
@@ -121,7 +117,17 @@ const ProjectsPage = () => {
                 />
                 <Button
                   className="text-xs md:text-sm"
-                  onClick={onClickAddProject}
+                  disabled={isSelectedIds.length > 0 ? false : true}
+                  onClick={() => {
+                    if (isSelectedIds.length > 0) {
+                      setIsOpen(!isOpen);
+                      return;
+                    }
+                    showToast(
+                      FailedToastTitle,
+                      'Please select domain to add to a Project'
+                    );
+                  }}
                 >
                   <Plus className="mr-2 h-4 w-4" /> Add Project
                 </Button>
