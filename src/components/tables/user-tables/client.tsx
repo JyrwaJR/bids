@@ -6,12 +6,11 @@ import { Button } from '@src/components/ui/button';
 import { DataTable } from '@src/components/ui/data-table';
 import { Heading } from '@src/components/ui/heading';
 import { Separator } from '@src/components/ui/separator';
-import { User } from '@src/constants/data';
 
 import { columns } from './columns';
 
 interface ProductsClientProps {
-  data: User[];
+  data: [];
 }
 
 export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
