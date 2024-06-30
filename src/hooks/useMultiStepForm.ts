@@ -4,7 +4,7 @@ type props = {
   onTrigger: () => void;
   isValid: boolean;
 };
-export default function useMultiStepForm({ steps, isValid, onTrigger }: props) {
+export function useMultiStepForm({ steps, isValid, onTrigger }: props) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const next = useCallback(() => {
     onTrigger();
