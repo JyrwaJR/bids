@@ -10,7 +10,7 @@ import {
   DialogTitle
 } from '@components/ui/dialog';
 import { showToast } from '@components/ui/show-toast';
-import { CentreColumn, domainColumn } from '@constants/columns';
+import { domainColumn } from '@constants/columns';
 import { FailedToastTitle } from '@constants/toast-message';
 import { useCMutation } from '@hooks/useCMutation';
 import { useCQuery } from '@hooks/useCQuery';

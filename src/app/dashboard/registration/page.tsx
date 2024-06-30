@@ -12,12 +12,7 @@ import { Heading } from '@components/ui/heading';
 const Registration = () => {
   const form = useForm<StudentRegistrationModelType>({
     resolver: zodResolver(StudentRegistrationModel),
-    mode: 'all',
-    defaultValues: {
-      id: '109f9d8f-f5b5-4172-b6cd-2fd3dddda196',
-      centre_id: '109f9d8f-f5b5-4172-b6cd-2fd3dddda196',
-      registration_no: '109f9d8f-f5b5-4172-b6cd-2fd3dddda196'
-    }
+    mode: 'all'
   });
   const onSubmit: SubmitHandler<RegistrationPersonalRequestModelType> = (
     data
