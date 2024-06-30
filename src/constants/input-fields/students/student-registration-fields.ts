@@ -1,8 +1,7 @@
 import { FormFieldType } from '@components/index';
 import { gender, yesNoOptions } from '@constants/options';
-import { StepsFieldFormT } from '@src/types';
 
-const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
+export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
   // {
   //   name: 'registration_no',
   //   label: 'Registration No',
@@ -131,7 +130,7 @@ const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     placeholder: 'Enter Passport'
   }
 ];
-const studentRegistrationPresentAddressFields: FormFieldType[] = [
+export const studentRegistrationPresentAddressFields: FormFieldType[] = [
   // Present Address
   {
     name: 'resident_type',
@@ -212,80 +211,81 @@ const studentRegistrationPresentAddressFields: FormFieldType[] = [
     placeholder: 'Enter Pin Code'
   }
 ];
-const studentRegistrationPermanentsAddressDetailFields: FormFieldType[] = [
-  {
-    name: 'permanent_address',
-    label: 'Permanent Address',
-    required: false,
-    type: 'text',
-    placeholder: 'Enter Permanent Address'
-  },
-  {
-    name: 'p_landmark',
-    label: 'Permanent Landmark',
-    required: false,
-    type: 'text',
-    placeholder: 'Enter Permanent Landmark'
-  },
-  {
-    name: 'p_village',
-    label: 'Permanent Village',
-    required: false,
-    type: 'text',
-    placeholder: 'Enter Permanent Village'
-  },
-  {
-    name: 'p_panchayat',
-    label: 'Permanent Panchayat',
-    required: false,
-    type: 'text',
-    placeholder: 'Enter Permanent Panchayat'
-  },
-  {
-    name: 'p_block',
-    label: 'Permanent Block',
-    required: false,
-    type: 'text',
-    placeholder: 'Enter Permanent Block'
-  },
-  {
-    name: 'p_police_station',
-    label: 'Permanent Police Station',
-    required: false,
-    type: 'text',
-    placeholder: 'Enter Permanent Police Station'
-  },
-  {
-    name: 'p_post_office',
-    label: 'Permanent Post Office',
-    required: false,
-    type: 'text',
-    placeholder: 'Enter Permanent Post Office'
-  },
-  {
-    name: 'p_district',
-    label: 'Permanent District',
-    required: false,
-    type: 'text',
-    placeholder: 'Enter Permanent District'
-  },
-  {
-    name: 'p_state',
-    label: 'Permanent State',
-    required: false,
-    type: 'text',
-    placeholder: 'Enter Permanent State'
-  },
-  {
-    name: 'p_pin_code',
-    label: 'Permanent Pin Code',
-    required: false,
-    type: 'number',
-    placeholder: 'Enter Permanent Pin Code'
-  }
-];
+export const studentRegistrationPermanentsAddressDetailFields: FormFieldType[] =
+  [
+    {
+      name: 'permanent_address',
+      label: 'Permanent Address',
+      required: false,
+      type: 'text',
+      placeholder: 'Enter Permanent Address'
+    },
+    {
+      name: 'p_landmark',
+      label: 'Permanent Landmark',
+      required: false,
+      type: 'text',
+      placeholder: 'Enter Permanent Landmark'
+    },
+    {
+      name: 'p_village',
+      label: 'Permanent Village',
+      required: false,
+      type: 'text',
+      placeholder: 'Enter Permanent Village'
+    },
+    {
+      name: 'p_panchayat',
+      label: 'Permanent Panchayat',
+      required: false,
+      type: 'text',
+      placeholder: 'Enter Permanent Panchayat'
+    },
+    {
+      name: 'p_block',
+      label: 'Permanent Block',
+      required: false,
+      type: 'text',
+      placeholder: 'Enter Permanent Block'
+    },
+    {
+      name: 'p_police_station',
+      label: 'Permanent Police Station',
+      required: false,
+      type: 'text',
+      placeholder: 'Enter Permanent Police Station'
+    },
+    {
+      name: 'p_post_office',
+      label: 'Permanent Post Office',
+      required: false,
+      type: 'text',
+      placeholder: 'Enter Permanent Post Office'
+    },
+    {
+      name: 'p_district',
+      label: 'Permanent District',
+      required: false,
+      type: 'text',
+      placeholder: 'Enter Permanent District'
+    },
+    {
+      name: 'p_state',
+      label: 'Permanent State',
+      required: false,
+      type: 'text',
+      placeholder: 'Enter Permanent State'
+    },
+    {
+      name: 'p_pin_code',
+      label: 'Permanent Pin Code',
+      required: false,
+      type: 'number',
+      placeholder: 'Enter Permanent Pin Code'
+    }
+  ];
 
-const studentRegistrationOtherInfoFields: FormFieldType[] = [
+export const studentRegistrationOtherInfoFields: FormFieldType[] = [
   {
     name: 'is_technical_education',
     label: 'Is Technical Education',
@@ -413,7 +413,7 @@ const studentRegistrationOtherInfoFields: FormFieldType[] = [
     placeholder: 'Enter Status'
   }
 ];
-const studentRegistrationParentDetailFields: FormFieldType[] = [
+export const studentRegistrationParentDetailFields: FormFieldType[] = [
   {
     name: 'father_name',
     label: 'Father Name',
@@ -506,25 +506,26 @@ const studentRegistrationParentDetailFields: FormFieldType[] = [
     placeholder: 'Enter Head of Family'
   }
 ];
-export const studentRegistrationStepsFields: StepsFieldFormT[] = [
-  {
-    name: 'Personal Information',
-    fields: studentRegistrationPersonalDetailsFields
-  },
-  {
-    name: 'Present Address',
-    fields: studentRegistrationPresentAddressFields
-  },
-  {
-    name: 'Permanents address',
-    fields: studentRegistrationPermanentsAddressDetailFields
-  },
-  {
-    name: 'Other information',
-    fields: studentRegistrationOtherInfoFields
-  },
-  {
-    name: 'Parental Details',
-    fields: studentRegistrationParentDetailFields
-  }
-];
+
+// export const studentRegistrationStepsFields: StepsFieldFormT[] = [
+//   {
+//     name: 'Personal Information',
+//     fields: studentRegistrationPersonalDetailsFields
+//   },
+//   {
+//     name: 'Present Address',
+//     fields: studentRegistrationPresentAddressFields
+//   },
+//   {
+//     name: 'Permanents address',
+//     fields: studentRegistrationPermanentsAddressDetailFields
+//   },
+//   {
+//     name: 'Other information',
+//     fields: studentRegistrationOtherInfoFields
+//   },
+//   {
+//     name: 'Parental Details',
+//     fields: studentRegistrationParentDetailFields
+//   }
+// ];

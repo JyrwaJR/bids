@@ -48,7 +48,7 @@ const textVariants = cva('tracking-tight', {
       primary: 'text-primary',
       secondary: 'text-secondary',
       success: 'text-success',
-      danger: 'text-danger',
+      danger: 'text-red-500',
       warning: 'text-warning',
       info: 'text-info',
       dark: 'text-dark',

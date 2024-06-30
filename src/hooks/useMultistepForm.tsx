@@ -1,11 +1,15 @@
 import { ReactElement, useCallback, useState } from 'react';
-
-export default function useMultiStepForm(steps: ReactElement[]) {
+type props = {
+  steps: ReactElement[];
+  onTrigger: () => void;
+  isValid: boolean;
+};
+export default function useMultiStepForm({ steps, isValid, onTrigger }: props) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-
   const next = useCallback(() => {
-    setCurrentStepIndex((i) => Math.min(i + 1, steps.length - 1));
-  }, [steps.length]);
+    onTrigger();
+    if (isValid) setCurrentStepIndex((i) => Math.min(i + 1, steps.length - 1));
+  }, [steps.length, onTrigger, isValid]);
 
   const back = useCallback(() => {
     setCurrentStepIndex((i) => Math.max(i - 1, 0));

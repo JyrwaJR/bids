@@ -10,3 +10,8 @@ export { default as ProjectsPage } from '@components/pages/projects';
 export { AddProjects } from '@components/pages/projects/add-projects';
 export { default as BatchPage } from '@components/pages/batch';
 export { AddBatch } from '@components/pages/batch/add-batch';
+export { StudentPersonalDetailsForm } from '@pages/students-registration/student-personal-detail-form';
+export { StudentPresentAddressForm } from '@pages/students-registration/student-present-address-form';
+export { StudentPermanentAddressForm } from '@pages/students-registration/student-permanent-address-form';
+export { StudentOtherInfoForm } from '@pages/students-registration/student-other-info-form';
+export { StudentParentDetailsForm } from '@pages/students-registration/student-parents-detail-form';
