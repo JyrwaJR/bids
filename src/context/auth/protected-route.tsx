@@ -19,26 +19,24 @@ const LoadingPage = () => {
 };
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isLoggedIn: isAuthenticated, isLoading: loading } = useAuthContext();
-  const search = useSearchParams().get('returnUrl');
   const router = useRouter();
   const pathName = usePathname();
 
   useEffect(() => {
     if (!isAuthenticated) {
-      router.replace(`/?returnUrl=${encodeURIComponent(pathName)}`);
+      router.replace(`/`);
     }
   }, [isAuthenticated, loading, router, pathName]);
 
   useEffect(() => {
     if (isAuthenticated && pathName === '/') {
-      router.push(search ?? '/dashboard');
+      router.push('/dashboard');
     }
-  }, [isAuthenticated, pathName, router, search]);
+  }, [isAuthenticated, pathName, router]);
 
   if (loading && !isAuthenticated && pathName !== '/') {
     return <LoadingPage />;
   }
-
   return children;
 };
 

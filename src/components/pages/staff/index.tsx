@@ -19,7 +19,6 @@ const StaffPage = () => {
     url: 'staff',
     queryKey: ['get', 'staff']
   });
-  console.log(data);
 
   return (
     <>

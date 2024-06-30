@@ -100,7 +100,6 @@ export const AuthProvider = ({ children }: Props) => {
         setIsLoggedIn(!!cookies?.token);
         const url = redirect ? redirect : '/dashboard';
         router.replace(url);
-        console.log(url);
 
         showToast(SuccessToastTitle, res.data.message);
 

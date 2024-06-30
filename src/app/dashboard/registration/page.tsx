@@ -17,12 +17,9 @@ const Registration = () => {
   const onSubmit: SubmitHandler<RegistrationPersonalRequestModelType> = (
     data
   ) => {
-    console.log(data);
+    // console.log(data);
   };
-  console.log(form.formState.errors);
-  useEffect(() => {
-    console.log(form.formState.errors);
-  }, [form.formState.errors]);
+
   return (
     <div className="h-full w-full px-5">
       <div className="flex items-center justify-between">

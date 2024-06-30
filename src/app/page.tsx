@@ -14,22 +14,20 @@ import {
 import { useAuthContext } from '@src/context/auth';
 import { cn } from '@src/lib/utils';
 import { LoginModel, LoginModelType } from '@src/models';
-import { useSearchParams } from 'next/navigation';
 
 export default function AuthenticationPage() {
-  const searchParams = useSearchParams().get('returnUrl');
   const { onLogin, isLoading } = useAuthContext();
   const form = useForm<LoginModelType>({
     resolver: zodResolver(LoginModel),
     defaultValues: {
-      email: 'test@gmail.com',
-      password: 'password'
+      email: '',
+      password: ''
     }
   });
 
   const onSubmit: SubmitHandler<LoginModelType> = async (data) => {
     try {
-      await onLogin(data.email, data.password, searchParams).then(() => {
+      await onLogin(data.email, data.password).then(() => {
         showToast(SuccessToastTitle, 'Login Successful');
       });
     } catch (error: any) {
@@ -43,10 +41,10 @@ export default function AuthenticationPage() {
         href="/examples/authentication"
         className={cn(
           buttonVariants({ variant: 'ghost' }),
-          'absolute right-4 top-4 hidden md:right-8 md:top-8'
+          'absolute right-4 top-4 hidden  md:right-8 md:top-8'
         )}
       >
-        Login
+        Register
       </Link>
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
         <div className="absolute inset-0 bg-zinc-900" />

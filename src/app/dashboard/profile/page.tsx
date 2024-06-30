@@ -18,7 +18,7 @@ export default function Page() {
   });
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    // console.log(data);
   };
   return (
     <ScrollArea className="h-full">
