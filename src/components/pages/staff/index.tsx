@@ -16,7 +16,7 @@ const StaffPage = () => {
   const breadcrumbItems = [{ title: 'Staff', link: '/dashboard/staff' }];
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isFetched, isError, isLoading } = useCQuery({
-    url: 'staffcategory',
+    url: 'staff',
     queryKey: ['get', 'staff']
   });
   console.log(data);

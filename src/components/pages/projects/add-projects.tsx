@@ -50,8 +50,6 @@ export const AddProjects = ({ onClose, open, domainId }: Props) => {
     }
   };
 
-  console.log(form.formState.errors);
-
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>

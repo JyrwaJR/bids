@@ -31,7 +31,8 @@ const ProjectsPage = () => {
     queryKey: ['get', 'project']
   });
 
-  const projectData =
+  const projectData: any =
+    isFetched &&
     !isLoading &&
     !isError &&
     data.data &&
