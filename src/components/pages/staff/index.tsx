@@ -13,10 +13,10 @@ import { AddStaff } from './add-staff';
 import { useCQuery } from '@hooks/useCQuery';
 
 const StaffPage = () => {
-  const breadcrumbItems = [{ title: 'Projects', link: '/dashboard/projects' }];
+  const breadcrumbItems = [{ title: 'Staff', link: '/dashboard/staff' }];
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isFetched, isError, isLoading } = useCQuery({
-    url: 'staff',
+    url: 'staffcategory',
     queryKey: ['get', 'staff']
   });
   console.log(data);
@@ -39,8 +39,7 @@ const StaffPage = () => {
           searchKey="name"
           columns={staffColumn}
           isLoading={isLoading}
-          // data={isFetched && !isError ? data.data : []}
-          data={[]}
+          data={isFetched && !isError ? data.data.data : []}
         />
       </div>
       {isOpen && <AddStaff open={isOpen} onClose={() => setIsOpen(false)} />}

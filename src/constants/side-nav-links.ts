@@ -29,7 +29,7 @@ export const navItems: NavItem[] = [
     title: 'Project',
     href: '/dashboard/projects',
     icon: 'kanban',
-    label: 'kanban'
+    label: 'project'
   },
   {
     title: 'Batch',
@@ -38,9 +38,9 @@ export const navItems: NavItem[] = [
     label: 'batch'
   },
   {
-    title: 'Login',
-    href: '/',
-    icon: 'login',
-    label: 'login'
+    title: 'Student Registration ',
+    href: '/dashboard/registration',
+    icon: 'chevronRight',
+    label: 'registration'
   }
 ];

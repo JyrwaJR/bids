@@ -14,8 +14,8 @@ const CentrePage = () => {
         <Tabs defaultValue="centre" className="space-y-4">
           <TabsList>
             <TabsTrigger value="centre">Centre</TabsTrigger>
-            <TabsTrigger value="domain">Domain</TabsTrigger>
-            <TabsTrigger value="project">Project</TabsTrigger>
+            <TabsTrigger value="domain">Centre Domain</TabsTrigger>
+            <TabsTrigger value="project">Centre Project</TabsTrigger>
           </TabsList>
           <TabsContent value="centre" className="space-y-4">
             <CenterPageComponents />

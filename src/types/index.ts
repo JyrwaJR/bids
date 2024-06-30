@@ -1,7 +1,11 @@
 import React from 'react';
 
 import { Icons } from '@src/components/icons';
-
+import { FormFieldType } from '@components/index';
+export type StepsFieldFormT = {
+  name: string;
+  fields: FormFieldType[];
+};
 export interface NavItem {
   title: string;
   href?: string;

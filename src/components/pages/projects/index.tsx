@@ -26,10 +26,17 @@ const ProjectsPage = () => {
   const [isSelectedIds, setSelectedIds] = useState<string[]>([]);
   const url =
     user?.role === 'superadmin' ? 'project' : 'project-centre/get-projects';
-  const { data, isFetched, isError } = useCQuery({
+  const { data, isLoading, isFetched, isError } = useCQuery({
     url: url,
     queryKey: ['get', 'project']
   });
+
+  const projectData =
+    !isLoading &&
+    !isError &&
+    data.data &&
+    data.data.map((item: any) => item.project);
+
   const { data: domain, isFetched: isDomainFetch } = useCQuery({
     url: 'domain',
     queryKey: ['get', 'domain']
@@ -56,7 +63,9 @@ const ProjectsPage = () => {
       ),
       cell: ({ row }) => (
         <Checkbox
-          checked={row.getIsSelected()}
+          checked={
+            row.getIsSelected() || isSelectedIds.includes(row.original.id)
+          }
           onCheckedChange={(value) => {
             if (value) {
               row.getToggleSelectedHandler()(!!value);
@@ -109,7 +118,7 @@ const ProjectsPage = () => {
                   data={
                     isFetched && !isError && user?.role === 'superadmin'
                       ? data.data
-                      : data ?? []
+                      : projectData ?? []
                   }
                 />
               </div>
