@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { Toaster } from '@src/components/ui/toaster';
 import { AuthProvider } from '@src/context/auth';
+import ProtectedRoute from '@context/auth/protected-route';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -29,9 +30,11 @@ export default function RootLayout({
       <body className={`${inter.className} overflow-hidden`}>
         <QueryClientProvider client={queryClient} contextSharing={true}>
           <AuthProvider>
-            <NextTopLoader />
-            <Toaster />
-            {children}
+            <ProtectedRoute>
+              <NextTopLoader />
+              <Toaster />
+              {children}
+            </ProtectedRoute>
           </AuthProvider>
         </QueryClientProvider>
       </body>

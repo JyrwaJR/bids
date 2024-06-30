@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { usePathname, useRouter } from 'next/navigation';
+import { redirect, usePathname, useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 
@@ -17,6 +17,7 @@ const baseUrl: string = process.env.NEXT_PUBLIC_API_BASE_URL!;
 interface LoginTProps {
   email: string;
   password: string;
+  redirect?: string | null | undefined;
 }
 
 export const AuthProvider = ({ children }: Props) => {
@@ -26,10 +27,9 @@ export const AuthProvider = ({ children }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isToken, setIsToken] = useState<string>(cookies?.token);
   const router = useRouter();
-  const pathName = usePathname();
   const loginMutation = useCMutation({
     method: 'POST',
-    queryKey: [],
+    queryKey: ['login', 'mutation'],
     url: 'login'
   });
 
@@ -63,8 +63,10 @@ export const AuthProvider = ({ children }: Props) => {
         setIsToken('');
         setUser(null);
         showToast(SuccessToastTitle, res.data.message);
+        return;
       }
       showToast(FailedToastTitle, 'Something went wrong');
+      return;
     } catch (error: any) {
       if (error instanceof AxiosError) {
         showToast(
@@ -84,7 +86,7 @@ export const AuthProvider = ({ children }: Props) => {
     }
   }, [removeCookie, router, cookies.token]);
 
-  const onLogin = async ({ email, password }: LoginTProps) => {
+  const onLogin = async ({ email, password, redirect }: LoginTProps) => {
     try {
       setIsLoading(true);
       const res = await loginMutation.mutateAsync({
@@ -96,12 +98,21 @@ export const AuthProvider = ({ children }: Props) => {
         setCookie('token', res.data.token, { path: '/' });
         setIsToken(cookies?.token);
         setIsLoggedIn(!!cookies?.token);
+        const url = redirect ? redirect : '/dashboard';
+        router.replace(url);
+        console.log(url);
+
         showToast(SuccessToastTitle, res.data.message);
-        router.push(`/dashboard`);
+
+        return;
       } else if (res.data.success === false) {
         showToast(FailedToastTitle, 'Invalid email or password');
+
+        return;
       } else {
         showToast(FailedToastTitle, res.data.message);
+
+        return;
       }
     } catch (error: any) {
       if (error instanceof AxiosError) {
@@ -109,6 +120,7 @@ export const AuthProvider = ({ children }: Props) => {
           FailedToastTitle,
           error.response?.data.message || 'An error occurred'
         );
+
         return;
       }
       showToast(
@@ -116,6 +128,7 @@ export const AuthProvider = ({ children }: Props) => {
         error.message || 'An error occurred',
         'destructive'
       );
+
       return;
     } finally {
       setIsLoading(false);
@@ -135,7 +148,10 @@ export const AuthProvider = ({ children }: Props) => {
         });
         setIsToken(cookies?.token);
         setIsLoggedIn(!!cookies?.token);
+        showToast(SuccessToastTitle, "You're successfully logged in");
+        return;
       }
+      return;
     } catch (error: any) {
       if (error instanceof AxiosError) {
         showToast(
@@ -144,6 +160,7 @@ export const AuthProvider = ({ children }: Props) => {
         );
         return;
       }
+
       showToast(
         FailedToastTitle,
         error.message || 'An error occurred',
@@ -159,23 +176,18 @@ export const AuthProvider = ({ children }: Props) => {
     }
   }, [cookies, verifyToken]);
 
-  if (isLoggedIn && pathName === '/') {
-    console.log('Authenticated =>', pathName);
-    router.replace('/dashboard');
-  }
-  if (!isLoggedIn && pathName === '/dashboard') {
-    console.log('Authenticated =>', pathName);
-    router.replace('/');
-  }
-
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem={true}>
       <AuthContext.Provider
         value={{
           id: '',
           isLoading: isLoading,
-          onLogin: async (email, password) =>
-            await onLogin({ email: email, password: password }),
+          onLogin: async (email, password, redirect) =>
+            await onLogin({
+              email: email,
+              password: password,
+              redirect: redirect
+            }),
           onLogout: onLogout,
           token: isToken,
           user: user,

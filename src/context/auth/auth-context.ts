@@ -13,7 +13,11 @@ export type AuthContextT = {
   id: string;
   user: UserType | null;
   onLogout: () => void;
-  onLogin: (email: string, password: string) => Promise<void>;
+  onLogin: (
+    email: string,
+    password: string,
+    redirect?: string | undefined | null
+  ) => Promise<void>;
   isLoading: boolean;
   isLoggedIn?: boolean;
   //   onRegister: ({ email, password, balang_id, name }: RegistrationType) => void;
