@@ -5,7 +5,7 @@ import { Button } from '@src/components/ui/button';
 
 import { Form } from '@components/ui/form';
 import { ScrollArea } from '@components/ui/scroll-area';
-import useMultiStepForm from '@hooks/useMultistepForm';
+import { useMultiStepForm } from '@hooks/useMultiStepForm';
 import { Heading } from '@components/ui/heading';
 
 interface StepperProps<T> {
