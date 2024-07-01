@@ -20,13 +20,15 @@ export default function AuthenticationPage() {
   const form = useForm<LoginModelType>({
     resolver: zodResolver(LoginModel),
     defaultValues: {
-      email: '',
-      password: ''
+      email: 'test@gmail.comm',
+      password: 'password'
     }
   });
 
   const onSubmit: SubmitHandler<LoginModelType> = async (data) => {
     try {
+      console.log(data);
+
       await onLogin(data.email, data.password).then(() => {
         showToast(SuccessToastTitle, 'Login Successful');
       });
@@ -36,7 +38,7 @@ export default function AuthenticationPage() {
   };
 
   return (
-    <div className="relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+    <div className="relative flex-col items-center justify-center h-screen md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Link
         href="/examples/authentication"
         className={cn(
@@ -46,7 +48,7 @@ export default function AuthenticationPage() {
       >
         Register
       </Link>
-      <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
+      <div className="relative flex-col hidden h-full p-10 text-white bg-muted lg:flex dark:border-r">
         <div className="absolute inset-0 bg-zinc-900" />
         <div className="relative z-20 flex items-center text-lg font-medium">
           <svg
@@ -57,7 +59,7 @@ export default function AuthenticationPage() {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="mr-2 h-6 w-6"
+            className="w-6 h-6 mr-2"
           >
             <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
           </svg>
@@ -74,7 +76,7 @@ export default function AuthenticationPage() {
           </blockquote>
         </div>
       </div>
-      <div className="flex h-full items-center p-4 lg:p-8">
+      <div className="flex items-center h-full p-4 lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
@@ -92,7 +94,7 @@ export default function AuthenticationPage() {
             btnStyle="w-full md:w-full"
             btnText="Continue"
           />
-          <p className="px-8 text-center text-sm text-muted-foreground">
+          <p className="px-8 text-sm text-center text-muted-foreground">
             By clicking continue, you agree to our{' '}
             <Link
               href="/terms"

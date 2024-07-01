@@ -45,7 +45,6 @@ export function DashboardNav({
   if (!items?.length) {
     return null;
   }
-
   const logout = () => {
     onLogout();
     if (setOpen) setOpen(false);

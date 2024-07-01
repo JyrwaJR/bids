@@ -88,11 +88,15 @@ export const AuthProvider = ({ children }: Props) => {
 
   const onLogin = async ({ email, password, redirect }: LoginTProps) => {
     try {
+      console.log(email, password);
+
       setIsLoading(true);
       const res = await loginMutation.mutateAsync({
         email: email,
         password: password
       });
+      console.log(res);
+
       if (res.success === true) {
         // TODO Add more field to save token
         setCookie('token', res.data.token, { path: '/' });

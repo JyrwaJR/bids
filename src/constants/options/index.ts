@@ -1,5 +1,26 @@
 import { OptionsT } from '@components/form/type';
-
+export const categoryOptions: OptionsT[] = [
+  {
+    label: 'General',
+    value: 'General'
+  },
+  {
+    label: 'OBC',
+    value: 'OBC'
+  },
+  {
+    label: 'SC',
+    value: 'SC'
+  },
+  {
+    label: 'ST',
+    value: 'ST'
+  },
+  {
+    label: 'Other',
+    value: 'Other'
+  }
+];
 export const yesNoOptions: OptionsT[] = [
   {
     label: 'Yes',

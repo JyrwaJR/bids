@@ -15,6 +15,8 @@ import {
   StudentParentDetailsForm
 } from '@components/pages';
 const Registration = () => {
+  const formStyle = 'w-full sm:col-span-4 md:col-span-4 lg:col-span-3';
+
   const form = useForm<StudentRegistrationModelType>({
     resolver: zodResolver(StudentRegistrationModel),
     mode: 'onChange'
@@ -24,7 +26,7 @@ const Registration = () => {
   ) => {
     // console.log(data);
   };
-  const formStyle = 'w-full sm:col-span-4 md:col-span-4 lg:col-span-3';
+
   const formComponents: ReactElement[] = [
     <StudentPersonalDetailsForm
       key="personal-details"

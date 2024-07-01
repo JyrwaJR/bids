@@ -2,20 +2,6 @@ import { FormFieldType } from '@components/index';
 import { gender, yesNoOptions } from '@constants/options';
 
 export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
-  // {
-  //   name: 'registration_no',
-  //   label: 'Registration No',
-  //   required: true,
-  //   type: 'text',
-  //   placeholder: 'Enter Registration No'
-  // },
-  // {
-  //   name: 'admission_no',
-  //   label: 'Admission No',
-  //   required: false,
-  //   type: 'text',
-  //   placeholder: 'Enter Admission No'
-  // },
   {
     name: 'registration_date',
     label: 'Registration Date',
@@ -23,11 +9,12 @@ export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     type: 'date'
   },
   {
-    name: 'aadhaar',
-    label: 'Aadhaar',
+    name: 'adhaar',
+    label: 'Adhaar',
     required: false,
     type: 'string',
-    placeholder: 'Enter Aadhaar'
+    placeholder: 'Enter Adhaar',
+    helperText: 'Enter 12 digit Adhaar number'
   },
   {
     name: 'first_name',
@@ -68,8 +55,7 @@ export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     label: 'Category',
     required: true,
     type: 'text',
-    // TODO: Change to option type which can show the type of category
-    placeholder: 'Enter Category'
+    select: true
   },
   {
     name: 'mobile',
@@ -194,14 +180,15 @@ export const studentRegistrationPresentAddressFields: FormFieldType[] = [
     required: false,
     type: 'text',
     // TODO change to an array which includes district and state
-    placeholder: 'Enter District'
+    select: true
   },
   {
     name: 'state',
     label: 'State',
     required: false,
     type: 'text',
-    placeholder: 'Enter State'
+    placeholder: 'Enter State',
+    select: true
   },
   {
     name: 'pin_code',
@@ -211,6 +198,7 @@ export const studentRegistrationPresentAddressFields: FormFieldType[] = [
     placeholder: 'Enter Pin Code'
   }
 ];
+
 export const studentRegistrationPermanentsAddressDetailFields: FormFieldType[] =
   [
     {
