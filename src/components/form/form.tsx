@@ -30,6 +30,8 @@ import { FormFieldType, OptionsT } from './type';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
+import { FileUploadInput } from './file-upload-input';
+import { ACCEPTED_FILE_TYPES } from '@constants/index';
 
 type FormProps<T> = {
   onSubmit: SubmitHandler<T | any>;
@@ -70,7 +72,10 @@ export const CForm = <T,>({
                   name={input.name}
                   control={form.control}
                   defaultValue={defaultValue?.[input.name]}
-                  render={({ field }) => (
+                  render={({
+                    field,
+                    field: { ref, name, onBlur, onChange }
+                  }) => (
                     <div className="w-full">
                       {input.select ? (
                         <>
@@ -89,7 +94,9 @@ export const CForm = <T,>({
                               <FormControl className="w-full">
                                 <SelectTrigger>
                                   <SelectValue
-                                    placeholder={'Select an option'}
+                                    placeholder={
+                                      input.placeholder ?? 'Select an option'
+                                    }
                                   />
                                 </SelectTrigger>
                               </FormControl>
@@ -116,7 +123,7 @@ export const CForm = <T,>({
                           </FormItem>
                         </>
                       ) : input.type === 'dates' ? (
-                        <FormItem className="flex flex-col justify-center h-full">
+                        <FormItem className="flex h-full flex-col justify-center">
                           <FormLabel>
                             {input.label}{' '}
                             {input.required && (
@@ -138,7 +145,7 @@ export const CForm = <T,>({
                                   ) : (
                                     <span>Pick a date</span>
                                   )}
-                                  <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                 </Button>
                               </FormControl>
                             </PopoverTrigger>
@@ -162,6 +169,32 @@ export const CForm = <T,>({
                           <FormDescription>{input.helperText}</FormDescription>
                           <FormMessage />
                         </FormItem>
+                      ) : input.type === 'file' ? (
+                        <React.Fragment key={i}>
+                          <FormItem className="w-full">
+                            <FormLabel>
+                              {input.label}{' '}
+                              {input.required && (
+                                <span className="text-red-500">*</span>
+                              )}
+                            </FormLabel>
+                            <Input
+                              // {...field}
+                              type="file"
+                              ref={ref}
+                              name={name}
+                              onBlur={onBlur}
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                onChange(file);
+                              }}
+                            />
+                            <FormDescription>
+                              {input.helperText}
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        </React.Fragment>
                       ) : (
                         <React.Fragment key={i}>
                           <FormItem className="w-full">
@@ -174,7 +207,9 @@ export const CForm = <T,>({
                             <Input
                               {...field}
                               className="flex"
-                              placeholder={'Please enter a value'}
+                              placeholder={
+                                input.placeholder ?? 'Please enter a value'
+                              }
                               disabled={input.readOnly}
                               type={
                                 input.type === 'password' && showPassword
@@ -194,7 +229,7 @@ export const CForm = <T,>({
                 />
               </div>
             ))}
-            <div className="flex items-center w-full h-full px-3 pb-5 col-span-full md:justify-start md:pb-0">
+            <div className="col-span-full flex h-full w-full items-center px-3 pb-5 md:justify-start md:pb-0">
               {fields.find((input) => input.type === 'password') && (
                 <Label className="flex h-full">
                   <Checkbox
@@ -211,7 +246,7 @@ export const CForm = <T,>({
           <React.Fragment>
             {fields.map((input, i) => (
               <div key={input.name + i} className={style}>
-                <div className="w-full h-12 bg-gray-200 rounded-lg animate-pulse" />
+                <div className="h-12 w-full animate-pulse rounded-lg bg-gray-200" />
               </div>
             ))}
           </React.Fragment>
