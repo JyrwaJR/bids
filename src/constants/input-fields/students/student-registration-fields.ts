@@ -105,6 +105,13 @@ export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     required: false,
     type: 'text',
     placeholder: 'Enter Remarks'
+  },
+  {
+    name: 'passport',
+    label: 'Passport',
+    required: false,
+    type: 'file',
+    placeholder: 'Enter Passport'
   }
 ];
 export const studentRegistrationPresentAddressFields: FormFieldType[] = [
