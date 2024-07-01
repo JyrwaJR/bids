@@ -1,3 +1,4 @@
+import { ACCEPTED_FILE_TYPES, MAX_UPLOAD_SIZE } from '@constants/index';
 import { gender } from '@constants/options';
 import { format } from 'date-fns';
 import * as z from 'zod';
@@ -29,7 +30,15 @@ export const StudentRegistrationModel = z
     education: z.string().max(50),
     mobilisation_source: z.string().max(100).nullable().optional(),
     remarks: z.string().nullable().optional(),
-    passport: z.string().max(100).nullable().optional(),
+    passport: z
+      .instanceof(File)
+      .optional()
+      .refine((file) => {
+        return !file || file.size <= MAX_UPLOAD_SIZE;
+      }, 'File size must be less than 5MB')
+      .refine((file) => {
+        return file && ACCEPTED_FILE_TYPES.includes(file.type);
+      }, 'File must be a PNG'),
     // Parents details
     father_name: z.string().max(80).nullable().optional(),
     father_last_name: z.string().max(80).nullable().optional(),

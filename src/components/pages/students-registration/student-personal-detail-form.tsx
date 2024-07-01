@@ -3,7 +3,6 @@ import { Typography } from '@components/typography';
 import { studentRegistrationPersonalDetailsFields } from '@constants/input-fields/students/student-registration-fields';
 import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 import { StudentRegistrationModelType } from '@models/student';
-import { cn } from '@src/lib/utils';
 import { UseFormReturn } from 'react-hook-form';
 
 export const StudentPersonalDetailsForm = ({
@@ -16,7 +15,6 @@ export const StudentPersonalDetailsForm = ({
   form: UseFormReturn<StudentRegistrationModelType | any>;
 }) => {
   const { options, isLoading } = useCategorySelectOptions();
-
   const updatedFields: FormFieldType[] =
     studentRegistrationPersonalDetailsFields.map((field) => {
       if (field.select) {
@@ -35,14 +33,6 @@ export const StudentPersonalDetailsForm = ({
       }
       return field;
     });
-  // TODO: Add other fields
-  // {
-  //   name: 'passport',
-  //   label: 'Passport',
-  //   required: false,
-  //   type: 'file',
-  //   placeholder: 'Enter Passport'
-  // }
   return (
     <div className="py-5">
       <Typography size={'h2'} weight={'medium'}>
