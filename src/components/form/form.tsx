@@ -58,13 +58,10 @@ export const CForm = <T,>({
 }: CFormProps<T>) => {
   const [showPassword, setShowPassword] = useState(false);
   const onClickShowPassword = () => setShowPassword(!showPassword);
-  const style = cn(
-    'col-span-full md:col-span-full sm:col-span-full w-full space-y-2 p-1 rounded-lg',
-    className
-  );
+  const style = cn('col-span-full w-full space-y-2 p-1 rounded-lg', className);
   return (
     <ScrollArea>
-      <div className="grid max-h-[70vh] min-w-full grid-cols-12 gap-4 py-2 md:max-h-[90vh]">
+      <div className="grid max-h-[75vh] min-w-full grid-cols-12 gap-2  py-2">
         {!loading ? (
           <React.Fragment>
             {fields.map((input: FormFieldType, i) => (
@@ -96,7 +93,7 @@ export const CForm = <T,>({
                                   />
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent>
+                              <SelectContent className="max-h-96">
                                 <ScrollArea>
                                   {input.options?.map(
                                     (option: OptionsT, i: number) => (

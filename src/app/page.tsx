@@ -20,8 +20,8 @@ export default function AuthenticationPage() {
   const form = useForm<LoginModelType>({
     resolver: zodResolver(LoginModel),
     defaultValues: {
-      email: 'test@gmail.comm',
-      password: 'password'
+      email: '',
+      password: ''
     }
   });
 
@@ -91,6 +91,7 @@ export default function AuthenticationPage() {
             fields={loginFields}
             onSubmit={onSubmit}
             loading={isLoading}
+            className="sm:col-span-full"
             btnStyle="w-full md:w-full"
             btnText="Continue"
           />

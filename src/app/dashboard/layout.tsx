@@ -1,4 +1,5 @@
 'use client';
+import { ScrollArea } from '@components/ui/scroll-area';
 import Header from '@src/components/layout/header';
 import Sidebar from '@src/components/layout/sidebar';
 
@@ -12,7 +13,7 @@ export default function DashboardLayout({
       <Header />
       <div className="flex h-screen overflow-hidden">
         <Sidebar />
-        <main className="flex-1 overflow-hidden pt-16">{children}</main>
+        <ScrollArea className="flex-1 pt-16">{children}</ScrollArea>
       </div>
     </>
   );

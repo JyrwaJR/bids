@@ -11,9 +11,9 @@ import { Separator } from '@src/components/ui/separator';
 
 import { AddStaff } from './add-staff';
 import { useCQuery } from '@hooks/useCQuery';
+import { ScrollArea } from '@components/ui/scroll-area';
 
 const StaffPage = () => {
-  const breadcrumbItems = [{ title: 'Staff', link: '/dashboard/staff' }];
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isFetched, isError, isLoading } = useCQuery({
     url: 'staff',
@@ -21,16 +21,16 @@ const StaffPage = () => {
   });
 
   return (
-    <>
-      <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
-        <BreadCrumb items={breadcrumbItems} />
-        <div className="flex items-start justify-between">
+    <ScrollArea>
+      <div className="flex flex-col max-w-full p-4 pt-6 space-y-4 md:p-8">
+        <div className="flex items-start justify-between space-y-2">
           <Heading title={`Staff`} description="Manage ur Staff" />
           <Button
+            size={'sm'}
             className="text-xs md:text-sm"
             onClick={() => setIsOpen(true)}
           >
-            <Plus className="mr-2 h-4 w-4" /> Add New
+            <Plus className="w-4 h-4 mr-2" /> Add New
           </Button>
         </div>
         <Separator />
@@ -42,7 +42,7 @@ const StaffPage = () => {
         />
       </div>
       {isOpen && <AddStaff open={isOpen} onClose={() => setIsOpen(false)} />}
-    </>
+    </ScrollArea>
   );
 };
 export default StaffPage;

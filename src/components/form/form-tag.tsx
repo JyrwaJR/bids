@@ -28,10 +28,10 @@ export const FormTag = <T,>({
       <form
         noValidate
         onSubmit={form.handleSubmit(onSubmit)}
-        className="max-h-screen"
+        className="max-h-full"
       >
         {children}
-        <div className="col-span-full flex overflow-auto md:justify-end">
+        <div className="flex col-span-full md:justify-end">
           <Button
             disabled={!form.formState.isDirty || isLoading}
             type="submit"
