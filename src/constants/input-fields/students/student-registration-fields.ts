@@ -1,4 +1,5 @@
 import { FormFieldType } from '@components/index';
+import { MAX_UPLOAD_SIZE } from '@constants/index';
 import { gender, SectorsOptions, yesNoOptions } from '@constants/options';
 
 export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
@@ -111,7 +112,8 @@ export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     label: 'Passport',
     required: false,
     type: 'file',
-    placeholder: 'Enter Passport'
+    placeholder: 'Enter Passport',
+    helperText: `image size < ${MAX_UPLOAD_SIZE.toLocaleString()}`
   }
 ];
 export const studentRegistrationPresentAddressFields: FormFieldType[] = [
