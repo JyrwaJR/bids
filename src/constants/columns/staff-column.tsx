@@ -31,10 +31,6 @@ export const staffColumn: ColumnDef<StaffModelType>[] = [
     header: 'Email  Address'
   },
   {
-    accessorKey: 'address',
-    header: 'Address'
-  },
-  {
     id: 'actions',
     cell: ({ row }) => {
       return <CellAction data={row.original} />;
