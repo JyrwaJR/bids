@@ -1,5 +1,5 @@
 import { FormFieldType } from '@components/index';
-import { gender, yesNoOptions } from '@constants/options';
+import { gender, SectorsOptions, yesNoOptions } from '@constants/options';
 
 export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
   {
@@ -9,8 +9,8 @@ export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     type: 'date'
   },
   {
-    name: 'adhaar',
-    label: 'Adhaar',
+    name: 'aadhaar',
+    label: 'Aadhaar',
     required: false,
     type: 'string',
     placeholder: 'Enter Adhaar',
@@ -75,8 +75,7 @@ export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     name: 'religion',
     label: 'Religion',
     required: true,
-    type: 'text',
-    // TODO : Change to option type which can show the type of religion
+    select: true,
     placeholder: 'Enter Religion'
   },
   {
@@ -91,8 +90,7 @@ export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     name: 'education',
     label: 'Education',
     required: true,
-    type: 'text',
-    placeholder: 'Enter Education'
+    select: true
   },
   {
     name: 'mobilisation_source',
@@ -107,13 +105,6 @@ export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     required: false,
     type: 'text',
     placeholder: 'Enter Remarks'
-  },
-  {
-    name: 'passport',
-    label: 'Passport',
-    required: false,
-    type: 'text',
-    placeholder: 'Enter Passport'
   }
 ];
 export const studentRegistrationPresentAddressFields: FormFieldType[] = [
@@ -122,8 +113,8 @@ export const studentRegistrationPresentAddressFields: FormFieldType[] = [
     name: 'resident_type',
     label: 'Resident Type',
     required: false,
-    type: 'text',
-    placeholder: 'Enter Resident Type'
+    select: true,
+    options: SectorsOptions
   },
   {
     name: 'landmark',
@@ -178,16 +169,12 @@ export const studentRegistrationPresentAddressFields: FormFieldType[] = [
     name: 'district',
     label: 'District',
     required: false,
-    type: 'text',
-    // TODO change to an array which includes district and state
     select: true
   },
   {
     name: 'state',
     label: 'State',
     required: false,
-    type: 'text',
-    placeholder: 'Enter State',
     select: true
   },
   {
@@ -254,15 +241,14 @@ export const studentRegistrationPermanentsAddressDetailFields: FormFieldType[] =
       name: 'p_district',
       label: 'Permanent District',
       required: false,
-      type: 'text',
-      placeholder: 'Enter Permanent District'
+      placeholder: 'Enter Permanent District',
+      select: true
     },
     {
       name: 'p_state',
       label: 'Permanent State',
       required: false,
-      type: 'text',
-      placeholder: 'Enter Permanent State'
+      select: true
     },
     {
       name: 'p_pin_code',
@@ -276,7 +262,7 @@ export const studentRegistrationPermanentsAddressDetailFields: FormFieldType[] =
 export const studentRegistrationOtherInfoFields: FormFieldType[] = [
   {
     name: 'is_technical_education',
-    label: 'Is Technical Education',
+    label: 'Technical Education',
     required: false,
     select: true,
     options: yesNoOptions
@@ -286,6 +272,7 @@ export const studentRegistrationOtherInfoFields: FormFieldType[] = [
     label: 'Diploma Certificate',
     required: false,
     type: 'text',
+    // TODO : Add file upload
     placeholder: 'Enter Diploma Certificate'
   },
   {
@@ -297,7 +284,7 @@ export const studentRegistrationOtherInfoFields: FormFieldType[] = [
   },
   {
     name: 'is_employed',
-    label: 'Is Employed',
+    label: 'Employed',
     required: false,
     select: true,
     options: yesNoOptions
@@ -325,7 +312,7 @@ export const studentRegistrationOtherInfoFields: FormFieldType[] = [
   },
   {
     name: 'is_bpl',
-    label: 'Is Below Poverty Line (BPL)',
+    label: 'BPL (Below Poverty Line)',
     required: false,
     select: true,
     options: yesNoOptions
@@ -362,8 +349,7 @@ export const studentRegistrationOtherInfoFields: FormFieldType[] = [
     name: 'disability_type',
     label: 'Disability Type',
     required: false,
-    type: 'text',
-    placeholder: 'Enter Disability Type'
+    select: true
   },
   {
     name: 'family_size',
@@ -392,13 +378,6 @@ export const studentRegistrationOtherInfoFields: FormFieldType[] = [
     required: false,
     type: 'number',
     placeholder: 'Enter MGNREGA Hours Worked'
-  },
-  {
-    name: 'status',
-    label: 'Status',
-    required: false,
-    type: 'text',
-    placeholder: 'Enter Status'
   }
 ];
 export const studentRegistrationParentDetailFields: FormFieldType[] = [
