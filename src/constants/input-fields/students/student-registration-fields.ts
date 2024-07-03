@@ -2,7 +2,7 @@ import { FormFieldType } from '@components/index';
 import { MAX_UPLOAD_SIZE } from '@constants/index';
 import { gender, SectorsOptions, yesNoOptions } from '@constants/options';
 
-export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
+export const studentRegistrationFields: FormFieldType[] = [
   {
     name: 'registration_date',
     label: 'Registration Date',
@@ -10,13 +10,56 @@ export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     type: 'date'
   },
   {
-    name: 'aadhaar',
-    label: 'Aadhaar',
-    required: false,
-    type: 'string',
-    placeholder: 'Enter Adhaar',
-    helperText: 'Enter 12 digit Adhaar number'
+    name: 'first_name',
+    label: 'First Name',
+    required: true,
+    type: 'text',
+    placeholder: 'Enter First Name'
   },
+  {
+    name: 'middle_name',
+    label: 'Middle Name',
+    required: false,
+    type: 'text',
+    placeholder: 'Enter Middle Name'
+  },
+  {
+    name: 'last_name',
+    label: 'Last Name',
+    required: true,
+    type: 'text',
+    placeholder: 'Enter Last Name'
+  },
+  {
+    name: 'dob',
+    label: 'Date of Birth',
+    required: true,
+    type: 'date'
+  }
+];
+export const studentRegistrationDomain: FormFieldType[] = [
+  {
+    name: 'project_id',
+    label: 'Project',
+    required: true,
+    select: true
+  },
+  {
+    name: 'batch_id',
+    label: 'Batch',
+    required: true,
+    type: 'text',
+    select: true
+  },
+  {
+    name: 'domain_id',
+    label: 'Domain',
+    required: true,
+    type: 'text',
+    select: true
+  }
+];
+export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
   {
     name: 'first_name',
     label: 'First Name',
@@ -45,6 +88,28 @@ export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     type: 'date'
   },
   {
+    name: 'email',
+    label: 'Email',
+    required: false,
+    type: 'email',
+    placeholder: 'Enter Email'
+  },
+  {
+    name: 'registration_date',
+    label: 'Registration Date',
+    required: true,
+    type: 'date'
+  },
+  {
+    name: 'aadhaar',
+    label: 'Aadhaar',
+    required: false,
+    type: 'string',
+    placeholder: 'Enter Adhaar',
+    helperText: 'Enter 12 digit Adhaar number'
+  },
+
+  {
     name: 'gender',
     label: 'Gender',
     required: true,
@@ -62,15 +127,8 @@ export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     name: 'mobile',
     label: 'Mobile',
     required: true,
-    type: 'number',
+    type: 'text',
     placeholder: 'Enter Mobile'
-  },
-  {
-    name: 'email',
-    label: 'Email',
-    required: false,
-    type: 'email',
-    placeholder: 'Enter Email'
   },
   {
     name: 'religion',
@@ -113,7 +171,7 @@ export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     required: false,
     type: 'file',
     placeholder: 'Enter Passport',
-    helperText: `image size < ${MAX_UPLOAD_SIZE.toLocaleString()}`
+    helperText: `file size < ${MAX_UPLOAD_SIZE / 1024 / 1024} MB`
   }
 ];
 export const studentRegistrationPresentAddressFields: FormFieldType[] = [
@@ -181,7 +239,7 @@ export const studentRegistrationPresentAddressFields: FormFieldType[] = [
     select: true
   },
   {
-    name: 'state',
+    name: '',
     label: 'State',
     required: false,
     select: true

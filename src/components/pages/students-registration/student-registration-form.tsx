@@ -1,22 +1,22 @@
 import { CForm, FormFieldType } from '@components/form';
 import { Typography } from '@components/typography';
-import { studentRegistrationPersonalDetailsFields } from '@constants/input-fields/students/student-registration-fields';
+import { studentRegistrationFields } from '@constants/input-fields/students';
 import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 import { StudentRegistrationModelType } from '@models/student';
 import { UseFormReturn } from 'react-hook-form';
-type Props = {
+
+export const StudentRegistrationForm = ({
+  form,
+  loading = false,
+  className
+}: {
   className?: string;
   loading?: boolean;
   form: UseFormReturn<StudentRegistrationModelType | any>;
-};
-export const StudentPersonalDetailsForm = ({
-  form,
-  loading,
-  className
-}: Props) => {
+}) => {
   const { options, isLoading } = useCategorySelectOptions();
-  const updatedFields: FormFieldType[] =
-    studentRegistrationPersonalDetailsFields.map((field) => {
+  const updatedFields: FormFieldType[] = studentRegistrationFields.map(
+    (field) => {
       if (field.select) {
         switch (field.name) {
           case 'category':
@@ -32,7 +32,8 @@ export const StudentPersonalDetailsForm = ({
         }
       }
       return field;
-    });
+    }
+  );
   return (
     <div className="py-5">
       <Typography size={'h2'} weight={'medium'}>

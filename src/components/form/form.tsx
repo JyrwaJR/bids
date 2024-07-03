@@ -30,8 +30,6 @@ import { FormFieldType, OptionsT } from './type';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
-import { FileUploadInput } from './file-upload-input';
-import { ACCEPTED_FILE_TYPES } from '@constants/index';
 
 type FormProps<T> = {
   onSubmit: SubmitHandler<T | any>;
@@ -49,6 +47,7 @@ type CFormProps<T> = {
   defaultValue?: T | any;
   fields: FormFieldType[];
   loading: boolean;
+  disabled?: boolean;
 };
 
 export const CForm = <T,>({
@@ -56,7 +55,8 @@ export const CForm = <T,>({
   className,
   fields,
   defaultValue,
-  loading
+  loading,
+  disabled
 }: CFormProps<T>) => {
   const [showPassword, setShowPassword] = useState(false);
   const onClickShowPassword = () => setShowPassword(!showPassword);
@@ -72,6 +72,7 @@ export const CForm = <T,>({
                   name={input.name}
                   control={form.control}
                   defaultValue={defaultValue?.[input.name]}
+                  disabled={disabled}
                   render={({
                     field,
                     field: { ref, name, onBlur, onChange }
@@ -92,7 +93,9 @@ export const CForm = <T,>({
                               value={field.value}
                             >
                               <FormControl className="w-full">
-                                <SelectTrigger>
+                                <SelectTrigger
+                                  disabled={disabled || input.readOnly}
+                                >
                                   <SelectValue
                                     placeholder={
                                       input.placeholder ?? 'Select an option'
@@ -181,6 +184,7 @@ export const CForm = <T,>({
                             <Input
                               // {...field}
                               type="file"
+                              disabled={disabled || input.readOnly}
                               ref={ref}
                               name={name}
                               onBlur={onBlur}
@@ -210,7 +214,7 @@ export const CForm = <T,>({
                               placeholder={
                                 input.placeholder ?? 'Please enter a value'
                               }
-                              disabled={input.readOnly}
+                              disabled={input.readOnly || disabled}
                               type={
                                 input.type === 'password' && showPassword
                                   ? 'text'

@@ -25,12 +25,13 @@ export default function RootLayout({
       }
     }
   });
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} overflow-hidden`}>
         <QueryClientProvider client={queryClient} contextSharing={true}>
           <AuthProvider>
-          <ProtectedRoute>
+            <ProtectedRoute>
               <NextTopLoader />
               <Toaster />
               {children}

@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 import React from 'react';
 import { SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { Button } from '@src/components/ui/button';
@@ -14,8 +14,7 @@ interface StepperProps<T> {
   onSubmit: SubmitHandler<T | any>;
   className?: string;
   steps: React.ReactElement[];
-}
-
+} 
 export const StepperForm = <T,>({
   form,
   onSubmit,
@@ -32,8 +31,7 @@ export const StepperForm = <T,>({
     currentStepIndex: currentStep
   } = useMultiStepForm({
     steps: stepElements,
-    onTrigger: async () => await form.trigger(),
-    isValid: form.formState.isValid
+    onTrigger: async () => await form.trigger()
   });
 
   return (
@@ -55,11 +53,7 @@ export const StepperForm = <T,>({
               <Button
                 disabled={loading}
                 type={isLastStep ? 'submit' : 'button'}
-                onClick={
-                  currentStep === steps.length - 1
-                    ? form.handleSubmit(onSubmit)
-                    : next
-                }
+                onClick={isLastStep ? form.handleSubmit(onSubmit) : next}
               >
                 {currentStep === steps.length - 1 ? 'Submit' : 'Next'}
               </Button>

@@ -15,3 +15,4 @@ export { StudentPresentAddressForm } from '@pages/students-registration/student-
 export { StudentPermanentAddressForm } from '@pages/students-registration/student-permanent-address-form';
 export { StudentOtherInfoForm } from '@pages/students-registration/student-other-info-form';
 export { StudentParentDetailsForm } from '@pages/students-registration/student-parents-detail-form';
+export { StudentRegistrationForm } from '@pages/students-registration/student-registration-form';

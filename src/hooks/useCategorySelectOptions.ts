@@ -1,6 +1,7 @@
 import { OptionsT } from '@components/form/type';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useCQuery } from './useCQuery';
+import axios from 'axios';
 
 type CategoryOptionsT = {
   categories: OptionsT[];
@@ -10,6 +11,10 @@ type CategoryOptionsT = {
   religions: OptionsT[];
   district: OptionsT[];
   states: OptionsT[];
+  centre: OptionsT[];
+  batch: OptionsT[];
+  projects: OptionsT[];
+  domain: OptionsT[];
 };
 export const defaultOptions: CategoryOptionsT = {
   categories: [],
@@ -18,10 +23,20 @@ export const defaultOptions: CategoryOptionsT = {
   qualifications: [],
   religions: [],
   states: [],
-  district: []
+  district: [],
+  centre: [],
+  batch: [],
+  projects: [],
+  domain: []
 };
-export function useCategorySelectOptions() {
+type Props = {
+  centreId?: string;
+  projectId?: string;
+};
+
+export function useCategorySelectOptions({ centreId, projectId }: Props = {}) {
   const [options, setOptions] = useState<CategoryOptionsT>(defaultOptions);
+  // check isloading of every fetch
   const { data, isError, isFetched, isLoading } = useCQuery({
     url: 'registration/get-drop-down-list',
     queryKey: ['categories']
@@ -31,10 +46,53 @@ export function useCategorySelectOptions() {
     url: 'state',
     queryKey: ['state']
   });
+
+  const { data: project, isFetched: isProjectFetched } = useCQuery({
+    url: 'project',
+    queryKey: ['project', 'get project']
+  });
   const { data: district, isFetched: isDistrictFetched } = useCQuery({
     url: 'district',
     queryKey: ['district', 'get district']
   });
+  const { data: domain, isFetched: isDomainFetched } = useCQuery({
+    url: 'centre',
+    queryKey: ['get', 'domain']
+  });
+  const { data: center, isFetched: isCenterFetched } = useCQuery({
+    url: 'centre',
+    queryKey: ['get', 'center', 'cate']
+  });
+
+  const domainOptions = useCallback(() => {
+    if (isDomainFetched && domain) {
+      return domain.data.map((domain: { name: string; id: string }) => ({
+        label: domain.name,
+        value: domain.id
+      }));
+    }
+    return [];
+  }, [isDomainFetched, domain]);
+
+  const projectOptions = useCallback(() => {
+    if (isProjectFetched && project) {
+      return project.data.map((project: { name: string; id: string }) => ({
+        label: project.name,
+        value: project.id
+      }));
+    }
+    return [];
+  }, [isProjectFetched, project]);
+
+  const centerOptions = useCallback(() => {
+    if (isCenterFetched && center.success) {
+      return center.data.map((center: { name: string; id: string }) => ({
+        label: center.name,
+        value: center.id
+      }));
+    }
+    return [];
+  }, [isCenterFetched, center]);
 
   const districtOptions = useCallback(() => {
     if (isDistrictFetched && district) {
@@ -46,7 +104,7 @@ export function useCategorySelectOptions() {
     return [];
   }, [district, isDistrictFetched]);
 
-  const stateOptions = useCallback(() => {
+  const stateOptions: OptionsT[] = useMemo(() => {
     if (isStateFetched && state) {
       return state.data.map((item: { name: string }) => ({
         value: item.name,
@@ -69,11 +127,24 @@ export function useCategorySelectOptions() {
         maritalStatus: transformToOptions(data.data.maritalStatus),
         qualifications: transformToOptions(data.data.qualifications),
         religions: transformToOptions(data.data.religions),
-        states: stateOptions(),
-        district: districtOptions()
+        states: stateOptions,
+        district: districtOptions(),
+        centre: centerOptions(),
+        batch: [],
+        projects: projectOptions(),
+        domain: domainOptions()
       });
     }
-  }, [isFetched, isError, data, districtOptions, stateOptions]);
+  }, [
+    isFetched,
+    isError,
+    data,
+    districtOptions,
+    stateOptions,
+    centerOptions,
+    projectOptions,
+    domainOptions
+  ]);
 
   useEffect(() => {
     if (isError) {

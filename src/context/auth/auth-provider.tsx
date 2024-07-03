@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { redirect, usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 
@@ -178,7 +178,7 @@ export const AuthProvider = ({ children }: Props) => {
       verifyToken();
     }
   }, [cookies, verifyToken]);
-
+  axios.defaults.headers.common['Authorization'] = isToken;
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem={true}>
       <AuthContext.Provider
