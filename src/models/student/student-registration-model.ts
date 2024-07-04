@@ -28,7 +28,7 @@ export const StudentRegistrationModel = z.object({
   education: z.string({ required_error: 'Education is required' }).max(50),
   mobilisation_source: z.string().max(100).nullable().optional(),
   remarks: z.string().nullable().optional(),
-  passport: z.string().max(100).nullable().optional(),
+  passport: z.any().nullable().optional(),
   // Parents details
   father_name: z.string().max(80).nullable().optional(),
   father_last_name: z.string().max(80).nullable().optional(),

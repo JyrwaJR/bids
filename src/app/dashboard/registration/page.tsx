@@ -123,11 +123,8 @@ const Registration = () => {
 
   const onSubmit: SubmitHandler<ModelType> = async (datas) => {
     try {
-      console.log(datas.project_id);
-
       const data = Model.parse(datas);
       // Step 1: Start Registration
-
       const startPayload: startRegisDetailType = {
         dob: data.dob,
         first_name: data.first_name,
@@ -181,11 +178,11 @@ const Registration = () => {
         project_id: data.project_id,
         domain_id: [data.domain_id]
       };
-      await domainApplyMutate.mutateAsync(applyDomainPayload);
 
+      await domainApplyMutate.mutateAsync(applyDomainPayload);
       if (
         domainApplyMutate.isError ||
-        domainApplyMutate.data?.success === false
+        domainApplyMutate.data?.data.success === false
       ) {
         throw new Error('Failed to apply domain');
       }
@@ -241,6 +238,8 @@ const Registration = () => {
 
       showToast(SuccessToastTitle, 'Registration successful');
     } catch (error: any) {
+      console.log(error);
+
       if (error instanceof z.ZodError) {
         showToast(FailedToastTitle, error.errors[0].message);
       } else if (error instanceof AxiosError) {

@@ -56,7 +56,9 @@ const AppliedStudentPage = () => {
     url: 'registration/candidate-registration-list',
     queryKey: ['get', 'applied-student']
   });
-  // console.log(data);
+  console.log(options.domain);
+
+  console.log('data get student applied =>', data);
   const formFields: FormFieldType[] = [
     {
       name: 'project_id',
@@ -96,6 +98,7 @@ const AppliedStudentPage = () => {
       header: 'Action'
     }
   ];
+
   const onSubmit = async (data: any) => {
     try {
       await mutateAsync(data);

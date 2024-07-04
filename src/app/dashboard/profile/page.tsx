@@ -32,7 +32,6 @@ export default function Page() {
     // resolver: zodResolver(StudentRegistrationModel),
     mode: 'onChange'
   });
-
   const onSubmit = (data: any) => {
     // console.log(data);
   };

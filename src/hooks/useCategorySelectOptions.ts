@@ -145,7 +145,9 @@ export function useCategorySelectOptions({ centreId, projectId }: Props = {}) {
     projectOptions,
     domainOptions
   ]);
-
+console.log(
+  options
+           )
   useEffect(() => {
     if (isError) {
       setOptions(defaultOptions);
