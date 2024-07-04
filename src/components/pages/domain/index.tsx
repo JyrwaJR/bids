@@ -18,14 +18,14 @@ const DomainPage = () => {
 
   return (
     <>
-      <div className="flex-1 p-4 pt-6 space-y-4 md:p-8">
+      <div className="flex-1 space-y-4">
         <div className="flex items-start justify-between">
           <Heading title={`Domain`} description="Manage ur Domain table" />
           <Button
             className="text-xs md:text-sm"
             onClick={() => setIsOpen(true)}
           >
-            <Plus className="w-4 h-4 mr-2" /> Add Domain
+            <Plus className="mr-2 h-4 w-4" /> Add Domain
           </Button>
         </div>
         <Separator />

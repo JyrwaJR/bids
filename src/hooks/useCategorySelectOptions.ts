@@ -36,7 +36,7 @@ type Props = {
 
 export function useCategorySelectOptions({ centreId, projectId }: Props = {}) {
   const [options, setOptions] = useState<CategoryOptionsT>(defaultOptions);
-  // check isloading of every fetch
+  const [Loading, setLoading]=useState<boolean>(false)
   const { data, isError, isFetched, isLoading } = useCQuery({
     url: 'registration/get-drop-down-list',
     queryKey: ['categories']
@@ -59,6 +59,7 @@ export function useCategorySelectOptions({ centreId, projectId }: Props = {}) {
     url: 'centre',
     queryKey: ['get', 'domain']
   });
+
   const { data: center, isFetched: isCenterFetched } = useCQuery({
     url: 'centre',
     queryKey: ['get', 'center', 'cate']
@@ -145,9 +146,6 @@ export function useCategorySelectOptions({ centreId, projectId }: Props = {}) {
     projectOptions,
     domainOptions
   ]);
-console.log(
-  options
-           )
   useEffect(() => {
     if (isError) {
       setOptions(defaultOptions);

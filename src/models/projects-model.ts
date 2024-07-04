@@ -25,7 +25,7 @@ export const ProjectModel = z.object({
     .refine((value) => format(new Date(value), 'yyyy-MM-dd'))
     .nullable(),
   status: z.string().max(20),
-  duration: z.string().transform((value) => Number(value)),
+  duration: z.string(),
   target_sector: z
     .string()
     .max(20)

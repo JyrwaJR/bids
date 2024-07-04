@@ -56,8 +56,7 @@ export const StudentPermanentAddressForm = ({
   return (
     <div className="space-y-4 py-5">
       <Typography size={'h2'} weight={'bold'}>
-        Permanent Address
-      </Typography>
+        Permanent      </Typography>
       <div className="flex items-center space-x-2">
         <Checkbox
           checked={isSameAsPresent}

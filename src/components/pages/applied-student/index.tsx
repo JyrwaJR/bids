@@ -101,6 +101,8 @@ const AppliedStudentPage = () => {
 
   const onSubmit = async (data: any) => {
     try {
+      console.log(data);
+
       await mutateAsync(data);
     } catch (error: any) {
       if (error instanceof Error) {

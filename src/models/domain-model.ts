@@ -4,6 +4,7 @@ import { lettersAndSpacesRegex } from '@constants/regex';
 import { z } from 'zod';
 
 export const DomainModel = z.object({
+  id: z.string().uuid().optional(),
   name: z
     .string({
       required_error: FieldsIsRequired

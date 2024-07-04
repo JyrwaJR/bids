@@ -30,7 +30,7 @@ export default function BreadCrumb({ items }: BreadCrumbPropsType) {
             className={cn(
               'font-medium',
               index === items.length - 1
-                ? 'pointer-events-none text-foreground'
+                ? 'pointer-events-none capitalize text-foreground'
                 : 'text-muted-foreground'
             )}
           >

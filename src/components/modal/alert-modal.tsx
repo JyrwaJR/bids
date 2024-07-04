@@ -9,16 +9,19 @@ interface AlertModalProps {
   onClose: () => void;
   onConfirm: () => void;
   loading: boolean;
+  title?: string;
+  desc?: string;
 }
 
 export const AlertModal: React.FC<AlertModalProps> = ({
   isOpen,
   onClose,
   onConfirm,
-  loading
+  loading,
+  title = 'Are you sure?',
+  desc = 'This action cannot be undone.'
 }) => {
   const [isMounted, setIsMounted] = useState(false);
-
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -26,14 +29,8 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   if (!isMounted) {
     return null;
   }
-
   return (
-    <Modal
-      title="Are you sure?"
-      description="This action cannot be undone."
-      isOpen={isOpen}
-      onClose={onClose}
-    >
+    <Modal title={title} description={desc} isOpen={isOpen} onClose={onClose}>
       <div className="flex w-full items-center justify-end space-x-2 pt-6">
         <Button disabled={loading} variant="outline" onClick={onClose}>
           Cancel

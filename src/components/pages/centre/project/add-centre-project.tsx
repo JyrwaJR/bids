@@ -33,6 +33,7 @@ interface CenType extends CenterModelType {
 const AddCentreProject = ({ onClose, open, projectId }: Props) => {
   const [isSelectedCenterId, setIsSelectedCenterId] = useState<string>('');
   const [isSelectedDomainId, setIsSelectedDomainId] = useState<string[]>([]);
+  const [isSelectedCenter, setIsSelectedCenter] = useState<boolean>(false);
   const {
     data: center,
     isFetched: centerIsFetched,
@@ -110,6 +111,7 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
               setIsSelectedCenterId(row.original.id);
             } else {
               row.getToggleSelectedHandler()(!!value);
+              setIsSelectedCenterId('');
             }
           }}
           aria-label="Select row"
@@ -135,14 +137,20 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
         project_id: projectId,
         domain_id: isSelectedDomainId
       };
+
       await mutateAsync(data).then((val) => {
         if (isSuccess) {
           showToast('Success', 'Project added successfully');
           onClose();
+          return;
         }
       });
     } catch (error) {
       showToast(FailedToastTitle, 'Something went wrong');
+    } finally {
+      setIsSelectedDomainId([]);
+      setIsSelectedCenterId('');
+      setIsSelectedCenter(false);
     }
   };
   return (
@@ -150,13 +158,13 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {!!isSelectedCenterId ? 'Select Domain' : 'Select Centre'}
+            {isSelectedCenter ? 'Select Domain' : 'Select Centre'}
           </DialogTitle>
           <DialogDescription>
             Please select {isSelectedCenterId ? 'Domain' : 'Centre'}
           </DialogDescription>
         </DialogHeader>
-        {!!isSelectedCenterId ? (
+        {isSelectedCenter ? (
           <>
             <DialogDescription>
               {!!isSelectedCenterId ? 'Domain' : 'Centre'}
@@ -191,12 +199,20 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
           </Button>
           <Button
             disabled={
-              (!!isSelectedCenterId && isSelectedDomainId.length === 0) ||
+              (!isSelectedCenterId && isSelectedDomainId.length === 0) ||
               isLoading
             }
-            onClick={onClickAddProject}
+            onClick={() =>
+              isSelectedCenterId && isSelectedDomainId.length === 0
+                ? setIsSelectedCenter(true)
+                : onClickAddProject()
+            }
           >
-            Add Project
+            {!isSelectedCenterId
+              ? 'Select Centre'
+              : isSelectedDomainId.length <= 0
+              ? 'Select Domain'
+              : 'Add Project'}
           </Button>
         </DialogFooter>
       </DialogContent>

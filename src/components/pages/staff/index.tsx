@@ -22,7 +22,7 @@ const StaffPage = () => {
 
   return (
     <ScrollArea>
-      <div className="flex flex-col max-w-full p-4 pt-6 space-y-4 md:p-8">
+      <div className="flex w-full flex-col space-y-4">
         <div className="flex items-start justify-between space-y-2">
           <Heading title={`Staff`} description="Manage ur Staff" />
           <Button
@@ -30,7 +30,7 @@ const StaffPage = () => {
             className="text-xs md:text-sm"
             onClick={() => setIsOpen(true)}
           >
-            <Plus className="w-4 h-4 mr-2" /> Add New
+            <Plus className="mr-2 h-4 w-4" /> Add Staff
           </Button>
         </div>
         <Separator />

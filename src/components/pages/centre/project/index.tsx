@@ -55,17 +55,22 @@ const CentreProjectPage = () => {
   ];
   return (
     <>
-      <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
+      <div className="flex-1 space-y-4">
         <div className="flex items-start justify-between">
-          <Heading title={`Project`} description="Manage ur Project table" />
+          <Heading
+            title={`Assign Project to a Centre`}
+            description="Please select the project to assign to a center"
+          />
+        </div>
+        <Separator />
+        <div className="flex justify-end">
           <Button
             onClick={() => setIsOpen(true)}
             disabled={isSelectedProjectId.length > 0 ? false : true}
           >
-            <Plus className="mr-2 h-4 w-4" /> Add Centre Project
+            <Plus className="mr-2 h-4 w-4" /> Assign Center
           </Button>
         </div>
-        <Separator />
         <DataTable
           searchKey="name"
           isLoading={isLoading}

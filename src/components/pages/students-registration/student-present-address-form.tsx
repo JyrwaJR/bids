@@ -4,6 +4,7 @@ import { studentRegistrationPresentAddressFields } from '@constants/input-fields
 import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 import { StudentRegistrationModelType } from '@models/student';
 import { UseFormReturn } from 'react-hook-form';
+import { StudentPermanentAddressForm } from '..';
 
 export const StudentPresentAddressForm = ({
   form,
@@ -36,13 +37,17 @@ export const StudentPresentAddressForm = ({
   return (
     <div className="py-5">
       <Typography size={'h2'} weight={'bold'}>
-        Present Address
+        Present
       </Typography>
       <CForm
         form={form}
         loading={loading || isLoading}
         fields={updatedFields}
         className={className}
+      />
+      <StudentPermanentAddressForm form={form} 
+      loading={loading || isLoading}
+      className={className}
       />
     </div>
   );

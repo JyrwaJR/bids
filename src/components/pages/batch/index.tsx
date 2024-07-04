@@ -70,60 +70,48 @@ const BatchPage = () => {
   ];
   return (
     <>
-      <ScrollArea className="h-full">
-        <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
-          <Tabs defaultValue="batch" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="batch">Recent & Upcoming </TabsTrigger>
-              <TabsTrigger value="new-batch">New Batch</TabsTrigger>
-            </TabsList>
-            <TabsContent value="batch" className="space-y-4">
-              <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
-                <div className="flex items-start justify-between">
-                  <Heading
-                    title={`Batch`}
-                    description="Manage ur Batch table"
-                  />
-                </div>
-                <Separator />
-                <DataTable
-                  searchKey="name"
-                  isLoading={isLoading}
-                  columns={BatchColumn}
-                  data={isFetched && !isError ? data.data : []}
+      <div className="flex-1 space-y-4">
+        <Tabs defaultValue="batch" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="batch">Recent & Upcoming </TabsTrigger>
+            <TabsTrigger value="new-batch">New Batch</TabsTrigger>
+          </TabsList>
+          <TabsContent value="batch" className="space-y-4">
+            <div className="flex items-start justify-between">
+              <Heading title={`Batch`} description="Manage ur Batch table" />
+            </div>
+            <DataTable
+              searchKey="name"
+              isLoading={isLoading}
+              columns={BatchColumn}
+              data={isFetched && !isError ? data.data : []}
+            />
+          </TabsContent>
+          <TabsContent value="new-batch" className="space-y-4">
+            <div className="flex-1 space-y-4">
+              <div className="flex items-start justify-between">
+                <Heading
+                  title={`Project`}
+                  description="Select a Project to add a batch"
                 />
+                <Button
+                  className="text-xs md:text-sm"
+                  disabled={selectedIds.length === 0}
+                  onClick={() => setIsOpen(true)}
+                >
+                  <Plus className="mr-2 h-4 w-4" /> New Batch
+                </Button>
               </div>
-            </TabsContent>
-            <TabsContent value="new-batch" className="space-y-4">
-              <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
-                <div className="flex items-start justify-between">
-                  <Heading
-                    title={`Project`}
-                    description="Select a Project to add a batch"
-                  />
-                  <Button
-                    className="text-xs md:text-sm"
-                    disabled={selectedIds.length === 0}
-                    onClick={() => setIsOpen(true)}
-                  >
-                    <Plus className="mr-2 h-4 w-4" /> New Batch
-                  </Button>
-                </div>
-                <Separator />
-                <DataTable
-                  searchKey="name"
-                  isLoading={projectIsLoading}
-                  columns={projectColumns}
-                  data={
-                    projectIsFetching && !projectIsError ? project.data : []
-                  }
-                />
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </ScrollArea>
-
+              <DataTable
+                searchKey="name"
+                isLoading={projectIsLoading}
+                columns={projectColumns}
+                data={projectIsFetching && !projectIsError ? project.data : []}
+              />
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
       {isOpen && (
         <AddBatch
           projectId={selectedIds}

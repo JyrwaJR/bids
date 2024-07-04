@@ -8,37 +8,80 @@ import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
 import { AddCentre } from './add-center';
 import { useAuthContext } from '@context/auth';
+import { useCenterStore } from '@src/lib/store';
+import { CellAction } from '@components/cell-action';
+import { ColumnDef } from '@tanstack/react-table';
+import { CenterModelType } from '@models/center-model';
+import { AlertModal } from '@components/modal/alert-modal';
 
 export const CenterPageComponents = () => {
+  const { id, setId, setIsDeleting, isDeleting, isUpdating, open, setOpen } =
+    useCenterStore();
   const { user } = useAuthContext();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isFetched, isLoading } = useCQuery({
     url: 'centre',
     queryKey: ['get', 'centre']
   });
-
+  const column: ColumnDef<CenterModelType>[] = [
+    ...CentreColumn,
+    {
+      id: 'actions',
+      cell: ({ row }) => {
+        return (
+          <CellAction
+            onDelete={() => {
+              if (row.original.id) {
+                setId(row.original.id);
+                setIsDeleting(true);
+                console.log(isDeleting);
+              }
+            }}
+          />
+        );
+      }
+    }
+  ];
+  const onClickDelete = () => {
+    if (isDeleting) {
+      console.log(id);
+      setIsDeleting(false);
+    }
+  };
   return (
     <>
-      <div className="flex-1 p-4 pt-6 space-y-4 md:p-8">
+      <div className="flex-1 space-y-4">
         <div className="flex items-start justify-between">
-          <Heading title={`Center`} description="Manage ur center table" />
+          <Heading
+            title={`Center ${id}`}
+            description="Manage ur center table"
+          />
           <Button
             disabled={!isFetched || !user?.role || user?.role !== 'superadmin'}
             className="text-xs md:text-sm"
-            onClick={() => setIsOpen(true)}
+            onClick={() => setOpen(true)}
           >
-            <Plus className="w-4 h-4 mr-2" /> Add New
+            <Plus className="mr-2 h-4 w-4" /> Add New
           </Button>
         </div>
         <Separator />
         <DataTable
           searchKey="name"
           isLoading={isLoading}
-          columns={CentreColumn}
+          columns={column}
           data={isFetched ? data.data : []}
         />
       </div>
-      {isOpen && <AddCentre open={isOpen} onClose={() => setIsOpen(false)} />}
+      {open && <AddCentre open={open} onClose={() => setOpen(false)} />}
+      {isUpdating && (
+        <AlertModal
+          isOpen={isDeleting}
+          onClose={() => setIsDeleting(false)}
+          title="Delete Center"
+          desc="Are you sure you want to delete this center?"
+          loading={!isDeleting}
+          onConfirm={onClickDelete}
+        />
+      )}
     </>
   );
 };

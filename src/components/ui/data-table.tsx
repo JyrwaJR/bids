@@ -19,19 +19,22 @@ import {
 import { Button } from './button';
 import { Input } from './input';
 import { ScrollArea, ScrollBar } from './scroll-area';
+import { cn } from '@src/lib/utils';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchKey: string;
   isLoading?: boolean;
+  className?: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   searchKey,
-  isLoading
+  isLoading,
+  className
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data: isLoading ? [] : data,
@@ -39,10 +42,9 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel()
   });
-
+  const style = cn('h-[calc(80vh-220px)] rounded-md border', className);
   /* this can be used to get the selectedrows
   console.log("value", table.getFilteredSelectedRowModel()); */
-
   return (
     <>
       <Input
@@ -53,7 +55,7 @@ export function DataTable<TData, TValue>({
         }
         className="w-full md:max-w-sm"
       />
-      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border">
+      <ScrollArea className={style}>
         <Table className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

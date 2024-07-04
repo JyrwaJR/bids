@@ -6,7 +6,6 @@ import { StepperForm } from '@components/form';
 import { Heading } from '@components/ui/heading';
 import {
   StudentOtherInfoForm,
-  StudentPermanentAddressForm,
   StudentPersonalDetailsForm,
   StudentPresentAddressForm,
   StudentParentDetailsForm,
@@ -275,12 +274,6 @@ const Registration = () => {
       form={form}
       loading={isLoading}
     />,
-    <StudentPermanentAddressForm
-      key="permanent-address"
-      className={formStyle}
-      form={form}
-      loading={isLoading}
-    />,
     <StudentApplyDomainForm
       key="Apply Batch"
       className={formStyle}
@@ -291,17 +284,15 @@ const Registration = () => {
     <StudentOtherInfoForm key="other-info" className={formStyle} form={form} />
   ];
   return (
-    <ScrollArea className="container">
-      <div className="px-5 py-10">
-        <div className="flex items-center justify-start">
-          <Heading
-            title="Student Registration"
-            description="Follow the steps to complete your profile"
-          />
-        </div>
-        <StepperForm form={form} onSubmit={onSubmit} steps={formComponents} />
+    <>
+      <div className="flex items-center justify-start">
+        <Heading
+          title="Student Registration"
+          description="Follow the steps to complete your profile"
+        />
       </div>
-    </ScrollArea>
+      <StepperForm form={form} onSubmit={onSubmit} steps={formComponents} />
+    </>
   );
 };
 

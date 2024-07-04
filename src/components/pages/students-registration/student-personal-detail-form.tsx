@@ -3,6 +3,7 @@ import { Typography } from '@components/typography';
 import { studentRegistrationPersonalDetailsFields } from '@constants/input-fields/students/student-registration-fields';
 import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 import { StudentRegistrationModelType } from '@models/student';
+import { useRegisterStudent } from '@src/app/dashboard/profile/page';
 import { UseFormReturn } from 'react-hook-form';
 type Props = {
   className?: string;
@@ -37,6 +38,9 @@ export const StudentPersonalDetailsForm = ({
     <div className="py-5">
       <Typography size={'h2'} weight={'medium'}>
         Personal Details
+      </Typography>
+      <Typography variant={'p'}>
+        Please provide your personal details
       </Typography>
       <CForm
         form={form}

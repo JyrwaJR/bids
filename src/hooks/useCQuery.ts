@@ -7,7 +7,7 @@ import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
 import { showToast } from '@src/components/ui/show-toast';
 
 interface CQueryProps {
-  queryKey: any[];
+  queryKey?: any[];
   url: string;
   enabled?: boolean;
   staleTime?: number;
