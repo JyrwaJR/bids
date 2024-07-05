@@ -89,26 +89,30 @@ export const AuthProvider = ({ children }: Props) => {
 
   const onLogin = async ({ email, password, redirect }: LoginTProps) => {
     try {
-      console.log(email, password);
-
       setIsLoading(true);
       const res = await loginMutation.mutateAsync({
         email: email,
         password: password
       });
-      console.log(res);
-
       if (res.success === true) {
         // TODO Add more field to save token
+        console.log(res.data.token);
+
         setCookie('token', res.data.token, {
-          path: '/',
-          maxAge: 60 * 60 * 24 * 30, // 30 days
-          domain: domain,
-          expires: new Date(Date.now() + 60 * 60 * 24 * 30 * 1000), // 30 days
-          httpOnly: true,
-          partitioned: true, // 30 days
-          sameSite: 'lax',
-          secure: true
+          path: '/'
+        });
+        const response = await axios.get(`${baseUrl}/user`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${res.data.token}`
+          }
+        });
+
+        setUser({
+          email: response.data.data.email,
+          id: response.data.data.id,
+          name: response.data.data.name,
+          role: response.data.data.role[0]
         });
         setIsToken(cookies?.token);
         setIsLoggedIn(!!cookies?.token);
