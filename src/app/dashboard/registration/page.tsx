@@ -322,7 +322,7 @@ const Registration = () => {
   );
 
   useEffect(() => {
-    if (form.watch('is_same_as_present_address') === true) {
+    if (isSameAsPresent) {
       form.reset({
         ...form.getValues(),
         permanent_address: form.getValues('present_address'),
