@@ -1,8 +1,9 @@
+import { StepType } from '@components/form/stepper-form';
 import { FormFieldType } from '@components/index';
 import { MAX_UPLOAD_SIZE } from '@constants/index';
 import { gender, SectorsOptions, yesNoOptions } from '@constants/options';
 
-export const studentRegistrationFields: FormFieldType[] = [
+const startStudentRegistrationFields: FormFieldType[] = [
   {
     name: 'registration_date',
     label: 'Registration Date',
@@ -37,7 +38,7 @@ export const studentRegistrationFields: FormFieldType[] = [
     type: 'date'
   }
 ];
-export const studentRegistrationDomain: FormFieldType[] = [
+const studentRegistrationDomain: FormFieldType[] = [
   {
     name: 'project_id',
     label: 'Project',
@@ -59,7 +60,7 @@ export const studentRegistrationDomain: FormFieldType[] = [
     select: true
   }
 ];
-export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
+const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
   {
     name: 'first_name',
     label: 'First Name',
@@ -174,8 +175,7 @@ export const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     helperText: `file size < ${MAX_UPLOAD_SIZE / 1024 / 1024} MB`
   }
 ];
-export const studentRegistrationPresentAddressFields: FormFieldType[] = [
-  // Present Address
+const studentRegistrationPresentAddressFields: FormFieldType[] = [
   {
     name: 'resident_type',
     label: 'Resident Type',
@@ -253,80 +253,85 @@ export const studentRegistrationPresentAddressFields: FormFieldType[] = [
   }
 ];
 
-export const studentRegistrationPermanentsAddressDetailFields: FormFieldType[] =
-  [
-    {
-      name: 'permanent_address',
-      label: 'Permanent Address',
-      required: false,
-      type: 'text',
-      placeholder: 'Enter Permanent Address'
-    },
-    {
-      name: 'p_landmark',
-      label: 'Permanent Landmark',
-      required: false,
-      type: 'text',
-      placeholder: 'Enter Permanent Landmark'
-    },
-    {
-      name: 'p_village',
-      label: 'Permanent Village',
-      required: false,
-      type: 'text',
-      placeholder: 'Enter Permanent Village'
-    },
-    {
-      name: 'p_panchayat',
-      label: 'Permanent Panchayat',
-      required: false,
-      type: 'text',
-      placeholder: 'Enter Permanent Panchayat'
-    },
-    {
-      name: 'p_block',
-      label: 'Permanent Block',
-      required: false,
-      type: 'text',
-      placeholder: 'Enter Permanent Block'
-    },
-    {
-      name: 'p_police_station',
-      label: 'Permanent Police Station',
-      required: false,
-      type: 'text',
-      placeholder: 'Enter Permanent Police Station'
-    },
-    {
-      name: 'p_post_office',
-      label: 'Permanent Post Office',
-      required: false,
-      type: 'text',
-      placeholder: 'Enter Permanent Post Office'
-    },
-    {
-      name: 'p_district',
-      label: 'Permanent District',
-      required: false,
-      placeholder: 'Enter Permanent District',
-      select: true
-    },
-    {
-      name: 'p_state',
-      label: 'Permanent State',
-      required: false,
-      select: true
-    },
-    {
-      name: 'p_pin_code',
-      label: 'Permanent Pin Code',
-      required: false,
-      type: 'number',
-      placeholder: 'Enter Permanent Pin Code'
-    }
-  ];
+const studentRegistrationPermanentsAddressDetailFields: FormFieldType[] = [
+  {
+    name: 'is_same_as_present_address',
+    label: 'Is Same As Present Address',
+    required: false,
+    type: 'checkbox'
+  },
+  {
+    name: 'permanent_address',
+    label: 'Permanent Address',
+    required: false,
+    type: 'text',
+    placeholder: 'Enter Permanent Address'
+  },
+  {
+    name: 'p_landmark',
+    label: 'Permanent Landmark',
+    required: false,
+    type: 'text',
+    placeholder: 'Enter Permanent Landmark'
+  },
+  {
+    name: 'p_village',
+    label: 'Permanent Village',
+    required: false,
+    type: 'text',
+    placeholder: 'Enter Permanent Village'
+  },
+  {
+    name: 'p_panchayat',
+    label: 'Permanent Panchayat',
+    required: false,
+    type: 'text',
+    placeholder: 'Enter Permanent Panchayat'
+  },
+  {
+    name: 'p_block',
+    label: 'Permanent Block',
+    required: false,
+    type: 'text',
+    placeholder: 'Enter Permanent Block'
+  },
+  {
+    name: 'p_police_station',
+    label: 'Permanent Police Station',
+    required: false,
+    type: 'text',
+    placeholder: 'Enter Permanent Police Station'
+  },
+  {
+    name: 'p_post_office',
+    label: 'Permanent Post Office',
+    required: false,
+    type: 'text',
+    placeholder: 'Enter Permanent Post Office'
+  },
+  {
+    name: 'p_district',
+    label: 'Permanent District',
+    required: false,
+    placeholder: 'Enter Permanent District',
+    select: true
+  },
+  {
+    name: 'p_state',
+    label: 'Permanent State',
+    required: false,
+    select: true
+  },
+  {
+    name: 'p_pin_code',
+    label: 'Permanent Pin Code',
+    required: false,
+    type: 'number',
+    placeholder: 'Enter Permanent Pin Code'
+  }
+];
 
-export const studentRegistrationOtherInfoFields: FormFieldType[] = [
+const studentRegistrationOtherInfoFields: FormFieldType[] = [
   {
     name: 'is_technical_education',
     label: 'Technical Education',
@@ -447,7 +452,7 @@ export const studentRegistrationOtherInfoFields: FormFieldType[] = [
     placeholder: 'Enter MGNREGA Hours Worked'
   }
 ];
-export const studentRegistrationParentDetailFields: FormFieldType[] = [
+const studentRegistrationParentDetailFields: FormFieldType[] = [
   {
     name: 'father_name',
     label: 'Father Name',
@@ -541,25 +546,40 @@ export const studentRegistrationParentDetailFields: FormFieldType[] = [
   }
 ];
 
-// export const studentRegistrationStepsFields: StepsFieldFormT[] = [
-//   {
-//     name: 'Personal Information',
-//     fields: studentRegistrationPersonalDetailsFields
-//   },
-//   {
-//     name: 'Present Address',
-//     fields: studentRegistrationPresentAddressFields
-//   },
-//   {
-//     name: 'Permanents address',
-//     fields: studentRegistrationPermanentsAddressDetailFields
-//   },
-//   {
-//     name: 'Other information',
-//     fields: studentRegistrationOtherInfoFields
-//   },
-//   {
-//     name: 'Parental Details',
-//     fields: studentRegistrationParentDetailFields
-//   }
-// ];
+export const studentRegistrationFields: StepType[] = [
+  {
+    name: 'Start Registration',
+    id: 'Start Registration',
+    fields: startStudentRegistrationFields
+  },
+  {
+    name: 'Personal Information',
+    id: 'Personal Information',
+    fields: studentRegistrationPersonalDetailsFields
+  },
+  {
+    name: 'Parental Details',
+    id: 'Parental Details',
+    fields: studentRegistrationParentDetailFields
+  },
+  {
+    name: 'Present Address',
+    id: 'Present Address',
+    fields: studentRegistrationPresentAddressFields
+  },
+  {
+    name: 'Permanent Address',
+    id: 'Permanent Address',
+    fields: studentRegistrationPermanentsAddressDetailFields
+  },
+  {
+    name: 'Apply Domain',
+    id: 'Apply Domain',
+    fields: studentRegistrationDomain
+  },
+  {
+    name: 'Other Information',
+    id: 'Other Information',
+    fields: studentRegistrationOtherInfoFields
+  }
+];

@@ -1,15 +1,17 @@
+import { FormFieldType } from '@components/index';
 import { ReactElement, useCallback, useState } from 'react';
 type props = {
   steps: ReactElement[];
-  onTrigger: () => void;
-
+  // onTrigger: () => boolean;
+  fields: FormFieldType['name'] | FormFieldType['name'][];
+  isValid: boolean;
 };
-export function useMultiStepForm({ steps, onTrigger }: props) {
+export function useMultiStepForm({ steps, isValid }: props) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const next = useCallback(() => {
-    onTrigger();
-   setCurrentStepIndex((i) => Math.min(i + 1, steps.length - 1));
-  }, [steps.length, onTrigger,]);
+  const next = useCallback(async () => {
+    if (!isValid) return;
+    setCurrentStepIndex((i) => Math.min(i + 1, steps.length - 1));
+  }, [steps.length, isValid]);
 
   const back = useCallback(() => {
     setCurrentStepIndex((i) => Math.max(i - 1, 0));

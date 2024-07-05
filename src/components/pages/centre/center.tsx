@@ -5,17 +5,17 @@ import { Separator } from '@components/ui/separator';
 import { CentreColumn } from '@constants/columns';
 import { useCQuery } from '@hooks/useCQuery';
 import { Plus } from 'lucide-react';
-import React, { useState } from 'react';
+import React from 'react';
 import { AddCentre } from './add-center';
 import { useAuthContext } from '@context/auth';
-import { useCenterStore } from '@src/lib/store';
 import { CellAction } from '@components/cell-action';
 import { ColumnDef } from '@tanstack/react-table';
 import { CenterModelType } from '@models/center-model';
 import { AlertModal } from '@components/modal/alert-modal';
+import { useCenterStore } from '@lib/store';
 
 export const CenterPageComponents = () => {
-  const { id, setId, setIsDeleting, isDeleting, isUpdating, open, setOpen } =
+  const { id, setId, setIsDeleting, isDeleting, open, setOpen } =
     useCenterStore();
   const { user } = useAuthContext();
   const { data, isFetched, isLoading } = useCQuery({
@@ -33,7 +33,6 @@ export const CenterPageComponents = () => {
               if (row.original.id) {
                 setId(row.original.id);
                 setIsDeleting(true);
-                console.log(isDeleting);
               }
             }}
           />
@@ -51,10 +50,7 @@ export const CenterPageComponents = () => {
     <>
       <div className="flex-1 space-y-4">
         <div className="flex items-start justify-between">
-          <Heading
-            title={`Center ${id}`}
-            description="Manage ur center table"
-          />
+          <Heading title={`Center`} description="Manage ur center table" />
           <Button
             disabled={!isFetched || !user?.role || user?.role !== 'superadmin'}
             className="text-xs md:text-sm"
@@ -72,7 +68,7 @@ export const CenterPageComponents = () => {
         />
       </div>
       {open && <AddCentre open={open} onClose={() => setOpen(false)} />}
-      {isUpdating && (
+      {isDeleting && (
         <AlertModal
           isOpen={isDeleting}
           onClose={() => setIsDeleting(false)}

@@ -14,7 +14,7 @@ import {
 } from '@src/components/ui/form';
 import { Input } from '@src/components/ui/input';
 
-import GoogleSignInButton from '../github-auth-button';
+// import GoogleSignInButton from '../github-auth-button';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Enter a valid email address' })
@@ -73,7 +73,6 @@ export default function UserAuthForm() {
           </span>
         </div>
       </div>
-      <GoogleSignInButton />
     </>
   );
 }

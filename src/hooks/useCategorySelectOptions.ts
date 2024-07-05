@@ -1,7 +1,6 @@
 import { OptionsT } from '@components/form/type';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useCQuery } from './useCQuery';
-import axios from 'axios';
 
 type CategoryOptionsT = {
   categories: OptionsT[];
@@ -36,7 +35,6 @@ type Props = {
 
 export function useCategorySelectOptions({ centreId, projectId }: Props = {}) {
   const [options, setOptions] = useState<CategoryOptionsT>(defaultOptions);
-  const [Loading, setLoading]=useState<boolean>(false)
   const { data, isError, isFetched, isLoading } = useCQuery({
     url: 'registration/get-drop-down-list',
     queryKey: ['categories']

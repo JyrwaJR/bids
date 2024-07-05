@@ -1,9 +1,5 @@
 'use client';
 import { Edit, MoreHorizontal, Trash } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-
-import { AlertModal } from '@src/components/modal/alert-modal';
 import { Button } from '@src/components/ui/button';
 import {
   DropdownMenu,

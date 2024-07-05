@@ -1,25 +1,15 @@
 'use client';
-import React, { ReactElement, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { StudentRegistrationModel } from '@models/student';
-import { StepperForm } from '@components/form';
 import { Heading } from '@components/ui/heading';
-import {
-  StudentOtherInfoForm,
-  StudentPersonalDetailsForm,
-  StudentPresentAddressForm,
-  StudentParentDetailsForm,
-  StudentRegistrationForm
-} from '@components/pages';
-import { StudentApplyDomainForm } from '@components/pages/students-registration/student-apply-domain-form';
-import { ScrollArea } from '@components/ui/scroll-area';
 import { useCMutation } from '@hooks/useCMutation';
 import { showToast } from '@components/ui/show-toast';
 import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
 import { z } from 'zod';
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useAuthContext } from '@context/auth';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { StudentRegistrationApplyDomainModel } from '@models/student/student-registration-apply-domain-model';
 import {
   addAddressDetails,
@@ -34,6 +24,12 @@ import {
   PersonalDetailsType,
   startRegisDetailType
 } from './_lib/type';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import MultiStepForm, { StepType } from '@components/form/stepper-form';
+import { FormFieldType, OptionsT } from '@components/form/type';
+import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
+import { studentRegistrationFields } from '@constants/input-fields/students';
 
 const Model = StudentRegistrationModel.merge(
   StudentRegistrationApplyDomainModel
@@ -51,15 +47,28 @@ const Model = StudentRegistrationModel.merge(
   return true;
 });
 type ModelType = z.infer<typeof Model>;
-
+async function getBatch(token: string, projectId?: string) {
+  try {
+    console.log(projectId);
+    if (!projectId) return;
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/batch/get-batch-by-centre/${projectId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
 const Registration = () => {
   const { token } = useAuthContext();
   const [isRegisId, setIsRegisId] = useState<string>('');
-  const formStyle: string = 'w-full sm:col-span-6 md:col-span-6 xl:col-span-4';
   const form = useForm<ModelType>({
-    defaultValues: {
-      batch_id: '9c66e87a-7399-4322-ab6e-5423bc29fb54'
-    }
+    resolver: zodResolver(Model)
   });
 
   const domainApplyMutate = useCMutation({
@@ -249,40 +258,87 @@ const Registration = () => {
     }
   };
 
-  const formComponents: ReactElement[] = [
-    <StudentRegistrationForm
-      className={formStyle}
-      key="Registration Form"
-      form={form}
-      loading={isLoading}
-    />,
-    <StudentPersonalDetailsForm
-      className={formStyle}
-      key="personal-details"
-      form={form}
-      loading={isLoading}
-    />,
-    <StudentParentDetailsForm
-      key="parents-details"
-      className={formStyle}
-      form={form}
-      loading={isLoading}
-    />,
-    <StudentPresentAddressForm
-      key="present-address"
-      className={formStyle}
-      form={form}
-      loading={isLoading}
-    />,
-    <StudentApplyDomainForm
-      key="Apply Batch"
-      className={formStyle}
-      form={form}
-      batchOptions={[]}
-      loading={isLoading}
-    />,
-    <StudentOtherInfoForm key="other-info" className={formStyle} form={form} />
-  ];
+  const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);
+  const { options } = useCategorySelectOptions();
+  const { data, isFetched, isError } = useQuery({
+    queryFn: async () => await getBatch(token, form.watch('project_id')),
+    enabled: !!form.watch('project_id'),
+    queryKey: form.watch('project_id')
+  });
+  const batchOptions: OptionsT[] | undefined =
+    isFetched &&
+    !isLoading &&
+    !isError &&
+    data.data.map((item: any) => ({
+      label: item.batch_code,
+      value: item.id
+    }));
+
+  const updatedFields: StepType[] = studentRegistrationFields.map(
+    (element: StepType) => {
+      const updatedFields = element.fields.map((field: FormFieldType) => {
+        if (field.select) {
+          switch (field.name) {
+            case 'p_state':
+              return { ...field, options: options.states };
+            case 'p_district':
+              return { ...field, options: options.district };
+            case 'category':
+              return { ...field, options: options.categories };
+            case 'religion':
+              return { ...field, options: options.religions };
+            case 'marital_status':
+              return { ...field, options: options.maritalStatus };
+            case 'education':
+              return { ...field, options: options.qualifications };
+            case 'centre_id':
+              return { ...field, options: options.centre };
+            case 'project_id':
+              return { ...field, options: options.projects };
+            case 'domain_id':
+              return { ...field, options: options.domain };
+            case 'batch_id':
+              return {
+                ...field,
+                options:
+                  isFetched && data.data.length > 0
+                    ? batchOptions
+                    : [
+                        {
+                          label: 'No Batch',
+                          value: ''
+                        }
+                      ]
+              };
+            default:
+              return field;
+          }
+        }
+        return field;
+      });
+
+      return { ...element, fields: updatedFields };
+    }
+  );
+
+  useEffect(() => {
+    if (form.watch('is_same_as_present_address') === true) {
+      form.reset({
+        ...form.getValues(),
+        permanent_address: form.getValues('present_address'),
+        p_landmark: form.getValues('landmark'),
+        p_village: form.getValues('village'),
+        p_panchayat: form.getValues('panchayat'),
+        p_block: form.getValues('block'),
+        p_police_station: form.getValues('police_station'),
+        p_post_office: form.getValues('post_office'),
+        p_district: form.getValues('district'),
+        p_state: form.getValues('state'),
+        p_pin_code: form.getValues('pin_code')
+      });
+    }
+  }, [isSameAsPresent, form]);
+
   return (
     <>
       <div className="flex items-center justify-start">
@@ -291,7 +347,7 @@ const Registration = () => {
           description="Follow the steps to complete your profile"
         />
       </div>
-      <StepperForm form={form} onSubmit={onSubmit} steps={formComponents} />
+      <MultiStepForm form={form} onSubmit={onSubmit} steps={updatedFields} />
     </>
   );
 };

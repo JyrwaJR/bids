@@ -14,6 +14,7 @@ import { Props } from '@src/types';
 
 import { AuthContext, UserType } from './auth-context';
 const baseUrl: string = process.env.NEXT_PUBLIC_API_BASE_URL!;
+const domain = baseUrl.slice(0, baseUrl.length - 4); // get the base url without the last '/api'
 interface LoginTProps {
   email: string;
   password: string;
@@ -99,7 +100,16 @@ export const AuthProvider = ({ children }: Props) => {
 
       if (res.success === true) {
         // TODO Add more field to save token
-        setCookie('token', res.data.token, { path: '/' });
+        setCookie('token', res.data.token, {
+          path: '/',
+          maxAge: 60 * 60 * 24 * 30, // 30 days
+          domain: domain,
+          expires: new Date(Date.now() + 60 * 60 * 24 * 30 * 1000), // 30 days
+          httpOnly: true,
+          partitioned: true, // 30 days
+          sameSite: 'lax',
+          secure: true
+        });
         setIsToken(cookies?.token);
         setIsLoggedIn(!!cookies?.token);
         const url = redirect ? redirect : '/dashboard';

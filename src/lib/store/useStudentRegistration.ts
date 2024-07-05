@@ -83,9 +83,7 @@ const emptyDefaultStudentRegistrationData: StudentRegistrationModelType = {
   catchment_area: 'No',
   nre_job_card_no: null,
   mgnrega_hours_worked: null,
-  status: 'Applied',
-  created_at: undefined,
-  updated_at: undefined
+  status: 'Applied'
 };
 
 export const useRegisterStudent = create<RegisterType>((set) => ({
@@ -99,26 +97,4 @@ export const useRegisterStudent = create<RegisterType>((set) => ({
   setData: (data: StudentRegistrationModelType) => set({ data }),
   id: '',
   data: emptyDefaultStudentRegistrationData
-}));
-
-interface CenterT {
-  id: string;
-  isDeleting: boolean;
-  isUpdating: boolean;
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  setId: (id: string) => void;
-  setIsDeleting: (isDeleting: boolean) => void;
-  setIsUpdating: (isUpdating: boolean) => void;
-}
-
-export const useCenterStore = create<CenterT>((set) => ({
-  id: '',
-  isDeleting: false,
-  isUpdating: false,
-  setId: (id: string) => set({ id }),
-  setIsDeleting: (isDeleting: boolean) => set({ isDeleting: isDeleting }),
-  setIsUpdating: (isUpdating: boolean) => set({ isUpdating: isUpdating }),
-  open: false,
-  setOpen: (open: boolean) => set({ open: open })
 }));

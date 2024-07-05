@@ -1,17 +1,9 @@
-import { Button } from '@components/ui/button';
-
 import { Heading } from '@components/ui/heading';
 import { Separator } from '@components/ui/separator';
-import { useCQuery } from '@hooks/useCQuery';
-import { Plus } from 'lucide-react';
-import React, { useState } from 'react';
+import React from 'react';
 import { DataTable } from '@components/ui/data-table';
-import { domainColumn } from '@constants/columns';
-import { AddDomain } from '@components/pages';
 import { ColumnDef } from '@tanstack/react-table';
 import { StudentRegistrationModelType } from '@models/student';
-import { CellAction } from '@components/tables/employee-tables/cell-action';
-import { Dialog, DialogContent } from '@components/ui/dialog';
 import { useCMutation } from '@hooks/useCMutation';
 import { Form, FormFieldType } from '@components/form';
 import { useForm } from 'react-hook-form';
@@ -50,7 +42,6 @@ const AppliedStudentPage = () => {
   const form = useForm<ModelType>({
     resolver: zodResolver(schema)
   });
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, mutateAsync, isLoading } = useCMutation({
     method: 'POST',
     url: 'registration/candidate-registration-list',
@@ -82,8 +73,13 @@ const AppliedStudentPage = () => {
   ];
   const columns: ColumnDef<StudentRegistrationModelType | any>[] = [
     {
-      accessorKey: 'name',
-      header: 'Name'
+      accessorKey: 'first_name',
+      header: 'First Name'
+    },
+
+    {
+      accessorKey: 'last_name',
+      header: 'Last Name'
     },
     {
       accessorKey: 'email',
@@ -101,8 +97,7 @@ const AppliedStudentPage = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      console.log(data);
-
+      schema.parse(data);
       await mutateAsync(data);
     } catch (error: any) {
       if (error instanceof Error) {
@@ -119,7 +114,7 @@ const AppliedStudentPage = () => {
   };
   return (
     <>
-      <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
+      <div className="flex-1 space-y-4">
         <div className="flex items-start justify-between">
           <Heading
             title={`Applied Students`}
@@ -138,9 +133,6 @@ const AppliedStudentPage = () => {
         <Separator />
         <DataTable searchKey="name" columns={columns} data={[]} />
       </div>
-      <Dialog>
-        <DialogContent></DialogContent>
-      </Dialog>
     </>
   );
 };

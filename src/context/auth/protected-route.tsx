@@ -1,11 +1,6 @@
 // components/ProtectedRoute.js
 import { useEffect } from 'react';
-import {
-  useRouter,
-  usePathname,
-  redirect,
-  useSearchParams
-} from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useAuthContext } from './use-auth-context';
 const LoadingPage = () => {
   return (
@@ -18,25 +13,25 @@ const LoadingPage = () => {
   );
 };
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  // const { isLoggedIn: isAuthenticated, isLoading: loading } = useAuthContext();
-  // const router = useRouter();
-  // const pathName = usePathname();
+  const { isLoggedIn: isAuthenticated, isLoading: loading } = useAuthContext();
+  const router = useRouter();
+  const pathName = usePathname();
 
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     router.replace(`/`);
-  //   }
-  // }, [isAuthenticated, loading, router, pathName]);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.replace(`/`);
+    }
+  }, [isAuthenticated, loading, router, pathName]);
 
-  // useEffect(() => {
-  //   if (isAuthenticated && pathName === '/') {
-  //     router.push('/dashboard');
-  //   }
-  // }, [isAuthenticated, pathName, router]);
+  useEffect(() => {
+    if (isAuthenticated && pathName === '/') {
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, pathName, router]);
 
-  // if (loading && !isAuthenticated && pathName !== '/') {
-  //   return <LoadingPage />;
-  // }
+  if (loading && !isAuthenticated && pathName !== '/') {
+    return <LoadingPage />;
+  }
   return children;
 };
 

@@ -2,8 +2,6 @@
 import { Checkbox } from '@src/components/ui/checkbox';
 import { ColumnDef } from '@tanstack/react-table';
 
-import { CellAction } from './cell-action';
-
 export const columns: ColumnDef<any>[] = [
   {
     id: 'select',
@@ -39,9 +37,5 @@ export const columns: ColumnDef<any>[] = [
   {
     accessorKey: 'status',
     header: 'STATUS'
-  },
-  {
-    id: 'actions',
-    cell: ({ row }) => <CellAction data={row.original} />
   }
 ];

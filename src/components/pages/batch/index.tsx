@@ -1,12 +1,10 @@
 import { DataTable } from '@components/ui/data-table';
 import { Heading } from '@components/ui/heading';
-import { Separator } from '@components/ui/separator';
 import { BatchColumn } from '@constants/columns/batch-column';
 import React, { useState } from 'react';
 import { AddBatch } from './add-batch';
 import { useCQuery } from '@hooks/useCQuery';
 import { isError } from 'react-query';
-import { ScrollArea } from '@components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ProjectColumn } from '@constants/columns';
 import { Button } from '@components/ui/button';

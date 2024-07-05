@@ -2,7 +2,7 @@
 import { showToast } from '@components/ui/show-toast';
 import { FailedToastTitle } from '@constants/toast-message';
 import { useAuthContext } from '@context/auth';
-import { Avatar, AvatarFallback, AvatarImage } from '@src/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@src/components/ui/avatar';
 import { Button } from '@src/components/ui/button';
 import {
   DropdownMenu,

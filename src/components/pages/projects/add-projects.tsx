@@ -7,12 +7,6 @@ import {
   DialogTitle
 } from '@components/ui/dialog';
 import React from 'react';
-import { DomainModelType } from '@src/models';
-import { Checkbox } from '@components/ui/checkbox';
-import { ColumnDef } from '@tanstack/react-table';
-import { domainColumn } from '@constants/columns';
-import { DataTable } from '@components/ui/data-table';
-import { useCQuery } from '@hooks/useCQuery';
 import { Button } from '@components/ui/button';
 
 type Props = {
@@ -23,13 +17,7 @@ type Props = {
   setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-export const AddProjects = ({
-  onClose,
-  open,
-  isSelectedIds,
-  setSelectedIds,
-  onSubmit
-}: Props) => {
+export const AddProjects = ({ onClose, open, onSubmit }: Props) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
