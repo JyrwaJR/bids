@@ -14,7 +14,7 @@ import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 import { FailedToastTitle } from '@constants/toast-message';
 import { showToast } from '@components/ui/show-toast';
 
-const statusOptons: OptionsT[] = [
+const statusOptions: OptionsT[] = [
   {
     label: 'Pending',
     value: 'Waiting'
@@ -68,7 +68,7 @@ const AppliedStudentPage = () => {
       name: 'status',
       label: 'Status',
       select: true,
-      options: statusOptons
+      options: statusOptions
     }
   ];
   const columns: ColumnDef<StudentRegistrationModelType | any>[] = [

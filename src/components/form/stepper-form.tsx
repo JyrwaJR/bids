@@ -62,8 +62,7 @@ export default function MultiStepForm({
   };
 
   return (
-    <section className="">
-      {/* Form */}
+    <section>
       <Form {...form}>
         <form onSubmit={onSubmit}>
           <Stepper

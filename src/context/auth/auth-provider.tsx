@@ -14,7 +14,6 @@ import { Props } from '@src/types';
 
 import { AuthContext, UserType } from './auth-context';
 const baseUrl: string = process.env.NEXT_PUBLIC_API_BASE_URL!;
-const domain = baseUrl.slice(0, baseUrl.length - 4); // get the base url without the last '/api'
 interface LoginTProps {
   email: string;
   password: string;
@@ -94,12 +93,13 @@ export const AuthProvider = ({ children }: Props) => {
         email: email,
         password: password
       });
-      if (res.success === true) {
-        // TODO Add more field to save token
-        console.log(res.data.token);
 
+      if (!!res.data.token) {
         setCookie('token', res.data.token, {
-          path: '/'
+          path: '/',
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week
+          secure: true,
+          sameSite: 'strict'
         });
         const response = await axios.get(`${baseUrl}/user`, {
           headers: {
@@ -117,18 +117,16 @@ export const AuthProvider = ({ children }: Props) => {
         setIsToken(cookies?.token);
         setIsLoggedIn(!!cookies?.token);
         const url = redirect ? redirect : '/dashboard';
-        router.replace(url);
-
-        showToast(SuccessToastTitle, res.data.message);
-
+        router.push(url);
         return;
       } else if (res.data.success === false) {
-        showToast(FailedToastTitle, 'Invalid email or password');
-
+        showToast(
+          FailedToastTitle,
+          'Invalid email or password. Please try again'
+        );
         return;
       } else {
         showToast(FailedToastTitle, res.data.message);
-
         return;
       }
     } catch (error: any) {
@@ -165,7 +163,6 @@ export const AuthProvider = ({ children }: Props) => {
         });
         setIsToken(cookies?.token);
         setIsLoggedIn(!!cookies?.token);
-        showToast(SuccessToastTitle, "You're successfully logged in");
         return;
       }
       return;
@@ -188,10 +185,10 @@ export const AuthProvider = ({ children }: Props) => {
   }, [headers, cookies?.token]);
 
   useEffect(() => {
-    if (cookies?.token) {
+    if (cookies?.token || isToken) {
       verifyToken();
     }
-  }, [cookies, verifyToken]);
+  }, [cookies, verifyToken, isToken]);
   axios.defaults.headers.common['Authorization'] = isToken;
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem={true}>

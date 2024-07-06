@@ -27,11 +27,7 @@ export default function AuthenticationPage() {
 
   const onSubmit: SubmitHandler<LoginModelType> = async (data) => {
     try {
-      console.log(data);
-
-      await onLogin(data.email, data.password).then(() => {
-        showToast(SuccessToastTitle, 'Login Successful');
-      });
+      await onLogin(data.email, data.password);
     } catch (error: any) {
       showToast(FailedToastTitle, error.message);
     }
