@@ -40,11 +40,19 @@ export const navItems: NavItem[] = [
   {
     title: 'Student Registration ',
     href: '/dashboard/registration',
+    icon: 'billing',
+    label: 'registration',
+    external: true,
+    description: 'Student Registration'
+  },
+  {
+    title: 'Applied Student',
+    href: '/dashboard/applied-student',
     icon: 'chevronRight',
     label: 'registration'
   },
   {
-    title: 'Test Page ',
+    title: 'Profile',
     href: '/dashboard/profile',
     icon: 'chevronRight',
     label: 'registration'

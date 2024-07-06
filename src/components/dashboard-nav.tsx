@@ -26,6 +26,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle
 } from './ui/alert-dialog';
+import { AlertModal } from './modal/alert-modal';
+import { Button } from './ui/button';
 
 interface DashboardNavProps {
   items: NavItem[];
@@ -47,7 +49,7 @@ export function DashboardNav({
   }
   const logout = () => {
     onLogout();
-    if (setOpen) setOpen(false);
+    if (setOpen) setOpen(!setOpen);
   };
 
   return (
@@ -93,25 +95,26 @@ export function DashboardNav({
         })}
         <Tooltip>
           <TooltipTrigger asChild>
-            <Link
-              href={''}
+            <Button
+              variant={'ghost'}
               onClickCapture={() => setIsAlertLogout(true)}
+              type="button"
               className={cn(
-                'flex items-center gap-2 overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
-                path === '/' ? 'bg-accent' : 'transparent'
+                'flex items-center justify-start  overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
+                path === '/' ? 'bg-accent' : 'transparent',
+                'p-0'
               )}
               onClick={() => {
-                if (setOpen) setOpen(false);
+                setIsAlertLogout(true);
               }}
             >
-              <Icons.logout className={`ml-3 size-5`} />
-
+              <Icons.logout className={`ml-3 h-4`} />
               {isMobileNav || (!isMinimized && !isMobileNav) ? (
                 <span className="mr-2 truncate">{'Logout'}</span>
               ) : (
                 ''
               )}
-            </Link>
+            </Button>
           </TooltipTrigger>
           <TooltipContent
             align="center"
@@ -124,22 +127,14 @@ export function DashboardNav({
         </Tooltip>
       </TooltipProvider>
       {isAlertLogout && (
-        <AlertDialog open={isAlertLogout} onOpenChange={setIsAlertLogout}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will sign out your account.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel onClick={() => setIsAlertLogout(false)}>
-                Cancel
-              </AlertDialogCancel>
-              <AlertDialogAction onClick={logout}>Continue</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <AlertModal
+          isOpen={isAlertLogout}
+          onConfirm={() => logout()}
+          onClose={() => setIsAlertLogout(false)}
+          loading={false}
+          desc="Are you sure you want to logout?"
+          title="Logout"
+        />
       )}
     </nav>
   );

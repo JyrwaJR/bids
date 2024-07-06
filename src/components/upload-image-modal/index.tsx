@@ -1,22 +1,20 @@
-import { Form, FormFieldType } from '@components/form';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle
-} from '@components/ui/dialog';
+import { FormFieldType } from '@components/form';
+import { Button } from '@components/ui/button';
+import { Checkbox } from '@components/ui/checkbox';
+import { Label } from '@components/ui/label';
+import { useUploadDocStore } from '@lib/store/useUploadDocStore';
 import React from 'react';
 import { SubmitHandler, UseFormReturn } from 'react-hook-form';
+import { ImageUploadDialog } from './image-upload-dialog';
 
-const UploadImageModal = ({
-  form,
-  fields,
-  isLoading,
-  onSubmit,
-  open,
-  onClose
-}: {
+type DocToUpload = {
+  name: string;
+  desc?: string;
+  uploaded?: boolean;
+  onClick?: () => void;
+};
+
+const UploadImageModal = ({}: {
   fields: FormFieldType[];
   form: UseFormReturn<any>;
   onSubmit: SubmitHandler<any>;
@@ -24,21 +22,59 @@ const UploadImageModal = ({
   open: boolean;
   onClose: () => void;
 }) => {
+  const {
+    setOpen,
+    open,
+    isSelectedFilterType,
+    proofOfIdUploaded,
+    setSelectedFilterType
+  } = useUploadDocStore();
+  const formList: DocToUpload[] = [
+    {
+      name: 'ID Proof',
+      desc: 'Please upload your ID proof',
+      uploaded: proofOfIdUploaded
+    },
+    {
+      name: 'Address Proof'
+    },
+    {
+      name: 'Age Proof'
+    },
+    {
+      name: 'Other Proof'
+    }
+  ];
+
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Upload Image</DialogTitle>
-          <DialogDescription>Please select your document image to upload</DialogDescription>
-        </DialogHeader>
-        <Form
-          fields={fields}
-          form={form}
-          onSubmit={onSubmit}
-          loading={isLoading || false}
+    <>
+      <div className="flex max-w-lg flex-col items-start space-y-5">
+        {formList.map((doc, i) => (
+          <div key={i} className="flex w-full items-center space-x-3">
+            <Button
+              className="w-full uppercase"
+              variant={'outline'}
+              onClick={() => {
+                setSelectedFilterType(doc.name);
+                setOpen(true);
+              }}
+            >
+              {doc.name}
+            </Button>
+            <div className="flex w-full space-x-3">
+              <Checkbox disabled checked={doc.uploaded} />
+              <Label>{doc.uploaded ? 'Uploaded' : 'Not Uploaded'}</Label>
+            </div>
+          </div>
+        ))}
+      </div>
+      {open && (
+        <ImageUploadDialog
+          title={isSelectedFilterType}
+          filter={isSelectedFilterType}
         />
-      </DialogContent>
-    </Dialog>
+      )}
+    </>
   );
 };
 
