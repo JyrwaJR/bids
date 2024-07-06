@@ -26,7 +26,7 @@ import {
 } from '@src/components/ui/select';
 import { Separator } from '@src/components/ui/separator';
 
-import FileUpload from '../file-upload';
+// import FileUpload from '../file-upload';
 import { useToast } from '../ui/use-toast';
 
 const ImgSchema = z.object({
@@ -145,11 +145,11 @@ export const EmployeeForm: React.FC<ProductFormProps> = ({
               <FormItem>
                 <FormLabel>Images</FormLabel>
                 <FormControl>
-                  <FileUpload
+                  {/* <FileUpload
                     onChange={field.onChange}
                     value={field.value}
                     onRemove={field.onChange}
-                  />
+                  /> */}
                 </FormControl>
                 <FormMessage />
               </FormItem>
