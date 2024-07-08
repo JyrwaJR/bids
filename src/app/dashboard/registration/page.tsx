@@ -6,7 +6,7 @@ import { Heading } from '@components/ui/heading';
 import { useCMutation } from '@hooks/useCMutation';
 import { showToast } from '@components/ui/show-toast';
 import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
-import { z } from 'zod';
+import { z, ZodError } from 'zod';
 import axios, { AxiosError } from 'axios';
 import { useAuthContext } from '@context/auth';
 import { useMutation, useQuery } from 'react-query';
@@ -49,7 +49,6 @@ const Model = StudentRegistrationModel.merge(
 type ModelType = z.infer<typeof Model>;
 async function getBatch(token: string, projectId?: string) {
   try {
-    console.log(projectId);
     if (!projectId) return;
     const res = await axios.get(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/batch/get-batch-by-centre/${projectId}`,
@@ -70,11 +69,28 @@ const Registration = () => {
   const form = useForm<ModelType>({
     resolver: zodResolver(Model)
   });
+  const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);
+  const { options } = useCategorySelectOptions();
+  const {
+    data: batch,
+    isFetched,
+    isError
+  } = useQuery({
+    queryFn: async () => await getBatch(token, form.watch('project_id')),
+    enabled: !!form.watch('project_id'),
+    queryKey: form.watch('project_id')
+  });
+  const batchOptions: OptionsT[] | undefined =
+    isFetched &&
+    !isError &&
+    batch.data.map((item: any) => ({
+      label: item.batch_code,
+      value: item.id
+    }));
 
   const domainApplyMutate = useCMutation({
     url: 'registration/add-domain-applied',
-    method: 'POST',
-    queryKey: []
+    method: 'POST'
   });
 
   const addAddressMutate = useMutation({
@@ -85,194 +101,16 @@ const Registration = () => {
     mutationFn: (data: FamilyDetailsType) =>
       addFamilyDetails(token, isRegisId, data)
   });
+
   const startRegisMutate = useMutation({
     mutationFn: async (data: startRegisDetailType) =>
-      await startRegistration(token, data),
-    onError: (error: any) => {
-      if (error instanceof Error) {
-        showToast(FailedToastTitle, error.message);
-        return;
-      }
-      if (error instanceof z.ZodError) {
-        showToast(FailedToastTitle, error.errors[0].message);
-        return;
-      }
-      if (error instanceof AxiosError) {
-        showToast(FailedToastTitle, error.response?.data.message);
-        return;
-      }
-      showToast(FailedToastTitle, error.message);
-      return;
-    }
+      await startRegistration(token, data)
   });
-  const [isLoading, setIsLoading] = useState<boolean>(
-    startRegisMutate.isLoading
-  );
+
   const addPersonalMutate = useMutation({
     mutationFn: async (data: PersonalDetailsType) =>
-      await addPersonalDetails(token, isRegisId, data),
-    onError: (error: any) => {
-      if (error instanceof Error) {
-        showToast(FailedToastTitle, error.message);
-        return;
-      }
-      if (error instanceof z.ZodError) {
-        showToast(FailedToastTitle, error.errors[0].message);
-        return;
-      }
-      if (error instanceof AxiosError) {
-        showToast(FailedToastTitle, error.response?.data.message);
-        return;
-      }
-      showToast(FailedToastTitle, error.message);
-      return;
-    }
+      await addPersonalDetails(token, isRegisId, data)
   });
-
-  const onSubmit: SubmitHandler<ModelType> = async (datas) => {
-    try {
-      const data = Model.parse(datas);
-      // Step 1: Start Registration
-      const startPayload: startRegisDetailType = {
-        dob: data.dob,
-        first_name: data.first_name,
-        middle_name: data.middle_name ?? null,
-        last_name: data.last_name,
-        registration_date: data.registration_date
-      };
-      await startRegisMutate.mutateAsync(startPayload);
-
-      if (
-        startRegisMutate.isError ||
-        startRegisMutate.data?.data.success === false
-      ) {
-        throw new Error('Failed to start registration');
-      }
-
-      const registrationId = startRegisMutate.data.data.id;
-      setIsRegisId(registrationId);
-      if (!isRegisId) return;
-      // Step 2: Add Personal Details
-      const addPersonalPayload: PersonalDetailsType = {
-        aadhaar: data.aadhaar ?? '',
-        category: data.category,
-        education: data.education,
-        email: data.email ?? '',
-        gender: data.gender,
-        marital_status: data.marital_status,
-        mobilisation_source: data.mobilisation_source ?? '',
-        mobile: data.mobile,
-        remarks: data.remarks ?? '',
-        religion: data.religion,
-        dob: data.dob,
-        first_name: data.first_name,
-        middle_name: data.middle_name ?? '',
-        last_name: data.last_name,
-        registration_date: data.registration_date
-      };
-      await addPersonalMutate.mutateAsync(addPersonalPayload);
-
-      if (
-        addPersonalMutate.isError ||
-        addPersonalMutate.data?.success === false
-      ) {
-        throw new Error('Failed to add personal details');
-      }
-
-      // Step 3: Apply Domain
-      const applyDomainPayload: DomainDetailsType = {
-        registration_id: isRegisId,
-        batch_id: data.batch_id,
-        project_id: data.project_id,
-        domain_id: [data.domain_id]
-      };
-
-      await domainApplyMutate.mutateAsync(applyDomainPayload);
-      if (
-        domainApplyMutate.isError ||
-        domainApplyMutate.data?.data.success === false
-      ) {
-        throw new Error('Failed to apply domain');
-      }
-
-      // Step 4: Add Family Details
-      const familyPayload: FamilyDetailsType = {
-        father_age: data.father_age ?? '',
-        father_income: data.father_income ?? '',
-        father_last_name: data.father_last_name ?? '',
-        father_mobile: data.father_mobile ?? '',
-        father_name: data.father_name ?? '',
-        father_occupation: data.father_occupation ?? '',
-        head_of_family: data.head_of_family ?? '',
-        mother_age: data.mother_age ?? '',
-        mother_income: data.mother_income ?? '',
-        mother_last_name: data.mother_last_name ?? '',
-        mother_mobile: data.mother_mobile ?? '',
-        mother_name: data.mother_name ?? '',
-        mother_occupation: data.mother_occupation ?? ''
-      };
-      await addFamilyMutate.mutateAsync(familyPayload);
-
-      if (addFamilyMutate.isError || addFamilyMutate.data?.success === false) {
-        throw new Error('Failed to add family details');
-      }
-
-      // Step 5: Add Address Details
-      const addressPayload: AddressDetailsType = {
-        block: data.block ?? '',
-        district: data.district ?? '',
-        landmark: data.landmark ?? '',
-        p_block: data.p_block ?? '',
-        p_district: data.p_district ?? '',
-        p_landmark: data.p_landmark ?? '',
-        p_pin_code: data.p_pin_code ?? '',
-        p_post_office: data.p_post_office ?? '',
-        p_police_station: data.p_police_station ?? '',
-        p_panchayat: data.p_panchayat ?? '',
-        p_village: data.p_village ?? '',
-        pin_code: data.pin_code ?? '',
-        post_office: data.post_office ?? '',
-        police_station: data.police_station ?? '',
-        present_address: data.present_address ?? '',
-        village: data.village ?? ''
-      };
-      await addAddressMutate.mutateAsync(addressPayload);
-      if (
-        addAddressMutate.isError ||
-        addAddressMutate.data?.success === false
-      ) {
-        throw new Error('Failed to add address details');
-      }
-
-      showToast(SuccessToastTitle, 'Registration successful');
-    } catch (error: any) {
-      console.log(error);
-
-      if (error instanceof z.ZodError) {
-        showToast(FailedToastTitle, error.errors[0].message);
-      } else if (error instanceof AxiosError) {
-        showToast(FailedToastTitle, error.response?.data.message);
-      } else {
-        showToast(FailedToastTitle, error.message);
-      }
-    }
-  };
-
-  const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);
-  const { options } = useCategorySelectOptions();
-  const { data, isFetched, isError } = useQuery({
-    queryFn: async () => await getBatch(token, form.watch('project_id')),
-    enabled: !!form.watch('project_id'),
-    queryKey: form.watch('project_id')
-  });
-  const batchOptions: OptionsT[] | undefined =
-    isFetched &&
-    !isLoading &&
-    !isError &&
-    data.data.map((item: any) => ({
-      label: item.batch_code,
-      value: item.id
-    }));
 
   const updatedFields: StepType[] = studentRegistrationFields.map(
     (element: StepType) => {
@@ -301,7 +139,7 @@ const Registration = () => {
               return {
                 ...field,
                 options:
-                  isFetched && data.data.length > 0
+                  isFetched && batch.data.length > 0
                     ? batchOptions
                     : [
                         {
@@ -338,7 +176,153 @@ const Registration = () => {
       });
     }
   }, [isSameAsPresent, form]);
+  const onSubmit: SubmitHandler<ModelType> = async (data) => {
+    try {
+      console.log('1');
+      Model.parse(data);
+      // Step 1: Start Registration
+      const startPayload: startRegisDetailType = {
+        dob: data.dob,
+        first_name: data.first_name,
+        middle_name: data.middle_name ?? null,
+        last_name: data.last_name,
+        registration_date: data.registration_date
+      };
+      console.log('3');
+      await startRegisMutate.mutateAsync(startPayload);
 
+      console.log('4');
+      if (
+        startRegisMutate.isError ||
+        startRegisMutate.data?.data.success === false
+      ) {
+        throw new Error('Failed to start registration');
+      }
+      console.log('5');
+
+      const registrationId = startRegisMutate.data.data.id;
+      setIsRegisId(registrationId);
+      if (!isRegisId) return;
+      // Step 2: Add Personal Details
+      const addPersonalPayload: PersonalDetailsType = {
+        aadhaar: data.aadhaar ?? '',
+        category: data.category,
+        education: data.education,
+        email: data.email ?? '',
+        gender: data.gender,
+        marital_status: data.marital_status,
+        mobilisation_source: data.mobilisation_source ?? '',
+        mobile: data.mobile,
+        remarks: data.remarks ?? '',
+        religion: data.religion,
+        dob: data.dob,
+        first_name: data.first_name,
+        middle_name: data.middle_name ?? '',
+        last_name: data.last_name,
+        registration_date: data.registration_date
+      };
+
+      const formImage = new FormData();
+      if (data.passport) {
+        formImage.append('passport', data.passport && data.passport);
+      }
+
+      await addPersonalMutate.mutateAsync(addPersonalPayload);
+      console.log('6');
+      if (
+        addPersonalMutate.isError ||
+        addPersonalMutate.data?.success === false
+      ) {
+        throw new Error('Failed to add personal details');
+        return;
+      }
+
+      console.log('7');
+      // Step 3: Apply Domain
+      const applyDomainPayload: DomainDetailsType = {
+        registration_id: isRegisId,
+        batch_id: data.batch_id,
+        project_id: data.project_id,
+        domain_id: [data.domain_id]
+      };
+
+      await domainApplyMutate.mutateAsync(applyDomainPayload);
+      console.log('8');
+      if (
+        domainApplyMutate.isError ||
+        domainApplyMutate.data?.data.success === false
+      ) {
+        throw new Error('Failed to apply domain');
+      }
+      console.log('9');
+
+      // Step 4: Add Family Details
+      const familyPayload: FamilyDetailsType = {
+        father_age: data.father_age ?? '',
+        father_income: data.father_income ?? '',
+        father_last_name: data.father_last_name ?? '',
+        father_mobile: data.father_mobile ?? '',
+        father_name: data.father_name ?? '',
+        father_occupation: data.father_occupation ?? '',
+        head_of_family: data.head_of_family ?? '',
+        mother_age: data.mother_age ?? '',
+        mother_income: data.mother_income ?? '',
+        mother_last_name: data.mother_last_name ?? '',
+        mother_mobile: data.mother_mobile ?? '',
+        mother_name: data.mother_name ?? '',
+        mother_occupation: data.mother_occupation ?? ''
+      };
+      await addFamilyMutate.mutateAsync(familyPayload);
+      console.log('10');
+
+      if (addFamilyMutate.isError || addFamilyMutate.data?.success === false) {
+        throw new Error('Failed to add family details');
+      }
+
+      // Step 5: Add Address Details
+      const addressPayload: AddressDetailsType = {
+        block: data.block ?? '',
+        district: data.district ?? '',
+        landmark: data.landmark ?? '',
+        p_block: data.p_block ?? '',
+        p_district: data.p_district ?? '',
+        p_landmark: data.p_landmark ?? '',
+        p_pin_code: data.p_pin_code ?? '',
+        p_post_office: data.p_post_office ?? '',
+        p_police_station: data.p_police_station ?? '',
+        p_panchayat: data.p_panchayat ?? '',
+        p_village: data.p_village ?? '',
+        pin_code: data.pin_code ?? '',
+        post_office: data.post_office ?? '',
+        police_station: data.police_station ?? '',
+        present_address: data.present_address ?? '',
+        village: data.village ?? ''
+      };
+      await addAddressMutate.mutateAsync(addressPayload);
+      console.log('11');
+      if (
+        addAddressMutate.isError ||
+        addAddressMutate.data?.success === false
+      ) {
+        throw new Error('Failed to add address details');
+      }
+      console.log('12');
+      showToast(SuccessToastTitle, 'Registration successful');
+      console.log('13');
+      return;
+    } catch (error: any) {
+      if (error instanceof z.ZodError || error instanceof ZodError) {
+        showToast(FailedToastTitle, error.errors[0].message);
+        return;
+      } else if (error instanceof AxiosError) {
+        showToast(FailedToastTitle, error.response?.data.message);
+        return;
+      } else {
+        showToast(FailedToastTitle, error.message);
+        return;
+      }
+    }
+  };
   return (
     <>
       <div className="flex items-center justify-start">
@@ -347,7 +331,13 @@ const Registration = () => {
           description="Follow the steps to complete your profile"
         />
       </div>
-      <MultiStepForm form={form} onSubmit={onSubmit} steps={updatedFields} />
+      <MultiStepForm
+        onClick={() => setIsSameAsPresent(!isSameAsPresent)}
+        checked={isSameAsPresent}
+        form={form}
+        onSubmit={onSubmit}
+        steps={updatedFields}
+      />
     </>
   );
 };

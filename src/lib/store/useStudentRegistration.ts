@@ -31,7 +31,6 @@ const emptyDefaultStudentRegistrationData: StudentRegistrationModelType = {
   education: '',
   mobilisation_source: null,
   remarks: null,
-  passport: null,
   father_name: null,
   father_last_name: null,
   father_mobile: null,

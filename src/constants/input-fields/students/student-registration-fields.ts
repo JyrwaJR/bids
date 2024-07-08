@@ -255,12 +255,6 @@ const studentRegistrationPresentAddressFields: FormFieldType[] = [
 
 const studentRegistrationPermanentsAddressDetailFields: FormFieldType[] = [
   {
-    name: 'is_same_as_present_address',
-    label: 'Is Same As Present Address',
-    required: false,
-    type: 'checkbox'
-  },
-  {
     name: 'permanent_address',
     label: 'Permanent Address',
     required: false,
@@ -547,39 +541,38 @@ const studentRegistrationParentDetailFields: FormFieldType[] = [
 ];
 
 export const studentRegistrationFields: StepType[] = [
-  {
-    name: 'Start Registration',
-    id: 'Start Registration',
-    fields: startStudentRegistrationFields
-  },
+  // {
+  //   name: 'Start Registration',
+  //   id: 'Start Registration',
+  //   fields: startStudentRegistrationFields
+  // },
   {
     name: 'Personal Information',
     id: 'Personal Information',
     fields: studentRegistrationPersonalDetailsFields
   },
-  {
-    name: 'Parental Details',
-    id: 'Parental Details',
-    fields: studentRegistrationParentDetailFields
-  },
-  {
-    name: 'Present Address',
-    id: 'Present Address',
-    fields: studentRegistrationPresentAddressFields
-  },
-  {
-    name: 'Permanent Address',
-    id: 'Permanent Address',
-    fields: studentRegistrationPermanentsAddressDetailFields
-  },
+  // {
+  //   name: 'Parental Details',
+  //   id: 'Parental Details',
+  //   fields: studentRegistrationParentDetailFields
+  // },
+  // {
+  //   name: 'Address',
+  //   id: 'Address',
+  //   fields: [
+  //     ...studentRegistrationPresentAddressFields,
+  //     ...studentRegistrationPermanentsAddressDetailFields
+  //   ]
+  // },
+
   {
     name: 'Apply Domain',
     id: 'Apply Domain',
     fields: studentRegistrationDomain
-  },
-  {
-    name: 'Other Information',
-    id: 'Other Information',
-    fields: studentRegistrationOtherInfoFields
   }
+  // {
+  //   name: 'Other Information',
+  //   id: 'Other Information',
+  //   fields: studentRegistrationOtherInfoFields
+  // }
 ];

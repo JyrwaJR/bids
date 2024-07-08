@@ -56,5 +56,11 @@ export const navItems: NavItem[] = [
     href: '/dashboard/profile',
     icon: 'chevronRight',
     label: 'registration'
+  },
+  {
+    title: 'User',
+    href: '/dashboard/user',
+    icon: 'chevronRight',
+    label: 'registration'
   }
 ];

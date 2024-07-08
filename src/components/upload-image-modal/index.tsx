@@ -6,6 +6,7 @@ import { useUploadDocStore } from '@lib/store/useUploadDocStore';
 import React from 'react';
 import { SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { ImageUploadDialog } from './image-upload-dialog';
+import { useCQuery } from '@hooks/useCQuery';
 
 type DocToUpload = {
   name: string;
@@ -29,6 +30,10 @@ const UploadImageModal = ({}: {
     proofOfIdUploaded,
     setSelectedFilterType
   } = useUploadDocStore();
+  const query = useCQuery({
+    url: 'registration/get-document-types'
+  });
+
   const formList: DocToUpload[] = [
     {
       name: 'ID Proof',
@@ -36,19 +41,31 @@ const UploadImageModal = ({}: {
       uploaded: proofOfIdUploaded
     },
     {
-      name: 'Address Proof'
+      name: 'Residence Proof'
     },
     {
       name: 'Age Proof'
     },
     {
-      name: 'Other Proof'
+      name: 'Education Qaulification Proof'
+    },
+    {
+      name: 'BPL Proof'
+    },
+    {
+      name: 'Proof of Caste'
+    },
+    {
+      name: 'Proof of Disability'
+    },
+    {
+      name: 'Exceptional Proof'
     }
   ];
 
   return (
     <>
-      <div className="flex max-w-lg flex-col items-start space-y-5">
+      <div className="flex max-w-xl flex-col items-start space-y-5">
         {formList.map((doc, i) => (
           <div key={i} className="flex w-full items-center space-x-3">
             <Button
@@ -68,6 +85,16 @@ const UploadImageModal = ({}: {
           </div>
         ))}
       </div>
+      <Button
+        className="w-full uppercase"
+        variant={'outline'}
+        onClick={() => {
+          setSelectedFilterType('');
+          setOpen(true);
+        }}
+      >
+        Test Button
+      </Button>
       {open && (
         <ImageUploadDialog
           title={isSelectedFilterType}

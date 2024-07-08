@@ -8,67 +8,91 @@ import {
   DialogTitle
 } from '@components/ui/dialog';
 import { showToast } from '@components/ui/show-toast';
-import { FailedToastTitle } from '@constants/toast-message';
+import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCMutation } from '@hooks/useCMutation';
 import { useCQuery } from '@hooks/useCQuery';
 import { useRegisterStudent } from '@lib/store';
 import { useUploadDocStore } from '@lib/store/useUploadDocStore';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
+const MAX_UPLOAD_SIZE = 1024 * 1024 * 3; // 3MB
+const ACCEPTED_FILE_TYPES = ['image/png'];
 const Schema = z
   .object({
     proof_type: z
       .string({
         required_error: 'Proof type is required'
       })
-      .min(1, 'Proof type is required'),
+      .min(1, {
+        message: 'Proof type is required'
+      }),
     document_type: z
       .string({
         required_error: 'Document type is required'
       })
-      .min(1, 'Document type is required'),
-    image: z.any({
-      required_error: 'File upload is required'
-    }),
-    document_no: z.string().optional()
+      .min(1, { message: 'Document type is required' }),
+    image: z
+      .instanceof(File, {
+        message: 'Please select an image'
+      })
+      .refine((file) => file !== undefined && file !== null, {
+        message: 'Please select an image'
+      })
+      .refine((file) => {
+        return file && file.size <= MAX_UPLOAD_SIZE;
+      }, 'File size must be less than 3MB')
+      .refine((file) => {
+        return file && ACCEPTED_FILE_TYPES.includes(file.type);
+      }, 'File must be a PNG'),
+    document_number: z.string().optional()
   })
   .superRefine((data, ctx) => {
-    if (data.proof_type === 'ID Proof' && !data.document_no) {
+    if (data.proof_type === 'ID Proof' && !data.document_number) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Document number is required',
-        path: ['document_no']
+        path: ['document_number']
       });
     }
   });
+
+type SchemaType = z.infer<typeof Schema>;
 
 type CategoryOptions = {
   category: string;
   options: OptionsT[];
 };
+interface Props {
+  filter?: string;
+  title?: string;
+  desc?: string;
+}
 export const ImageUploadDialog = ({
   filter,
   title = 'Upload Document',
   desc = 'Please upload your document'
-}: {
-  filter?: string;
-  title?: string;
-  desc?: string;
-}) => {
-  const { id } = useRegisterStudent();
+}: Props) => {
+  const { id, setId } = useRegisterStudent();
   const { open, setOpen } = useUploadDocStore();
 
-  const form = useForm<z.infer<typeof Schema>>({
-    resolver: zodResolver(Schema)
+  const form = useForm<SchemaType>({
+    resolver: zodResolver(Schema),
+    defaultValues: {
+      proof_type: filter || ''
+    }
   });
+
   const { data, isLoading } = useCQuery({
     url: 'registration/get-document-types'
   });
-
+  useEffect(() => {
+    setId('9c796e2f-0f5a-42b2-ba98-287cfca979cf');
+  }, [setId]);
   const mutate = useCMutation({
     url: `registration/upload-document/${id}`,
-    method: 'PUT',
+    method: 'POST',
     queryKey: ['profile']
   });
 
@@ -76,7 +100,6 @@ export const ImageUploadDialog = ({
     [key: string]: string[] | undefined;
   }): CategoryOptions[] => {
     const transformedData: CategoryOptions[] = [];
-
     for (const category in data) {
       if (Array.isArray(data[category])) {
         const options: OptionsT[] =
@@ -90,14 +113,13 @@ export const ImageUploadDialog = ({
 
     return transformedData;
   };
-
+  // here should appen he proof type with the category data
   const proofTypeOptions: OptionsT[] = transformData(data?.data || []).map(
     (item) => ({
       label: item.category,
       value: item.category
     })
   );
-
   const filterSubOptions = (
     category: string,
     data?: { [key: string]: string[] | undefined }
@@ -108,29 +130,34 @@ export const ImageUploadDialog = ({
     return filteredOptions?.options || [];
   };
   const isFieldWithDocNo: FormFieldType[] = [
+    !filter
+      ? {
+          required: true,
+          name: 'proof_type',
+          label: 'Proof type',
+          type: 'select',
+          select: true
+        }
+      : undefined,
     {
-      name: 'proof_type',
-      label: 'Proof Category',
-      type: 'select',
-      select: true
-    },
-    {
+      required: true,
       name: 'document_type',
       label: 'Document Type',
       select: true
     },
-    {
-      name: 'image',
-      label: 'File Upload',
-      type: 'file'
-    },
     form.watch('proof_type') === 'ID Proof'
       ? {
-          name: 'document_no',
+          name: 'document_number',
           label: 'Document No',
           type: 'text'
         }
-      : undefined
+      : undefined,
+    {
+      required: true,
+      name: 'image',
+      label: 'File Upload',
+      type: 'file'
+    }
   ].filter(Boolean) as FormFieldType[];
 
   const updatedFields: FormFieldType[] = isFieldWithDocNo.map(
@@ -142,12 +169,17 @@ export const ImageUploadDialog = ({
               ...field,
               options: !!filter
                 ? proofTypeOptions.filter((item) => item.value === filter)
-                : proofTypeOptions
+                : filterSubOptions('Proof Category', data?.data)
             };
           case 'document_type':
             return {
               ...field,
-              options: filterSubOptions(form.watch('proof_type'), data?.data),
+              options: filterSubOptions(
+                form.watch('proof_type') === 'Residence Proof'
+                  ? 'Address Proof'
+                  : form.watch('proof_type'),
+                data?.data
+              ),
               readOnly: !form.watch('proof_type')
             };
           default:
@@ -157,10 +189,14 @@ export const ImageUploadDialog = ({
       return field;
     }
   );
-  // want to add some more fields to update fields if needed
 
-  const onSubmit: SubmitHandler<any> = async (formData) => {
+  const onSubmit: SubmitHandler<SchemaType> = async (fData) => {
     try {
+      const data = new FormData();
+      data.append('proof_type', fData.proof_type);
+      data.append('document_type', fData.document_type);
+      data.append('document_number', fData.document_number || '');
+      data.append('image', fData.image);
       if (!id) {
         showToast(
           FailedToastTitle,
@@ -168,21 +204,12 @@ export const ImageUploadDialog = ({
         );
         return;
       }
-      if (
-        !filterSubOptions(form.watch('proof_type'), data?.data).some(
-          data.document_type
-        )
-      ) {
-        showToast(FailedToastTitle, 'Please select valid document type');
-        return;
-      }
-      await mutate.mutateAsync(formData);
-      setOpen(false);
-      showToast('Upload Success', 'Document uploaded successfully');
+      mutate.mutateAsync(data);
     } catch (error) {
       showToast(FailedToastTitle, 'Something went wrong');
     }
   };
+
   return (
     <Dialog open={open} onOpenChange={() => setOpen(false)}>
       <DialogContent>

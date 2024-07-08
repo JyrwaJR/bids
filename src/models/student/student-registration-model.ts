@@ -1,4 +1,5 @@
 import { gender } from '@constants/options';
+import { imageValidation } from '@constants/regex/image';
 import { format } from 'date-fns';
 import * as z from 'zod';
 
@@ -24,11 +25,11 @@ export const StudentRegistrationModel = z.object({
   mobile: z.string({ required_error: 'Mobile number is required' }).length(10),
   email: z.string().email().max(80).nullable().optional(),
   religion: z.string({ required_error: 'Religion is required' }).max(50),
-  marital_status: z.string().max(50).default('Unmarried'),
+  marital_status: z.string().max(50),
   education: z.string({ required_error: 'Education is required' }).max(50),
   mobilisation_source: z.string().max(100).nullable().optional(),
   remarks: z.string().nullable().optional(),
-  passport: z.any().nullable().optional(),
+  passport: imageValidation.optional(),
   // Parents details
   father_name: z.string().max(80).nullable().optional(),
   father_last_name: z.string().max(80).nullable().optional(),

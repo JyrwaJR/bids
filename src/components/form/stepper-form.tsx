@@ -8,6 +8,8 @@ import { Form } from '@components/ui/form';
 import { Button } from '@components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Stepper } from 'react-form-stepper';
+import { Checkbox } from '@components/ui/checkbox';
+import { Label } from '@components/ui/label';
 export type StepType = {
   id: string;
   name: string;
@@ -29,11 +31,15 @@ export const useMultiStep = create<MultiStepType>((set) => ({
 export default function MultiStepForm({
   form,
   onSubmit,
-  steps
+  steps,
+  onClick,
+  checked
 }: {
   onSubmit: SubmitHandler<any>;
   form: UseFormReturn<any>;
   steps: StepType[];
+  onClick?: () => void;
+  checked?: boolean;
 }) {
   const formStyle: string = 'w-full sm:col-span-6 md:col-span-6 xl:col-span-4';
   const { currentStep, setCurrentStep, setPreviousStep } = useMultiStep();
@@ -64,7 +70,7 @@ export default function MultiStepForm({
   return (
     <section>
       <Form {...form}>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <Stepper
             steps={steps.map((step) => ({
               label: step.name
@@ -89,6 +95,16 @@ export default function MultiStepForm({
               key={step.name + index}
               className={index === currentStep ? '' : 'hidden'}
             >
+              {onClick && step.name === 'Present Address' && (
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={checked}
+                    onClick={() => onClick()}
+                    name="address"
+                  />
+                  <Label>Same as present</Label>
+                </div>
+              )}
               <CForm
                 form={form}
                 className={formStyle}
