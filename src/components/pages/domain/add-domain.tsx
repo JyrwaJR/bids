@@ -46,7 +46,11 @@ export const AddDomain = ({ onClose, open }: Props) => {
 
   const onSubmit: SubmitHandler<DomainModelType> = async (data) => {
     try {
-      await mutateAsync(data);
+      const res = await mutateAsync(data);
+      if (res.success === true) {
+        form.reset();
+        onClose();
+      }
     } catch (error: any) {
       showToast(FailedToastTitle, error.message);
     }

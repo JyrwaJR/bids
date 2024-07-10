@@ -111,19 +111,6 @@ const AddNewProject = () => {
     <>
       <div className="flex items-start justify-between">
         <Heading
-          title={`List of Domains`}
-          description="Please select a domain to add projects"
-        />
-      </div>
-      <DataTable
-        searchKey="name"
-        data={isDomainFetch && !isDomainError ? domain?.data : []}
-        columns={columns}
-        className="h-96"
-      />
-      <Separator />
-      <div className="flex items-start justify-between">
-        <Heading
           title={`New Projects`}
           description="Please fill the fields to add a projects"
         />
@@ -135,6 +122,19 @@ const AddNewProject = () => {
         loading={isMutateLoading}
         className="md:col-span-6 lg:col-span-4"
         btnText="Add Project"
+      />
+      <Separator />
+      <div className="flex items-start justify-between">
+        <Heading
+          title={`List of Domains`}
+          description="Please select a domain to add projects"
+        />
+      </div>
+      <DataTable
+        searchKey="name"
+        data={isDomainFetch && !isDomainError ? domain?.data : []}
+        columns={columns}
+        className="h-96"
       />
     </>
   );

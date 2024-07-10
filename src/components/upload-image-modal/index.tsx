@@ -28,11 +28,14 @@ const UploadImageModal = ({}: {
     open,
     isSelectedFilterType,
     proofOfIdUploaded,
-    setSelectedFilterType
+    setSelectedFilterType,
+    ageProofUploaded,
+    castProofUploaded,
+    onUploadedImage,
+    otherProofUploaded,
+    educationalProofUploaded,
+    residentProofUploaded
   } = useUploadDocStore();
-  const query = useCQuery({
-    url: 'registration/get-document-types'
-  });
 
   const formList: DocToUpload[] = [
     {
@@ -41,25 +44,31 @@ const UploadImageModal = ({}: {
       uploaded: proofOfIdUploaded
     },
     {
-      name: 'Residence Proof'
+      name: 'Residence Proof',
+      uploaded: residentProofUploaded
     },
     {
-      name: 'Age Proof'
+      name: 'Age Proof',
+      uploaded: ageProofUploaded
     },
     {
-      name: 'Education Qaulification Proof'
+      name: 'Education Qaulification Proof',
+      uploaded: educationalProofUploaded
     },
     {
       name: 'BPL Proof'
     },
     {
-      name: 'Proof of Caste'
+      name: 'Proof of Caste',
+      uploaded: castProofUploaded
     },
     {
-      name: 'Proof of Disability'
+      name: 'Proof of Disability',
+      uploaded: otherProofUploaded
     },
     {
-      name: 'Exceptional Proof'
+      name: 'Exceptional Proof',
+      uploaded: otherProofUploaded
     }
   ];
 

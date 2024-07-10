@@ -255,7 +255,7 @@ const studentRegistrationPresentAddressFields: FormFieldType[] = [
 
 const studentRegistrationPermanentsAddressDetailFields: FormFieldType[] = [
   {
-    name: 'permanent_address',
+    name: 'p_address',
     label: 'Permanent Address',
     required: false,
     type: 'text',
@@ -541,38 +541,32 @@ const studentRegistrationParentDetailFields: FormFieldType[] = [
 ];
 
 export const studentRegistrationFields: StepType[] = [
-  // {
-  //   name: 'Start Registration',
-  //   id: 'Start Registration',
-  //   fields: startStudentRegistrationFields
-  // },
+  {
+    name: 'Start Registration',
+    id: 'Start Registration',
+    fields: startStudentRegistrationFields
+  },
   {
     name: 'Personal Information',
     id: 'Personal Information',
     fields: studentRegistrationPersonalDetailsFields
   },
-  // {
-  //   name: 'Parental Details',
-  //   id: 'Parental Details',
-  //   fields: studentRegistrationParentDetailFields
-  // },
-  // {
-  //   name: 'Address',
-  //   id: 'Address',
-  //   fields: [
-  //     ...studentRegistrationPresentAddressFields,
-  //     ...studentRegistrationPermanentsAddressDetailFields
-  //   ]
-  // },
-
+  {
+    name: 'Parental Details',
+    id: 'Parental Details',
+    fields: studentRegistrationParentDetailFields
+  },
+  {
+    name: 'Address',
+    id: 'Address',
+    fields: [
+      ...studentRegistrationPresentAddressFields,
+      ...studentRegistrationPermanentsAddressDetailFields
+    ]
+  },
   {
     name: 'Apply Domain',
     id: 'Apply Domain',
     fields: studentRegistrationDomain
   }
-  // {
-  //   name: 'Other Information',
-  //   id: 'Other Information',
-  //   fields: studentRegistrationOtherInfoFields
-  // }
 ];

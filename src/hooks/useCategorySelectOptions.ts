@@ -54,8 +54,8 @@ export function useCategorySelectOptions({ centreId, projectId }: Props = {}) {
     queryKey: ['district', 'get district']
   });
   const { data: domain, isFetched: isDomainFetched } = useCQuery({
-    url: 'centre',
-    queryKey: ['get', 'domain']
+    url: 'domain/listall',
+    queryKey: ['get', 'list all', 'domain']
   });
 
   const { data: center, isFetched: isCenterFetched } = useCQuery({
@@ -65,6 +65,7 @@ export function useCategorySelectOptions({ centreId, projectId }: Props = {}) {
 
   const domainOptions = useCallback(() => {
     if (isDomainFetched && domain) {
+      console.log('Domain Category=>', domain.data ?? []);
       return domain.data.map((domain: { name: string; id: string }) => ({
         label: domain.name,
         value: domain.id
@@ -72,6 +73,7 @@ export function useCategorySelectOptions({ centreId, projectId }: Props = {}) {
     }
     return [];
   }, [isDomainFetched, domain]);
+  // 9c665d8b-3ad5-4456-8741-b12da097d544
 
   const projectOptions = useCallback(() => {
     if (isProjectFetched && project) {

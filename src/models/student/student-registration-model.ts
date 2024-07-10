@@ -9,7 +9,8 @@ export const StudentRegistrationModel = z.object({
   admission_no: z.string().max(30).nullable().optional(),
   registration_date: z
     .string({ required_error: 'Registration date is required' })
-    .refine((val) => format(new Date(val), 'yyyy-MM-dd') !== 'Invalid Date'),
+    .refine((val) => format(new Date(val), 'yyyy-MM-dd') !== 'Invalid Date')
+    .default(format(new Date(), 'yyyy-MM-dd')),
   aadhaar: z.string().length(12).nullable().optional(),
   first_name: z.string({ required_error: 'First name is required' }).max(80),
   middle_name: z.string().max(50).nullable().optional(),
@@ -21,10 +22,13 @@ export const StudentRegistrationModel = z.object({
     .string({ required_error: 'Gender is required' })
     .max(10)
     .refine((val) => gender.some((g) => g.value === val)),
-  category: z.string().max(5).default('ST'),
+  category: z.string().max(8).default('ST'),
   mobile: z.string({ required_error: 'Mobile number is required' }).length(10),
   email: z.string().email().max(80).nullable().optional(),
-  religion: z.string({ required_error: 'Religion is required' }).max(50),
+  religion: z
+    .string({ required_error: 'Religion is required' })
+    .max(50)
+    .default('Christian'),
   marital_status: z.string().max(50),
   education: z.string({ required_error: 'Education is required' }).max(50),
   mobilisation_source: z.string().max(100).nullable().optional(),
@@ -60,7 +64,7 @@ export const StudentRegistrationModel = z.object({
   state: z.string().max(60).nullable().optional(),
   pin_code: z.string().length(6).nullable().optional(),
   // Permanent Address
-  permanent_address: z.string().max(255).nullable().optional(),
+  p_address: z.string().max(255).nullable().optional(),
   p_landmark: z.string().max(255).nullable().optional(),
   p_village: z.string().max(60).nullable().optional(),
   p_panchayat: z.string().max(60).nullable().optional(),
@@ -123,7 +127,13 @@ export const StudentRegistrationModel = z.object({
     .optional(),
   status: z.string().max(20).default('Applied'),
   created_at: z.date().optional(),
-  updated_at: z.date().optional()
+  updated_at: z.date().optional(),
+  bpl_card_no: z.string().max(50).nullable().optional(),
+  bpl_card_issue: z.number().int().nullable().optional(),
+  is_bpl_certified: z.enum(['Yes', 'No']).default('No'),
+  bpl_certification_authority: z.string().max(100).nullable().optional(),
+  bpl_other_certifying_authority: z.string().max(100).nullable().optional(),
+  bpl_certificate_issue_date: z.date().nullable().optional()
 });
 
 export type StudentRegistrationModelType = z.infer<

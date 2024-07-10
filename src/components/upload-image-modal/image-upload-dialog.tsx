@@ -75,7 +75,7 @@ export const ImageUploadDialog = ({
   desc = 'Please upload your document'
 }: Props) => {
   const { id, setId } = useRegisterStudent();
-  const { open, setOpen } = useUploadDocStore();
+  const { open, setOpen, onUploadedImage } = useUploadDocStore();
 
   const form = useForm<SchemaType>({
     resolver: zodResolver(Schema),
@@ -204,7 +204,11 @@ export const ImageUploadDialog = ({
         );
         return;
       }
-      mutate.mutateAsync(data);
+      const res = await mutate.mutateAsync(data);
+      if (res.success) {
+        onUploadedImage(form.getValues('proof_type'));
+        setOpen(false);
+      }
     } catch (error) {
       showToast(FailedToastTitle, 'Something went wrong');
     }
@@ -221,7 +225,7 @@ export const ImageUploadDialog = ({
           fields={updatedFields}
           form={form}
           onSubmit={onSubmit}
-          loading={isLoading}
+          loading={isLoading || mutate.isLoading}
           btnStyle="md:w-full"
         />
       </DialogContent>

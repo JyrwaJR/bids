@@ -62,7 +62,6 @@ export default function Page() {
     formData.append('marital_status', data.marital_status);
     formData.append('education', data.education);
     formData.append('passport', data.passport);
-
     const response = await mutateAsync(formData);
 
     console.log(response);

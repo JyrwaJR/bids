@@ -1,6 +1,5 @@
 import { FormFieldType } from '@components/index';
 import { StatusOptions } from '@constants/options';
-
 export const domainFields: FormFieldType[] = [
   {
     name: 'name',

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 interface UploadStoreType {
+  educationalProofUploaded: boolean;
   proofOfIdUploaded: boolean;
   setProofOfIdUploaded: (open: boolean) => void;
 
@@ -21,6 +22,8 @@ interface UploadStoreType {
 
   open: boolean;
   setOpen: (open: boolean) => void;
+
+  onUploadedImage: (name: string) => void;
 }
 export const useUploadDocStore = create<UploadStoreType>((set) => ({
   proofOfIdUploaded: false,
@@ -41,6 +44,27 @@ export const useUploadDocStore = create<UploadStoreType>((set) => ({
 
   isSelectedFilterType: '',
   setSelectedFilterType: (type: string) => set({ isSelectedFilterType: type }),
+
   open: false,
-  setOpen: (open: boolean) => set({ open: open })
+  setOpen: (open: boolean) => set({ open: open }),
+  educationalProofUploaded: false,
+  onUploadedImage: (name: string) => {
+    console.log(name);
+    switch (name) {
+      case 'ID Proof':
+        return set({ proofOfIdUploaded: true });
+      case 'Residence Proof':
+        return set({ residentProofUploaded: true });
+      case 'Age Proof':
+        return set({ ageProofUploaded: true });
+      case 'Proof of Caste':
+        return set({ castProofUploaded: true });
+      case 'Exceptional Proof':
+        return set({ otherProofUploaded: true });
+      case 'Education Qaulification Proof':
+        return set({ educationalProofUploaded: true });
+      default:
+        break;
+    }
+  }
 }));

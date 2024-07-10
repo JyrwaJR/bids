@@ -10,6 +10,8 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Stepper } from 'react-form-stepper';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
+import { Separator } from '@components/ui/separator';
+import { useEffect } from 'react';
 export type StepType = {
   id: string;
   name: string;
@@ -66,7 +68,23 @@ export default function MultiStepForm({
       setCurrentStep(step);
     }
   };
-
+  useEffect(() => {
+    if (checked) {
+      form.reset({
+        ...form.getValues(),
+        p_address: form.getValues('present_address'),
+        p_landmark: form.getValues('landmark'),
+        p_village: form.getValues('village'),
+        p_panchayat: form.getValues('panchayat'),
+        p_block: form.getValues('block'),
+        p_police_station: form.getValues('police_station'),
+        p_post_office: form.getValues('post_office'),
+        p_district: form.getValues('district'),
+        p_state: form.getValues('state'),
+        p_pin_code: form.getValues('pin_code')
+      });
+    }
+  }, [checked, form]);
   return (
     <section>
       <Form {...form}>
@@ -95,22 +113,47 @@ export default function MultiStepForm({
               key={step.name + index}
               className={index === currentStep ? '' : 'hidden'}
             >
-              {onClick && step.name === 'Present Address' && (
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    checked={checked}
-                    onClick={() => onClick()}
-                    name="address"
+              {onClick && step.name === 'Address' ? (
+                <>
+                  <CForm
+                    form={form}
+                    className={formStyle}
+                    loading={false}
+                    fields={step.fields.filter(
+                      (field) => !field.name.startsWith('p_')
+                    )}
                   />
-                  <Label>Same as present</Label>
-                </div>
+                  <Separator />
+                  <div className="flex items-center space-x-2 py-4">
+                    <Checkbox
+                      checked={checked}
+                      onClick={() => onClick()}
+                      name="address"
+                    />
+                    <Label>Same as present</Label>
+                  </div>
+                  <CForm
+                    form={form}
+                    className={formStyle}
+                    loading={false}
+                    fields={step.fields
+                      .filter((field) => field.name.startsWith('p_'))
+                      ?.map((field) => {
+                        return {
+                          ...field,
+                          readOnly: checked
+                        };
+                      })}
+                  />
+                </>
+              ) : (
+                <CForm
+                  form={form}
+                  className={formStyle}
+                  loading={false}
+                  fields={step.fields}
+                />
               )}
-              <CForm
-                form={form}
-                className={formStyle}
-                loading={false}
-                fields={step.fields}
-              />
             </div>
           ))}
 

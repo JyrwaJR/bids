@@ -15,7 +15,6 @@ interface RegisterType {
 }
 
 const emptyDefaultStudentRegistrationData: StudentRegistrationModelType = {
-  // admission_no: null,
   registration_date: '',
   aadhaar: null,
   first_name: '',
