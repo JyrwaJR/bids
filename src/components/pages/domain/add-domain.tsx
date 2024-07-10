@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle
 } from '@components/ui/dialog';
-import { Form } from '@src/components';
+import { Form, FormFieldType } from '@src/components';
 import { domainFields } from '@constants/input-fields/domain';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,6 +15,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useCMutation } from '@hooks/useCMutation';
 import { showToast } from '@components/ui/show-toast';
 import { FailedToastTitle } from '@constants/toast-message';
+import { useCQuery } from '@hooks/useCQuery';
+import { OptionsT } from '@components/form/type';
 
 type Props = {
   open: true | false;
@@ -25,11 +27,23 @@ export const AddDomain = ({ onClose, open }: Props) => {
   const form = useForm<DomainModelType>({
     resolver: zodResolver(DomainModel)
   });
+  const sectorQuery = useCQuery({
+    url: 'sector',
+    queryKey: ['get', 'sector']
+  });
+
+  const sectorOptions: OptionsT[] =
+    sectorQuery.isFetched &&
+    !sectorQuery.isLoading &&
+    sectorQuery.data.data.map((item: { name: string; id: string }) => {
+      return { label: item.name, value: item.id.toString() };
+    });
   const { mutateAsync, isLoading } = useCMutation({
     url: 'domain/save',
     method: 'POST',
     queryKey: ['get', 'domain']
   });
+
   const onSubmit: SubmitHandler<DomainModelType> = async (data) => {
     try {
       await mutateAsync(data);
@@ -37,6 +51,16 @@ export const AddDomain = ({ onClose, open }: Props) => {
       showToast(FailedToastTitle, error.message);
     }
   };
+  const updateFields: FormFieldType[] = [
+    ...domainFields,
+    {
+      name: 'sector_id',
+      label: 'Sector',
+      select: true,
+      options:
+        sectorQuery.isFetched && !sectorQuery.isLoading ? sectorOptions : []
+    }
+  ];
   return (
     <Dialog modal open={open} onOpenChange={onClose}>
       <DialogContent>
@@ -47,7 +71,7 @@ export const AddDomain = ({ onClose, open }: Props) => {
           </DialogDescription>
         </DialogHeader>
         <Form
-          fields={domainFields}
+          fields={updateFields}
           form={form}
           loading={isLoading}
           onSubmit={onSubmit}
