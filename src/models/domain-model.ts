@@ -5,6 +5,9 @@ import { z } from 'zod';
 
 export const DomainModel = z.object({
   id: z.string().uuid().optional(),
+  sector_id: z.string({
+    required_error: FieldsIsRequired
+  }),
   name: z
     .string({
       required_error: FieldsIsRequired

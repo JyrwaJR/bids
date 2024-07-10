@@ -13,6 +13,8 @@ import { useCMutation } from '@src/hooks';
 import { Props } from '@src/types';
 
 import { AuthContext, UserType } from './auth-context';
+import { axiosInstance } from '@lib/utils';
+
 const baseUrl: string = process.env.NEXT_PUBLIC_API_BASE_URL!;
 interface LoginTProps {
   email: string;
@@ -183,6 +185,18 @@ export const AuthProvider = ({ children }: Props) => {
       return;
     }
   }, [headers, cookies?.token]);
+
+  axiosInstance.interceptors.request.use(
+    (config) => {
+      if (cookies?.token) {
+        config.headers.Authorization = `Bearer ${cookies?.token}`;
+      }
+      return config;
+    },
+    (error: any) => {
+      return Promise.reject(error);
+    }
+  );
 
   useEffect(() => {
     if (cookies?.token || isToken) {

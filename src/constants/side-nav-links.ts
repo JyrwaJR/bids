@@ -58,8 +58,8 @@ export const navItems: NavItem[] = [
     label: 'registration'
   },
   {
-    title: 'User',
-    href: '/dashboard/user',
+    title: 'Sector',
+    href: '/dashboard/sector',
     icon: 'chevronRight',
     label: 'registration'
   }
