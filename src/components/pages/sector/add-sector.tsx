@@ -36,12 +36,11 @@ const SectorModel = z.object({
 });
 type SectorModelType = z.infer<typeof SectorModel>;
 export const AddSector = () => {
-  const { id, open, onOpenChange: onClose } = useSectorStore();
+  const { id, open, onOpenChange: onClose, setId } = useSectorStore();
   const form = useForm<SectorModelType>({
     resolver: zodResolver(SectorModel)
   });
   const url = !!id ? `sector/update/${id}` : 'sector/save';
-
   const { mutateAsync, isLoading } = useCMutation({
     url: url,
     method: !!id ? 'PUT' : 'POST',
@@ -54,6 +53,9 @@ export const AddSector = () => {
       if (res.success) {
         form.reset();
         onClose(false);
+        if (!!id) {
+          setId('');
+        }
       }
     } catch (error: any) {
       showToast(FailedToastTitle, error.message);
@@ -64,7 +66,7 @@ export const AddSector = () => {
     <Dialog modal open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Sector</DialogTitle>
+          <DialogTitle>{!!id ? 'Update' : 'Add'} Sector</DialogTitle>
           <DialogDescription>
             Lorem, ipsum dolor sit amet consectetur adipisicing elit.{' '}
           </DialogDescription>
