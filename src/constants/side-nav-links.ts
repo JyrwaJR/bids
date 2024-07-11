@@ -51,12 +51,10 @@ export const navItems: NavItem[] = [
     href: '/dashboard/staff',
     label: 'staff'
   },
-
   {
     title: 'Registration ',
     icon: 'laptop',
     label: 'registration',
-    external: true,
     description: 'Student Registration',
     items: [
       {
@@ -64,7 +62,7 @@ export const navItems: NavItem[] = [
         href: '/dashboard/registration',
         icon: 'profile',
         label: 'registration',
-        external: true,
+
         description: 'Student Registration'
       },
       {
@@ -72,7 +70,7 @@ export const navItems: NavItem[] = [
         href: '/dashboard/registration/update-registration',
         icon: 'settings',
         label: 'registration',
-        external: true,
+
         description: 'Student Registration'
       }
     ]
@@ -87,7 +85,6 @@ export const navItems: NavItem[] = [
     title: 'Profile',
     href: '/dashboard/profile',
     icon: 'profile',
-    external: true,
     label: 'registration'
   }
 ];
