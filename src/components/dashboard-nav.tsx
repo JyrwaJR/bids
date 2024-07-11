@@ -18,12 +18,7 @@ import {
 import { useAuthContext } from '@context/auth';
 import { AlertModal } from './modal/alert-modal';
 import { Button } from './ui/button';
-import {
-  ChevronDown,
-  ChevronsDown,
-  ChevronsUpDown,
-  ChevronUp
-} from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import {
   Collapsible,
   CollapsibleContent,
@@ -46,7 +41,9 @@ export function DashboardNav({
   const { isMinimized, toggle } = useSidebar();
   const [openSubMenuId, setOpenSubMenuId] = useState<string | null>(null);
   const [isAlertLogout, setIsAlertLogout] = useState(false);
-
+  useEffect(() => {
+    if (isMinimized) setOpenSubMenuId(null);
+  }, [isMinimized]);
   if (!items?.length) {
     return null;
   }
@@ -74,8 +71,8 @@ export function DashboardNav({
                           openSubMenuId === itemId ? null : itemId
                         );
                         if (isMinimized && toggle) toggle();
-
-                        if (isMinimized && toggle) toggle();
+                        if (isMinimized && openSubMenuId === item.title)
+                          setOpenSubMenuId(null);
                       }}
                       className="w-full space-y-2 "
                     >

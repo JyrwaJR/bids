@@ -41,8 +41,7 @@ export const navItems: NavItem[] = [
         title: 'Project',
         href: '/dashboard/projects',
         icon: 'kanban',
-        label: 'project',
-        disabled: true
+        label: 'project'
       }
     ]
   },
@@ -55,7 +54,7 @@ export const navItems: NavItem[] = [
 
   {
     title: 'Registration ',
-    icon: 'billing',
+    icon: 'laptop',
     label: 'registration',
     external: true,
     description: 'Student Registration',
@@ -71,7 +70,7 @@ export const navItems: NavItem[] = [
       {
         title: 'Update Registration',
         href: '/dashboard/registration/update-registration',
-        icon: 'profile',
+        icon: 'settings',
         label: 'registration',
         external: true,
         description: 'Student Registration'
