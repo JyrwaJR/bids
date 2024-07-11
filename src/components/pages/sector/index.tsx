@@ -4,7 +4,7 @@ import { Heading } from '@components/ui/heading';
 import { Separator } from '@components/ui/separator';
 import { useCQuery } from '@hooks/useCQuery';
 import { Plus } from 'lucide-react';
-import React, { useState } from 'react';
+import React from 'react';
 import { DataTable } from '@components/ui/data-table';
 import { AddSector } from './add-sector';
 import { ColumnDef } from '@tanstack/react-table';
@@ -12,7 +12,7 @@ import { CellAction } from '@components/cell-action';
 import { useSectorStore } from '@lib/store';
 
 export const SectorPage = () => {
-  const { id, setId, onOpenChange, open } = useSectorStore();
+  const { setId, onOpenChange, open } = useSectorStore();
   const { data, isFetched } = useCQuery({
     url: 'sector',
     queryKey: ['get', 'sector']

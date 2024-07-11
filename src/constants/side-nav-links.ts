@@ -1,4 +1,5 @@
-import { NavItem } from '@src/types';
+import { NavItem, NavItemWithOptionalChildren } from '@src/types';
+import { NavItemWithChildren } from '../types/index';
 
 export const navItems: NavItem[] = [
   {
@@ -9,41 +10,73 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Center',
-    href: '/dashboard/centre',
     icon: 'add',
-    label: 'centre'
+    label: 'centre',
+    items: [
+      {
+        title: 'Centre',
+        href: '/dashboard/centre',
+        icon: 'add',
+        label: 'centre'
+      },
+      {
+        title: 'Batch',
+        href: '/dashboard/batch',
+        icon: 'employee',
+        label: 'batch'
+      },
+      {
+        title: 'Domain',
+        href: '/dashboard/domain',
+        icon: 'user',
+        label: 'domain'
+      },
+      {
+        title: 'Sector',
+        href: '/dashboard/sector',
+        icon: 'check',
+        label: 'registration'
+      },
+      {
+        title: 'Project',
+        href: '/dashboard/projects',
+        icon: 'kanban',
+        label: 'project',
+        disabled: true
+      }
+    ]
   },
   {
     title: 'Staff',
-    href: '/dashboard/staff',
     icon: 'billing',
+    href: '/dashboard/staff',
     label: 'staff'
   },
+
   {
-    title: 'Domain',
-    href: '/dashboard/domain',
-    icon: 'user',
-    label: 'domain'
-  },
-  {
-    title: 'Project',
-    href: '/dashboard/projects',
-    icon: 'kanban',
-    label: 'project'
-  },
-  {
-    title: 'Batch',
-    href: '/dashboard/batch',
-    icon: 'chevronLeft',
-    label: 'batch'
-  },
-  {
-    title: 'Student Registration ',
-    href: '/dashboard/registration',
+    title: 'Registration ',
     icon: 'billing',
     label: 'registration',
     external: true,
-    description: 'Student Registration'
+    description: 'Student Registration',
+    items: [
+      {
+        title: 'Apply Student',
+        href: '/dashboard/registration',
+        icon: 'profile',
+        label: 'registration',
+        external: true,
+        description: 'Student Registration'
+      },
+      {
+        title: 'Update Registration',
+        href: '/dashboard/registration/update-registration',
+        icon: 'profile',
+        label: 'registration',
+        external: true,
+        description: 'Student Registration'
+      }
+    ]
   },
   {
     title: 'Applied Student',
@@ -54,13 +87,8 @@ export const navItems: NavItem[] = [
   {
     title: 'Profile',
     href: '/dashboard/profile',
-    icon: 'chevronRight',
-    label: 'registration'
-  },
-  {
-    title: 'Sector',
-    href: '/dashboard/sector',
-    icon: 'chevronRight',
+    icon: 'profile',
+    external: true,
     label: 'registration'
   }
 ];

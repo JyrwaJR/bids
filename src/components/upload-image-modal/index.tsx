@@ -6,7 +6,6 @@ import { useUploadDocStore } from '@lib/store/useUploadDocStore';
 import React from 'react';
 import { SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { ImageUploadDialog } from './image-upload-dialog';
-import { useCQuery } from '@hooks/useCQuery';
 
 type DocToUpload = {
   name: string;
@@ -31,7 +30,6 @@ const UploadImageModal = ({}: {
     setSelectedFilterType,
     ageProofUploaded,
     castProofUploaded,
-    onUploadedImage,
     otherProofUploaded,
     educationalProofUploaded,
     residentProofUploaded

@@ -33,8 +33,24 @@ async function getBatch(projectId?: string) {
     throw new Error(error);
   }
 }
+const getStudentDataIfExist = async (id: string) => {
+  try {
+    if (!id) return;
+    const res = await axiosInstance.get(`/registration/search-student`, {
+      params: {
+        search: '2024-07-11'
+      }
+    });
+    console.log(res.data);
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
 
 const Registration = () => {
+  const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);
+  const { options } = useCategorySelectOptions();
   const form = useForm<StudentRegistrationModelWithDomainType>({
     resolver: zodResolver(StudentRegistrationModelWithDomain),
     defaultValues: {
@@ -46,26 +62,28 @@ const Registration = () => {
     }
   });
 
-  const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);
-  const { options } = useCategorySelectOptions();
-  const {
-    data: batch,
-    isFetched,
-    isError
-  } = useQuery({
+  const batchQuery = useQuery({
     queryFn: async () => await getBatch(form.watch('project_id')),
     enabled: !!form.watch('project_id'),
     queryKey: form.watch('project_id')
   });
 
   const batchOptions: OptionsT[] | undefined =
-    isFetched &&
-    !isError &&
-    batch.data &&
-    batch.data.map((item: any) => ({
+    batchQuery.isFetched &&
+    !batchQuery.isError &&
+    batchQuery.data &&
+    batchQuery.data.map((item: any) => ({
       label: item.batch_code,
       value: item.id
     }));
+
+  const studentQuery = useQuery({
+    queryFn: async () => await getStudentDataIfExist(form.watch('first_name')),
+    enabled: !!form.watch('first_name'),
+    queryKey: form.watch('first_name')
+  });
+
+  console.log(studentQuery.data);
 
   const startRegisMutate = useMutation({
     mutationFn: async (data: StudentRegistrationModelWithDomainType) =>
@@ -112,6 +130,8 @@ const Registration = () => {
   const fieldInput: StepType[] = [
     ...studentRegistrationFields,
     {
+      id: '5',
+      name: 'Other Details',
       fields: [
         {
           name: 'is_technical_education',
@@ -232,9 +252,7 @@ const Registration = () => {
           type: 'number',
           placeholder: 'Enter MGNREGA Hours Worked'
         }
-      ],
-      id: '5',
-      name: 'Other Details'
+      ]
     }
   ];
   const updatedFields: StepType[] = fieldInput.map((element: StepType) => {
@@ -263,14 +281,7 @@ const Registration = () => {
             return {
               ...field,
               options:
-                isFetched && batch.data.length > 0
-                  ? batchOptions
-                  : [
-                      {
-                        label: 'No Batch',
-                        value: ''
-                      }
-                    ]
+                batchQuery.isFetched && batchQuery.data ? batchOptions : []
             };
           default:
             return field;

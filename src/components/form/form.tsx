@@ -21,7 +21,9 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue
 } from '../ui/select';
@@ -98,17 +100,20 @@ export const CForm = <T,>({
                                 >
                                   <SelectValue
                                     placeholder={
-                                      input.placeholder ?? 'Select an option'
+                                      input.placeholder ??
+                                      `Select ${input.label}`
                                     }
                                   />
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent className="max-h-96">
-                                <ScrollArea>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectLabel>{input.label}</SelectLabel>
                                   {input.options?.map(
                                     (option: OptionsT, i: number) => (
                                       <React.Fragment key={i}>
                                         <SelectItem
+                                          className="cursor-pointer "
                                           value={option.value as string}
                                         >
                                           {option.label}
@@ -116,7 +121,7 @@ export const CForm = <T,>({
                                       </React.Fragment>
                                     )
                                   )}
-                                </ScrollArea>
+                                </SelectGroup>
                               </SelectContent>
                               <FormMessage />
                               <FormDescription>

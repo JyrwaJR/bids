@@ -11,8 +11,12 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathName = usePathname();
+
   const breadcrumbItems = [
-    { title: `${pathName.split('/')[2]}`, link: `${pathName}` }
+    {
+      title: pathName === '/dashboard' ? 'Home' : `${pathName.split('/')[2]}`,
+      link: `${pathName === '/dashboard' ? '/dashboard' : pathName}`
+    }
   ];
   return (
     <>

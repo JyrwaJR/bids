@@ -13,15 +13,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useCMutation } from '@hooks/useCMutation';
 import { showToast } from '@components/ui/show-toast';
 import { FailedToastTitle } from '@constants/toast-message';
-import { useCQuery } from '@hooks/useCQuery';
-import { OptionsT } from '@components/form/type';
 import { z } from 'zod';
 import { useSectorStore } from '@lib/store';
 
-type Props = {
-  open: true | false;
-  onClose: () => void;
-};
 const sectorFields: FormFieldType[] = [
   {
     name: 'name',

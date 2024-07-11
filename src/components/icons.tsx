@@ -30,7 +30,8 @@ import {
   User2Icon,
   UserX2Icon,
   X,
-  Upload
+  Upload,
+  ExternalLink
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -64,6 +65,7 @@ export const Icons = {
   laptop: Laptop,
   logout: LockIcon,
   upload: Upload,
+  external: ExternalLink,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

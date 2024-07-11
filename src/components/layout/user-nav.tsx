@@ -1,7 +1,4 @@
 'use client';
-import { AlertModal } from '@components/modal/alert-modal';
-import { showToast } from '@components/ui/show-toast';
-import { FailedToastTitle } from '@constants/toast-message';
 import { useAuthContext } from '@context/auth';
 import { Avatar, AvatarFallback } from '@src/components/ui/avatar';
 import { Button } from '@src/components/ui/button';
@@ -15,7 +12,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger
 } from '@src/components/ui/dropdown-menu';
-import { useState } from 'react';
 
 export function UserNav() {
   const { onLogout, user } = useAuthContext();

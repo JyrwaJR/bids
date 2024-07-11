@@ -22,7 +22,6 @@ This is a starter template using the following stack:
 - Schema Validations - [Zod](https://zod.dev)
 - State Management - [Zustand](https://zustand-demo.pmnd.rs)
 - Auth - [Auth.js](https://authjs.dev/)
-- File Uploading - [Uploadthing](https://uploadthing.com)
 - Tables - [Tanstack Tables](https://ui.shadcn.com/docs/components/data-table)
 - Forms - [React Hook Form](https://ui.shadcn.com/docs/components/form)
 - Linting - [ESLint](https://eslint.org)
@@ -49,7 +48,7 @@ _If you are looking for a React admin dashboard starter, here is the [repo](http
 
 Follow these steps to clone the repository and start the development server:
 
-- `git clone https://github.com/Kiranism/next-shadcn-dashboard-starter.git`
+- `git clone https://github.com/`
 - `npm install`
 - Create a `.env.local` file by copying the example environment file:
   `cp env.example.txt .env.local`
