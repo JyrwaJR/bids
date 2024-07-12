@@ -9,8 +9,7 @@ export const StudentRegistrationModel = z.object({
   admission_no: z.string().max(30).nullable().optional(),
   registration_date: z
     .string({ required_error: 'Registration date is required' })
-    .refine((val) => format(new Date(val), 'yyyy-MM-dd') !== 'Invalid Date')
-    .default(format(new Date(), 'yyyy-MM-dd')),
+    .refine((val) => format(new Date(val), 'yyyy-MM-dd') !== 'Invalid Date'),
   aadhaar: z.string().length(12).nullable().optional(),
   first_name: z.string({ required_error: 'First name is required' }).max(80),
   middle_name: z.string().max(50).nullable().optional(),

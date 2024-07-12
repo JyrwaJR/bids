@@ -1,9 +1,9 @@
 'use client';
-import { Form } from '@components/form';
 import { FormFieldType } from '@components/index';
 import { Button } from '@components/ui/button';
 import UploadImageModal from '@components/upload-image-modal';
 import { useCMutation } from '@hooks/useCMutation';
+import { useRegisterStudentStore } from '@lib/store';
 import { ScrollArea } from '@src/components/ui/scroll-area';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
@@ -28,7 +28,8 @@ type FormData = {
   education: string;
   passport: File;
 };
-export default function Page() {
+const Page = () => {
+  const { setId, id } = useRegisterStudentStore();
   const form = useForm<FormData>();
   const { mutateAsync } = useCMutation({
     url: 'registration/add-personal-details/9c6da18e-33af-4b68-a55d-03aa220dc01e',
@@ -66,8 +67,16 @@ export default function Page() {
 
     console.log(response);
   };
+
   return (
     <ScrollArea className="h-full">
+      <Button
+        onClick={() => {
+          setId('9c796e2f-0f5a-42b2-ba98-287cfca979cf');
+        }}
+      >
+        {id}
+      </Button>
       <UploadImageModal
         fields={formFields}
         form={form}
@@ -78,4 +87,5 @@ export default function Page() {
       />
     </ScrollArea>
   );
-}
+};
+export default Page;

@@ -12,7 +12,7 @@ import { FailedToastTitle } from '@constants/toast-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCMutation } from '@hooks/useCMutation';
 import { useCQuery } from '@hooks/useCQuery';
-import { useRegisterStudent } from '@lib/store';
+import { useRegisterStudentStore } from '@lib/store';
 import { useUploadDocStore } from '@lib/store/useUploadDocStore';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -74,7 +74,7 @@ export const ImageUploadDialog = ({
   title = 'Upload Document',
   desc = 'Please upload your document'
 }: Props) => {
-  const { id, setId } = useRegisterStudent();
+  const { id } = useRegisterStudentStore();
   const { open, setOpen, onUploadedImage } = useUploadDocStore();
 
   const form = useForm<SchemaType>({
@@ -87,9 +87,7 @@ export const ImageUploadDialog = ({
   const { data, isLoading } = useCQuery({
     url: 'registration/get-document-types'
   });
-  useEffect(() => {
-    setId('9c796e2f-0f5a-42b2-ba98-287cfca979cf');
-  }, [setId]);
+
   const mutate = useCMutation({
     url: `registration/upload-document/${id}`,
     method: 'POST',
@@ -113,7 +111,6 @@ export const ImageUploadDialog = ({
 
     return transformedData;
   };
-  // here should appen he proof type with the category data
   const proofTypeOptions: OptionsT[] = transformData(data?.data || []).map(
     (item) => ({
       label: item.category,

@@ -1,5 +1,4 @@
-import { NavItem, NavItemWithOptionalChildren } from '@src/types';
-import { NavItemWithChildren } from '../types/index';
+import { NavItem } from '@src/types';
 
 export const navItems: NavItem[] = [
   {
@@ -67,7 +66,7 @@ export const navItems: NavItem[] = [
       },
       {
         title: 'Update Registration',
-        href: '/dashboard/registration/update-registration',
+        href: '/dashboard/registration/update',
         icon: 'settings',
         label: 'registration',
 

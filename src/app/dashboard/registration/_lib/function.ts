@@ -10,6 +10,31 @@ import {
 import { StudentRegistrationApplyDomainModel } from '@models/student/student-registration-apply-domain-model';
 import { z } from 'zod';
 
+export async function getBatch(projectId?: string) {
+  try {
+    if (!projectId) return;
+    const res = await axiosInstance.get(
+      `/batch/get-batch-by-centre/${projectId}`
+    );
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+export const getStudentDataIfExist = async (id: string) => {
+  try {
+    if (!id) return;
+    const res = await axiosInstance.get(`/registration/search-student`, {
+      params: {
+        search: '2024-07-11'
+      }
+    });
+    console.log(res.data);
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
 export const StudentRegistrationModelWithDomain =
   StudentRegistrationModel.merge(
     StudentRegistrationApplyDomainModel

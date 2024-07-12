@@ -35,13 +35,17 @@ export default function MultiStepForm({
   onSubmit,
   steps,
   onClick,
-  checked
+  checked,
+  loading,
+  disabled
 }: {
   onSubmit: SubmitHandler<any>;
   form: UseFormReturn<any>;
   steps: StepType[];
   onClick?: () => void;
   checked?: boolean;
+  loading?: boolean;
+  disabled?: boolean;
 }) {
   const formStyle: string = 'w-full sm:col-span-6 md:col-span-6 xl:col-span-4';
   const { currentStep, setCurrentStep, setPreviousStep } = useMultiStep();
@@ -118,7 +122,8 @@ export default function MultiStepForm({
                   <CForm
                     form={form}
                     className={formStyle}
-                    loading={false}
+                    loading={loading ?? false}
+                    disabled={disabled}
                     fields={step.fields.filter(
                       (field) => !field.name.startsWith('p_')
                     )}
@@ -134,8 +139,9 @@ export default function MultiStepForm({
                   </div>
                   <CForm
                     form={form}
+                    disabled={disabled}
+                    loading={loading ?? false}
                     className={formStyle}
-                    loading={false}
                     fields={step.fields
                       .filter((field) => field.name.startsWith('p_'))
                       ?.map((field) => {
@@ -150,7 +156,8 @@ export default function MultiStepForm({
                 <CForm
                   form={form}
                   className={formStyle}
-                  loading={false}
+                  disabled={disabled}
+                  loading={loading ?? false}
                   fields={step.fields}
                 />
               )}
@@ -164,13 +171,19 @@ export default function MultiStepForm({
                 Back
               </Button>
               {currentStep < steps.length - 1 && (
-                <Button type="button" onClick={next}>
+                <Button
+                  disabled={disabled || loading}
+                  type="button"
+                  onClick={next}
+                >
                   Next
                   <ArrowRight className="ml-4" />
                 </Button>
               )}
               {currentStep === steps.length - 1 && (
-                <Button type="submit">Submit</Button>
+                <Button disabled={disabled || loading} type="submit">
+                  Submit
+                </Button>
               )}
             </div>
           </div>

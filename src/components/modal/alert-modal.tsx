@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { Children, useEffect, useState } from 'react';
 
 import { Button } from '@src/components/ui/button';
 import { Modal } from '@src/components/ui/modal';
@@ -13,6 +13,8 @@ interface AlertModalProps {
   title?: string;
   desc?: string;
   className?: string;
+  btnText?: string;
+  children?: React.ReactNode;
 }
 
 export const AlertModal: React.FC<AlertModalProps> = ({
@@ -22,7 +24,9 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   loading,
   title = 'Are you sure?',
   desc = 'This action cannot be undone.',
-  className
+  className,
+  btnText = 'Continue',
+  children
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
@@ -40,11 +44,12 @@ export const AlertModal: React.FC<AlertModalProps> = ({
           className
         )}
       >
+        {children}
         <Button disabled={loading} variant="outline" onClick={onClose}>
           Cancel
         </Button>
         <Button disabled={loading} variant="destructive" onClick={onConfirm}>
-          Continue
+          {btnText}
         </Button>
       </div>
     </Modal>
