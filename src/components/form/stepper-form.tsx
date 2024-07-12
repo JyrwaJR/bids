@@ -97,6 +97,7 @@ export default function MultiStepForm({
             steps={steps.map((step) => ({
               label: step.name
             }))}
+            className="max-w-full overflow-auto"
             styleConfig={{
               activeBgColor: '#333333',
               activeTextColor: '#FFFFFF',

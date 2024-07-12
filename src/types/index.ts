@@ -6,6 +6,14 @@ export type StepsFieldFormT = {
   name: string;
   fields: FormFieldType[];
 };
+
+export type TopNavLinksType = {
+  title: string;
+  href: string;
+  disabled?: boolean;
+  tooltip?: string;
+  external?: boolean;
+};
 export interface NavItem {
   title: string;
   href?: string;
