@@ -53,12 +53,11 @@ const AppliedStudentPage = () => {
     resolver: zodResolver(AppliedStudentModel)
   });
 
-  const { mutateAsync, isLoading } = useCMutation({
+  const { mutateAsync, isLoading, data } = useCMutation({
     method: 'POST',
     url: 'registration/candidate-registration-list',
     queryKey: ['get', 'applied-student']
   });
-
   const projectQuery = useCQuery({
     url: 'project',
     queryKey: ['get', 'project']
@@ -83,6 +82,7 @@ const AppliedStudentPage = () => {
       value: item.domain_id
     })
   );
+
   const formFields: FormFieldType[] = [
     {
       name: 'project_id',
@@ -194,7 +194,11 @@ const AppliedStudentPage = () => {
           btnText="Search"
         />
         <Separator />
-        <DataTable searchKey="first_name" columns={columns} data={[]} />
+        <DataTable
+          searchKey="first_name"
+          columns={columns}
+          data={data?.data ? data.data : []}
+        />
       </div>
       {isOpen && (
         <UpdateAppliedStudentForm

@@ -91,6 +91,7 @@ const Registration = () => {
         form={form}
         onSubmit={onSubmit}
         steps={field}
+        loading={startRegisMutate.isLoading}
       />
       {id && (
         <AlertModal
