@@ -18,12 +18,12 @@ import { UpdateAppliedStudentForm } from './update-applied-students';
 
 const StudentStatusOptions: OptionsT[] = [
   {
-    label: 'Pending',
-    value: 'Waiting'
+    label: 'Selected',
+    value: 'Applied'
   },
   {
-    label: 'Approved',
-    value: 'Selected'
+    label: 'Pending',
+    value: 'Waiting'
   },
   {
     label: 'Rejected',
@@ -50,7 +50,10 @@ const AppliedStudentPage = () => {
   const [isSelectedProjectId, setIsSelectedProjectId] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const form = useForm<ModelType>({
-    resolver: zodResolver(AppliedStudentModel)
+    resolver: zodResolver(AppliedStudentModel),
+    defaultValues: {
+      status: 'Applied'
+    }
   });
 
   const { mutateAsync, isLoading, data } = useCMutation({
@@ -58,6 +61,8 @@ const AppliedStudentPage = () => {
     url: 'registration/candidate-registration-list',
     queryKey: ['get', 'applied-student']
   });
+  console.log(data);
+
   const projectQuery = useCQuery({
     url: 'project',
     queryKey: ['get', 'project']
@@ -127,17 +132,16 @@ const AppliedStudentPage = () => {
       enableHiding: false
     },
     {
-      accessorKey: 'first_name',
-      header: 'First Name'
-    },
-
-    {
-      accessorKey: 'last_name',
-      header: 'Last Name'
+      accessorKey: 'name',
+      header: 'Name'
     },
     {
       accessorKey: 'email',
       header: 'Email'
+    },
+    {
+      accessorKey: 'application_date',
+      header: 'Application Date'
     },
     {
       accessorKey: 'status',

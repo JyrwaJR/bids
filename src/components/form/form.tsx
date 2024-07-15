@@ -192,6 +192,7 @@ export const CForm = <T,>({
                               disabled={disabled || input.readOnly}
                               ref={ref}
                               name={name}
+                              accept={'image/*'}
                               onBlur={onBlur}
                               onChange={(e) => {
                                 const file = e.target.files?.[0];

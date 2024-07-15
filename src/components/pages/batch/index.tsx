@@ -79,7 +79,7 @@ const BatchPage = () => {
               <Heading title={`Batch`} description="Manage ur Batch table" />
             </div>
             <DataTable
-              searchKey="name"
+              searchKey="batch_code"
               isLoading={isLoading}
               columns={BatchColumn}
               data={isFetched && !isError ? data.data : []}

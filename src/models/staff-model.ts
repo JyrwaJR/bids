@@ -3,7 +3,6 @@ import { z } from 'zod';
 import { FieldsIsRequired } from '@constants/index';
 import { yesNoOptions } from '@constants/options';
 import { lettersAndSpacesRegex } from '@constants/regex';
-import { PasswordRegex } from '@constants/regex/password-regex';
 
 export const StaffModel = z
   .object({
@@ -50,7 +49,12 @@ export const StaffModel = z
       .string()
       .refine((date) => !isNaN(Date.parse(date)), 'Invalid date of joining'),
 
-    password: z.string().optional(),
+    password: z
+      .string()
+      .min(6, {
+        message: 'Password must be at least 6 characters long'
+      })
+      .optional(),
     create_username: z
       .string()
       .refine((data) => yesNoOptions.some((opt) => opt.value === data), {
@@ -62,16 +66,6 @@ export const StaffModel = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Password is required to create username',
-        path: ['password']
-      });
-    }
-    if (
-      val.create_username === 'Yes' &&
-      !PasswordRegex.test(val.password ?? '')
-    ) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Please enter a strong password',
         path: ['password']
       });
     }

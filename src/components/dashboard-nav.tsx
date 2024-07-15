@@ -36,7 +36,7 @@ export function DashboardNav({
   setOpen,
   isMobileNav = false
 }: DashboardNavProps) {
-  const { onLogout } = useAuthContext();
+  const { onLogout, user } = useAuthContext();
   const path = usePathname();
   const { isMinimized, toggle } = useSidebar();
   const [openSubMenuId, setOpenSubMenuId] = useState<string | null>(null);
@@ -44,9 +44,20 @@ export function DashboardNav({
   useEffect(() => {
     if (isMinimized) setOpenSubMenuId(null);
   }, [isMinimized]);
+
+  // Assuming you have a user object that contains the role information
+  const userRole = user?.role;
+
+  // Filter out admin-related items if the user role is not 'superadmin'
+  const filteredNavItems =
+    userRole !== 'superadmin'
+      ? items.filter((item) => item.title !== 'Admin')
+      : items;
+
   if (!items?.length) {
     return null;
   }
+
   const logout = () => {
     onLogout();
     if (setOpen) setOpen(!setOpen);
@@ -55,7 +66,7 @@ export function DashboardNav({
   return (
     <nav className="grid items-start gap-2">
       <TooltipProvider>
-        {items.map((item, index) => {
+        {filteredNavItems.map((item, index) => {
           const itemId = item.title || index.toString();
           const Icon = Icons[item.icon || 'arrowRight'];
           return (

@@ -16,7 +16,7 @@ type paramsProps = {
 export default async function page({ searchParams }: paramsProps) {
   return (
     <>
-      <div className="flex-1 p-4 pt-6 space-y-4 md:p-8">
+      <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
         <BreadCrumb items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">
@@ -24,7 +24,7 @@ export default async function page({ searchParams }: paramsProps) {
             href={'/dashboard/employee/new'}
             className={cn(buttonVariants({ variant: 'default' }))}
           >
-            <Plus className="w-4 h-4 mr-2" /> Add New
+            <Plus className="mr-2 h-4 w-4" /> Add New
           </Link>
         </div>
         <Separator />

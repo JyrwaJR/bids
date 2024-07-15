@@ -12,6 +12,7 @@ type FormTagProps<T> = {
   isLoading?: boolean;
   buttonTitle?: string;
   btnStyle?: string;
+  className?: string;
 };
 
 export const FormTag = <T,>({
@@ -20,18 +21,16 @@ export const FormTag = <T,>({
   onSubmit,
   isLoading = false,
   buttonTitle = 'Submit',
-  btnStyle
+  btnStyle,
+  className
 }: FormTagProps<T>) => {
   const buttonStyle = cn('w-full md:w-auto', btnStyle);
+  const style = cn('"max-h-full"', className);
   return (
     <Form {...form}>
-      <form
-        noValidate
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="max-h-full"
-      >
+      <form noValidate onSubmit={form.handleSubmit(onSubmit)} className={style}>
         {children}
-        <div className="flex col-span-full md:justify-end">
+        <div className="col-span-full flex md:justify-end">
           <Button
             disabled={!form.formState.isDirty || isLoading}
             type="submit"

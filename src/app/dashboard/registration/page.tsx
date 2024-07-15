@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Heading } from '@components/ui/heading';
 import { showToast } from '@components/ui/show-toast';
@@ -34,18 +34,18 @@ const Registration = () => {
       religion: 'Christian',
       category: 'ST',
       registration_date: new Date().toISOString().split('T')[0],
-      education: '10 pass'
-    }
+      education: '10 pass',
+      is_bpl: 'No',
+      is_disabled: 'No',
+      is_minority: 'No'
+    },
+    mode: 'all'
   });
   const { field } = useRegistrationFields({
     form: form
   });
 
-  const studentQuery = useQuery({
-    queryFn: async () => await getStudentDataIfExist(form.watch('first_name')),
-    enabled: !!form.watch('first_name'),
-    queryKey: form.watch('first_name')
-  });
+  // TODO format the field if student is found field will be disabled
 
   const startRegisMutate = useMutation({
     mutationFn: async (data: StudentRegistrationModelWithDomainType) =>
@@ -56,13 +56,13 @@ const Registration = () => {
     StudentRegistrationModelWithDomainType
   > = async (data) => {
     try {
-      StudentRegistrationModelWithDomain.parse(data);
-      const response = await startRegisMutate.mutateAsync(data);
-      setId(response.id);
-      if (response.data.success && response.id === id) {
-        showToast(SuccessToastTitle, 'Registration successful');
-        router.push('/dashboard/registration/update');
-      }
+      // StudentRegistrationModelWithDomain.parse(data);
+      // const response = await startRegisMutate.mutateAsync(data);
+      // setId(response.id);
+      // if (response.data.success && response.id === id) {
+      //   showToast(SuccessToastTitle, 'Registration successful');
+      //   router.push('/dashboard/registration/update');
+      // }
       return;
     } catch (error: any) {
       if (error instanceof z.ZodError || error instanceof ZodError) {

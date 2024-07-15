@@ -2,14 +2,47 @@ import { StepType } from '@components/form/stepper-form';
 import { FormFieldType } from '@components/index';
 import { MAX_UPLOAD_SIZE } from '@constants/index';
 import { gender, SectorsOptions, yesNoOptions } from '@constants/options';
-
-const startStudentRegistrationFields: FormFieldType[] = [
+const studentImageUploadFields: FormFieldType[] = [
   {
-    name: 'registration_date',
-    label: 'Registration Date',
+    name: 'ID Proof',
+    label: 'ID Proof',
     required: true,
-    type: 'date'
+    type: 'file'
   },
+  {
+    name: 'Residence Proof',
+    required: true,
+    type: 'file'
+  },
+  {
+    name: 'Age Proof',
+    required: true
+  },
+  {
+    name: 'Education Qualification Proof',
+    required: true
+  },
+  {
+    name: 'BPL Proof',
+    required: true
+  },
+  {
+    name: 'Proof of Caste'
+  },
+  {
+    name: 'Proof of Disability'
+  },
+  {
+    name: 'Exceptional Proof'
+  }
+];
+const startStudentRegistrationFields: FormFieldType[] = [
+  // {
+  //   name: 'registration_date',
+  //   label: 'Registration Date',
+  //   required: true,
+  //   type: 'date'
+  // },
   {
     name: 'first_name',
     label: 'First Name',
@@ -568,5 +601,10 @@ export const studentRegistrationFields: StepType[] = [
     name: 'Apply Domain',
     id: 'Apply Domain',
     fields: studentRegistrationDomain
+  },
+  {
+    name: 'Upload Documents',
+    id: 'Upload Documents',
+    fields: studentImageUploadFields
   }
 ];

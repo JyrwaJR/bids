@@ -12,6 +12,9 @@ import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import { Separator } from '@components/ui/separator';
 import { useEffect } from 'react';
+import { useQuery } from 'react-query';
+import { getStudentDataIfExist } from '@src/app/dashboard/registration/_lib/function';
+import UploadImageModal from '@components/upload-image-modal';
 export type StepType = {
   id: string;
   name: string;
@@ -30,6 +33,15 @@ export const useMultiStep = create<MultiStepType>((set) => ({
   setPreviousStep: (step) => set({ previousStep: step }),
   setCurrentStep: (step) => set({ currentStep: step })
 }));
+type Props = {
+  onSubmit: SubmitHandler<any>;
+  form: UseFormReturn<any>;
+  steps: StepType[];
+  onClick?: () => void;
+  checked?: boolean;
+  loading?: boolean;
+  disabled?: boolean;
+};
 export default function MultiStepForm({
   form,
   onSubmit,
@@ -38,19 +50,17 @@ export default function MultiStepForm({
   checked,
   loading,
   disabled
-}: {
-  onSubmit: SubmitHandler<any>;
-  form: UseFormReturn<any>;
-  steps: StepType[];
-  onClick?: () => void;
-  checked?: boolean;
-  loading?: boolean;
-  disabled?: boolean;
-}) {
+}: Props) {
   const formStyle: string = 'w-full sm:col-span-6 md:col-span-6 xl:col-span-4';
   const { currentStep, setCurrentStep, setPreviousStep } = useMultiStep();
   const { trigger } = form;
   const fieldNames = steps[currentStep].fields.map((field) => field.name);
+  const studentQuery = useQuery({
+    queryFn: async () => await getStudentDataIfExist(form.watch('first_name')),
+    enabled: !!form.watch('first_name'),
+    queryKey: form.watch('first_name')
+  });
+
   const next = async () => {
     const output = await trigger(fieldNames, {
       shouldFocus: true
@@ -62,6 +72,7 @@ export default function MultiStepForm({
       setPreviousStep(currentStep);
       const step = currentStep + 1;
       setCurrentStep(step);
+      // TODO Make a call to server on submit while pressing next
     }
   };
 
@@ -72,6 +83,15 @@ export default function MultiStepForm({
       setCurrentStep(step);
     }
   };
+  useEffect(() => {
+    // TODO
+    if (currentStep > 0 && studentQuery.isFetched && studentQuery.data) {
+      form.reset({
+        ...studentQuery.data.data[0]
+      });
+    }
+  }, [currentStep, form, studentQuery.data, studentQuery.isFetched]);
+
   useEffect(() => {
     if (checked) {
       form.reset({
@@ -118,49 +138,55 @@ export default function MultiStepForm({
               key={step.name + index}
               className={index === currentStep ? '' : 'hidden'}
             >
-              {onClick && step.name === 'Address' ? (
-                <>
-                  <CForm
-                    form={form}
-                    className={formStyle}
-                    loading={loading ?? false}
-                    disabled={disabled}
-                    fields={step.fields.filter(
-                      (field) => !field.name.startsWith('p_')
-                    )}
-                  />
-                  <Separator />
-                  <div className="flex items-center space-x-2 py-4">
-                    <Checkbox
-                      checked={checked}
-                      onClick={() => onClick()}
-                      name="address"
-                    />
-                    <Label>Same as present</Label>
-                  </div>
-                  <CForm
-                    form={form}
-                    disabled={disabled}
-                    loading={loading ?? false}
-                    className={formStyle}
-                    fields={step.fields
-                      .filter((field) => field.name.startsWith('p_'))
-                      ?.map((field) => {
-                        return {
-                          ...field,
-                          readOnly: checked
-                        };
-                      })}
-                  />
-                </>
+              {step.name === 'Upload Documents' ? (
+                <UploadImageModal fields={step.fields} />
               ) : (
-                <CForm
-                  form={form}
-                  className={formStyle}
-                  disabled={disabled}
-                  loading={loading ?? false}
-                  fields={step.fields}
-                />
+                <>
+                  {onClick && step.name === 'Address' ? (
+                    <>
+                      <CForm
+                        form={form}
+                        className={formStyle}
+                        loading={loading ?? false}
+                        disabled={disabled}
+                        fields={step.fields.filter(
+                          (field) => !field.name.startsWith('p_')
+                        )}
+                      />
+                      <Separator />
+                      <div className="flex items-center space-x-2 py-4">
+                        <Checkbox
+                          checked={checked}
+                          onClick={() => onClick()}
+                          name="address"
+                        />
+                        <Label>Same as present</Label>
+                      </div>
+                      <CForm
+                        form={form}
+                        disabled={disabled}
+                        loading={loading ?? false}
+                        className={formStyle}
+                        fields={step.fields
+                          .filter((field) => field.name.startsWith('p_'))
+                          ?.map((field) => {
+                            return {
+                              ...field,
+                              readOnly: checked
+                            };
+                          })}
+                      />
+                    </>
+                  ) : (
+                    <CForm
+                      form={form}
+                      className={formStyle}
+                      disabled={disabled}
+                      loading={loading ?? false}
+                      fields={step.fields}
+                    />
+                  )}
+                </>
               )}
             </div>
           ))}

@@ -88,9 +88,7 @@ export const AddCentre = ({ onClose, open }: Props) => {
     {
       name: 'district_id',
       label: 'District',
-      required: true,
-      select: true,
-      options: districtOption
+      required: true
     }
   ];
   return (

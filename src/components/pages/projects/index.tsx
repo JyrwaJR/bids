@@ -32,18 +32,12 @@ const ProjectsPage = () => {
         <Tabs defaultValue="project" className="space-y-4">
           <TabsList>
             <TabsTrigger value="project">Project</TabsTrigger>
-            <TabsTrigger
-              disabled={user?.role !== 'superadmin'}
-              value="new-project"
-            >
-              New Project
-            </TabsTrigger>
-            <TabsTrigger
-              disabled={user?.role !== 'superadmin'}
-              value="assign-project"
-            >
-              Assign Project
-            </TabsTrigger>
+            {user?.role === 'superadmin' && (
+              <>
+                <TabsTrigger value="new-project">Add New Project</TabsTrigger>
+                <TabsTrigger value="assign-project">Assign Project</TabsTrigger>
+              </>
+            )}
           </TabsList>
 
           <TabsContent value="project" className="space-y-4 ">

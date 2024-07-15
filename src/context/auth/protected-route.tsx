@@ -17,16 +17,16 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathName = usePathname();
 
-  useEffect(() => {
-    if (loading) return;
-    setTimeout(() => {
-      if (!isAuthenticated) {
-        router.replace(`/`);
-      } else if (pathName === '/') {
-        router.push('/dashboard');
-      }
-    }, 2000);
-  }, [isAuthenticated, loading, pathName, router]);
+  // useEffect(() => {
+  //   if (loading) return;
+  //   setTimeout(() => {
+  //     if (!isAuthenticated) {
+  //       router.replace(`/`);
+  //     } else if (pathName === '/') {
+  //       router.push('/dashboard');
+  //     }
+  //   }, 2000);
+  // }, [isAuthenticated, loading, pathName, router]);
 
   if (loading && pathName !== '/' && !isAuthenticated) {
     return <LoadingPage />;

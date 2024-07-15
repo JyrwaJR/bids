@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FailedToastTitle } from '@constants/toast-message';
-import { Form } from '@components/index';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DomainModelType, ProjectModel, ProjectModelType } from '@src/models';
@@ -14,11 +13,16 @@ import { domainColumn } from '@constants/columns';
 import { Heading } from '@components/ui/heading';
 import { DataTable } from '@components/ui/data-table';
 import { Separator } from '@components/ui/separator';
+import { CForm, FormTag } from '@components/form';
+import { Card } from '@components/ui/card';
 
 const AddNewProject = () => {
   const [isSelectedIds, setSelectedIds] = useState<string[]>([]);
   const form = useForm({
-    resolver: zodResolver(ProjectModel)
+    resolver: zodResolver(ProjectModel),
+    defaultValues: {
+      domain_id: isSelectedIds
+    }
   });
 
   const {
@@ -62,6 +66,7 @@ const AddNewProject = () => {
     url: 'domain',
     queryKey: ['get', 'domain']
   });
+  console.log(isSelectedIds);
 
   const columns: ColumnDef<DomainModelType | any>[] = [
     {
@@ -108,35 +113,45 @@ const AddNewProject = () => {
   ];
 
   return (
-    <>
-      <div className="flex items-start justify-between">
-        <Heading
-          title={`New Projects`}
-          description="Please fill the fields to add a projects"
+    <FormTag
+      form={form}
+      onSubmit={onSubmit}
+      buttonTitle="Add Project"
+      isLoading={isMutateLoading}
+      className="space-y-4"
+    >
+      <Card className="p-2">
+        <div className="flex items-start justify-between">
+          <Heading
+            title={`New Projects`}
+            description="Please fill the fields to add a projects"
+          />
+        </div>
+        <CForm
+          form={form}
+          fields={projectsFields}
+          loading={isMutateLoading}
+          className="md:col-span-6 lg:col-span-4"
         />
-      </div>
-      <Form
-        form={form}
-        onSubmit={onSubmit}
-        fields={projectsFields}
-        loading={isMutateLoading}
-        className="md:col-span-6 lg:col-span-4"
-        btnText="Add Project"
-      />
+      </Card>
       <Separator />
-      <div className="flex items-start justify-between">
-        <Heading
-          title={`List of Domains`}
-          description="Please select a domain to add projects"
+      <Card className="p-2">
+        <div className="flex items-start justify-between">
+          <Heading
+            title={`List of Domains`}
+            description="Please select a domain to add projects"
+          />
+        </div>
+        <DataTable
+          searchKey="name"
+          data={isDomainFetch && !isDomainError ? domain?.data : []}
+          columns={columns}
+          className="h-96"
         />
-      </div>
-      <DataTable
-        searchKey="name"
-        data={isDomainFetch && !isDomainError ? domain?.data : []}
-        columns={columns}
-        className="h-96"
-      />
-    </>
+      </Card>
+
+      <Separator />
+    </FormTag>
   );
 };
 

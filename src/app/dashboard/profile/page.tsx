@@ -1,90 +1,34 @@
 'use client';
-import { FormFieldType } from '@components/index';
+import { Typography } from '@components/index';
 import { Button } from '@components/ui/button';
 import UploadImageModal from '@components/upload-image-modal';
-import { useCMutation } from '@hooks/useCMutation';
 import { useRegisterStudentStore } from '@lib/store';
 import { ScrollArea } from '@src/components/ui/scroll-area';
-import { SubmitHandler, useForm } from 'react-hook-form';
 
-const formFields: FormFieldType[] = [
-  {
-    name: 'passport',
-    label: 'Passport',
-    placeholder: 'John Doe',
-    type: 'file'
-  }
-];
-type FormData = {
-  first_name: string;
-  last_name: string;
-  dob: string;
-  registration_date: string;
-  gender: string;
-  category: string;
-  mobile: string;
-  religion: string;
-  marital_status: string;
-  education: string;
-  passport: File;
-};
 const Page = () => {
-  const { setId, id } = useRegisterStudentStore();
-  const form = useForm<FormData>();
-  const { mutateAsync } = useCMutation({
-    url: 'registration/add-personal-details/9c6da18e-33af-4b68-a55d-03aa220dc01e',
-    method: 'PUT',
-    queryKey: ['profile']
-  });
-  const onSubmit: SubmitHandler<FormData> = async (datas) => {
-    console.log(datas.passport);
-    const data = {
-      first_name: 'John',
-      last_name: 'Doe',
-      dob: '1990-01-01',
-      registration_date: '2024-07-06',
-      gender: 'Male',
-      category: 'General',
-      mobile: '1234567890',
-      religion: 'Christianity',
-      marital_status: 'Single',
-      education: "Bachelor's Degree",
-      passport: datas.passport
-    };
-    const formData = new FormData();
-    formData.append('first_name', data.first_name);
-    formData.append('last_name', data.last_name);
-    formData.append('dob', data.dob);
-    formData.append('registration_date', data.registration_date);
-    formData.append('gender', data.gender);
-    formData.append('category', data.category);
-    formData.append('mobile', data.mobile);
-    formData.append('religion', data.religion);
-    formData.append('marital_status', data.marital_status);
-    formData.append('education', data.education);
-    formData.append('passport', data.passport);
-    const response = await mutateAsync(formData);
-
-    console.log(response);
-  };
-
+  const { id, setId } = useRegisterStudentStore();
+  const randomId: string = '9c796e2f-0f5a-42b2-ba98-287cfca979cf';
   return (
     <ScrollArea className="h-full">
-      <Button
-        onClick={() => {
-          setId('9c796e2f-0f5a-42b2-ba98-287cfca979cf');
-        }}
-      >
-        {id}
-      </Button>
-      <UploadImageModal
-        fields={formFields}
-        form={form}
-        onSubmit={onSubmit}
-        isLoading={false}
-        open={false}
-        onClose={() => {}}
-      />
+      <h1 className="mb-5 flex flex-col text-center">
+        {!!id ? (
+          `Image will be upload to the recent Registration ID:- ${id}`
+        ) : (
+          <>
+            <Typography className="py-2">
+              Please register first to upload documents
+            </Typography>
+            <Button
+              onClick={() => {
+                setId(randomId);
+              }}
+            >
+              Set Random
+            </Button>
+          </>
+        )}
+      </h1>
+      {/* <UploadImageModal /> */}
     </ScrollArea>
   );
 };

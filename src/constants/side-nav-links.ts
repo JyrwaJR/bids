@@ -8,7 +8,7 @@ export const navItems: NavItem[] = [
     label: 'Dashboard'
   },
   {
-    title: 'Center',
+    title: 'Admin',
     icon: 'add',
     label: 'centre',
     items: [
@@ -57,33 +57,31 @@ export const navItems: NavItem[] = [
     description: 'Student Registration',
     items: [
       {
-        title: 'Apply Student',
+        title: 'Add Student',
         href: '/dashboard/registration',
         icon: 'profile',
         label: 'registration',
-
-        description: 'Student Registration'
+        description: 'Add New Student Details'
       },
       {
-        title: 'Update Registration',
+        title: 'Update Student',
         href: '/dashboard/registration/update',
         icon: 'settings',
         label: 'registration',
-
-        description: 'Student Registration'
+        description: 'Update Student details'
       }
     ]
+  },
+  {
+    title: 'Project',
+    href: '/dashboard/projects',
+    icon: 'chevronRight',
+    label: 'registration'
   },
   {
     title: 'Applied Student',
     href: '/dashboard/applied-student',
     icon: 'chevronRight',
-    label: 'registration'
-  },
-  {
-    title: 'Profile',
-    href: '/dashboard/profile',
-    icon: 'profile',
     label: 'registration'
   }
 ];

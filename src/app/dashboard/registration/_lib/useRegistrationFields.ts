@@ -1,16 +1,27 @@
 import { FormFieldType } from '@components/index';
 import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 import { UseFormReturn } from 'react-hook-form';
-import { getBatch, StudentRegistrationModelWithDomainType } from './function';
+import {
+  getBatch,
+  getDomainByProjectId,
+  StudentRegistrationModelWithDomainType
+} from './function';
 import { yesNoOptions } from '@constants/options';
 import { studentRegistrationFields } from '@constants/input-fields/students';
 import { StepType } from '@components/form/stepper-form';
 import { useQuery } from 'react-query';
 import { OptionsT } from '@components/form/type';
+import { useEffect, useState } from 'react';
 
 type Props = {
   form: UseFormReturn<StudentRegistrationModelWithDomainType>;
 };
+const emptyOptions: OptionsT[] = [
+  {
+    label: 'N/A',
+    value: ''
+  }
+];
 export const useRegistrationFields = ({ form }: Props) => {
   const { options } = useCategorySelectOptions();
   const batchQuery = useQuery({
@@ -18,6 +29,21 @@ export const useRegistrationFields = ({ form }: Props) => {
     enabled: !!form.watch('project_id'),
     queryKey: form.watch('project_id')
   });
+  const domainQuery = useQuery({
+    queryFn: async () => await getDomainByProjectId(form.watch('project_id')),
+    enabled: !!form.watch('project_id'),
+    queryKey: form.watch('project_id')
+  });
+
+  const domainOptions: OptionsT[] =
+    domainQuery.isFetched &&
+    !domainQuery.isLoading &&
+    !domainQuery.isError &&
+    domainQuery.data &&
+    domainQuery.data.data.map((item: { id: string; domain: string }) => ({
+      label: item.domain,
+      value: item.id
+    }));
 
   const batchOptions: OptionsT[] =
     batchQuery.isFetched &&
@@ -216,12 +242,20 @@ export const useRegistrationFields = ({ form }: Props) => {
           case 'project_id':
             return { ...field, options: options.projects };
           case 'domain_id':
-            return { ...field, options: options.domain };
+            return {
+              ...field,
+              options:
+                domainQuery.isFetched && domainQuery.data
+                  ? domainOptions
+                  : emptyOptions
+            };
           case 'batch_id':
             return {
               ...field,
               options:
-                batchQuery.isFetched && batchQuery.data ? batchOptions : []
+                batchQuery.isFetched && batchQuery.data
+                  ? batchOptions
+                  : emptyOptions
             };
           default:
             return field;

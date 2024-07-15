@@ -24,7 +24,9 @@ interface UploadStoreType {
   setOpen: (open: boolean) => void;
 
   onUploadedImage: (name: string) => void;
+  // uploadedImages: (name: string) => boolean;
 }
+
 export const useUploadDocStore = create<UploadStoreType>((set) => ({
   proofOfIdUploaded: false,
   setProofOfIdUploaded: (open: boolean) => set({ proofOfIdUploaded: open }),
@@ -46,10 +48,11 @@ export const useUploadDocStore = create<UploadStoreType>((set) => ({
   setSelectedFilterType: (type: string) => set({ isSelectedFilterType: type }),
 
   open: false,
-  setOpen: (open: boolean) => set({ open: open }),
+  setOpen: (open: boolean) => set({ open }),
+
   educationalProofUploaded: false,
+
   onUploadedImage: (name: string) => {
-    console.log(name);
     switch (name) {
       case 'ID Proof':
         return set({ proofOfIdUploaded: true });

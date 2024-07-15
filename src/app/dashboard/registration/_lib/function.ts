@@ -10,6 +10,17 @@ import {
 import { StudentRegistrationApplyDomainModel } from '@models/student/student-registration-apply-domain-model';
 import { z } from 'zod';
 
+export async function getDomainByProjectId(projectId?: string) {
+  try {
+    if (!projectId) return;
+    const res = await axiosInstance.get(
+      `project-domain/get-domain-by-project/${projectId}`
+    );
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
 export async function getBatch(projectId?: string) {
   try {
     if (!projectId) return;
@@ -21,15 +32,15 @@ export async function getBatch(projectId?: string) {
     throw new Error(error);
   }
 }
+
 export const getStudentDataIfExist = async (id: string) => {
   try {
     if (!id) return;
     const res = await axiosInstance.get(`/registration/search-student`, {
       params: {
-        search: '2024-07-11'
+        search: 'Center'
       }
     });
-    console.log(res.data);
     return res.data;
   } catch (error: any) {
     throw new Error(error);
@@ -60,7 +71,7 @@ const studentAppliedDomain = async (
 ) => {
   try {
     if (!id) {
-      throw new Error('Registration ID not found');
+      return;
     }
 
     const applyDomainPayload: DomainDetailsType = {
@@ -85,7 +96,7 @@ const addPersonalDetails = async (
 ) => {
   try {
     if (!isRegistrationId) {
-      throw new Error('Registration ID not found');
+      return;
     }
     const form = new FormData();
     form.append('first_name', data.first_name);
@@ -192,7 +203,7 @@ const otherDetails = async (
 ) => {
   try {
     if (!id) {
-      throw new Error('Registration ID not found');
+      return;
     }
     const response = await axiosInstance.put(
       `/registration/add-form-b-details/${id}`,
@@ -210,7 +221,7 @@ const addStudentBpl = async (
 ) => {
   try {
     if (!id) {
-      throw new Error('Registration ID not found');
+      return;
     }
     if (data.is_bpl === 'No') return;
     const payload: BplDetailsType = {
@@ -250,7 +261,7 @@ export const startRegistration = async (
     }
     const id = startRegisRes.data.data.id;
     if (startRegisRes.data.success && !id) {
-      throw new Error('Registration ID not found');
+      return;
     }
 
     console.log('Start Registration=>', startRegisRes.data.success);

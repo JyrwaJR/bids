@@ -7,10 +7,7 @@ import { Form } from '@src/components';
 import { buttonVariants } from '@src/components/ui/button';
 import { showToast } from '@src/components/ui/show-toast';
 import { loginFields } from '@src/constants/input-fields';
-import {
-  FailedToastTitle,
-  SuccessToastTitle
-} from '@src/constants/toast-message';
+import { FailedToastTitle } from '@src/constants/toast-message';
 import { useAuthContext } from '@src/context/auth';
 import { cn } from '@src/lib/utils';
 import { LoginModel, LoginModelType } from '@src/models';
