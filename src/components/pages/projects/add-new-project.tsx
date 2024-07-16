@@ -66,7 +66,6 @@ const AddNewProject = () => {
     url: 'domain',
     queryKey: ['get', 'domain']
   });
-  console.log(isSelectedIds);
 
   const columns: ColumnDef<DomainModelType | any>[] = [
     {
@@ -109,6 +108,10 @@ const AddNewProject = () => {
       enableSorting: false,
       enableHiding: false
     },
+    {
+      accessorKey: 'sector',
+      header: 'Sector'
+    },
     ...domainColumn
   ];
 
@@ -120,7 +123,7 @@ const AddNewProject = () => {
       isLoading={isMutateLoading}
       className="space-y-4"
     >
-      <Card className="p-2">
+      <Card className="space-y-2 p-2">
         <div className="flex items-start justify-between">
           <Heading
             title={`New Projects`}
@@ -135,7 +138,7 @@ const AddNewProject = () => {
         />
       </Card>
       <Separator />
-      <Card className="p-2">
+      <Card className="space-y-2 p-2">
         <div className="flex items-start justify-between">
           <Heading
             title={`List of Domains`}
@@ -149,7 +152,6 @@ const AddNewProject = () => {
           className="h-96"
         />
       </Card>
-
       <Separator />
     </FormTag>
   );

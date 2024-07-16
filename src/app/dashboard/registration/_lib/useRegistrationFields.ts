@@ -35,6 +35,19 @@ export const useRegistrationFields = ({ form }: Props) => {
     queryKey: form.watch('project_id')
   });
 
+  console.log(form.watch('domain_id'));
+  useEffect(() => {
+    let project_id;
+    if (form.watch('project_id') !== project_id) {
+      form.reset({
+        ...form.getValues(),
+        domain_id: '',
+        batch_id: ''
+      });
+      project_id = form.watch('project_id');
+    }
+  }, [form]);
+
   const domainOptions: OptionsT[] =
     domainQuery.isFetched &&
     !domainQuery.isLoading &&

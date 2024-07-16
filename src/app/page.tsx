@@ -11,9 +11,10 @@ import { FailedToastTitle } from '@src/constants/toast-message';
 import { useAuthContext } from '@src/context/auth';
 import { cn } from '@src/lib/utils';
 import { LoginModel, LoginModelType } from '@src/models';
+import { LoadingPage } from '@components/pages/loading';
 
 export default function AuthenticationPage() {
-  const { onLogin, isLoading } = useAuthContext();
+  const { onLogin, isLoading, isLoggedIn } = useAuthContext();
   const form = useForm<LoginModelType>({
     resolver: zodResolver(LoginModel),
     defaultValues: {
@@ -25,11 +26,16 @@ export default function AuthenticationPage() {
   const onSubmit: SubmitHandler<LoginModelType> = async (data) => {
     try {
       await onLogin(data.email, data.password);
+      if (isLoggedIn) {
+        form.reset();
+      }
     } catch (error: any) {
       showToast(FailedToastTitle, error.message);
     }
   };
-
+  if (isLoggedIn || isLoading) {
+    return <LoadingPage />;
+  }
   return (
     <div className="relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Link
@@ -85,7 +91,7 @@ export default function AuthenticationPage() {
             form={form}
             fields={loginFields}
             onSubmit={onSubmit}
-            loading={isLoading}
+            loading={isLoading || isLoggedIn}
             className="sm:col-span-full"
             btnStyle="w-full md:w-full"
             btnText="Continue"

@@ -26,14 +26,12 @@ import { useRegistrationFields } from './_lib/useRegistrationFields';
 import { useRegisterStudentStore } from '@lib/store';
 import { AlertModal } from '@components/modal/alert-modal';
 import { useRouter } from 'next/navigation';
-import { axiosInstance } from '@lib/utils';
-import { startRegisDetailType } from './_lib/type';
 import { format } from 'date-fns';
 import { useMultiStepFormStore } from '@components/form/stepper-form';
 
 const Registration = () => {
   const router = useRouter();
-  const { currentStep } = useMultiStepFormStore();
+  const { currentStep, setCurrentStep } = useMultiStepFormStore();
   const { setId, id } = useRegisterStudentStore();
   const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(!!id);
@@ -66,18 +64,14 @@ const Registration = () => {
             if (!startRegisRes.data.success) {
               throw new Error('Failed to start registration');
             }
-            console.log(startRegisRes.data.data);
 
             const idx = startRegisRes.data.data.id;
             setId(idx); // Update the ID state with the received ID
           }
           break;
         case 1:
-          console.log(data);
-
           // Perform the second step operations
           const personalRes = await addPersonalDetails(id, data);
-          console.log(personalRes);
 
           if (!personalRes.success) {
             showToast(FailedToastTitle, 'Error when adding personal detail');
@@ -150,14 +144,19 @@ const Registration = () => {
         onSubmit={onSubmit}
         steps={field}
       />
+
       {id && (
         <AlertModal
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           title="Registered"
-          onConfirm={() => router.replace('/dashboard/registration/update')}
+          onConfirm={() => {
+            setId('');
+            setCurrentStep(0);
+            setIsOpen(false);
+          }}
           desc="You have already registered. If you want to update your registration, please click on update button"
-          btnText="Update"
+          btnText="New Registration"
         />
       )}
     </>

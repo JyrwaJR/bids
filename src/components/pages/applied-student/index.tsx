@@ -215,7 +215,12 @@ const AppliedStudentPage = () => {
           data={data?.data ? data.data : []}
         />
       </div>
-      {isOpen && <UpdateAppliedStudentForm />}
+      {isOpen && (
+        <UpdateAppliedStudentForm
+          domain_id={form.getValues('domain_id')}
+          project_id={form.getValues('project_id')}
+        />
+      )}
     </>
   );
 };

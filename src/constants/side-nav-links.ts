@@ -13,16 +13,16 @@ export const navItems: NavItem[] = [
     label: 'centre',
     items: [
       {
+        title: 'Project',
+        href: '/dashboard/projects',
+        icon: 'kanban',
+        label: 'project'
+      },
+      {
         title: 'Centre',
         href: '/dashboard/centre',
         icon: 'add',
         label: 'centre'
-      },
-      {
-        title: 'Batch',
-        href: '/dashboard/batch',
-        icon: 'employee',
-        label: 'batch'
       },
       {
         title: 'Domain',
@@ -31,16 +31,10 @@ export const navItems: NavItem[] = [
         label: 'domain'
       },
       {
-        title: 'Sector',
-        href: '/dashboard/sector',
-        icon: 'check',
-        label: 'registration'
-      },
-      {
-        title: 'Project',
-        href: '/dashboard/projects',
-        icon: 'kanban',
-        label: 'project'
+        title: 'Batch',
+        href: '/dashboard/batch',
+        icon: 'employee',
+        label: 'batch'
       }
     ]
   },
@@ -51,24 +45,24 @@ export const navItems: NavItem[] = [
     label: 'staff'
   },
   {
-    title: 'Registration ',
+    title: 'Registration',
     icon: 'laptop',
     label: 'registration',
     description: 'Student Registration',
     items: [
       {
-        title: 'Add Student',
+        title: 'Register Applicant',
         href: '/dashboard/registration',
         icon: 'profile',
         label: 'registration',
         description: 'Add New Student Details'
       },
       {
-        title: 'Update Student',
+        title: 'Update Applicant',
         href: '/dashboard/registration/update',
         icon: 'settings',
         label: 'registration',
-        description: 'Update Student details'
+        description: 'Update Student Details'
       }
     ]
   },
@@ -83,5 +77,32 @@ export const navItems: NavItem[] = [
     href: '/dashboard/applied-student',
     icon: 'chevronRight',
     label: 'registration'
+  },
+  {
+    title: 'Reports',
+    icon: 'media',
+    label: 'registration',
+    items: [
+      {
+        title: 'Report',
+        disabled: true,
+        href: '',
+        icon: 'chevronRight',
+        label: 'registration'
+      }
+    ]
+  },
+  {
+    title: 'Settings',
+    icon: 'settings',
+    label: 'settings',
+    items: [
+      {
+        title: 'Sectors',
+        href: '/dashboard/sectors',
+        icon: 'ellipsis',
+        label: 'sector'
+      }
+    ]
   }
 ];

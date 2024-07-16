@@ -20,6 +20,7 @@ import { Button } from './button';
 import { Input } from './input';
 import { ScrollArea, ScrollBar } from './scroll-area';
 import { cn } from '@src/lib/utils';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -114,19 +115,19 @@ export function DataTable<TData, TValue>({
         <div className="space-x-2">
           <Button
             variant="outline"
-            size="sm"
+            size="icon"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            <ChevronLeft />
           </Button>
           <Button
             variant="outline"
-            size="sm"
+            size="icon"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            <ChevronRight />
           </Button>
         </div>
       </div>

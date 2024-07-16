@@ -99,6 +99,7 @@ export const CForm = <T,>({
                                   disabled={disabled || input.readOnly}
                                 >
                                   <SelectValue
+                                    onChange={() => field.onChange}
                                     placeholder={
                                       input.placeholder ??
                                       `Select ${input.label}`

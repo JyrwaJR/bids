@@ -161,7 +161,9 @@ export const AuthProvider = ({ children }: Props) => {
           email: data.email,
           id: data.id,
           name: data.name,
-          role: data.role[0]
+          role: data.role[0],
+          center: data.center,
+          staff: data.staff
         });
         setIsToken(cookies?.token);
         setIsLoggedIn(!!cookies?.token);

@@ -37,7 +37,13 @@ const UpdateStudentSchema = z.object({
     })
 });
 type UpdateStudentSchemaType = z.infer<typeof UpdateStudentSchema>;
-export const UpdateAppliedStudentForm = () => {
+export const UpdateAppliedStudentForm = ({
+  project_id,
+  domain_id
+}: {
+  project_id: string;
+  domain_id: string;
+}) => {
   const {
     openUpdate: open,
     setOpenUpdate,
@@ -68,7 +74,11 @@ export const UpdateAppliedStudentForm = () => {
         showToast(FailedToastTitle, 'Please select a student');
         return;
       }
-      await mutate.mutateAsync({ status: data.status });
+      await mutate.mutateAsync({
+        status: data.status,
+        domain_id: domain_id,
+        project_id: project_id
+      });
       if (mutate.isSuccess) {
         showToast(
           mutate.data.success ? SuccessToastTitle : FailedToastTitle,

@@ -44,16 +44,16 @@ export function DashboardNav({
   useEffect(() => {
     if (isMinimized) setOpenSubMenuId(null);
   }, [isMinimized]);
-
   // Assuming you have a user object that contains the role information
   const userRole = user?.role;
-
   // Filter out admin-related items if the user role is not 'superadmin'
   const filteredNavItems =
     userRole !== 'superadmin'
       ? items
           .filter((item) => item.title !== 'Admin')
           .filter((item) => item.title !== 'Staff')
+          .filter((item) => item.title !== 'Settings')
+          .filter((item) => item.title !== 'Reports')
       : items;
 
   if (!items?.length) {

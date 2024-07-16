@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { showToast } from '@src/components/ui/show-toast';
 import { addCenterFields } from '@src/constants/input-fields';
 import { FailedToastTitle } from '@src/constants/toast-message';
-import { useCMutation, useCQuery } from '@src/hooks';
+import { useCategorySelectOptions, useCMutation, useCQuery } from '@src/hooks';
 import { CenterModel, CenterModelType } from '@src/models';
 
 import { Form } from '../../form';
@@ -36,6 +36,7 @@ export const AddCentre = ({ onClose, open }: Props) => {
   const form = useForm<CenterModelType>({
     resolver: zodResolver(CenterModel)
   });
+  const { options } = useCategorySelectOptions();
   const { isLoading, mutateAsync } = useCMutation({
     url: 'centre/save',
     method: 'POST',
@@ -45,27 +46,12 @@ export const AddCentre = ({ onClose, open }: Props) => {
     url: 'state',
     queryKey: ['get', 'state']
   });
-  const {
-    data: Ddata,
-    isLoading: isDiscLoading,
-    isError
-  } = useCQuery({
-    url: 'district',
-    queryKey: ['get', 'district']
-  });
 
-  const districtOption: OptionsT[] =
-    !isDiscLoading &&
-    !isError &&
-    Ddata.data.map((item: DistrictT) => ({
-      value: item.id,
-      label: item.name.toString()
-    }));
   const stateOptions: OptionsT[] =
     !isStateLoading &&
     data.data.map((item: StateT) => ({
       value: item.id,
-      label: item.name.toString()
+      label: item.name
     }));
 
   const onSubmitAddCentre: SubmitHandler<CenterModelType> = async (data) => {
@@ -83,7 +69,7 @@ export const AddCentre = ({ onClose, open }: Props) => {
       label: 'State',
       required: true,
       select: true,
-      options: stateOptions
+      options: options.states
     },
     {
       name: 'district_id',
@@ -105,7 +91,7 @@ export const AddCentre = ({ onClose, open }: Props) => {
           onSubmit={onSubmitAddCentre}
           fields={fields}
           form={form}
-          loading={isLoading || isStateLoading || isDiscLoading}
+          loading={isLoading || isStateLoading}
           btnStyle="md:w-full"
           className="w-full md:col-span-6 md:w-full"
         />
