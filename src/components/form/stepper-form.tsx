@@ -27,7 +27,7 @@ type MultiStepType = {
   setPreviousStep: (step: number) => void;
   setCurrentStep: (step: number) => void;
 };
-export const useMultiStep = create<MultiStepType>((set) => ({
+export const useMultiStepFormStore = create<MultiStepType>((set) => ({
   currentStep: 0,
   previousStep: 0,
   setPreviousStep: (step) => set({ previousStep: step }),
@@ -42,6 +42,7 @@ type Props = {
   loading?: boolean;
   disabled?: boolean;
 };
+
 export default function MultiStepForm({
   form,
   onSubmit,
@@ -52,27 +53,23 @@ export default function MultiStepForm({
   disabled
 }: Props) {
   const formStyle: string = 'w-full sm:col-span-6 md:col-span-6 xl:col-span-4';
-  const { currentStep, setCurrentStep, setPreviousStep } = useMultiStep();
+  const { currentStep, setCurrentStep, setPreviousStep } =
+    useMultiStepFormStore();
   const { trigger } = form;
   const fieldNames = steps[currentStep].fields.map((field) => field.name);
-  const studentQuery = useQuery({
-    queryFn: async () => await getStudentDataIfExist(form.watch('first_name')),
-    enabled: !!form.watch('first_name'),
-    queryKey: form.watch('first_name')
-  });
 
   const next = async () => {
+    const data = form.getValues();
     const output = await trigger(fieldNames, {
       shouldFocus: true
     });
 
     if (!output) return;
-
     if (currentStep < steps.length - 1) {
       setPreviousStep(currentStep);
       const step = currentStep + 1;
       setCurrentStep(step);
-      // TODO Make a call to server on submit while pressing next
+      onSubmit(data);
     }
   };
 
@@ -83,14 +80,6 @@ export default function MultiStepForm({
       setCurrentStep(step);
     }
   };
-  useEffect(() => {
-    // TODO
-    if (currentStep > 0 && studentQuery.isFetched && studentQuery.data) {
-      form.reset({
-        ...studentQuery.data.data[0]
-      });
-    }
-  }, [currentStep, form, studentQuery.data, studentQuery.isFetched]);
 
   useEffect(() => {
     if (checked) {

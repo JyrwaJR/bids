@@ -65,7 +65,7 @@ export const StudentRegistrationModelWithDomain =
 export type StudentRegistrationModelWithDomainType = z.infer<
   typeof StudentRegistrationModelWithDomain
 >;
-const studentAppliedDomain = async (
+export const studentAppliedDomain = async (
   id: string,
   data: StudentRegistrationModelWithDomainType
 ) => {
@@ -90,7 +90,7 @@ const studentAppliedDomain = async (
     throw error;
   }
 };
-const addPersonalDetails = async (
+export const addPersonalDetails = async (
   isRegistrationId: string,
   data: StudentRegistrationModelWithDomainType
 ) => {
@@ -127,7 +127,7 @@ const addPersonalDetails = async (
   }
 };
 
-const addAddressDetails = async (
+export const addAddressDetails = async (
   isRegistrationId: string,
   data: StudentRegistrationModelWithDomainType
 ) => {
@@ -163,7 +163,7 @@ const addAddressDetails = async (
     throw error;
   }
 };
-const addFamilyDetails = async (
+export const addFamilyDetails = async (
   isRegistrationId: string,
   data: StudentRegistrationModelWithDomainType
 ) => {
@@ -197,7 +197,7 @@ const addFamilyDetails = async (
   }
 };
 
-const otherDetails = async (
+export const otherDetails = async (
   id: string,
   data: StudentRegistrationModelWithDomainType
 ) => {
@@ -215,7 +215,7 @@ const otherDetails = async (
   }
 };
 
-const addStudentBpl = async (
+export const addStudentBpl = async (
   id: string,
   data: StudentRegistrationModelWithDomainType
 ) => {
@@ -241,6 +241,7 @@ const addStudentBpl = async (
     throw error;
   }
 };
+
 export const startRegistration = async (
   data: StudentRegistrationModelWithDomainType
 ) => {
@@ -249,8 +250,7 @@ export const startRegistration = async (
       dob: data.dob,
       first_name: data.first_name,
       last_name: data.last_name,
-      middle_name: data.middle_name,
-      registration_date: data.registration_date
+      middle_name: data.middle_name
     };
     const startRegisRes = await axiosInstance.post(
       `/registration/start-registration`,
@@ -261,7 +261,7 @@ export const startRegistration = async (
     }
     const id = startRegisRes.data.data.id;
     if (startRegisRes.data.success && !id) {
-      return;
+      return startRegisRes.data.data;
     }
 
     console.log('Start Registration=>', startRegisRes.data.success);

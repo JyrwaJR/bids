@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 interface RegisterType {
   isOpen: boolean;
   isUpdate: boolean;
-  id?: string;
+  id: string;
   onOpen: () => void;
   onClose: () => void;
   onUpdate: () => void;

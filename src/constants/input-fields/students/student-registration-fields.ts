@@ -585,6 +585,11 @@ export const studentRegistrationFields: StepType[] = [
     fields: studentRegistrationPersonalDetailsFields
   },
   {
+    name: 'Apply Domain',
+    id: 'Apply Domain',
+    fields: studentRegistrationDomain
+  },
+  {
     name: 'Parental Details',
     id: 'Parental Details',
     fields: studentRegistrationParentDetailFields
@@ -597,11 +602,7 @@ export const studentRegistrationFields: StepType[] = [
       ...studentRegistrationPermanentsAddressDetailFields
     ]
   },
-  {
-    name: 'Apply Domain',
-    id: 'Apply Domain',
-    fields: studentRegistrationDomain
-  },
+
   {
     name: 'Upload Documents',
     id: 'Upload Documents',

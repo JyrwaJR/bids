@@ -9,7 +9,7 @@ interface AlertModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  loading: boolean;
+  loading?: boolean;
   title?: string;
   desc?: string;
   className?: string;

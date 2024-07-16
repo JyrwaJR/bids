@@ -1,5 +1,18 @@
 'use client';
 
+import { Form, FormControl, FormField, FormItem } from '@components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from '@components/ui/select';
+import { useAuthContext } from '@context/auth';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 import { CalendarDateRangePicker } from '@src/components/date-range-picker';
 import { Overview } from '@src/components/overview';
 import { RecentSales } from '@src/components/recent-sales';
@@ -18,15 +31,62 @@ import {
   TabsList,
   TabsTrigger
 } from '@src/components/ui/tabs';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+const Schema = z.object({
+  centre_id: z.string().uuid().optional()
+});
+type SchemaType = z.infer<typeof Schema>;
+const Page = () => {
+  const { user } = useAuthContext();
+  const isSuperUser = user?.role === 'superadmin';
+  const option = useCategorySelectOptions();
+  const form = useForm<SchemaType>({
+    resolver: zodResolver(Schema)
+  });
 
-export default function page() {
   return (
     <ScrollArea className="h-full">
       <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
         <div className="flex items-center justify-between space-y-2">
-          <h2 className="text-3xl font-bold tracking-tight">
-            Hi, Welcome back !
-          </h2>
+          <div className="flex space-x-5">
+            <h2 className="text-3xl font-bold tracking-tight">
+              Hi, Welcome back
+            </h2>
+            {isSuperUser && (
+              <Form {...form}>
+                <FormField
+                  control={form.control}
+                  name="centre_id"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                        onValueChange={field.onChange}
+                        // defaultValue={option.options.centre[0].value ?? ''}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Select a Centre" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>center</SelectLabel>
+                            {option.options.centre.map((item) => (
+                              <SelectItem key={item.value} value={item.value}>
+                                {item.label}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </Form>
+            )}
+          </div>
           <div className="hidden items-center space-x-2 md:flex">
             <CalendarDateRangePicker />
             <Button>Download</Button>
@@ -35,9 +95,7 @@ export default function page() {
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="analytics" disabled>
-              Analytics
-            </TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
           <TabsContent value="overview" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -169,4 +227,5 @@ export default function page() {
       </div>
     </ScrollArea>
   );
-}
+};
+export default Page;

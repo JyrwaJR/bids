@@ -18,12 +18,11 @@ interface ColType extends DomainModelType {
 const BatchPage = () => {
   const [selectedIds, setSelectedIds] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const url = 'batch/1999-01-01/2024-01-01';
+  const url = 'batch';
   const { data, isFetched, isLoading } = useCQuery({
-    url: url,
-    queryKey: ['get', 'batch'],
-    enabled: false
+    url: url
   });
+
   const {
     data: project,
     isFetched: projectIsFetching,

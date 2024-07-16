@@ -8,6 +8,7 @@ import {
   DialogTitle
 } from '@components/ui/dialog';
 import { showToast } from '@components/ui/show-toast';
+import { ACCEPTED_FILE_TYPES, MAX_UPLOAD_SIZE } from '@constants/index';
 import { FailedToastTitle } from '@constants/toast-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCMutation } from '@hooks/useCMutation';
@@ -16,8 +17,7 @@ import { useRegisterStudentStore } from '@lib/store';
 import { useUploadDocStore } from '@lib/store/useUploadDocStore';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 2; // 2MB
-const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
+
 const Schema = z
   .object({
     proof_type: z
@@ -44,7 +44,7 @@ const Schema = z
       }, 'File size must be less than 2MB')
       .refine((file) => {
         return file && ACCEPTED_FILE_TYPES.includes(file.type);
-      }, 'File must be a PNG'),
+      }, 'File must be a PNG/jpg/jpeg'),
     document_number: z.string().optional()
   })
   .superRefine((data, ctx) => {

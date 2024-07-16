@@ -7,27 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useAuthContext } from '@context/auth';
 import AddNewProject from './add-new-project';
 import CentreProjectPage from '../centre/project';
-import { axiosInstance } from '@lib/utils';
-import { useQuery } from 'react-query';
 import { useCQuery } from '@hooks/useCQuery';
 
-const getProject = async (url: string) => {
-  try {
-    if (!url) {
-      return;
-    }
-    const res = await axiosInstance.get(url);
-    return res.data;
-  } catch (error: any) {
-    throw new Error(error);
-  }
-};
 const ProjectsPage = () => {
   const { user } = useAuthContext();
   const url =
     user?.role === 'superadmin' ? 'project' : 'project-centre/get-projects';
-  console.log(url);
-
   const { data, isFetched, isLoading, isError } = useCQuery({
     url: url,
     queryKey: ['get', 'project']

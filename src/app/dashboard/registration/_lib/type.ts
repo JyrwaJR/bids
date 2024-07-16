@@ -65,7 +65,6 @@ export interface FamilyDetailsType {
   head_of_family?: string;
 }
 export interface startRegisDetailType {
-  registration_date: string;
   first_name: string;
   middle_name?: string | null | undefined;
   last_name: string;

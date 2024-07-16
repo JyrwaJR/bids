@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && npx serve@latest out",
+    "build": "next build",
     "export": "next export",
     "start": "next start",
     "lint": "next lint",
@@ -78,6 +78,7 @@
     "typescript": "5.2.2",
     "uploadthing": "^5.7.4",
     "uuid": "^9.0.1",
+    "vercel": "^34.4.0",
     "zod": "^3.22.4",
     "zustand": "^4.4.6"
   },

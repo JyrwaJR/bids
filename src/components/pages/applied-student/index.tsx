@@ -12,17 +12,19 @@ import { OptionsT } from '@components/form/type';
 import { FailedToastTitle } from '@constants/toast-message';
 import { showToast } from '@components/ui/show-toast';
 import { useCQuery } from '@hooks/useCQuery';
-import { SelectCheckbox } from '@components/select-checkbox';
 import { z } from 'zod';
 import { UpdateAppliedStudentForm } from './update-applied-students';
+import { useAppliedStudentsStore } from '@lib/store';
+import { CellAction } from '@components/cell-action';
+import { Checkbox } from '@radix-ui/react-checkbox';
 
 const StudentStatusOptions: OptionsT[] = [
   {
-    label: 'Selected',
+    label: 'Applied',
     value: 'Applied'
   },
   {
-    label: 'Pending',
+    label: 'Waiting',
     value: 'Waiting'
   },
   {
@@ -46,9 +48,13 @@ const emptyOptions: OptionsT[] = [
   }
 ];
 const AppliedStudentPage = () => {
-  const [isSelectedIds, setSelectedIds] = useState<string[]>([]);
-  const [isSelectedProjectId, setIsSelectedProjectId] = useState<string>('');
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const {
+    id,
+    setId,
+    openUpdate: isOpen,
+    setOpenUpdate: setIsOpen
+  } = useAppliedStudentsStore();
+  const [isSelectedProjectId, setIsSelectedProjectId] = useState('');
   const form = useForm<ModelType>({
     resolver: zodResolver(AppliedStudentModel),
     defaultValues: {
@@ -61,7 +67,6 @@ const AppliedStudentPage = () => {
     url: 'registration/candidate-registration-list',
     queryKey: ['get', 'applied-student']
   });
-  console.log(data);
 
   const projectQuery = useCQuery({
     url: 'project',
@@ -110,27 +115,23 @@ const AppliedStudentPage = () => {
       options: StudentStatusOptions ?? emptyOptions
     }
   ];
+
   const columns: ColumnDef<StudentRegistrationModelType | any>[] = [
-    {
-      id: 'select',
-      header: ({ table }) => (
-        <SelectCheckbox
-          table={table}
-          selectedIds={isSelectedIds}
-          setSelectedIds={setSelectedIds}
-          isHeader
-        />
-      ),
-      cell: ({ row }) => (
-        <SelectCheckbox
-          row={row}
-          selectedIds={isSelectedIds}
-          setSelectedIds={setSelectedIds}
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false
-    },
+    // {
+    //   id: 'select',
+    //   header: ({ table }) => <Checkbox disabled />,
+    //   cell: ({ row }) => (
+    //     <Checkbox
+    //       onCheckedChange={() => {
+    //         const idx = row.original.id;
+    //         setId(idx);
+    //       }}
+    //       checked={id === row.original.id}
+    //     />
+    //   ),
+    //   enableSorting: false,
+    //   enableHiding: false
+    // },
     {
       accessorKey: 'name',
       header: 'Name'
@@ -149,7 +150,17 @@ const AppliedStudentPage = () => {
     },
     {
       accessorKey: 'Action',
-      header: 'Action'
+      cell: ({ row }) => (
+        <CellAction
+          onEdit={() => {
+            const idx = row.original.id;
+            if (idx) {
+              setId(idx);
+              setIsOpen(true);
+            }
+          }}
+        />
+      )
     }
   ];
 
@@ -204,13 +215,7 @@ const AppliedStudentPage = () => {
           data={data?.data ? data.data : []}
         />
       </div>
-      {isOpen && (
-        <UpdateAppliedStudentForm
-          registration_id={isSelectedIds}
-          open={isOpen}
-          onClose={() => setIsOpen(false)}
-        />
-      )}
+      {isOpen && <UpdateAppliedStudentForm />}
     </>
   );
 };
