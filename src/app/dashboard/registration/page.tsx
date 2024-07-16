@@ -13,6 +13,7 @@ import {
   addPersonalDetails,
   addStudentBpl,
   otherDetails,
+  startRegistration,
   studentAppliedDomain,
   StudentRegistrationModelWithDomain,
   StudentRegistrationModelWithDomainType
@@ -27,9 +28,12 @@ import { AlertModal } from '@components/modal/alert-modal';
 import { useRouter } from 'next/navigation';
 import { axiosInstance } from '@lib/utils';
 import { startRegisDetailType } from './_lib/type';
+import { format } from 'date-fns';
+import { useMultiStepFormStore } from '@components/form/stepper-form';
 
 const Registration = () => {
   const router = useRouter();
+  const { currentStep } = useMultiStepFormStore();
   const { setId, id } = useRegisterStudentStore();
   const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(!!id);
@@ -40,6 +44,7 @@ const Registration = () => {
       religion: 'Christian',
       category: 'ST',
       education: '10 pass',
+      registration_date: format(new Date(), 'yyyy-MM-dd'),
       is_bpl: 'No',
       is_disabled: 'No',
       is_minority: 'No'
@@ -54,79 +59,69 @@ const Registration = () => {
     StudentRegistrationModelWithDomainType
   > = async (data) => {
     try {
-      // Validate the data using zod
-      StudentRegistrationModelWithDomain.parse(data);
+      switch (currentStep) {
+        case 0:
+          if (!id) {
+            const startRegisRes = await startRegistration(data);
+            if (!startRegisRes.data.success) {
+              throw new Error('Failed to start registration');
+            }
+            console.log(startRegisRes.data.data);
 
-      // Prepare the payload for start registration
-      const payload: startRegisDetailType = {
-        dob: data.dob,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        middle_name: data.middle_name
-      };
+            const idx = startRegisRes.data.data.id;
+            setId(idx); // Update the ID state with the received ID
+          }
+          break;
+        case 1:
+          console.log(data);
 
-      // Start registration only if ID does not exist
-      if (!id) {
-        const startRegisRes = await axiosInstance.post(
-          '/registration/start-registration',
-          payload
-        );
-        if (!startRegisRes.data.success) {
-          throw new Error('Failed to start registration');
-        }
+          // Perform the second step operations
+          const personalRes = await addPersonalDetails(id, data);
+          console.log(personalRes);
 
-        const idx = startRegisRes.data.data.id;
-        setId(idx); // Update the ID state with the received ID
+          if (!personalRes.success) {
+            showToast(FailedToastTitle, 'Error when adding personal detail');
+          }
+
+          break;
+        case 2:
+          const domainAppliedRes = await studentAppliedDomain(id, data);
+          if (!domainAppliedRes.success) {
+            showToast(FailedToastTitle, 'Error when adding domain applied');
+          }
+          break;
+        case 3:
+          console.log(currentStep);
+          const familyRes = await addFamilyDetails(id, data);
+          if (!familyRes.success) {
+            showToast(FailedToastTitle, 'Error when adding family detail');
+          }
+          break;
+        case 4:
+          const addressRes = await addAddressDetails(id, data);
+          if (!addressRes.success) {
+            showToast(FailedToastTitle, 'Error when adding address detail');
+          }
+          break;
+        case 5:
+          break;
+        case 6:
+          if (data.is_bpl === 'Yes') {
+            const bplRes = await addStudentBpl(id, data);
+            if (!bplRes.success) {
+              showToast(FailedToastTitle, 'Error when adding BPL detail');
+            }
+          }
+          const otherDetailRes = await otherDetails(id, data);
+          if (!otherDetailRes.success) {
+            showToast(FailedToastTitle, 'Error when adding other detail');
+          }
+          showToast(SuccessToastTitle, 'Registration Successful');
+          break;
+        default:
+          break;
       }
-
-      // Perform subsequent operations with the existing or newly set ID
-      const personalRes = await addPersonalDetails(id, data);
-      if (!personalRes.data.success) {
-        showToast(FailedToastTitle, 'Error when adding personal detail');
-      }
-
-      console.log('Personal Detail:', personalRes.data.success);
-
-      if (form.watch('project_id') === '') return;
-      const domainAppliedRes = await studentAppliedDomain(id, data);
-      if (!domainAppliedRes.data.success) {
-        showToast(FailedToastTitle, 'Error when adding domain applied');
-      }
-      console.log('Applied Domain:', domainAppliedRes.data.success);
-
-      const addressRes = await addAddressDetails(id, data);
-      if (!addressRes.data.success) {
-        // throw new Error('Error when adding address detail');
-        showToast(FailedToastTitle, 'Error when adding address detail');
-      }
-      console.log('Address Detail:', addressRes.data.success);
-
-      const familyRes = await addFamilyDetails(id, data);
-      if (!familyRes.data.success) {
-        // throw new Error('Error when adding family detail');
-        showToast(FailedToastTitle, 'Error when adding family detail');
-      }
-      console.log('Family Detail:', familyRes.data.success);
-
-      if (data.is_bpl === 'Yes') {
-        const bplRes = await addStudentBpl(id, data);
-        if (!bplRes.data.success) {
-          showToast(FailedToastTitle, 'Error when adding BPL detail');
-        }
-        console.log('BPL Detail:', bplRes.data.success);
-      }
-
-      const otherDetailRes = await otherDetails(id, data);
-      if (!otherDetailRes.data.success) {
-        showToast(FailedToastTitle, 'Error when adding other detail');
-      }
-      console.log('Other Detail:', otherDetailRes.data.success);
-
-      // Return success result with ID and data
-      showToast('Success', 'Registration successful');
-      router.push(`/dashboard/registration/update`);
     } catch (error: any) {
-      // Enhanced error handling
       if (error instanceof ZodError) {
         showToast('Validation Error', error.errors[0].message);
       } else if (error instanceof AxiosError) {
@@ -137,7 +132,6 @@ const Registration = () => {
       } else {
         showToast('Error', error.message || 'An unexpected error occurred');
       }
-      return;
     }
   };
 

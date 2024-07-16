@@ -113,7 +113,7 @@ export const addPersonalDetails = async (
     form.append('education', data.education);
     form.append('religion', data.religion);
     form.append('remarks', data.remarks ?? '');
-    form.append('registration_date', data.registration_date);
+    form.append('registration_date', data.registration_date ?? '');
     form.append('passport', data.passport ?? '');
 
     const response = await axiosInstance.put(
@@ -122,7 +122,6 @@ export const addPersonalDetails = async (
     );
     return response.data;
   } catch (error) {
-    console.error('Error during add personal details:', error);
     throw error;
   }
 };
@@ -242,6 +241,71 @@ export const addStudentBpl = async (
   }
 };
 
+// export const startRegistration = async (
+//   data: StudentRegistrationModelWithDomainType
+// ) => {
+//   try {
+//     const payload: startRegisDetailType = {
+//       dob: data.dob,
+//       first_name: data.first_name,
+//       last_name: data.last_name,
+//       middle_name: data.middle_name
+//     };
+//     const startRegisRes = await axiosInstance.post(
+//       `/registration/start-registration`,
+//       payload
+//     );
+//     if (!startRegisRes.data.success) {
+//       throw new Error('Failed to registration');
+//     }
+//     const id = startRegisRes.data.data.id;
+//     if (startRegisRes.data.success && !id) {
+//       return startRegisRes.data.data;
+//     }
+
+//     console.log('Start Registration=>', startRegisRes.data.success);
+
+//     const domainAppliedRes = await studentAppliedDomain(id, data);
+//     console.log('domainAppliedRes', domainAppliedRes.data.success);
+
+//     if (domainAppliedRes.data.success === false) {
+//       throw new Error('Error when adding domain applied');
+//     }
+
+//     console.log('Applied Domain=>', domainAppliedRes.data.success);
+//     const personalRes = await addPersonalDetails(id, data);
+//     if (personalRes.data.success === false) {
+//       throw new Error('Error when adding personal detail');
+//     }
+
+//     console.log('Personal Detail=>', personalRes.data.success);
+//     const addressRes = await addAddressDetails(id, data);
+//     if (addressRes.data.success === false) {
+//       throw new Error('Error when adding address detail');
+//     }
+
+//     console.log('Address Detail=>', personalRes.data.success);
+//     const familyRes = await addFamilyDetails(id, data);
+//     if (familyRes.data.success === false) {
+//       throw new Error('Error when adding family detail');
+//     }
+
+//     console.log('Family Detail=>', personalRes.data.success);
+//     const bplRes = await addStudentBpl(id, data);
+//     if (data.is_bpl === 'Yes' && bplRes.data.success === false) {
+//       throw new Error('Error when adding bpl detail');
+//     }
+//     const otherDetailRes = await otherDetails(id, data);
+//     if (otherDetailRes.data.success === false) {
+//       throw new Error('Error when adding other detail');
+//     }
+//     console.log('other Detail=>', otherDetailRes.data.success);
+//     return { success: true, id: id, data: startRegisRes.data };
+//   } catch (error) {
+//     console.error('Error during start registration:', error);
+//     throw error;
+//   }
+// };
 export const startRegistration = async (
   data: StudentRegistrationModelWithDomainType
 ) => {
@@ -252,58 +316,17 @@ export const startRegistration = async (
       last_name: data.last_name,
       middle_name: data.middle_name
     };
-    const startRegisRes = await axiosInstance.post(
-      `/registration/start-registration`,
+    const res = await axiosInstance.post(
+      '/registration/start-registration',
       payload
     );
-    if (!startRegisRes.data.success) {
-      throw new Error('Failed to registration');
-    }
-    const id = startRegisRes.data.data.id;
-    if (startRegisRes.data.success && !id) {
-      return startRegisRes.data.data;
-    }
 
-    console.log('Start Registration=>', startRegisRes.data.success);
-
-    const domainAppliedRes = await studentAppliedDomain(id, data);
-    console.log('domainAppliedRes', domainAppliedRes.data.success);
-
-    if (domainAppliedRes.data.success === false) {
-      throw new Error('Error when adding domain applied');
-    }
-
-    console.log('Applied Domain=>', domainAppliedRes.data.success);
-    const personalRes = await addPersonalDetails(id, data);
-    if (personalRes.data.success === false) {
-      throw new Error('Error when adding personal detail');
-    }
-
-    console.log('Personal Detail=>', personalRes.data.success);
-    const addressRes = await addAddressDetails(id, data);
-    if (addressRes.data.success === false) {
-      throw new Error('Error when adding address detail');
-    }
-
-    console.log('Address Detail=>', personalRes.data.success);
-    const familyRes = await addFamilyDetails(id, data);
-    if (familyRes.data.success === false) {
-      throw new Error('Error when adding family detail');
-    }
-
-    console.log('Family Detail=>', personalRes.data.success);
-    const bplRes = await addStudentBpl(id, data);
-    if (data.is_bpl === 'Yes' && bplRes.data.success === false) {
-      throw new Error('Error when adding bpl detail');
-    }
-    const otherDetailRes = await otherDetails(id, data);
-    if (otherDetailRes.data.success === false) {
-      throw new Error('Error when adding other detail');
-    }
-    console.log('other Detail=>', otherDetailRes.data.success);
-    return { success: true, id: id, data: startRegisRes.data };
+    return {
+      success: true,
+      data: res.data,
+      message: 'Successfully added'
+    };
   } catch (error) {
-    console.error('Error during start registration:', error);
     throw error;
   }
 };

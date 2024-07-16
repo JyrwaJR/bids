@@ -17,11 +17,12 @@ export const useRegisterStudentStore = create<RegisterType>()(
       isOpen: false,
       isUpdate: false,
       id: '',
+      setId: (id: string) => set({ id: id }),
+      setUpdate: (update: boolean) => set({ isUpdate: update }),
       onOpen: () => set({ isOpen: true }),
       onClose: () => set({ isOpen: false }),
       onUpdate: () => set({ isUpdate: true }),
-      onRegister: () => set({ isUpdate: false }),
-      setId: (id: string) => set({ id: id })
+      onRegister: () => set({ isUpdate: false })
     }),
     {
       name: 'register-student',

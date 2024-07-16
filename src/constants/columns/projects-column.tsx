@@ -30,11 +30,5 @@ export const ProjectColumn: ColumnDef<ProjectModelType>[] = [
   {
     accessorKey: 'target_sector',
     header: 'Target Sector'
-  },
-  {
-    id: 'actions',
-    cell: ({ row }) => {
-      return <CellAction data={row.original} />;
-    }
   }
 ];

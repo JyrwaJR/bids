@@ -8,8 +8,9 @@ export const StudentRegistrationModel = z.object({
   // registration_no: z.string().uuid().optional(),
   admission_no: z.string().max(30).nullable().optional(),
   registration_date: z
-    .string({ required_error: 'Registration date is required' })
-    .refine((val) => format(new Date(val), 'yyyy-MM-dd') !== 'Invalid Date'),
+    .string()
+    .refine((val) => format(new Date(val), 'yyyy-MM-dd') !== 'Invalid Date')
+    .optional(),
   aadhaar: z.string().length(12).nullable().optional(),
   first_name: z.string({ required_error: 'First name is required' }).max(80),
   middle_name: z.string().max(50).nullable().optional(),
@@ -44,7 +45,8 @@ export const StudentRegistrationModel = z.object({
     }, 'File size must be less than 2MB')
     .refine((file) => {
       return file && ACCEPTED_FILE_TYPES.includes(file.type);
-    }, 'File must be a PNG'),
+    }, 'File must be a PNG')
+    .optional(),
   // Parents details
   father_name: z.string().max(80).nullable().optional(),
   father_last_name: z.string().max(80).nullable().optional(),
