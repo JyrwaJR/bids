@@ -14,7 +14,6 @@ import { useCMutation } from '@hooks/useCMutation';
 import { useCQuery } from '@hooks/useCQuery';
 import { useRegisterStudentStore } from '@lib/store';
 import { useUploadDocStore } from '@lib/store/useUploadDocStore';
-import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 2; // 2MB

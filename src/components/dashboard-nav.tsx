@@ -51,7 +51,7 @@ export function DashboardNav({
   // Filter out admin-related items if the user role is not 'superadmin'
   const filteredNavItems =
     userRole !== 'superadmin'
-      ? items.filter((item) => item.title !== 'Admin')
+      ? items.filter((item) => item.title !== 'Admin').filter((item) => item.title !== 'Staff')
       : items;
 
   if (!items?.length) {

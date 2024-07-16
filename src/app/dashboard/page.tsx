@@ -1,3 +1,5 @@
+'use client';
+
 import { CalendarDateRangePicker } from '@src/components/date-range-picker';
 import { Overview } from '@src/components/overview';
 import { RecentSales } from '@src/components/recent-sales';
