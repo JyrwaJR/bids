@@ -138,11 +138,25 @@ const AppliedStudentPage = () => {
     },
     {
       accessorKey: 'email',
-      header: 'Email'
+      header: 'Email',
+      cell: ({ row }) => {
+        return row.original.email ?? 'N/A';
+      }
+    },
+    {
+      accessorKey: 'gender',
+      header: 'Gender'
+    },
+    {
+      accessorKey: 'mobile',
+      header: 'Mobile No.'
     },
     {
       accessorKey: 'application_date',
-      header: 'Application Date'
+      header: 'Application Date',
+      cell: ({ row }) => {
+        return row.original.email ?? 'N/A';
+      }
     },
     {
       accessorKey: 'status',
@@ -189,6 +203,7 @@ const AppliedStudentPage = () => {
       setIsSelectedProjectId(form.getValues('project_id'));
     }
   }, [form, domainQuery, isSelectedProjectId]);
+  console.log(data?.data);
 
   return (
     <>
