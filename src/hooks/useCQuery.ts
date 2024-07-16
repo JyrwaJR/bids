@@ -33,7 +33,6 @@ const queryFn = async ({ token, url }: QueryFNProps) => {
     }
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL!;
     const uri = `${apiBaseUrl}/${url}`;
-    console.log('URI =>', uri);
 
     const response: ApiResponse = await axios.get(uri, {
       headers: {
@@ -48,7 +47,6 @@ const queryFn = async ({ token, url }: QueryFNProps) => {
     }
     return;
   } catch (error: any) {
-    console.log('Query Function Error =>', error);
     if (error instanceof AxiosError) {
       if (error.code === 'ERR_NETWORK') {
         showToast(FailedToastTitle, error.message);

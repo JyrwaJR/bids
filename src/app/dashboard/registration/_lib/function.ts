@@ -13,9 +13,11 @@ import { z } from 'zod';
 export async function getDomainByProjectId(projectId?: string) {
   try {
     if (!projectId) return;
+    console.log('Project Id =>', projectId);
     const res = await axiosInstance.get(
-      `project-domain/get-domain-by-project/${projectId}`
+      `project-domain/get-domain-by-project/${projectId}` //9c8793ff-3836-4a6a-8c24-6230ca5d6381
     );
+
     return res.data;
   } catch (error: any) {
     throw new Error(error);

@@ -15,7 +15,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       setShowLoading(true);
       return;
     }
-
     setTimeout(() => {
       if (!isAuthenticated) {
         router.replace(`/`);
@@ -23,7 +22,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         router.push('/dashboard');
       }
       setShowLoading(false);
-    }, 2000);
+    }, 1000);
   }, [isAuthenticated, loading, pathName, router]);
 
   if (showLoading) {

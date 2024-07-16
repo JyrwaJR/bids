@@ -102,7 +102,7 @@ export default function MultiStepForm({
     <section>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <Stepper
+          {/* <Stepper
             steps={steps.map((step) => ({
               label: step.name
             }))}
@@ -121,7 +121,7 @@ export default function MultiStepForm({
               circleFontSize: ''
             }}
             activeStep={currentStep}
-          />
+          /> */}
           {steps.map((step, index) => (
             <div
               key={step.name + index}

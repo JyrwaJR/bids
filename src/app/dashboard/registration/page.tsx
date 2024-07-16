@@ -30,7 +30,6 @@ import { format } from 'date-fns';
 import { useMultiStepFormStore } from '@components/form/stepper-form';
 
 const Registration = () => {
-  const router = useRouter();
   const { currentStep, setCurrentStep } = useMultiStepFormStore();
   const { setId, id } = useRegisterStudentStore();
   const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);

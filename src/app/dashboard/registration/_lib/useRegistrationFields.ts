@@ -11,7 +11,7 @@ import { studentRegistrationFields } from '@constants/input-fields/students';
 import { StepType } from '@components/form/stepper-form';
 import { useQuery } from 'react-query';
 import { OptionsT } from '@components/form/type';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 type Props = {
   form: UseFormReturn<StudentRegistrationModelWithDomainType>;
@@ -24,39 +24,47 @@ const emptyOptions: OptionsT[] = [
 ];
 export const useRegistrationFields = ({ form }: Props) => {
   const { options } = useCategorySelectOptions();
+  const [projectId, setProjectId] = useState('');
   const batchQuery = useQuery({
     queryFn: async () => await getBatch(form.watch('project_id')),
     enabled: !!form.watch('project_id'),
-    queryKey: form.watch('project_id')
+    queryKey: ['batch', form.watch('project_id')]
   });
+
   const domainQuery = useQuery({
     queryFn: async () => await getDomainByProjectId(form.watch('project_id')),
     enabled: !!form.watch('project_id'),
-    queryKey: form.watch('project_id')
+    queryKey: ['domain', form.watch('project_id'), form.watch('batch_id')]
   });
+  const refetchDomainQuery = useCallback(() => {
+    domainQuery.refetch();
+  }, [domainQuery]);
 
-  console.log(form.watch('domain_id'));
-  useEffect(() => {
-    let project_id;
-    if (form.watch('project_id') !== project_id) {
-      form.reset({
-        ...form.getValues(),
-        domain_id: '',
-        batch_id: ''
-      });
-      project_id = form.watch('project_id');
+  const handleProjectIdChange = useCallback(() => {
+    const currentProjectId = form.watch('project_id');
+    if (currentProjectId !== projectId) {
+      refetchDomainQuery();
+      form.setValue('domain_id', '');
+      form.setValue('batch_id', '');
+      setProjectId(currentProjectId);
     }
-  }, [form]);
+  }, [form, projectId, refetchDomainQuery, setProjectId]);
+
+  useEffect(() => {
+    handleProjectIdChange();
+  }, [handleProjectIdChange]);
 
   const domainOptions: OptionsT[] =
     domainQuery.isFetched &&
     !domainQuery.isLoading &&
     !domainQuery.isError &&
     domainQuery.data &&
-    domainQuery.data.data.map((item: { id: string; domain: string }) => ({
-      label: item.domain,
-      value: item.id
-    }));
+    domainQuery.data.data.map(
+      (item: { domain_id: string; domain: string }) => ({
+        label: item.domain,
+        value: item.domain_id
+      })
+    );
 
   const batchOptions: OptionsT[] =
     batchQuery.isFetched &&

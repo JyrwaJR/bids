@@ -91,15 +91,14 @@ export const CForm = <T,>({
                             </FormLabel>
                             <Select
                               onValueChange={field.onChange}
-                              defaultValue={defaultValue?.[input.name]}
-                              value={field.value}
+                              defaultValue={field.value}
                             >
                               <FormControl className="w-full">
                                 <SelectTrigger
                                   disabled={disabled || input.readOnly}
                                 >
                                   <SelectValue
-                                    onChange={() => field.onChange}
+                                    defaultValue={field.value}
                                     placeholder={
                                       input.placeholder ??
                                       `Select ${input.label}`
