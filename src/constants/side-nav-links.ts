@@ -85,8 +85,7 @@ export const navItems: NavItem[] = [
     items: [
       {
         title: 'Report',
-        disabled: true,
-        href: '',
+        href: '/dashboard/reports',
         icon: 'chevronRight',
         label: 'registration'
       }

@@ -15,8 +15,9 @@ import { LoadingPage } from '@components/pages/loading';
 
 export default function AuthenticationPage() {
   const { onLogin, isLoading, isLoggedIn } = useAuthContext();
-  const form = useForm<LoginModelType>({
+          const form = useForm<LoginModelType>({
     resolver: zodResolver(LoginModel),
+    
     defaultValues: {
       email: '',
       password: ''

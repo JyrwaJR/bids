@@ -1,11 +1,7 @@
+'use client';
 import React from 'react';
-import PropTypes from 'prop-types';
 import ReportPage from '@components/pages/reports';
 
-const Page = () => {
+export default function page() {
   return <ReportPage />;
-};
-
-Page.propTypes = {};
-
-export default Page;
+}
