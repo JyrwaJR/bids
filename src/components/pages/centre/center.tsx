@@ -15,8 +15,7 @@ import { AlertModal } from '@components/modal/alert-modal';
 import { useCenterStore } from '@lib/store';
 
 export const CenterPageComponents = () => {
-  const { id, setId, setIsDeleting, isDeleting, open, setOpen } =
-    useCenterStore();
+  const { setIsDeleting, isDeleting, open, setOpen } = useCenterStore();
   const { user } = useAuthContext();
   const { data, isFetched, isLoading } = useCQuery({
     url: 'centre',
@@ -27,22 +26,12 @@ export const CenterPageComponents = () => {
     {
       id: 'actions',
       cell: ({ row }) => {
-        return (
-          <CellAction
-            onDelete={() => {
-              if (row.original.id) {
-                setId(row.original.id);
-                setIsDeleting(true);
-              }
-            }}
-          />
-        );
+        return <CellAction />;
       }
     }
   ];
   const onClickDelete = () => {
     if (isDeleting) {
-      console.log(id);
       setIsDeleting(false);
     }
   };

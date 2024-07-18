@@ -8,6 +8,7 @@ import { useAuthContext } from '@context/auth';
 import AddNewProject from './add-new-project';
 import CentreProjectPage from '../centre/project';
 import { useCQuery } from '@hooks/useCQuery';
+import { projectsQueryKey } from '@constants/query-keys';
 
 const ProjectsPage = () => {
   const { user } = useAuthContext();
@@ -15,15 +16,15 @@ const ProjectsPage = () => {
     user?.role === 'superadmin' ? 'project' : 'project-centre/get-projects';
   const { data, isFetched, isLoading, isError } = useCQuery({
     url: url,
-    queryKey: ['get', 'project']
+    queryKey: projectsQueryKey
   });
 
   const projects =
     !isError &&
-    isFetched &&
-    !isLoading &&
-    data.data &&
-    user?.role === 'superadmin'
+      isFetched &&
+      !isLoading &&
+      data.data &&
+      user?.role === 'superadmin'
       ? data?.data
       : data?.data.map((item: any) => item.project);
 

@@ -48,14 +48,14 @@ export function DashboardNav({
   const userRole = user?.role;
   // Filter out admin-related items if the user role is not 'superadmin'
   const filteredNavItems =
+    // with coridinator role can see all nav
     userRole !== 'superadmin'
       ? items
           .filter((item) => item.title !== 'Admin')
           .filter((item) => item.title !== 'Staff')
           .filter((item) => item.title !== 'Settings')
           .filter((item) => item.title !== 'Reports')
-      : items;
-
+      : items.filter((item) => item.title !== 'Project');
   if (!items?.length) {
     return null;
   }

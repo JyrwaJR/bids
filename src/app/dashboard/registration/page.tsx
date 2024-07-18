@@ -84,7 +84,6 @@ const Registration = () => {
           }
           break;
         case 3:
-          console.log(currentStep);
           const familyRes = await addFamilyDetails(id, data);
           if (!familyRes.success) {
             showToast(FailedToastTitle, 'Error when adding family detail');

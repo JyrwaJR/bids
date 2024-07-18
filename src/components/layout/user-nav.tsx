@@ -12,10 +12,12 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger
 } from '@src/components/ui/dropdown-menu';
+import { useRouter } from 'next/navigation';
 
 export function UserNav() {
   const { onLogout, user } = useAuthContext();
   const userName = user?.name?.split(' ')[0] || '';
+  const router = useRouter();
   return (
     <>
       <DropdownMenu>
@@ -43,15 +45,10 @@ export function UserNav() {
               Profile
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              Billing
-              <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/settings')}>
               Settings
               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem>New Team</DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={async () => await onLogout()}>

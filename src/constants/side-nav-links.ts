@@ -84,10 +84,28 @@ export const navItems: NavItem[] = [
     label: 'registration',
     items: [
       {
-        title: 'Report',
-        href: '/dashboard/reports',
-        icon: 'chevronRight',
-        label: 'registration'
+        title: 'Project',
+        href: '/dashboard/reports?reports=project',
+        icon: 'add',
+        label: 'Project Report'
+      },
+      {
+        title: 'Centre',
+        href: '/dashboard/reports?reports=centre',
+        icon: 'sun',
+        label: 'Centre Report'
+      },
+      {
+        title: 'Domain',
+        href: '/dashboard/reports?reports=domain',
+        icon: 'help',
+        label: 'Domian Report'
+      },
+      {
+        title: 'Sectors',
+        href: '/dashboard/reports?reports=sector',
+        icon: 'logo',
+        label: 'Domian Report'
       }
     ]
   },

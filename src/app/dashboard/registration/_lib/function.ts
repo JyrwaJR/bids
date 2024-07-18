@@ -10,10 +10,19 @@ import {
 import { StudentRegistrationApplyDomainModel } from '@models/student/student-registration-apply-domain-model';
 import { z } from 'zod';
 
+export async function getDomainByCentreId(id: string) {
+  try {
+    if (!id || id === undefined) return;
+    const res = await axiosInstance.get(`domain/get-domain-by-centre/${id}`);
+    return res.data;
+  } catch (error: any) {
+    throw error;
+  }
+}
+
 export async function getDomainByProjectId(projectId?: string) {
   try {
     if (!projectId) return;
-    console.log('Project Id =>', projectId);
     const res = await axiosInstance.get(
       `project-domain/get-domain-by-project/${projectId}` //9c8793ff-3836-4a6a-8c24-6230ca5d6381
     );

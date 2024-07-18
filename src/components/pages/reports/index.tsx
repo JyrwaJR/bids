@@ -1,4 +1,3 @@
-import { columns } from '@components/tables/employee-tables/columns';
 import { DataTable } from '@components/ui/data-table';
 import { Heading } from '@components/ui/heading';
 import { Separator } from '@components/ui/separator';
@@ -8,27 +7,33 @@ import { CSVLink } from 'react-csv';
 import { CentreColumn } from '../../../constants/columns/center-column';
 import { Button } from '@components/ui/button';
 import { Download } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
-const ReportPage = () => {
+export const ReportPage = () => {
+  const search = useSearchParams().get('reports');
+  console.log(search);
   const { data, isFetched } = useCQuery({
-    url: 'centre',
-    queryKey: ['get', 'centre']
+    url: search ? search : 'centre',
+    queryKey: ['get', search]
   });
 
   return (
     <div className="flex-1 space-y-4">
       <div className="flex items-start justify-between">
-        <Heading title={`Report`} description="Manage ur center Report" />
+        <Heading
+          title={`Reports ${search}`}
+          description={`Manage ${search} reports`}
+        />
         {isFetched && (
           <Button asChild>
             <CSVLink
               aria-disabled="true"
               about="Download Report"
-              filename="centre-report.csv"
+              filename={`${search}-reports`}
               className="flex items-center justify-center gap-2"
               data={isFetched ? data.data : []}
             >
-              Report
+              CSV Report
               <Download className="h-4 w-4" />
             </CSVLink>
           </Button>
@@ -43,5 +48,3 @@ const ReportPage = () => {
     </div>
   );
 };
-
-export default ReportPage;

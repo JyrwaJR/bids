@@ -16,12 +16,15 @@ import { z } from 'zod';
 import { UpdateAppliedStudentForm } from './update-applied-students';
 import { useAppliedStudentsStore } from '@lib/store';
 import { CellAction } from '@components/cell-action';
-import { Checkbox } from '@radix-ui/react-checkbox';
 
 const StudentStatusOptions: OptionsT[] = [
   {
     label: 'Applied',
     value: 'Applied'
+  },
+  {
+    label: 'Selected',
+    value: 'Selected'
   },
   {
     label: 'Waiting',
@@ -49,7 +52,6 @@ const emptyOptions: OptionsT[] = [
 ];
 const AppliedStudentPage = () => {
   const {
-    id,
     setId,
     openUpdate: isOpen,
     setOpenUpdate: setIsOpen
@@ -65,7 +67,7 @@ const AppliedStudentPage = () => {
   const { mutateAsync, isLoading, data } = useCMutation({
     method: 'POST',
     url: 'registration/candidate-registration-list',
-    queryKey: ['get', 'applied-student']
+    queryKey: ['get', 'applied', 'student']
   });
 
   const projectQuery = useCQuery({
@@ -203,7 +205,6 @@ const AppliedStudentPage = () => {
       setIsSelectedProjectId(form.getValues('project_id'));
     }
   }, [form, domainQuery, isSelectedProjectId]);
-  console.log(data?.data);
 
   return (
     <>
@@ -230,12 +231,7 @@ const AppliedStudentPage = () => {
           data={data?.data ? data.data : []}
         />
       </div>
-      {isOpen && (
-        <UpdateAppliedStudentForm
-          domain_id={form.getValues('domain_id')}
-          project_id={form.getValues('project_id')}
-        />
-      )}
+      {isOpen && <UpdateAppliedStudentForm />}
     </>
   );
 };

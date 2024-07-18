@@ -17,7 +17,12 @@ export const Heading: React.FC<HeadingProps> = ({
 }) => {
   return (
     <div className={cn('space-y-2', className)}>
-      <h2 className={cn(titleStyle, 'text-4xl font-bold tracking-normal')}>
+      <h2
+        className={cn(
+          titleStyle,
+          'text-4xl font-bold tracking-normal text-primary'
+        )}
+      >
         {title}
       </h2>
       <p

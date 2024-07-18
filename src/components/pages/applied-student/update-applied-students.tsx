@@ -24,10 +24,7 @@ const StudentStatusOptions: OptionsT[] = [
     label: 'Selected',
     value: 'Selected'
   },
-  {
-    label: 'Rejected',
-    value: 'Rejected'
-  }
+  { label: 'Rejected', value: 'Rejected' }
 ];
 const UpdateStudentSchema = z.object({
   status: z
@@ -37,13 +34,7 @@ const UpdateStudentSchema = z.object({
     })
 });
 type UpdateStudentSchemaType = z.infer<typeof UpdateStudentSchema>;
-export const UpdateAppliedStudentForm = ({
-  project_id,
-  domain_id
-}: {
-  project_id: string;
-  domain_id: string;
-}) => {
+export const UpdateAppliedStudentForm = () => {
   const {
     openUpdate: open,
     setOpenUpdate,
@@ -57,11 +48,10 @@ export const UpdateAppliedStudentForm = ({
   const mutate = useCMutation({
     url: url,
     method: 'PUT',
-    queryKey: ['update status']
+    queryKey: ['get', 'applied', 'student']
   });
 
   const onClose = () => {
-    setId('');
     setId('');
     setOpenUpdate(false);
   };
@@ -74,20 +64,17 @@ export const UpdateAppliedStudentForm = ({
         showToast(FailedToastTitle, 'Please select a student');
         return;
       }
-      await mutate.mutateAsync({
-        status: data.status,
-        domain_id: domain_id,
-        project_id: project_id
+      const res = await mutate.mutateAsync({
+        status: data.status
       });
-      if (mutate.isSuccess) {
-        showToast(
-          mutate.data.success ? SuccessToastTitle : FailedToastTitle,
-          mutate.data.message ?? 'Something went wrong'
-        );
+      if (res.data.success === true) {
         onClose();
+        showToast(SuccessToastTitle, 'Student status updated successfully');
       }
     } catch (error: any) {
       showToast(FailedToastTitle, error.message);
+    } finally {
+      mutate.reset();
     }
   };
 

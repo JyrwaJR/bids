@@ -23,7 +23,7 @@ const StaffPage = () => {
     <ScrollArea>
       <div className="flex w-full flex-col space-y-4">
         <div className="flex items-start justify-between space-y-2">
-          <Heading title={`Staff`} description="Manage ur Staff" />
+          <Heading title={`Staff`} description="Manage Staff" />
           <Button
             size={'sm'}
             className="text-xs md:text-sm"

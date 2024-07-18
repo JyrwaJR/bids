@@ -55,9 +55,11 @@ export const AddCentreDomain = ({ onClose, open, domain_id }: Props) => {
         showToast(FailedToastTitle, 'Domain is required');
       } catch (error: any) {
         showToast(FailedToastTitle, error.message);
+      } finally {
+        onClose();
       }
     },
-    [mutateAsync]
+    [mutateAsync, onClose]
   );
 
   useEffect(() => {

@@ -15,6 +15,7 @@ import { DataTable } from '@components/ui/data-table';
 import { Separator } from '@components/ui/separator';
 import { CForm, FormTag } from '@components/form';
 import { Card } from '@components/ui/card';
+import { projectsQueryKey } from '@constants/query-keys';
 
 const AddNewProject = () => {
   const [isSelectedIds, setSelectedIds] = useState<string[]>([]);
@@ -33,7 +34,7 @@ const AddNewProject = () => {
   } = useCMutation({
     method: 'POST',
     url: 'project/save',
-    queryKey: ['get', 'project']
+    queryKey: projectsQueryKey
   });
 
   const onSubmit: SubmitHandler<ProjectModelType> = async (data) => {
@@ -51,8 +52,6 @@ const AddNewProject = () => {
       showToast(FailedToastTitle, 'Please select domain to add projects');
       return;
     } catch (error: any) {
-      console.log(error);
-
       showToast(FailedToastTitle, error.message);
       return;
     }
