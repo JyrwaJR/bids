@@ -19,7 +19,7 @@ import { useCQuery } from '@hooks/useCQuery';
 import { DomainModelType } from '@src/models';
 import { ColumnDef } from '@tanstack/react-table';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Form } from '@components/ui/form';
 import { OptionsT } from '@components/form/type';
 import { useQuery } from 'react-query';
@@ -28,6 +28,8 @@ import { z } from 'zod';
 import { FieldsIsRequired } from '@constants/index';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
+import { Label } from '@components/ui/label';
+import { ScrollArea } from '@components/ui/scroll-area'
 type Props = {
   open: boolean;
   onClose: () => void;
@@ -41,15 +43,21 @@ const schema = z.object({
     .string({
       required_error: FieldsIsRequired
     })
-    .uuid()
+    .uuid(),
+  domain_id: z.string().uuid().array(),
+  project_id: z.string().uuid(),
 });
 type schemaType = z.infer<typeof schema>;
 const AddCentreProject = ({ onClose, open, projectId }: Props) => {
   const [isSelectedCenterId, setIsSelectedCenterId] = useState<string>('');
   const [isSelectedDomainId, setIsSelectedDomainId] = useState<string[]>([]);
-
   const form = useForm<schemaType>({
-    resolver: zodResolver(schema)
+    resolver: zodResolver(schema),
+    defaultValues: {
+      centre_id: isSelectedCenterId,
+      domain_id: isSelectedDomainId,
+      project_id: projectId
+    }
   });
 
   const center = useCQuery({
@@ -89,13 +97,17 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
     if (currentProjectId !== isSelectedCenterId) {
       refetchDomainQuery();
       setIsSelectedCenterId(currentProjectId);
+      setIsSelectedDomainId([]);
     }
   }, [form, isSelectedCenterId, refetchDomainQuery, setIsSelectedCenterId]);
 
   useEffect(() => {
     handleCentreIdChange();
   }, [handleCentreIdChange]);
-
+  useEffect(() => {
+    setIsSelectedDomainId([]);
+    setIsSelectedCenterId('');
+  }, [])
   const domainCol: ColumnDef<DomType | any>[] = [
     {
       id: 'select',
@@ -104,35 +116,47 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
           checked={table.getIsAllPageRowsSelected()}
           onCheckedChange={(value) => {
             table.toggleAllPageRowsSelected(!!value);
-            table.toggleAllPageRowsSelected(!!value);
-            const row = table.getRowModel().rows;
+            const rows = table.getRowModel().rows;
             if (value) {
-              setIsSelectedDomainId(row.map((row) => row.original.id));
+              const ids = rows.map((row) => row.original.id);
+              console.log("Selected Ids", ids);
+              setIsSelectedDomainId([...ids]);
             } else {
               setIsSelectedDomainId([]);
             }
           }}
           aria-label="Select all"
-        />
-      ),
+        />),
       cell: ({ row }) => (
         <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => {
-            if (value) {
-              row.getToggleSelectedHandler()(!!value);
-              setIsSelectedDomainId([...isSelectedDomainId, row.original.id]);
+          checked={isSelectedDomainId.includes(row.original.id)}
+          onCheckedChange={() => {
+            const id = row.original.id;
+            if (!isSelectedDomainId.includes(id)) {
+              setIsSelectedDomainId([...isSelectedDomainId, id]);
             } else {
-              row.getToggleSelectedHandler()(!!value);
+              const ids = isSelectedDomainId.filter((selectedId) => selectedId !== id);
+              setIsSelectedDomainId(ids);
             }
           }}
           aria-label="Select row"
-        />
-      ),
+        />),
       enableSorting: false,
       enableHiding: false
     },
-    ...domainColumn
+    {
+      accessorKey: 'domain',
+      header: () => 'Domain',
+    },
+    {
+      accessorKey: 'centre',
+      header: () => 'Centre Name',
+    },
+
+    {
+      accessorKey: 'status',
+      header: () => 'Status',
+    }
   ];
 
   const selectCenterFields: FormFieldType[] = [
@@ -148,29 +172,26 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
   const { mutateAsync, isSuccess, isLoading } = useCMutation({
     url: 'project-centre/save',
     method: 'POST',
-    queryKey: ['get', 'centre']
   });
 
-  const onClickAddProject = async () => {
+  const onClickSubmit: SubmitHandler<schemaType> = async (data) => {
     try {
-      const data = {
-        centre_id: isSelectedCenterId,
-        project_id: projectId,
-        domain_id: isSelectedDomainId
-      };
-
-      await mutateAsync(data).then((val) => {
-        if (isSuccess) {
-          showToast('Success', 'Project added successfully');
-          onClose();
-          return;
-        }
-      });
+      if (isSelectedDomainId.length === 0) {
+        showToast(FailedToastTitle, 'Please select domain');
+        return;
+      }
+      const payload = {
+        domain_id: isSelectedDomainId,
+        centre_id: data.centre_id,
+        project_id: data.project_id
+      }
+      await mutateAsync(payload)
     } catch (error) {
       showToast(FailedToastTitle, 'Something went wrong');
     } finally {
       setIsSelectedDomainId([]);
       setIsSelectedCenterId('');
+      onClose();
     }
   };
 
@@ -181,34 +202,43 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
           <DialogTitle>Assign Project</DialogTitle>
           <DialogDescription>Please select centre and domain</DialogDescription>
         </DialogHeader>
-        <div className="max-h-[70%]">
-          <Form {...form}>
-            <CForm
-              form={form}
-              fields={selectCenterFields}
-              loading={isLoading}
-            />
-          </Form>
-          <DataTable
-            searchKey="name"
-            columns={domainCol}
-            data={
-              domainQuery.isFetched &&
-              !domainQuery.isLoading &&
-              !domainQuery.isError &&
-              domainQuery.data?.data
-            }
-            isLoading={domainQuery.isLoading}
-          />
-        </div>
-        <DialogFooter>
-          <Button variant={'outline'} onClick={onClose}>
-            Cancel
-          </Button>
-          <Button disabled={isLoading} onClick={onClickAddProject}>
-            Submit
-          </Button>
-        </DialogFooter>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onClickSubmit)}>
+            <div className='space-y-2
+            '>
+              <CForm
+                form={form}
+                fields={selectCenterFields}
+                loading={isLoading}
+              />
+              <div className='space-y-2'>
+                <Label>
+                  Select Domain
+                </Label>
+                <DataTable
+                  searchKey="domain"
+                  className='max-h-[300px]'
+                  columns={domainCol}
+                  data={
+                    domainQuery.isFetched &&
+                      !domainQuery.isLoading &&
+                      !domainQuery.isError && domainQuery.data?.data ?
+                      domainQuery.data?.data : []
+                  }
+                  isLoading={domainQuery.isLoading}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type='button' variant={'outline'} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button type='submit' disabled={isLoading || isSelectedDomainId.length === 0} >
+                Submit
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
