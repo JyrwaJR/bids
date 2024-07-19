@@ -23,7 +23,7 @@ export default function AuthenticationPage() {
     }
   });
 
-  const onSubmit: SubmitHandler<LoginModelType> = async (data) => {
+  const onSubmit: SubmitHandler<LoginModelType> = async (data: LoginModelType) => {
     try {
       await onLogin(data.email, data.password);
       if (isLoggedIn) {

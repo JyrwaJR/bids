@@ -65,6 +65,7 @@ export const AuthProvider = ({ children }: Props) => {
         setIsToken('');
         setUser(null);
         showToast(SuccessToastTitle, res.data.message);
+        localStorage.removeItem('savedRoute');
         return;
       }
       showToast(FailedToastTitle, 'Something went wrong');
