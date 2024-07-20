@@ -36,7 +36,6 @@ export const AddCentre = ({ onClose, open }: Props) => {
   const form = useForm<CenterModelType>({
     resolver: zodResolver(CenterModel)
   });
-  const { options } = useCategorySelectOptions();
   const { isLoading, mutateAsync } = useCMutation({
     url: 'centre/save',
     method: 'POST',
@@ -69,7 +68,7 @@ export const AddCentre = ({ onClose, open }: Props) => {
       label: 'State',
       required: true,
       select: true,
-      options: options.states
+      options: stateOptions ?? []
     },
     {
       name: 'district_id',
