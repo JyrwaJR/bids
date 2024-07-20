@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-import { lettersAndSpacesRegex } from '@constants/regex';
 import { FieldsIsRequired } from '@src/constants';
 
 import { numberRegex } from '../constants/regex/number-regex';
@@ -16,9 +15,6 @@ export const CenterModel = z.object({
     })
     .max(100, {
       message: 'Should be less than 100 in length'
-    })
-    .regex(lettersAndSpacesRegex, {
-      message: 'Should contain only letters'
     }),
   email: z
     .string({
@@ -65,6 +61,7 @@ export const CenterModel = z.object({
     .string({
       required_error: FieldsIsRequired
     })
+    .min(1, 'Please select state')
     .max(100, 'State must be 100 characters or less'),
   district_id: z
     .string({

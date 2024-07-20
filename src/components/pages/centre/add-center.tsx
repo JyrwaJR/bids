@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { showToast } from '@src/components/ui/show-toast';
 import { addCenterFields } from '@src/constants/input-fields';
 import { FailedToastTitle } from '@src/constants/toast-message';
-import { useCategorySelectOptions, useCMutation, useCQuery } from '@src/hooks';
+import { useCMutation, useCQuery } from '@src/hooks';
 import { CenterModel, CenterModelType } from '@src/models';
 
 import { Form } from '../../form';
@@ -26,12 +26,6 @@ type StateT = {
   name: string;
   id: string;
 };
-interface DistrictT {
-  id: number;
-  name: string;
-  state: string;
-}
-
 export const AddCentre = ({ onClose, open }: Props) => {
   const form = useForm<CenterModelType>({
     resolver: zodResolver(CenterModel)
