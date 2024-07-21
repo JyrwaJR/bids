@@ -17,10 +17,11 @@ import {
 } from '@tanstack/react-table';
 
 import { Button } from './button';
-import { Input } from './input';
 import { ScrollArea, ScrollBar } from './scroll-area';
 import { cn } from '@src/lib/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { OptionsT } from '@components/form/type';
+import { SearchTableInput } from './search-table-input';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -28,14 +29,15 @@ interface DataTableProps<TData, TValue> {
   searchKey: string;
   isLoading?: boolean;
   className?: string;
+  searchOptions?: OptionsT[];
 }
-
 export function DataTable<TData, TValue>({
   columns,
   data,
   searchKey,
   isLoading,
-  className
+  className,
+  searchOptions
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data: isLoading ? [] : data,
@@ -43,18 +45,14 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel()
   });
+
   const style = cn('h-[calc(80vh-220px)] rounded-md border', className);
-  /* this can be used to get the selectedrows
-  console.log("value", table.getFilteredSelectedRowModel()); */
   return (
     <>
-      <Input
-        placeholder={`Search ${searchKey}...`}
-        value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ''}
-        onChange={(event) =>
-          table.getColumn(searchKey)?.setFilterValue(event.target.value)
-        }
-        className="w-full md:max-w-sm"
+      <SearchTableInput
+        table={table}
+        searchOptions={searchOptions}
+        searchTableBy={searchKey}
       />
       <ScrollArea className={style}>
         <Table className="relative">
