@@ -35,8 +35,8 @@ export const SearchTableInput = ({
     <>
       <div className="flex h-full items-center space-x-2">
         <Input
-          placeholder={`Search ${form.getValues('searchTableBy') ?? searchTableBy
-            }...`}
+          placeholder={`Search by ${form.getValues('searchTableBy') ?? searchTableBy
+            }`}
           value={
             table
               .getColumn(form.getValues('searchTableBy') ?? searchTableBy)
