@@ -7,7 +7,7 @@ export { AddCentreDomain } from '@components/pages/centre/domain/add-center-doma
 export { CenterPageComponents } from '@components/pages/centre/center';
 export { default as StaffPage } from '@components/pages/staff';
 export { default as ProjectsPage } from '@components/pages/projects';
-// export { AddProjects } from '@components/pages/projects/add-projects';
 export { default as BatchPage } from '@components/pages/batch';
 export { AddBatch } from '@components/pages/batch/add-batch';
 export { ReportPage } from './reports/index';
+export { StudentsPage } from './students';
