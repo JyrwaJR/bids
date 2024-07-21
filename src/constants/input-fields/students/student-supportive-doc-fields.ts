@@ -34,7 +34,6 @@ export const studentSupportiveDocumentFormFields: FormFieldType[] = [
     label: 'ID Proof',
     required: false,
     type: 'text',
-    // TODO: add options
     placeholder: 'Enter ID Proof'
   },
   {
