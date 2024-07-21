@@ -13,7 +13,21 @@ import { ColumnDef } from '@tanstack/react-table';
 import { CenterModelType } from '@models/center-model';
 import { AlertModal } from '@components/modal/alert-modal';
 import { useCenterStore } from '@lib/store';
-
+import { OptionsT } from '@components/form/type';
+const searchCentreBy: OptionsT[] = [
+  {
+    label: 'Name',
+    value: 'name'
+  },
+  {
+    label: 'Email',
+    value: 'email'
+  },
+  {
+    label: 'Address',
+    value: 'address'
+  }
+];
 export const CenterPageComponents = () => {
   const { setIsDeleting, isDeleting, open, setOpen } = useCenterStore();
   const { user } = useAuthContext();
@@ -51,6 +65,7 @@ export const CenterPageComponents = () => {
         <Separator />
         <DataTable
           searchKey="name"
+          searchOptions={searchCentreBy}
           isLoading={isLoading}
           columns={column}
           data={isFetched ? data.data : []}
