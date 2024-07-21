@@ -5,6 +5,11 @@ export const domainColumn: ColumnDef<DomainModelType>[] = [
     accessorKey: 'name',
     header: 'Name'
   },
+
+  {
+    accessorKey: 'sector',
+    header: 'Sector'
+  },
   {
     accessorKey: 'level',
     header: 'Level'

@@ -8,9 +8,25 @@ import React, { useState } from 'react';
 import { DataTable } from '@components/ui/data-table';
 import { domainColumn } from '@constants/columns';
 import { AddDomain } from '@components/pages';
+import { OptionsT } from '@components/form/type';
 
+const searchDomainBy: OptionsT[] = [
+  {
+    label: 'Sector',
+    value: 'sector'
+  },
+  {
+    label: 'Name',
+    value: 'name'
+  },
+  {
+    label: 'status',
+    value: 'status'
+  }
+];
 const DomainPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const { data, isFetched } = useCQuery({
     url: 'domain',
     queryKey: ['get', 'domain']
@@ -30,6 +46,7 @@ const DomainPage = () => {
         </div>
         <Separator />
         <DataTable
+          searchOptions={searchDomainBy}
           searchKey="name"
           columns={domainColumn}
           data={isFetched && data.data}
