@@ -79,6 +79,12 @@ export const navItems: NavItem[] = [
     label: 'registration'
   },
   {
+    title: 'Students',
+    href: '/dashboard/students',
+    icon: 'profile',
+    label: 'students list'
+  },
+  {
     title: 'Reports',
     icon: 'media',
     label: 'registration',
