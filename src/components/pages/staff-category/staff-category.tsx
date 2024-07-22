@@ -9,22 +9,32 @@ import { Separator } from '@src/components/ui/separator';
 import { useCQuery } from '@hooks/useCQuery';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { ColumnDef } from '@tanstack/react-table';
+import AddStaffCategory from './add-staff-category';
+
 const categoryColumn: ColumnDef<{ name: string }>[] = [
+  {
+    id: 'id',
+    header: 'S.No',
+    cell: (info) => {
+      return info.row.index + 1;
+    },
+  },
   {
     accessorKey: 'name',
     header: 'Name'
   }
 ]
+
 export const StaffCategory = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isFetched, isError, isLoading } = useCQuery({
     url: 'staffcategory',
-    queryKey: ['get', 'staff']
+    queryKey: ['get', 'staff', 'category']
   });
 
   return (
     <ScrollArea>
-      <div className="flex w-full flex-col space-y-4">
+      <div className="flex w-full flex-col space-y-4 px-2">
         <div className="flex items-start justify-between space-y-2">
           <Heading title={`Staff Category`} description="Manage Category" />
           <Button
@@ -43,6 +53,7 @@ export const StaffCategory = () => {
           data={isFetched && !isError ? data.data.data : []}
         />
       </div>
+      {isOpen && <AddStaffCategory open={isOpen} onClose={() => setIsOpen(false)} />}
     </ScrollArea>
   );
 };
