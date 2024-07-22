@@ -12,10 +12,12 @@ import { Plus } from 'lucide-react';
 import { Checkbox } from '@components/ui/checkbox';
 import { ColumnDef } from '@tanstack/react-table';
 import { DomainModelType } from '@src/models';
+import { useAuthContext } from '@context/auth';
 interface ColType extends DomainModelType {
   id: string;
 }
 const BatchPage = () => {
+  const { user } = useAuthContext()
   const [selectedIds, setSelectedIds] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const url = 'batch';
@@ -91,13 +93,16 @@ const BatchPage = () => {
                   title={`Project`}
                   description="Select a Project to add a batch"
                 />
-                <Button
-                  className="text-xs md:text-sm"
-                  disabled={selectedIds.length === 0}
-                  onClick={() => setIsOpen(true)}
-                >
-                  <Plus className="mr-2 h-4 w-4" /> New Batch
-                </Button>
+                {user && user?.role === 'superadmin' || user?.role === 'coordinator' && (
+
+                  <Button
+                    className="text-xs md:text-sm"
+                    disabled={selectedIds.length === 0}
+                    onClick={() => setIsOpen(true)}
+                  >
+                    <Plus className="mr-2 h-4 w-4" /> New Batch
+                  </Button>
+                )}
               </div>
               <DataTable
                 searchKey="name"

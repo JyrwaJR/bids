@@ -4,6 +4,10 @@ export { CenterModel, type CenterModelType } from '@src/models/center-model';
 export { StaffModel, type StaffModelType } from '@src/models/staff-model';
 export { DomainModel, type DomainModelType } from '@src/models/domain-model';
 export {
+  EventManagementModel,
+  type EventManagementModelType
+} from './events-management-model';
+export {
   ProjectModel,
   type ProjectModelType
 } from '@src/models/projects-model';
