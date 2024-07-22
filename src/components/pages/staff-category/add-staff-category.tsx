@@ -31,6 +31,7 @@ const AddStaffCategory = ({ open, onClose }: Props) => {
   const { mutate, isLoading } = useCMutation({
     url: 'staffcategory/save',
     method: 'POST',
+    queryKey: ['get', 'staff', 'category']
   })
   const onSubmit: SubmitHandler<StaffCategoryModelType> = async (data) => {
     try {

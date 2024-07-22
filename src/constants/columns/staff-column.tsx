@@ -27,13 +27,11 @@ export const staffColumn: ColumnDef<StaffModelType>[] = [
     header: 'Name'
   },
   {
+    accessorKey: 'staff_category',
+    header: 'Staff Category',
+  },
+  {
     accessorKey: 'email',
     header: 'Email  Address'
   },
-  {
-    id: 'actions',
-    cell: ({ row }) => {
-      return <CellAction data={row.original} />;
-    }
-  }
 ];
