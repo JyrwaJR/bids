@@ -125,6 +125,12 @@ export const navItems: NavItem[] = [
         href: '/dashboard/sectors',
         icon: 'ellipsis',
         label: 'sector'
+      },
+      {
+        title: 'Staff Category',
+        href: '/dashboard/staff-category',
+        icon: 'login',
+        label: 'staff category'
       }
     ]
   }

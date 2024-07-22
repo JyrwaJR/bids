@@ -87,7 +87,7 @@ const studentRegistrationDomain: FormFieldType[] = [
   },
   {
     name: 'domain_id',
-    label: 'Domain',
+    label: 'Apply Domain',
     required: true,
     type: 'text',
     select: true

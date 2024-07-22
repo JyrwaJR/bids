@@ -204,8 +204,7 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onClickSubmit)}>
-            <div className='space-y-2
-            '>
+            <div className='space-y-2'>
               <CForm
                 form={form}
                 fields={selectCenterFields}
