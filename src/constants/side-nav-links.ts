@@ -45,6 +45,12 @@ export const navItems: NavItem[] = [
     label: 'staff'
   },
   {
+    title: 'Events',
+    icon: 'sun',
+    href: '/dashboard/events',
+    label: 'events management'
+  },
+  {
     title: 'Project',
     href: '/dashboard/projects',
     icon: 'chevronRight',
