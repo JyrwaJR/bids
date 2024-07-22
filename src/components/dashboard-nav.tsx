@@ -51,11 +51,11 @@ export function DashboardNav({
     // with coridinator role can see all nav
     userRole !== 'superadmin'
       ? items
-          .filter((item) => item.title !== 'Admin')
-          .filter((item) => item.title !== 'Staff')
-          .filter((item) => item.title !== 'Settings')
-          .filter((item) => item.title !== 'Reports')
-      : items.filter((item) => item.title !== 'Project');
+        .filter((item) => item.title !== 'Admin')
+        .filter((item) => item.title !== 'Staff')
+        .filter((item) => item.title !== 'Settings')
+        .filter((item) => item.title !== 'Reports')
+      : items.filter((item) => item.title !== 'Project').filter((item) => item.title !== 'Batch');
   if (!items?.length) {
     return null;
   }
@@ -145,7 +145,7 @@ export function DashboardNav({
                                     ? 'bg-accent'
                                     : 'transparent',
                                   subItem.disabled &&
-                                    'cursor-not-allowed opacity-80'
+                                  'cursor-not-allowed opacity-80'
                                 )}
                                 onClick={() => {
                                   if (setOpen) setOpen(false);
@@ -153,7 +153,7 @@ export function DashboardNav({
                               >
                                 <SubIcon className={`ml-3 size-5`} />
                                 {isMobileNav ||
-                                (!isMinimized && !isMobileNav) ? (
+                                  (!isMinimized && !isMobileNav) ? (
                                   <span className="mr-2 truncate">
                                     {subItem.title}
                                   </span>

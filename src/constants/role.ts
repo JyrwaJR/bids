@@ -1,3 +1,3 @@
 import { z } from 'zod';
 
-export const userRole = z.enum(['superadmin', 'user']);
+export const userRole = z.enum(['superadmin', 'user', 'coordinator']);

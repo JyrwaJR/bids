@@ -45,6 +45,18 @@ export const navItems: NavItem[] = [
     label: 'staff'
   },
   {
+    title: 'Project',
+    href: '/dashboard/projects',
+    icon: 'chevronRight',
+    label: 'registration'
+  },
+  {
+    title: 'Batch',
+    href: '/dashboard/batch',
+    icon: 'employee',
+    label: 'batch'
+  },
+  {
     title: 'Registration',
     icon: 'laptop',
     label: 'registration',
@@ -65,12 +77,6 @@ export const navItems: NavItem[] = [
         description: 'Update Student Details'
       }
     ]
-  },
-  {
-    title: 'Project',
-    href: '/dashboard/projects',
-    icon: 'chevronRight',
-    label: 'registration'
   },
   {
     title: 'Applied Student',
