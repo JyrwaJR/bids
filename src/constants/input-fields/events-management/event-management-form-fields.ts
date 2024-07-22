@@ -56,6 +56,7 @@ export const eventManagementFields: FormFieldType[] = [
   {
     name: 'total_participants',
     label: 'Total Participants',
+    readOnly: true,
     required: true
   }
 ];

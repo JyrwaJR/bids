@@ -9,15 +9,17 @@ import { Separator } from '@src/components/ui/separator';
 import { useCQuery } from '@hooks/useCQuery';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { ColumnDef } from '@tanstack/react-table';
+import AddEventsManagement from './add-events-management';
+import { eventsMangementColumn } from '@constants/columns/events-management';
 
 
 export const EventsManagementPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isFetched, isError, isLoading } = useCQuery({
     url: 'events',
-    queryKey: ['get', 'staff', 'category']
+    queryKey: ['get', 'events', 'management']
   });
-  // TODO: add columns ,search even by center and filter by name,show centre only for one specific center when login with none super admin 
+  // TODO: add search even by center and filter by name,show centre only for one specific center when login with none super admin 
   return (
     <ScrollArea>
       <div className="flex w-full flex-col space-y-4 px-2">
@@ -34,11 +36,12 @@ export const EventsManagementPage = () => {
         <Separator />
         <DataTable
           searchKey="name"
-          columns={[]}
+          columns={eventsMangementColumn}
           isLoading={isLoading}
           data={isFetched && !isError ? data.data.data : []}
         />
       </div>
+      {isOpen && <AddEventsManagement open={isOpen} onClose={() => setIsOpen(false)} />}
     </ScrollArea>
   );
 };
