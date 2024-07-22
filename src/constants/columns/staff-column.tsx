@@ -28,7 +28,7 @@ export const staffColumn: ColumnDef<StaffModelType>[] = [
   },
   {
     accessorKey: 'staff_category',
-    header: 'Staff Category',
+    header: 'Staff Role',
   },
   {
     accessorKey: 'email',
