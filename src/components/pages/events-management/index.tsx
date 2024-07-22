@@ -14,7 +14,7 @@ import { ColumnDef } from '@tanstack/react-table';
 export const EventsManagementPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isFetched, isError, isLoading } = useCQuery({
-    url: 'event',
+    url: 'events',
     queryKey: ['get', 'staff', 'category']
   });
   // TODO: add columns ,search even by center and filter by name,show centre only for one specific center when login with none super admin 
@@ -22,13 +22,13 @@ export const EventsManagementPage = () => {
     <ScrollArea>
       <div className="flex w-full flex-col space-y-4 px-2">
         <div className="flex items-start justify-between space-y-2">
-          <Heading title={`Staff Category`} description="Manage Category" />
+          <Heading title={`Event`} description="Manage Event" />
           <Button
             size={'sm'}
             className="text-xs md:text-sm"
             onClick={() => setIsOpen(true)}
           >
-            <Plus className="mr-2 h-4 w-4" /> Add Category
+            <Plus className="mr-2 h-4 w-4" /> Add Event
           </Button>
         </div>
         <Separator />
