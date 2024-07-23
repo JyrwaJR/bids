@@ -31,40 +31,6 @@ const UploadImageModal = ({ fields }: Props) => {
     otherProofUploaded
   } = useUploadDocStore();
 
-  // const formList: DocToUpload[] = [
-  //   {
-  //     name: 'ID Proof',
-  //     desc: 'Please upload your ID proof',
-  //     uploaded: proofOfIdUploaded
-  //   },
-  //   {
-  //     name: 'Residence Proof',
-  //     uploaded: residentProofUploaded
-  //   },
-  //   {
-  //     name: 'Age Proof',
-  //     uploaded: ageProofUploaded
-  //   },
-  //   {
-  //     name: 'Education Qaulification Proof',
-  //     uploaded: educationalProofUploaded
-  //   },
-  //   {
-  //     name: 'BPL Proof'
-  //   },
-  //   {
-  //     name: 'Proof of Caste',
-  //     uploaded: castProofUploaded
-  //   },
-  //   {
-  //     name: 'Proof of Disability',
-  //     uploaded: otherProofUploaded
-  //   },
-  //   {
-  //     name: 'Exceptional Proof',
-  //     uploaded: otherProofUploaded
-  //   }
-  // ];
   const isUploadedImage = (name: string) => {
     switch (name) {
       case 'ID Proof':
