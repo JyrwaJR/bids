@@ -38,7 +38,7 @@ export const EventsManagementPage = () => {
           searchKey="name"
           columns={eventsMangementColumn}
           isLoading={isLoading}
-          data={isFetched && !isError ? data.data.data : []}
+          data={isFetched && !isError ? data.data : []}
         />
       </div>
       {isOpen && <AddEventsManagement open={isOpen} onClose={() => setIsOpen(false)} />}

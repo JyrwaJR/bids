@@ -16,16 +16,17 @@ const AddEventsManagement = ({ open, onClose }: Props) => {
   const form = useForm<EventManagementModelType>({
     resolver: zodResolver(EventManagementModel)
   })
-  const { isLoading } = useCMutation({
+  const { isLoading, mutateAsync } = useCMutation({
     url: 'events/save',
     method: "POST"
   })
   const onSubmit: SubmitHandler<EventManagementModelType> = async (data) => {
     try {
-      // console.log(data)
-      // TODO : add mutation here for event managements
+      await mutateAsync(data)
     } catch (error: any) {
       showToast(FailedToastTitle, error.message)
+    } finally {
+      onClose()
     }
   }
   return (
@@ -44,6 +45,8 @@ const AddEventsManagement = ({ open, onClose }: Props) => {
           onSubmit={onSubmit}
           loading={isLoading}
           fields={eventManagementFields}
+          className='md:col-span-6'
+          btnStyle='md:w-full'
         />
       </DialogContent>
     </Dialog>

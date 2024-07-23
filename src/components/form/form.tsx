@@ -226,6 +226,13 @@ export const CForm = <T,>({
                                   ? 'text'
                                   : input.type
                               }
+                              onChange={(e) => {
+                                const value =
+                                  input.type === 'number'
+                                    ? Number(e.target.value) // Convert to number
+                                    : e.target.value;
+                                onChange(value);
+                              }}
                             />
                             <FormDescription>
                               {input.helperText}
