@@ -19,8 +19,8 @@ export const eventManagementFields: FormFieldType[] = [
     required: true
   },
   {
-    name: 'remark',
-    label: 'Remark',
+    name: 'remarks',
+    label: 'Remarks',
     required: true
   },
   {
@@ -31,32 +31,38 @@ export const eventManagementFields: FormFieldType[] = [
   {
     name: 'men',
     label: 'No. of Men',
-    required: true
+    required: true,
+    type: 'number'
   },
   {
     name: 'women',
     label: 'No. of Women',
-    required: true
+    required: true,
+    type: 'number'
   },
   {
     name: 'youth',
     label: 'No. of Youth',
-    required: true
+    required: true,
+    type: 'number'
   },
   {
     name: 'social_organisation',
     label: 'Social Organisation',
-    required: true
+    required: true,
+    type: 'number'
   },
   {
-    name: 'community_leader',
-    label: 'Community Leader',
-    required: true
+    name: 'community_leaders',
+    label: 'Community Leaders',
+    required: true,
+    type: 'number'
   },
   {
     name: 'total_participants',
     label: 'Total Participants',
     readOnly: true,
-    required: true
+    required: true,
+    type: 'number'
   }
 ];
