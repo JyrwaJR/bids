@@ -6,7 +6,7 @@ import { FailedToastTitle } from '@constants/toast-message'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCMutation } from '@hooks/useCMutation'
 import { EventManagementModel, EventManagementModelType } from '@models/events-management-model'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 type Props = {
   open: boolean;
@@ -22,13 +22,26 @@ const AddEventsManagement = ({ open, onClose }: Props) => {
   })
   const onSubmit: SubmitHandler<EventManagementModelType> = async (data) => {
     try {
-      await mutateAsync(data)
+      const response = await mutateAsync(data)
+      if (response.data.success === true) {
+        form.reset()
+        onClose()
+      }
     } catch (error: any) {
       showToast(FailedToastTitle, error.message)
-    } finally {
-      onClose()
     }
   }
+  useEffect(() => {
+    const totalMen: number = form.watch('men')
+    const totalWomen: number = form.watch('women')
+    if (form.watch('men') && form.watch('women')) {
+      form.setValue('total_participants', totalMen + totalWomen)
+    }
+  }, [
+    form.watch('men'),
+    form.watch('women')
+  ])
+  console.log(form.formState.errors)
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
