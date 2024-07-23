@@ -4,7 +4,7 @@ export type UserType = {
   role: string;
   name: string;
   email: string;
-  center?: string;
+  centre_id?: string;
   staff?: string;
 };
 

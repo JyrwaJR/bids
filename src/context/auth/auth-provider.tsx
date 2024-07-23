@@ -163,7 +163,7 @@ export const AuthProvider = ({ children }: Props) => {
           id: data.id,
           name: data.name,
           role: data.role[0],
-          center: data.center,
+          centre_id: data.center,
           staff: data.staff
         });
         setIsToken(cookies?.token);
