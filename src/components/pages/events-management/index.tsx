@@ -32,7 +32,7 @@ const searyBy: OptionsT[] = [
   },
   {
     label: 'Location',
-    value: 'location'
+    value: 'event_location'
   },
   {
     label: 'Total Men',
