@@ -34,7 +34,6 @@ export const EventManagementModel = z.object({
   total_participants: z
     .number()
     .int('Total participants count should be an integer.')
-    .optional()
 });
 
 export type EventManagementModelType = z.infer<typeof EventManagementModel>;

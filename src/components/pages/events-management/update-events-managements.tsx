@@ -1,24 +1,27 @@
 import { Form } from '@components/index'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@components/ui/dialog'
 import { showToast } from '@components/ui/show-toast'
 import { eventManagementFields } from '@constants/input-fields'
 import { FailedToastTitle } from '@constants/toast-message'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCMutation } from '@hooks/useCMutation'
+import { useCQuery } from '@hooks/useCQuery'
 import { EventManagementModel, EventManagementModelType } from '@models/events-management-model'
 import React, { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+
 type Props = {
-  open: boolean;
+  open: boolean
   onClose: () => void
+  id: string
 }
-const AddEventsManagement = ({ open, onClose, }: Props) => {
-  const form = useForm<EventManagementModelType>({
+export const UpdateEventsManagement = ({ open, onClose, id }: Props) => {
+  const form = useForm({
     resolver: zodResolver(EventManagementModel)
   })
-  const { isLoading, mutateAsync } = useCMutation({
-    url: 'events/save',
-    method: "POST"
+  const { mutateAsync, isLoading } = useCMutation({
+    url: `events/update/${id}`,
+    method: "PUT"
   })
   const onSubmit: SubmitHandler<EventManagementModelType> = async (data) => {
     try {
@@ -32,6 +35,7 @@ const AddEventsManagement = ({ open, onClose, }: Props) => {
       showToast(FailedToastTitle, error.message)
     }
   }
+
   useEffect(() => {
     const totalMen: number = form.watch('men')
     const totalWomen: number = form.watch('women')
@@ -42,12 +46,13 @@ const AddEventsManagement = ({ open, onClose, }: Props) => {
     form.watch('men'),
     form.watch('women')
   ])
+  console.log(form.formState.errors)
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Add Events Management
+            Update Events Management
           </DialogTitle>
           <DialogDescription>
             Please enter the following detail
@@ -66,4 +71,3 @@ const AddEventsManagement = ({ open, onClose, }: Props) => {
   )
 }
 
-export default AddEventsManagement

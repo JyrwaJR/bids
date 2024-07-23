@@ -7,7 +7,7 @@ export const eventsMangementColumn: ColumnDef<EventManagementModelType>[] = [
     header: 'Name'
   },
   {
-    accessorKey: 'Location',
+    accessorKey: 'event_location',
     header: 'Location'
   },
   {
@@ -17,6 +17,14 @@ export const eventsMangementColumn: ColumnDef<EventManagementModelType>[] = [
   {
     accessorKey: 'women',
     header: 'Total Women'
+  },
+  {
+    accessorKey: 'youth',
+    header: 'Total Youth',
+  },
+  {
+    accessorKey: 'event_date',
+    header: 'Date',
   },
   {
     accessorKey: 'total_participants',
