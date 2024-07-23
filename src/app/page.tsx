@@ -11,7 +11,6 @@ import { useAuthContext } from '@src/context/auth';
 import { cn } from '@src/lib/utils';
 import { LoginModel, LoginModelType } from '@src/models';
 import { LoadingPage } from '@components/pages/loading';
-// TODO: https://github.com/vercel/next.js/issues/41964
 export default function AuthenticationPage() {
   const { onLogin, isLoading, isLoggedIn } = useAuthContext();
   const form = useForm<LoginModelType>({
