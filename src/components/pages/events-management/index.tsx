@@ -24,6 +24,7 @@ import { AlertModal } from '@components/modal/alert-modal';
 import { UpdateEventsManagement } from './update-events-managements';
 import { Icons } from '@components/icons';
 import { UploadEventsMangementImage } from './upload-event-mangement-image';
+import { eventsManagementQueryKey } from '@constants/query-keys';
 
 const searyBy: OptionsT[] = [
   {
@@ -54,16 +55,17 @@ export const EventsManagementPage = () => {
   const [isUploading, setIsUploading] = useState<boolean>(false)
   const [isSelectedId, setIsSelectedId] = useState<string>('')
   const [isUpdate, setIsUpdate] = useState<boolean>(false)
+  const isSuperAdmin: boolean = user?.role === 'superadmin'
   const form = useForm({
     defaultValues: {
-      centre_id: user?.role === 'superadmin' ? '' : user?.centre_id
+      centre_id: isSuperAdmin ? '' : user?.centre_id
     }
   })
-  const url = user?.role === 'superadmin' ? 'events' : `events/get-event-by-centre/${user?.centre_id}`
+  const url = isSuperAdmin ? 'events' : `events/get-event-by-centre/${user?.centre_id}`
   const uri = `events/get-event-by-centre/${form.watch('centre_id')}`
   const { data, isFetched, isError, isLoading, refetch } = useCQuery({
     url: form.watch('centre_id') !== '' ? uri : url,
-    queryKey: ['get', 'events', 'management']
+    queryKey: eventsManagementQueryKey
   });
   const centreQuery = useCQuery({
     url: 'centre',
@@ -71,7 +73,8 @@ export const EventsManagementPage = () => {
   })
   const delMutate = useCMutation({
     url: `events/${isSelectedId}`,
-    method: "DELETE"
+    method: "DELETE",
+    queryKey: eventsManagementQueryKey
   })
 
   const cOptions: OptionsT[] = (centreQuery.isFetched && centreQuery.data?.data)
@@ -99,6 +102,7 @@ export const EventsManagementPage = () => {
     } finally {
       setIsSelectedId('')
       setIsDelConfirm(false)
+      refetch()
     }
   }
   const updatedColumn: ColumnDef<any>[] = [
@@ -128,7 +132,6 @@ export const EventsManagementPage = () => {
       }
     }
   ]
-
   const onClose = () => {
     if (isUpdate) setIsUpdate(false)
     if (isOpen) setIsOpen(false)

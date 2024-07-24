@@ -2,6 +2,7 @@ import { Form } from '@components/index'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@components/ui/dialog'
 import { showToast } from '@components/ui/show-toast'
 import { eventManagementFields } from '@constants/input-fields'
+import { eventsManagementQueryKey } from '@constants/query-keys'
 import { FailedToastTitle } from '@constants/toast-message'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCMutation } from '@hooks/useCMutation'
@@ -18,12 +19,12 @@ const AddEventsManagement = ({ open, onClose, }: Props) => {
   })
   const { isLoading, mutateAsync } = useCMutation({
     url: 'events/save',
-    method: "POST"
+    method: "POST",
+    queryKey: eventsManagementQueryKey
   })
   const onSubmit: SubmitHandler<EventManagementModelType> = async (data) => {
     try {
       const response = await mutateAsync(data)
-      console.log(response)
       if (response.success === true) {
         form.reset()
         onClose()
@@ -43,7 +44,8 @@ const AddEventsManagement = ({ open, onClose, }: Props) => {
     form.watch('women')
   ])
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog
+      open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>

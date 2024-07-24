@@ -87,16 +87,17 @@ export const AddStaff = ({ onClose, open }: Props) => {
     ...staffFields,
     ...(form.getValues('create_username') === 'Yes'
       ? [
-          {
-            name: 'password',
-            label: 'Password',
-            type: 'password'
-          }
-        ]
+        {
+          name: 'password',
+          label: 'Password',
+          type: 'password'
+        }
+      ]
       : [])
   ];
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog
+      open={open} onOpenChange={onClose}>
       <DialogContent className="max-h-screen  w-full max-w-[1200px]">
         <DialogHeader>
           <DialogTitle>

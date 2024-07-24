@@ -6,3 +6,10 @@ export const projectsQueryKey = [
   'update-project',
   'delete-project'
 ];
+export const eventsManagementQueryKey = [
+  'events-management',
+  'get-events-management',
+  'add-events-management',
+  'update-events-management',
+  'delete-events-management'
+];
