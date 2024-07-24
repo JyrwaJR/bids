@@ -17,7 +17,7 @@ export const searchStudentsBy: OptionsT[] = [
 ]
 export const studentsColumn: ColumnDef<StudentRegistrationModelType>[] = [
   {
-    accessorKey: 'name',
+    accessorKey: 'first_name',
     header: 'Name'
   },
   {
@@ -26,7 +26,10 @@ export const studentsColumn: ColumnDef<StudentRegistrationModelType>[] = [
   },
   {
     accessorKey: 'email',
-    header: 'Email'
+    header: 'Email',
+    cell: ({ row }) => {
+      return <>{row.getValue<string>('email') ?? 'N/A'}</>;
+    }
   }
 ]
 
