@@ -10,6 +10,20 @@ import {
 import { StudentRegistrationApplyDomainModel } from '@models/student/student-registration-apply-domain-model';
 import { z } from 'zod';
 
+export async function searchStudentByName(name?: string | undefined) {
+  try {
+    if (!name || name == ' ' || name === undefined) return;
+    const res = await axiosInstance.get(`registration/search-student`, {
+      params: {
+        search: name
+      }
+    });
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
 export async function getDomainByCentreId(id: string) {
   try {
     if (!id || id === undefined) return;
