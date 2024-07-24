@@ -9,7 +9,7 @@ import { Separator } from '@src/components/ui/separator';
 import { useCQuery } from '@hooks/useCQuery';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { ColumnDef } from '@tanstack/react-table';
-import AddEventsManagement from './add-events-management';
+import { AddEventsManagement } from './add-events-management';
 import { eventsMangementColumn } from '@constants/columns/events-management';
 import { OptionsT } from '@components/form/type';
 import { useAuthContext } from '@context/auth';

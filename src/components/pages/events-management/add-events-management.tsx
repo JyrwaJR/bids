@@ -13,7 +13,7 @@ type Props = {
   open: boolean;
   onClose: () => void
 }
-const AddEventsManagement = ({ open, onClose, }: Props) => {
+export const AddEventsManagement = ({ open, onClose, }: Props) => {
   const form = useForm<EventManagementModelType>({
     resolver: zodResolver(EventManagementModel)
   })
@@ -68,4 +68,4 @@ const AddEventsManagement = ({ open, onClose, }: Props) => {
   )
 }
 
-export default AddEventsManagement
+
