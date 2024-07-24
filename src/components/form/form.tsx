@@ -221,6 +221,11 @@ export const CForm = <T,>({
                                 input.placeholder ?? 'Please enter a value'
                               }
                               disabled={input.readOnly || disabled}
+                              onChange={(e) => {
+                                if (input.type === 'number') {
+                                  return field.onChange(parseInt(e.target.value))
+                                }
+                              }}
                               type={
                                 input.type === 'password' && showPassword
                                   ? 'text'
