@@ -1,12 +1,9 @@
 'use client';
 import React, { useState } from 'react';
 import { SubmitHandler, UseFormReturn } from 'react-hook-form';
-import { format } from 'util';
-
 import { CalendarIcon } from '@radix-ui/react-icons';
 import { Calendar } from '@src/components/ui/calendar';
 import { cn } from '@src/lib/utils';
-
 import { Button } from '../ui/button';
 import {
   FormControl,
@@ -32,6 +29,7 @@ import { FormFieldType, OptionsT } from './type';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
+import { format } from 'date-fns';
 
 type FormProps<T> = {
   onSubmit: SubmitHandler<T | any>;
@@ -144,12 +142,12 @@ export const CForm = <T,>({
                                 <Button
                                   variant={'outline'}
                                   className={cn(
-                                    'w-[240px] pl-3 text-left font-normal',
+                                    'w-full pl-3 text-left font-normal',
                                     !field.value && 'text-muted-foreground'
                                   )}
                                 >
                                   {field.value ? (
-                                    format(field.value, 'PPP')
+                                    format(field.value, 'yyyy-MM-dd')
                                   ) : (
                                     <span>Pick a date</span>
                                   )}
@@ -165,16 +163,15 @@ export const CForm = <T,>({
                                 mode="single"
                                 selected={field.value}
                                 onSelect={field.onChange}
-                                // disabled={(date) =>
-                                //   date > new Date() ||
-                                //   date < new Date("1900-01-01")
-                                // }
+                                disabled={(date) =>
+                                  date < new Date("1900-01-01")
+                                }
                                 initialFocus
                               />
                             </PopoverContent>
                           </Popover>
                           <FormMessage />
-                          <FormDescription>{input.helperText}</FormDescription>
+                          <FormDescription>{input.helperText ?? ' '}</FormDescription>
                           <FormMessage />
                         </FormItem>
                       ) : input.type === 'file' ? (
