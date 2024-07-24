@@ -222,9 +222,8 @@ export const CForm = <T,>({
                               }
                               disabled={input.readOnly || disabled}
                               onChange={(e) => {
-                                if (input.type === 'number') {
-                                  return field.onChange(parseInt(e.target.value))
-                                }
+                                const value = input.type === 'number' ? Number(e.target.value) : e.target.value
+                                onChange(value)
                               }}
                               type={
                                 input.type === 'password' && showPassword
