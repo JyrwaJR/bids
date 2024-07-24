@@ -25,6 +25,7 @@ import { UpdateEventsManagement } from './update-events-managements';
 import { Icons } from '@components/icons';
 import { UploadEventsMangementImage } from './upload-event-mangement-image';
 import { eventsManagementQueryKey } from '@constants/query-keys';
+import { EventManagementModelType } from '@models/events-management-model';
 
 const searyBy: OptionsT[] = [
   {
@@ -132,17 +133,14 @@ export const EventsManagementPage = () => {
       }
     }
   ]
-  const onClose = () => {
-    if (isUpdate) setIsUpdate(false)
-    if (isOpen) setIsOpen(false)
-    form.reset
-  }
+
   useEffect(() => {
     refetch()
   }, [form.watch('centre_id')])
+
   return (
     <ScrollArea>
-      <div className="flex-1 space-y-4">
+      <div className="flex-1 px-1 space-y-4">
         <div className="flex space-x-2 items-start justify-between">
           <div className='flex items-center space-x-2'>
             <Heading title={`Events`} description="Manage Events" />
