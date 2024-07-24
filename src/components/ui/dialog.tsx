@@ -6,7 +6,7 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { cn } from '@src/lib/utils';
 
-const Dialog = DialogPrimitive.Root;
+const Dia = DialogPrimitive.Root;
 
 const DialogTrigger = DialogPrimitive.Trigger;
 
@@ -111,7 +111,19 @@ const DialogDescription = React.forwardRef<
   />
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
+const Dialog = React.forwardRef<React.ElementRef<typeof Dia>, React.ComponentPropsWithoutRef<typeof Dia>>(
 
+  ({ children, ...props }, ref) => {
+    return (
+      <Dia
+        {...props}
+        modal={false}
+      >
+        {children}
+      </Dia>
+    );
+  }
+)
 export {
   Dialog,
   DialogPortal,

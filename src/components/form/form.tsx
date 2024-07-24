@@ -83,7 +83,7 @@ export const CForm = <T,>({
                       {input.select ? (
                         <>
                           <FormItem className="w-full">
-                            <FormLabel>
+                            <FormLabel htmlFor={input.name}>
                               {input.label}{' '}
                               {input.required && (
                                 <span className="text-red-500">*</span>
@@ -180,7 +180,7 @@ export const CForm = <T,>({
                       ) : input.type === 'file' ? (
                         <React.Fragment key={i}>
                           <FormItem className="w-full">
-                            <FormLabel>
+                            <FormLabel htmlFor={input.name}>
                               {input.label}{' '}
                               {input.required && (
                                 <span className="text-red-500">*</span>
@@ -208,7 +208,7 @@ export const CForm = <T,>({
                       ) : (
                         <React.Fragment key={i}>
                           <FormItem className="w-full">
-                            <FormLabel>
+                            <FormLabel htmlFor={input.name}>
                               {input.label}{' '}
                               {input.required && (
                                 <span className="text-red-500">*</span>
@@ -226,13 +226,6 @@ export const CForm = <T,>({
                                   ? 'text'
                                   : input.type
                               }
-                              onChange={(e) => {
-                                const value =
-                                  input.type === 'number'
-                                    ? Number(e.target.value) // Convert to number
-                                    : e.target.value;
-                                onChange(value);
-                              }}
                             />
                             <FormDescription>
                               {input.helperText}
