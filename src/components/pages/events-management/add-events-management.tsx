@@ -44,8 +44,7 @@ export const AddEventsManagement = ({ open, onClose, }: Props) => {
     form.watch('women')
   ])
   return (
-    <Dialog
-      open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
@@ -67,5 +66,3 @@ export const AddEventsManagement = ({ open, onClose, }: Props) => {
     </Dialog>
   )
 }
-
-
