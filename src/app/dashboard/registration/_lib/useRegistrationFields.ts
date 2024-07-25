@@ -12,6 +12,7 @@ import { StepType } from '@components/form/stepper-form';
 import { useQuery } from 'react-query';
 import { OptionsT } from '@components/form/type';
 import { useCallback, useEffect, useState } from 'react';
+import { StudentRegistrationModelType } from '@models/student';
 
 type Props = {
   form: UseFormReturn<StudentRegistrationModelWithDomainType>;
@@ -30,7 +31,6 @@ export const useRegistrationFields = ({ form }: Props) => {
     enabled: !!form.watch('project_id'),
     queryKey: ['batch', form.watch('project_id')]
   });
-
 
   const domainQuery = useQuery({
     queryFn: async () => await getDomainByProjectId(form.watch('project_id')),
@@ -80,39 +80,39 @@ export const useRegistrationFields = ({ form }: Props) => {
   const isBplField: FormFieldType[] =
     form.watch('is_bpl') === 'Yes'
       ? [
-        {
-          name: 'bpl_card_no',
-          label: 'BPL Card No'
-        },
-        {
-          name: 'bpl_card_issue',
-          label: 'BPL Card Issue Date',
-          type: 'date'
-        },
-        {
-          name: 'is_bpl_certified',
-          label: 'Is BPL Certified',
-          select: true,
-          options: yesNoOptions
-        },
-        {
-          name: 'bpl_certification_authority',
-          label: 'BPL Certification Authority',
-          select: true,
-          options: yesNoOptions
-        },
-        {
-          name: 'bpl_other_certifying_authority',
-          label: 'BPL Other Certifying Authority',
-          select: true,
-          options: yesNoOptions
-        },
-        {
-          name: 'bpl_certificate_issue_date',
-          label: 'BPL Certificate Issue Date',
-          type: 'date'
-        }
-      ]
+          {
+            name: 'bpl_card_no',
+            label: 'BPL Card No'
+          },
+          {
+            name: 'bpl_card_issue',
+            label: 'BPL Card Issue Date',
+            type: 'date'
+          },
+          {
+            name: 'is_bpl_certified',
+            label: 'Is BPL Certified',
+            select: true,
+            options: yesNoOptions
+          },
+          {
+            name: 'bpl_certification_authority',
+            label: 'BPL Certification Authority',
+            select: true,
+            options: yesNoOptions
+          },
+          {
+            name: 'bpl_other_certifying_authority',
+            label: 'BPL Other Certifying Authority',
+            select: true,
+            options: yesNoOptions
+          },
+          {
+            name: 'bpl_certificate_issue_date',
+            label: 'BPL Certificate Issue Date',
+            type: 'date'
+          }
+        ]
       : [];
   const fieldInput: StepType[] = [
     ...studentRegistrationFields,

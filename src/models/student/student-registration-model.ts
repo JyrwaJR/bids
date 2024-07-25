@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import * as z from 'zod';
 
 export const StudentRegistrationModel = z.object({
-  // centre_id: z.string().uuid().optional(),
+  id: z.string().uuid().optional().nullable(),
   // registration_no: z.string().uuid().optional(),
   admission_no: z.string().max(30).nullable().optional(),
   registration_date: z

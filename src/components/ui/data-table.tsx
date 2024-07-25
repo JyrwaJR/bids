@@ -26,6 +26,7 @@ import { SearchTableInput } from './search-table-input';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  enableSearch?: boolean;
   searchKey: string;
   isLoading?: boolean;
   className?: string;
@@ -37,7 +38,8 @@ export function DataTable<TData, TValue>({
   searchKey,
   isLoading,
   className,
-  searchOptions
+  searchOptions,
+  enableSearch = true
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data: isLoading ? [] : data,
@@ -49,11 +51,15 @@ export function DataTable<TData, TValue>({
   const style = cn('h-[calc(80vh-220px)] rounded-md border', className);
   return (
     <>
-      <SearchTableInput
-        table={table}
-        searchOptions={searchOptions}
-        searchTableBy={searchKey}
-      />
+      {
+        enableSearch && (
+          <SearchTableInput
+            table={table}
+            searchOptions={searchOptions}
+            searchTableBy={searchKey}
+          />
+        )
+      }
       <ScrollArea className={style}>
         <Table className="relative">
           <TableHeader>

@@ -23,11 +23,11 @@ export const eventManagementFields: FormFieldType[] = [
     label: 'Remarks',
     required: true
   },
-  {
-    name: 'status',
-    label: 'Status',
-    required: true
-  },
+ {
+   name: 'remarks',
+  label: 'Remarks',
+   required: true
+},
   {
     name: 'men',
     label: 'No. of Men',

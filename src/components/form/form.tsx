@@ -130,24 +130,19 @@ export const CForm = <T,>({
                         </>
                       ) : input.type === 'dates' ? (
                         <FormItem className="flex h-full flex-col justify-center">
-                          <FormLabel>
-                            {input.label}{' '}
-                            {input.required && (
-                              <span className="text-red-500">*</span>
-                            )}
-                          </FormLabel>
+                          <FormLabel>{input.label}</FormLabel>
                           <Popover>
                             <PopoverTrigger asChild>
                               <FormControl>
                                 <Button
                                   variant={'outline'}
                                   className={cn(
-                                    'w-full pl-3 text-left font-normal',
+                                    'pl-3 text-left font-normal',
                                     !field.value && 'text-muted-foreground'
                                   )}
                                 >
                                   {field.value ? (
-                                    format(field.value, 'yyyy-MM-dd')
+                                    format(field.value, 'PPP')
                                   ) : (
                                     <span>Pick a date</span>
                                   )}
@@ -164,14 +159,16 @@ export const CForm = <T,>({
                                 selected={field.value}
                                 onSelect={field.onChange}
                                 disabled={(date) =>
-                                  date < new Date("1900-01-01")
+                                  date > new Date() ||
+                                  date < new Date('1900-01-01')
                                 }
                                 initialFocus
                               />
                             </PopoverContent>
                           </Popover>
-                          <FormMessage />
-                          <FormDescription>{input.helperText ?? ' '}</FormDescription>
+                          <FormDescription>
+                            Your date of birth is used to calculate your age.
+                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       ) : input.type === 'file' ? (
@@ -219,8 +216,11 @@ export const CForm = <T,>({
                               }
                               disabled={input.readOnly || disabled}
                               onChange={(e) => {
-                                const value = input.type === 'number' ? Number(e.target.value) : e.target.value
-                                onChange(value)
+                                const value =
+                                  input.type === 'number'
+                                    ? Number(e.target.value)
+                                    : e.target.value;
+                                onChange(value);
                               }}
                               type={
                                 input.type === 'password' && showPassword

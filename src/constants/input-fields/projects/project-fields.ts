@@ -1,17 +1,5 @@
 import { FormFieldType } from '@components/index';
 import { SectorsOptions, StatusOptions } from '@constants/options';
-// post -- /project/save
-// {
-// "name" : "required|string|max:250|unique",
-// "target" : "required|integer",
-// "start_date" : "required|date",
-// "end_date" : "nullable|date",
-// "status" : "nullable|string|max:20", //default is active
-// "duration" : "required|integer",
-// "target_sector" : "required|string|max:20", --> Rural or Urban
-// }
-// put
-
 export const projectsFields: FormFieldType[] = [
   {
     name: 'name',
@@ -21,8 +9,7 @@ export const projectsFields: FormFieldType[] = [
   {
     name: 'target',
     label: 'Target',
-    required: true,
-    type: 'number'
+    required: true
   },
   {
     name: 'start_date',
@@ -46,8 +33,7 @@ export const projectsFields: FormFieldType[] = [
   {
     name: 'duration',
     label: 'Duration',
-    required: true,
-    type: 'number'
+    required: true
   },
   {
     name: 'target_sector',
