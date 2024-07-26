@@ -7,7 +7,6 @@ import {
 } from '@components/ui/dialog';
 import { Form, FormFieldType } from '@src/components';
 import { domainFields } from '@constants/input-fields/domain';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DomainModel, DomainModelType } from '@src/models';
 import React from 'react';

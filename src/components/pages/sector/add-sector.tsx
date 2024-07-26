@@ -15,6 +15,7 @@ import { showToast } from '@components/ui/show-toast';
 import { FailedToastTitle } from '@constants/toast-message';
 import { z } from 'zod';
 import { useSectorStore } from '@lib/store';
+import { sectorQueryKey } from '@constants/query-keys';
 
 const sectorFields: FormFieldType[] = [
   {
@@ -38,7 +39,7 @@ export const AddSector = () => {
   const { mutateAsync, isLoading } = useCMutation({
     url: url,
     method: !!id ? 'PUT' : 'POST',
-    queryKey: ['get', 'Sector']
+    queryKey: sectorQueryKey
   });
 
   const onSubmit: SubmitHandler<SectorModelType> = async (data) => {

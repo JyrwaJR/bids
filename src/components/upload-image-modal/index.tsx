@@ -5,14 +5,6 @@ import { Label } from '@components/ui/label';
 import { useUploadDocStore } from '@lib/store/useUploadDocStore';
 import React from 'react';
 import { ImageUploadDialog } from './image-upload-dialog';
-// import { useRegisterStudentStore } from '@lib/store';
-
-// type DocToUpload = {
-//   name: string;
-//   desc?: string;
-//   uploaded?: boolean;
-//   onClick?: () => void;
-// };
 
 type Props = {
   fields: FormFieldType[];

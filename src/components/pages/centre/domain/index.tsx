@@ -11,6 +11,7 @@ import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
 import { AddCentreDomain } from '@components/pages/centre/domain/add-center-domain';
 import { DomainModelType } from '@src/models';
+import { domainQueryKey } from '@constants/query-keys';
 interface ColumnType extends DomainModelType {
   id: string;
 }
@@ -18,7 +19,7 @@ const CenterDomainPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isLoading } = useCQuery({
     url: 'domain',
-    queryKey: ['get', 'domain']
+    queryKey: domainQueryKey
   });
   const [isSelectedDomId, setIsSelectedDomId] = useState<string[]>([]);
 

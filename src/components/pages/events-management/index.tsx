@@ -24,7 +24,7 @@ import { AlertModal } from '@components/modal/alert-modal';
 import { UpdateEventsManagement } from './update-events-managements';
 import { Icons } from '@components/icons';
 import { UploadEventsMangementImage } from './upload-event-mangement-image';
-import { eventsManagementQueryKey } from '@constants/query-keys';
+import { centreQueryKey, eventsManagementQueryKey } from '@constants/query-keys';
 import { EventManagementModelType } from '@models/events-management-model';
 
 const searyBy: OptionsT[] = [
@@ -86,7 +86,7 @@ export const EventsManagementPage = () => {
   });
   const centreQuery = useCQuery({
     url: 'centre',
-    queryKey: ['get', 'centre']
+    queryKey: centreQueryKey
   })
   const delMutate = useCMutation({
     url: `events/${isSelectedId}`,
