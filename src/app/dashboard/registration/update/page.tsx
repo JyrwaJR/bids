@@ -127,27 +127,23 @@ const Page = () => {
                 />
               </div>
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} >
+                <form className='flex space-x-2' onSubmit={form.handleSubmit(onSubmit)} >
                   <FormField
                     control={form.control}
                     name="name"
                     render={({ field }) => (
                       <FormItem className='flex space-x-2 items-center'>
-                        <div>
-                          <FormControl>
-                            <Input placeholder="please enter your full name" {...field} />
-                          </FormControl>
-                        </div>
-                        <div>
-                          <Button
-                            disabled={form.getValues('name') === '' || form.getValues('name') === undefined || isSearching}
-                            type="submit">
-                            Search
-                          </Button>
-                        </div>
+                        <FormControl>
+                          <Input placeholder="Please enter your full name" {...field} />
+                        </FormControl>
                       </FormItem>
                     )}
                   />
+                  <Button
+                    disabled={form.getValues('name') === '' || form.getValues('name') === undefined || isSearching}
+                    type="submit">
+                    Search
+                  </Button>
                 </form>
               </Form>
               <Separator />
