@@ -13,10 +13,8 @@ import { z } from 'zod';
 export async function searchStudentByName(name?: string | undefined) {
   try {
     if (!name || name == ' ' || name === undefined) return;
-    const res = await axiosInstance.get(`registration/search-student`, {
-      params: {
-        search: name
-      }
+    const res = await axiosInstance.post(`registration/search-student`, {
+      search: name
     });
     return res.data;
   } catch (error: any) {
