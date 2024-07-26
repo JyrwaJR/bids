@@ -49,8 +49,24 @@ const searyBy: OptionsT[] = [
     value: 'total_participants'
   }
 ]
+const defaultEventsManagement: EventManagementModelType = {
+  event_name: '',
+  event_date: '',
+  extended_till: '',
+  event_location: '',
+  remarks: '',
+  status: '',
+  men: 0,
+  women: 0,
+  youth: 0,
+  social_organisation: 0,
+  community_leaders: 0,
+  id: '',
+  total_participants: 0
+}
 export const EventsManagementPage = () => {
   const { user } = useAuthContext()
+  const [isSelectedEvent, setIsSelectedEvent] = useState<EventManagementModelType>(defaultEventsManagement)
   const [isDelConfirm, setIsDelConfirm] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isUploading, setIsUploading] = useState<boolean>(false)
@@ -107,12 +123,16 @@ export const EventsManagementPage = () => {
     }
   }
   const updatedColumn: ColumnDef<any>[] = [
+    {
+      accessorKey: 'id',
+      cell: ({ row }) => {
+        return row.index + 1
+      }
+    },
     ...eventsMangementColumn,
     {
       header: 'Upload Image',
       cell: ({ row }) => {
-        const id = row.original.id
-        setIsSelectedId(id)
         return <Button
           disabled={isUploading}
           onClick={() => setIsUploading(true)}
@@ -122,18 +142,39 @@ export const EventsManagementPage = () => {
       }
     },
     {
+      accessorKey: 'status',
+      header: 'Status',
+    },
+    {
       id: 'actions',
       cell: ({ row }) => {
-        const id = row.original.id
-        setIsSelectedId(id)
         return <CellAction
-          onEdit={() => setIsUpdate(true)}
-          onDelete={() => setIsDelConfirm(true)}
+          onEdit={() => {
+            if (row.original) {
+              setIsSelectedEvent(row.original)
+              setIsUpdate(true)
+            }
+          }
+          }
+          onDelete={() => {
+            const id = row.original.id
+            if (id) {
+              console.log(id)
+              setIsSelectedId(id)
+              setIsDelConfirm(true)
+              console.log(isSelectedId)
+            }
+          }
+          }
         />
       }
     }
   ]
-
+  const onCloseUpdate = () => {
+    setIsSelectedEvent(defaultEventsManagement)
+    setIsSelectedId('')
+    setIsUpdate(false)
+  }
   useEffect(() => {
     refetch()
   }, [form.watch('centre_id')])
@@ -185,8 +226,8 @@ export const EventsManagementPage = () => {
         open={isOpen} onClose={() => setIsOpen(false)} />
       }
       {isUpdate && <UpdateEventsManagement
-        id={isSelectedId}
-        open={isUpdate} onClose={() => setIsUpdate(false)} />
+        data={isSelectedEvent}
+        open={isUpdate} onClose={onCloseUpdate} />
       }
       {isUploading && <UploadEventsMangementImage
         id={isSelectedId}

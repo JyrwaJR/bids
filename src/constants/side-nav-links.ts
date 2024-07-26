@@ -51,6 +51,25 @@ export const navItems: NavItem[] = [
     label: 'events management'
   },
   {
+    title: 'Search',
+    icon: 'search',
+    label: 'search',
+    items: [
+      {
+        title: 'Applicants',
+        href: '/dashboard/search-applicants',
+        icon: 'userSquare',
+        label: 'search'
+      },
+      {
+        title: 'Students',
+        href: '/dashboard/search-students',
+        icon: 'search',
+        label: 'kanban'
+      }
+    ]
+  },
+  {
     title: 'Project',
     href: '/dashboard/projects',
     icon: 'chevronRight',
@@ -89,12 +108,6 @@ export const navItems: NavItem[] = [
     href: '/dashboard/applied-student',
     icon: 'chevronRight',
     label: 'registration'
-  },
-  {
-    title: 'Students',
-    href: '/dashboard/students',
-    icon: 'profile',
-    label: 'students list'
   },
   {
     title: 'Reports',

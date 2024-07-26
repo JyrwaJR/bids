@@ -2,6 +2,7 @@ import { Form } from '@components/index'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@components/ui/dialog'
 import { showToast } from '@components/ui/show-toast'
 import { eventManagementFields } from '@constants/input-fields'
+import { eventsManagementQueryKey } from '@constants/query-keys'
 import { FailedToastTitle } from '@constants/toast-message'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCMutation } from '@hooks/useCMutation'
@@ -11,17 +12,19 @@ import React, { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 type Props = {
-  open: boolean
-  onClose: () => void
-  id: string
+  open: boolean;
+  onClose: () => void;
+  data: EventManagementModelType
 }
-export const UpdateEventsManagement = ({ open, onClose, id }: Props) => {
+export const UpdateEventsManagement = ({ open, onClose, data }: Props) => {
   const form = useForm({
-    resolver: zodResolver(EventManagementModel)
+    resolver: zodResolver(EventManagementModel),
+    defaultValues: data
   })
   const { mutateAsync, isLoading } = useCMutation({
-    url: `events/update/${id}`,
-    method: "PUT"
+    url: `events/update/${data.id}`,
+    method: "PUT",
+    queryKey: eventsManagementQueryKey,
   })
   const onSubmit: SubmitHandler<EventManagementModelType> = async (data) => {
     try {
@@ -46,7 +49,6 @@ export const UpdateEventsManagement = ({ open, onClose, id }: Props) => {
     form.watch('men'),
     form.watch('women')
   ])
-  console.log(form.formState.errors)
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
@@ -62,7 +64,11 @@ export const UpdateEventsManagement = ({ open, onClose, id }: Props) => {
           form={form}
           onSubmit={onSubmit}
           loading={isLoading}
-          fields={eventManagementFields}
+          fields={[...eventManagementFields, {
+            name: "extended_till",
+            label: "Extended Till",
+            type: "date",
+          }]}
           className='md:col-span-6'
           btnStyle='md:w-full'
         />
