@@ -1,6 +1,5 @@
+import { BatchModelType } from '@models/batch-model';
 import { ColumnDef } from '@tanstack/react-table';
-import { CellAction } from '@components/tables/employee-tables/cell-action';
-import { BatchModelType } from '@src/models/batch-model';
 
 export const BatchColumn: ColumnDef<BatchModelType>[] = [
   {
@@ -23,10 +22,4 @@ export const BatchColumn: ColumnDef<BatchModelType>[] = [
     accessorKey: 'capacity',
     header: 'Capacity'
   },
-  {
-    id: 'actions',
-    cell: ({ row }) => {
-      return <CellAction data={row.original} />;
-    }
-  }
 ];

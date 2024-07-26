@@ -1,5 +1,4 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { CellAction } from '../../components/tables/employee-tables/cell-action';
 import { ProjectModelType } from '@src/models';
 
 export const ProjectColumn: ColumnDef<ProjectModelType>[] = [

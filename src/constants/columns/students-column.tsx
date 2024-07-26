@@ -24,12 +24,5 @@ export const studentsColumn: ColumnDef<StudentRegistrationModelType>[] = [
     accessorKey: 'gender',
     header: 'Gender'
   },
-  {
-    accessorKey: 'email',
-    header: 'Email',
-    cell: ({ row }) => {
-      return <>{row.getValue<string>('email') ?? 'N/A'}</>;
-    }
-  }
 ]
 

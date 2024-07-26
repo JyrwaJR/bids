@@ -1,4 +1,3 @@
-import { CellAction } from '@components/tables/employee-tables/cell-action';
 import { Checkbox } from '@components/ui/checkbox';
 import { StaffModelType } from '@src/models';
 import { ColumnDef } from '@tanstack/react-table';
