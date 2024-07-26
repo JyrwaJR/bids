@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@src/components/ui/avatar';
+import { Avatar, AvatarFallback, } from '@src/components/ui/avatar';
 import { ScrollArea } from './ui/scroll-area';
 const dummyData = [
   {
@@ -150,7 +150,6 @@ export function RecentSales() {
         {dummyData.map((item, i) => (
           <div key={i} className="flex items-center">
             <Avatar className="h-9 w-9">
-              <AvatarImage src={item.avatar} alt="Avatar" />
               <AvatarFallback>{item.id}</AvatarFallback>
             </Avatar>
             <div className="ml-4 space-y-1">

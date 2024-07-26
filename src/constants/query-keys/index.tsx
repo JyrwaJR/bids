@@ -13,3 +13,10 @@ export const eventsManagementQueryKey = [
   'update-events-management',
   'delete-events-management'
 ];
+export const staffCategoryQueryKey = [
+  'staff-category',
+  'get-staff-category',
+  'add-staff-category',
+  'update-staff-category',
+  'delete-staff-category'
+]

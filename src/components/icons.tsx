@@ -1,4 +1,5 @@
 import {
+  Search,
   AlertTriangle,
   ArrowRight,
   Check,
@@ -31,7 +32,8 @@ import {
   UserX2Icon,
   X,
   Upload,
-  ExternalLink
+  ExternalLink,
+  UserSquare,
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -66,6 +68,8 @@ export const Icons = {
   logout: LockIcon,
   upload: Upload,
   external: ExternalLink,
+  search: Search,
+  userSquare: UserSquare,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
