@@ -124,6 +124,7 @@ const Dialog = React.forwardRef<React.ElementRef<typeof Dia>, React.ComponentPro
     );
   }
 )
+Dialog.displayName = 'Dialog';
 export {
   Dialog,
   DialogPortal,
