@@ -57,13 +57,13 @@ export const navItems: NavItem[] = [
     items: [
       {
         title: 'Applicants',
-        href: '/dashboard/search-applicants',
+        href: '/dashboard/search?q=applicants',
         icon: 'userSquare',
         label: 'search'
       },
       {
         title: 'Students',
-        href: '/dashboard/search-students',
+        href: '/dashboard/search?q=students',
         icon: 'search',
         label: 'kanban'
       }

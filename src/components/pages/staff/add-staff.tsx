@@ -29,6 +29,10 @@ export const AddStaff = ({ onClose, open }: Props) => {
   const { user } = useAuthContext()
   const form = useForm<StaffModelType>({
     resolver: zodResolver(StaffModel),
+    defaultValues: {
+      create_username: 'No',
+      centre_id: user?.role === 'superadmin' ? '' : user?.centre_id
+    }
   });
   const {
     isLoading: cLoading,
@@ -73,14 +77,15 @@ export const AddStaff = ({ onClose, open }: Props) => {
       value: item.id
     }));
 
+
   const staffFormWithCenterId: FormFieldType[] = [
-    {
+    ...(user?.role === 'superadmin' ? [{
       name: 'centre_id',
       label: 'Center',
       select: true,
       options: centerOptions,
       required: true
-    },
+    }] : []),
     {
       name: 'staff_category_id',
       label: 'Staff Category',
@@ -90,15 +95,13 @@ export const AddStaff = ({ onClose, open }: Props) => {
     },
     ...staffFields,
     ...(form.getValues('create_username') === 'Yes'
-      ? [
-        {
-          name: 'password',
-          label: 'Password',
-          type: 'password'
-        }
-      ]
-      : [])
+      ? [{
+        name: 'password',
+        label: 'Password',
+        type: 'password'
+      }] : [])
   ];
+
   return (
     <Dialog
       open={open} onOpenChange={onClose}>
