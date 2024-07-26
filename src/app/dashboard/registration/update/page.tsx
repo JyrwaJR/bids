@@ -1,11 +1,11 @@
 'use client';
-import { Form, FormFieldType } from '@components/index';
+import { FormFieldType } from '@components/index';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from '@components/ui/dialog';
 import { Label } from '@components/ui/label';
 import { FieldsIsRequired } from '@constants/index';
@@ -38,6 +38,9 @@ import { PencilIcon } from 'lucide-react';
 import { Button } from '@components/ui/button';
 import { AxiosError } from 'axios';
 import { useMultiStepFormStore } from '@components/form/stepper-form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@components/ui/form';
+import { SelectItem, SelectTrigger, Select, SelectContent, SelectValue } from '@components/ui/select';
+import { Input } from '@components/ui/input';
 
 const FindStudentModel = z.object({
   name: z
@@ -48,6 +51,7 @@ const FindStudentModel = z.object({
 });
 type FindStudentModelType = z.infer<typeof FindStudentModel>;
 const Page = () => {
+  const [isSearching, setIsSearching] = useState<boolean>(false)
   const [isStudentList, setIsStudentList] = React.useState<
     StudentRegistrationModelWithDomainType[]
   >([]);
@@ -61,10 +65,13 @@ const Page = () => {
 
   const onSubmit: SubmitHandler<FindStudentModelType> = async (data) => {
     try {
+      setIsSearching(true);
       const res = await searchStudentByName(data.name.toLowerCase());
       if (res.success) setIsStudentList(res.data);
     } catch (error: any) {
       showToast(FailedToastTitle, error.message);
+    } finally {
+      setIsSearching(false);
     }
   };
   const studentColumn: ColumnDef<StudentRegistrationModelType>[] = [
@@ -119,12 +126,30 @@ const Page = () => {
                   description={`Results by the name ${form.watch('name')}`}
                 />
               </div>
-              <Form
-                loading={false}
-                form={form}
-                onSubmit={onSubmit}
-                fields={searchStudentFields}
-              />
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} >
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem className='flex space-x-2 items-center'>
+                        <div>
+                          <FormControl>
+                            <Input placeholder="please enter your full name" {...field} />
+                          </FormControl>
+                        </div>
+                        <div>
+                          <Button
+                            disabled={form.getValues('name') === '' || form.getValues('name') === undefined || isSearching}
+                            type="submit">
+                            Search
+                          </Button>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                </form>
+              </Form>
               <Separator />
               <DataTable
                 enableSearch={false}
@@ -135,8 +160,9 @@ const Page = () => {
             </div>
           )}
         </>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 
