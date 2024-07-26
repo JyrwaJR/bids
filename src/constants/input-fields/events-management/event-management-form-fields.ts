@@ -23,11 +23,11 @@ export const eventManagementFields: FormFieldType[] = [
     label: 'Remarks',
     required: true
   },
- {
-   name: 'remarks',
-  label: 'Remarks',
-   required: true
-},
+  {
+    name: 'remarks',
+    label: 'Remarks',
+    required: true
+  },
   {
     name: 'men',
     label: 'No. of Men',
@@ -61,7 +61,6 @@ export const eventManagementFields: FormFieldType[] = [
   {
     name: 'total_participants',
     label: 'Total Participants',
-    readOnly: true,
     required: true,
     type: 'number'
   }
