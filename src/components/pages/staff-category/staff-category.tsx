@@ -10,6 +10,7 @@ import { useCQuery } from '@hooks/useCQuery';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { ColumnDef } from '@tanstack/react-table';
 import AddStaffCategory from './add-staff-category';
+import { staffCategoryQueryKey } from '@constants/query-keys';
 
 const categoryColumn: ColumnDef<{ name: string }>[] = [
   {
@@ -22,14 +23,14 @@ const categoryColumn: ColumnDef<{ name: string }>[] = [
   {
     accessorKey: 'name',
     header: 'Name'
-  }
+  },
 ]
 
 export const StaffCategory = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isFetched, isError, isLoading } = useCQuery({
     url: 'staffcategory',
-    queryKey: ['get', 'staff', 'category']
+    queryKey: staffCategoryQueryKey
   });
 
   return (

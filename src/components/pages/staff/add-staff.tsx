@@ -17,6 +17,7 @@ import { FailedToastTitle } from '@src/constants/toast-message';
 import { useCMutation, useCQuery } from '@src/hooks';
 import { CenterModelType, StaffModel, StaffModelType } from '@src/models';
 import { ScrollArea } from '@components/ui/scroll-area';
+import { useAuthContext } from '@context/auth';
 
 type Props = {
   open: boolean;
@@ -24,9 +25,9 @@ type Props = {
 };
 
 export const AddStaff = ({ onClose, open }: Props) => {
+  const { user } = useAuthContext()
   const form = useForm<StaffModelType>({
     resolver: zodResolver(StaffModel),
-    mode: 'all'
   });
   const {
     isLoading: cLoading,
@@ -56,10 +57,12 @@ export const AddStaff = ({ onClose, open }: Props) => {
   };
   const StaffCategoryOption =
     !scLoading &&
-    scData.data.data.map((item: CenterModelType) => ({
-      label: item.name,
-      value: item.id
-    }));
+    scData.data.data
+      .filter((item: { position: string }) => user?.role === 'superadmin' ? item.position === 'ALL' : item.position === "HQ")
+      .map((item: { name: string, id: string }) => ({
+        label: item.name,
+        value: item.id
+      }));
 
   const centerOptions =
     !cLoading &&
