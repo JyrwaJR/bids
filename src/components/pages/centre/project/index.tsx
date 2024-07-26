@@ -10,6 +10,7 @@ import AddCentreProject from './add-centre-project';
 import { ProjectModelType } from '@src/models';
 import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@components/ui/checkbox';
+import { projectsQueryKey } from '@constants/query-keys';
 interface ColType extends ProjectModelType {
   id: string;
 }
@@ -18,7 +19,7 @@ const CentreProjectPage = () => {
   const [isSelectedProjectId, setIsSelectedProjectId] = useState<string>('');
   const { data, isFetched, isLoading, isError } = useCQuery({
     url: 'project',
-    queryKey: ['get', 'project']
+    queryKey: projectsQueryKey
   });
   const column: ColumnDef<ColType | any>[] = [
     {

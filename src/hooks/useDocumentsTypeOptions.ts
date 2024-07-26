@@ -1,6 +1,7 @@
 import { OptionsT } from '@components/form/type';
 import { useEffect, useState } from 'react';
 import { useCQuery } from './useCQuery';
+import { documentTypeQueryKey } from '@constants/query-keys';
 
 type DocumentOptionsT = {
   proofCategory: OptionsT[];
@@ -23,7 +24,7 @@ export function useDocumentTypeOptions() {
 
   const { data, isError, isFetched, isLoading } = useCQuery({
     url: 'registration/get-document-types',
-    queryKey: ['documentTypes']
+    queryKey: documentTypeQueryKey
   });
 
   const transformToOptions = (items: string[]): OptionsT[] =>

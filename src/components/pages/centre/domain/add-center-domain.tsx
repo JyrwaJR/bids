@@ -18,6 +18,7 @@ import { useForm } from 'react-hook-form';
 import { Form } from '@src/components';
 import { useCQuery } from '@hooks/useCQuery';
 import { OptionsT } from '@components/form/type';
+import { centreQueryKey, domainQueryKey } from '@constants/query-keys';
 
 type Props = {
   open: boolean;
@@ -29,7 +30,7 @@ export const AddCentreDomain = ({ onClose, open, domain_id }: Props) => {
   const { mutateAsync, isLoading } = useCMutation({
     url: 'centre-domain/save',
     method: 'POST',
-    queryKey: ['get', 'domain']
+    queryKey: [...domainQueryKey, ...centreQueryKey]
   });
   const {
     data,
@@ -37,7 +38,7 @@ export const AddCentreDomain = ({ onClose, open, domain_id }: Props) => {
     isFetched
   } = useCQuery({
     url: 'centre',
-    queryKey: ['get', 'centre']
+    queryKey: centreQueryKey
   });
 
   const form = useForm<CenterDomainModelType>({

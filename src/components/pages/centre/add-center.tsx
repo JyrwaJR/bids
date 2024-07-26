@@ -17,6 +17,7 @@ import {
   DialogTitle
 } from '../../ui/dialog';
 import { FormFieldType, OptionsT } from '@components/form/type';
+import { centreQueryKey, stateQueryKey } from '@constants/query-keys';
 
 type Props = {
   open: boolean;
@@ -33,11 +34,11 @@ export const AddCentre = ({ onClose, open }: Props) => {
   const { isLoading, mutateAsync } = useCMutation({
     url: 'centre/save',
     method: 'POST',
-    queryKey: ['add center ']
+    queryKey: centreQueryKey
   });
   const { data, isLoading: isStateLoading } = useCQuery({
     url: 'state',
-    queryKey: ['get', 'state']
+    queryKey: stateQueryKey
   });
 
   const stateOptions: OptionsT[] =

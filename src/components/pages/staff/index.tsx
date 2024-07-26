@@ -11,12 +11,13 @@ import { Separator } from '@src/components/ui/separator';
 import { AddStaff } from './add-staff';
 import { useCQuery } from '@hooks/useCQuery';
 import { ScrollArea } from '@components/ui/scroll-area';
+import { staffQueryKey } from '@constants/query-keys';
 
 const StaffPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isFetched, isError, isLoading } = useCQuery({
     url: 'staff',
-    queryKey: ['get', 'staff']
+    queryKey: staffQueryKey
   });
   return (
     <ScrollArea>

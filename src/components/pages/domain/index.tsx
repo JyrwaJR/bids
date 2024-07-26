@@ -9,6 +9,7 @@ import { DataTable } from '@components/ui/data-table';
 import { domainColumn } from '@constants/columns';
 import { AddDomain } from '@components/pages';
 import { OptionsT } from '@components/form/type';
+import { domainQueryKey } from '@constants/query-keys';
 
 const searchDomainBy: OptionsT[] = [
   {
@@ -29,7 +30,7 @@ const DomainPage = () => {
 
   const { data, isFetched } = useCQuery({
     url: 'domain',
-    queryKey: ['get', 'domain']
+    queryKey: domainQueryKey
   });
 
   return (

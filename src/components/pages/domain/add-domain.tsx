@@ -17,6 +17,7 @@ import { showToast } from '@components/ui/show-toast';
 import { FailedToastTitle } from '@constants/toast-message';
 import { useCQuery } from '@hooks/useCQuery';
 import { OptionsT } from '@components/form/type';
+import { domainQueryKey, sectorQueryKey } from '@constants/query-keys';
 
 type Props = {
   open: true | false;
@@ -29,7 +30,7 @@ export const AddDomain = ({ onClose, open }: Props) => {
   });
   const sectorQuery = useCQuery({
     url: 'sector',
-    queryKey: ['get', 'sector']
+    queryKey: sectorQueryKey
   });
 
   const sectorOptions: OptionsT[] =
@@ -41,7 +42,7 @@ export const AddDomain = ({ onClose, open }: Props) => {
   const { mutateAsync, isLoading } = useCMutation({
     url: 'domain/save',
     method: 'POST',
-    queryKey: ['get', 'domain']
+    queryKey: domainQueryKey
   });
 
   const onSubmit: SubmitHandler<DomainModelType> = async (data) => {

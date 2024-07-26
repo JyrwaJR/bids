@@ -13,6 +13,7 @@ import { useQuery } from 'react-query';
 import { OptionsT } from '@components/form/type';
 import { useCallback, useEffect, useState } from 'react';
 import { StudentRegistrationModelType } from '@models/student';
+import { batchQueryKey, domainQueryKey } from '@constants/query-keys';
 
 type Props = {
   form: UseFormReturn<StudentRegistrationModelWithDomainType>;
@@ -29,13 +30,18 @@ export const useRegistrationFields = ({ form }: Props) => {
   const batchQuery = useQuery({
     queryFn: async () => await getBatch(form.watch('project_id')),
     enabled: !!form.watch('project_id'),
-    queryKey: ['batch', form.watch('project_id')]
+    queryKey: [batchQueryKey, form.watch('project_id')]
   });
 
   const domainQuery = useQuery({
     queryFn: async () => await getDomainByProjectId(form.watch('project_id')),
     enabled: !!form.watch('project_id'),
-    queryKey: ['domain', form.watch('project_id'), form.watch('batch_id')]
+    queryKey: [
+      domainQueryKey,
+      batchQueryKey,
+      form.watch('project_id'),
+      form.watch('batch_id')
+    ]
   });
   const refetchDomainQuery = useCallback(() => {
     domainQuery.refetch();

@@ -8,6 +8,7 @@ import {
   DialogTitle
 } from '@components/ui/dialog';
 import { showToast } from '@components/ui/show-toast';
+import { appliedApplicantQueryKey } from '@constants/query-keys';
 import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCMutation } from '@hooks/useCMutation';
@@ -48,7 +49,7 @@ export const UpdateAppliedStudentForm = () => {
   const mutate = useCMutation({
     url: url,
     method: 'PUT',
-    queryKey: ['get', 'applied', 'student']
+    queryKey: appliedApplicantQueryKey
   });
 
   const onClose = () => {

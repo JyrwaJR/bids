@@ -18,6 +18,7 @@ import { useCMutation, useCQuery } from '@src/hooks';
 import { CenterModelType, StaffModel, StaffModelType } from '@src/models';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { useAuthContext } from '@context/auth';
+import { centreQueryKey, staffCategoryQueryKey, staffQueryKey } from '@constants/query-keys';
 
 type Props = {
   open: boolean;
@@ -35,18 +36,18 @@ export const AddStaff = ({ onClose, open }: Props) => {
     isFetched: isCFetch
   } = useCQuery({
     url: 'centre',
-    queryKey: ['get', 'center']
+    queryKey: centreQueryKey
   });
 
   const { isLoading: scLoading, data: scData } = useCQuery({
     url: 'staffcategory',
-    queryKey: ['get', 'staff', 'category']
+    queryKey: staffCategoryQueryKey
   });
 
   const { isLoading, mutateAsync } = useCMutation({
     url: 'staff/save',
     method: 'POST',
-    queryKey: ['add center ']
+    queryKey: staffQueryKey
   });
   const onSubmitAddStaff: SubmitHandler<StaffModelType> = async (data) => {
     try {

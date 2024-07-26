@@ -85,3 +85,31 @@ export const studentQueryKey = [
   'update-student',
   'delete-student'
 ];
+export const stateQueryKey = [
+  'state',
+  'get-state',
+  'add-state',
+  'update-state',
+  'delete-state'
+];
+export const documentTypeQueryKey = [
+  'document-type',
+  'get-document-type',
+  'add-document-type',
+  'update-document-type',
+  'delete-document-type'
+];
+export const categoryQueryKey = [
+  'category',
+  'get-category',
+  'add-category',
+  'update-category',
+  'delete-category'
+];
+export const districtQueryKey = [
+  'district',
+  'get-district',
+  'add-district',
+  'update-district',
+  'delete-district'
+];

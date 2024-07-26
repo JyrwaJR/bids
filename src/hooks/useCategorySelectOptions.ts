@@ -1,6 +1,14 @@
 import { OptionsT } from '@components/form/type';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useCQuery } from './useCQuery';
+import {
+  categoryQueryKey,
+  centreQueryKey,
+  districtQueryKey,
+  domainQueryKey,
+  projectsQueryKey,
+  stateQueryKey
+} from '@constants/query-keys';
 
 type CategoryOptionsT = {
   categories: OptionsT[];
@@ -37,30 +45,30 @@ export function useCategorySelectOptions({ centreId, projectId }: Props = {}) {
   const [options, setOptions] = useState<CategoryOptionsT>(defaultOptions);
   const { data, isError, isFetched, isLoading } = useCQuery({
     url: 'registration/get-drop-down-list',
-    queryKey: ['categories']
+    queryKey: categoryQueryKey
   });
 
   const { data: state, isFetched: isStateFetched } = useCQuery({
     url: 'state',
-    queryKey: ['state']
+    queryKey: stateQueryKey
   });
 
   const { data: project, isFetched: isProjectFetched } = useCQuery({
     url: 'project',
-    queryKey: ['project', 'get project']
+    queryKey: projectsQueryKey
   });
   const { data: district, isFetched: isDistrictFetched } = useCQuery({
     url: 'district',
-    queryKey: ['district', 'get district']
+    queryKey: districtQueryKey
   });
   const { data: domain, isFetched: isDomainFetched } = useCQuery({
     url: 'domain/listall',
-    queryKey: ['get', 'list all', 'domain']
+    queryKey: [domainQueryKey, 'list all']
   });
 
   const { data: center, isFetched: isCenterFetched } = useCQuery({
     url: 'centre',
-    queryKey: ['get', 'center', 'cate']
+    queryKey: centreQueryKey
   });
 
   const domainOptions = useCallback(() => {

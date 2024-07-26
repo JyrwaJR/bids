@@ -5,7 +5,6 @@ import { Separator } from '@components/ui/separator'
 import { searchStudentsBy, studentsColumn } from '@constants/columns/students-column'
 import { ColumnDef } from '@tanstack/react-table'
 import { Plus } from 'lucide-react'
-import React from 'react'
 export const StudentsPage = () => {
   return (
     <div className="flex-1 space-y-4">

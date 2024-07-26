@@ -10,6 +10,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { axiosInstance } from '@lib/utils'
 import { ACCEPTED_FILE_TYPES, MAX_UPLOAD_SIZE } from '@constants/index';
+import { eventsManagementQueryKey } from '@constants/query-keys'
 type Props = {
   open: boolean
   id: string
@@ -37,7 +38,8 @@ export const UploadEventsMangementImage = ({ open, id, onClose }: Props) => {
   })
   const mutate = useCMutation({
     url: `events/upload-image/${id}`,
-    method: "POST"
+    method: "POST",
+    queryKey: eventsManagementQueryKey
   })
   const onSubmit: SubmitHandler<ImageModelType> = async (data) => {
     try {

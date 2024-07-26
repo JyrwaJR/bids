@@ -10,12 +10,13 @@ import { AddSector } from './add-sector';
 import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from '@components/cell-action';
 import { useSectorStore } from '@lib/store';
+import { sectorQueryKey } from '@constants/query-keys';
 
 export const SectorPage = () => {
   const { setId, onOpenChange, open } = useSectorStore();
   const { data, isFetched } = useCQuery({
     url: 'sector',
-    queryKey: ['get', 'sector']
+    queryKey: sectorQueryKey
   });
   const column: ColumnDef<any>[] = [
     {

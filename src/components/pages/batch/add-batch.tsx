@@ -13,6 +13,7 @@ import {
 import { showToast } from '@components/ui/show-toast';
 import { domainColumn } from '@constants/columns';
 import { batchFields } from '@constants/input-fields';
+import { batchQueryKey, domainQueryKey } from '@constants/query-keys';
 import { FailedToastTitle } from '@constants/toast-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCMutation } from '@hooks/useCMutation';
@@ -42,7 +43,7 @@ export const AddBatch = ({ open, onClose, projectId }: Props) => {
   });
   const { mutateAsync, isLoading } = useCMutation({
     url: 'batch/save',
-    queryKey: ['get', 'batch'],
+    queryKey: batchQueryKey,
     method: 'POST'
   });
   const onSubmit: SubmitHandler<BatchModelType> = async (data) => {
@@ -72,7 +73,7 @@ export const AddBatch = ({ open, onClose, projectId }: Props) => {
     isLoading: loading
   } = useCQuery({
     url: 'domain',
-    queryKey: ['get', 'domain']
+    queryKey: domainQueryKey
   });
   const column: ColumnDef<ColType | any>[] = [
     {

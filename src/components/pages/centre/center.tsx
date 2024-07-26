@@ -14,6 +14,7 @@ import { CenterModelType } from '@models/center-model';
 import { AlertModal } from '@components/modal/alert-modal';
 import { useCenterStore } from '@lib/store';
 import { OptionsT } from '@components/form/type';
+import { centreQueryKey } from '@constants/query-keys';
 const searchCentreBy: OptionsT[] = [
   {
     label: 'Name',
@@ -33,7 +34,7 @@ export const CenterPageComponents = () => {
   const { user } = useAuthContext();
   const { data, isFetched, isLoading } = useCQuery({
     url: 'centre',
-    queryKey: ['get', 'centre']
+    queryKey: centreQueryKey
   });
   const column: ColumnDef<CenterModelType>[] = [
     ...CentreColumn,

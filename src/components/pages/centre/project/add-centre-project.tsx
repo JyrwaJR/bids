@@ -30,6 +30,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { Label } from '@components/ui/label';
 import { ScrollArea } from '@components/ui/scroll-area'
+import { centreQueryKey, domainQueryKey, projectsQueryKey } from '@constants/query-keys';
 type Props = {
   open: boolean;
   onClose: () => void;
@@ -62,7 +63,7 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
 
   const center = useCQuery({
     url: 'centre',
-    queryKey: ['get', 'centre']
+    queryKey: centreQueryKey
   });
 
   const centerOptions: OptionsT[] = center.data?.data?.map(
@@ -75,7 +76,7 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
   const domainQuery = useQuery({
     queryFn: async () => await getDomainByCentreId(isSelectedCenterId),
     enabled: !!isSelectedCenterId,
-    queryKey: ['domain', 'centre_id', isSelectedCenterId],
+    queryKey: [domainQueryKey, centreQueryKey, isSelectedCenterId],
     initialData: [],
     onError: (err: any) => {
       if (err instanceof AxiosError) {
@@ -172,6 +173,7 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
   const { mutateAsync, isSuccess, isLoading } = useCMutation({
     url: 'project-centre/save',
     method: 'POST',
+    queryKey: [centreQueryKey, projectsQueryKey]
   });
 
   const onClickSubmit: SubmitHandler<schemaType> = async (data) => {

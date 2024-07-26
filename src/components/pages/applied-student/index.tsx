@@ -16,6 +16,7 @@ import { z } from 'zod';
 import { UpdateAppliedStudentForm } from './update-applied-students';
 import { useAppliedStudentsStore } from '@lib/store';
 import { CellAction } from '@components/cell-action';
+import { appliedApplicantQueryKey, domainQueryKey, projectsQueryKey } from '@constants/query-keys';
 
 const StudentStatusOptions: OptionsT[] = [
   {
@@ -67,17 +68,17 @@ const AppliedStudentPage = () => {
   const { mutateAsync, isLoading, data } = useCMutation({
     method: 'POST',
     url: 'registration/candidate-registration-list',
-    queryKey: ['get', 'applied', 'student']
+    queryKey: appliedApplicantQueryKey
   });
 
   const projectQuery = useCQuery({
     url: 'project',
-    queryKey: ['get', 'project']
+    queryKey: projectsQueryKey
   });
 
   const domainQuery = useCQuery({
     url: `project-domain/get-domain-by-project/${form.watch('project_id')}`,
-    queryKey: ['get', 'project', 'domain'],
+    queryKey: [projectsQueryKey, domainQueryKey],
     enabled: !!form.watch('project_id')
   });
 
@@ -119,21 +120,6 @@ const AppliedStudentPage = () => {
   ];
 
   const columns: ColumnDef<StudentRegistrationModelType | any>[] = [
-    // {
-    //   id: 'select',
-    //   header: ({ table }) => <Checkbox disabled />,
-    //   cell: ({ row }) => (
-    //     <Checkbox
-    //       onCheckedChange={() => {
-    //         const idx = row.original.id;
-    //         setId(idx);
-    //       }}
-    //       checked={id === row.original.id}
-    //     />
-    //   ),
-    //   enableSorting: false,
-    //   enableHiding: false
-    // },
     {
       accessorKey: 'name',
       header: 'Name'

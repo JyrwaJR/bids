@@ -8,13 +8,14 @@ import { CentreColumn } from '../../../constants/columns/center-column';
 import { Button } from '@components/ui/button';
 import { Download } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import { reportQueryKey } from '@constants/query-keys';
 
 export const ReportPage = () => {
   const search = useSearchParams().get('reports');
   console.log(search);
   const { data, isFetched } = useCQuery({
     url: search ? search : 'centre',
-    queryKey: ['get', search]
+    queryKey: [reportQueryKey, search]
   });
 
   return (
