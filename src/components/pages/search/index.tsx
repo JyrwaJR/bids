@@ -51,7 +51,7 @@ const studentsColumn: ColumnDef<any>[] = [
 export const SearchPage = () => {
   const search = useSearchParams().get('q')
   const isSearchApplicants: boolean = search === 'applicants'
-  const url = isSearchApplicants ? 'registration/candidate-registration-list' : ''
+  const url = isSearchApplicants ? 'registration/candidate-registration-list' : 'registration/candidate-registration-list'
   const form = useForm({
     defaultValues: {
       name: ''

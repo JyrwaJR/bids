@@ -97,7 +97,6 @@ export function useCMutation({ queryKey, url, method }: CMutationProps) {
     // @ts-ignore
     mutationKey: queryKey,
     networkMode: 'online',
-
     mutationFn: async (data) =>
       await mutationFn({
         data: data,
