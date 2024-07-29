@@ -63,7 +63,7 @@ export const AddStaff = ({ onClose, open }: Props) => {
   const StaffCategoryOption =
     !scLoading &&
     scData.data.data
-      .filter((item: { position: string }) => user?.role === 'superadmin' ? item.position === 'ALL' : item.position === "HQ")
+      .filter((item: { position: string }) => user?.role === 'superadmin' ? item.position === 'all' : item.position === "hq")
       .map((item: { name: string, id: string }) => ({
         label: item.name,
         value: item.id
