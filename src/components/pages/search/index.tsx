@@ -48,29 +48,50 @@ const studentsColumn: ColumnDef<any>[] = [
     accessorKey: 'email',
   }
 ]
+const applicantsColumn: ColumnDef<any>[] = [
+  {
+    header: 'Name',
+    accessorKey: 'first_name',
+  },
+  {
+    header: 'Last Name',
+    accessorKey: 'last_name',
+  },
+  {
+    header: 'DOB',
+    accessorKey: 'dob',
+  },
+  {
+    header: 'Email',
+    accessorKey: 'email',
+  }
+]
 export const SearchPage = () => {
   const search = useSearchParams().get('q')
-  const isSearchApplicants: boolean = search === 'applicants'
+  const defaultQuery = search ? search : 'students'
+  const isSearchApplicants: boolean = defaultQuery === 'applicants'
   const url = isSearchApplicants ? 'registration/candidate-registration-list' : ''
   const form = useForm({
     defaultValues: {
       name: ''
     }
   })
+  // check if search is not present then default to students    
   const studentMutation = useMutation({
     mutationFn: async () => await searchStudentByName(form.watch('name')),
     mutationKey: [studentQueryKey, form.watch('name')],
   })
-  const applicantsColumn: ColumnDef<any>[] = [
-    {
-      header: 'Name',
-      accessorKey: 'name',
-      cell: (info) => info.getValue(),
-    }
-  ]
+  const applicantsMutation = useMutation({
+    mutationFn: async () => await searchStudentByName(form.watch('name')),
+    mutationKey: [studentQueryKey, form.watch('name')],
+  })
   const onSubmit = async (data: any) => {
     try {
-      await studentMutation.mutateAsync()
+      if (defaultQuery === 'students') {
+        await studentMutation.mutateAsync()
+      } else {
+        await applicantsMutation.mutateAsync()
+      }
     } catch (error: any) {
       showToast(
         FailedToastTitle,
@@ -105,13 +126,12 @@ export const SearchPage = () => {
             </Button>
           </form>
         </Form>
-
       </div>
       <div className='space-y-2'>
         <DataTable
           enableSearch={false}
           columns={isSearchApplicants ? applicantsColumn : studentsColumn}
-          data={studentMutation.data?.data ? studentMutation.data.data : []}
+          data={isSearchApplicants ? applicantsMutation.isSuccess && applicantsMutation.data.data : studentMutation.isSuccess && studentMutation.data.data}
           searchKey='name'
         />
       </div>
