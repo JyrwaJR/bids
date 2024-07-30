@@ -143,7 +143,13 @@ export const navItems: NavItem[] = [
         href: '/dashboard/reports?reports=sector',
         icon: 'logo',
         label: 'Domian Report'
-      }
+      },
+      {
+        title: 'No. Applicants',
+        href: '/dashboard/reports?reports=noofapplicants',
+        icon: 'post',
+        label: 'No. applicants reports'
+      },
     ]
   },
   {
