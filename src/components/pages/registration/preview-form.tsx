@@ -1,16 +1,17 @@
 import { Typography } from '@components/index';
+import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
 import { StudentRegistrationModelWithDomainType } from '@src/app/dashboard/registration/_lib/function';
 import { StepsFieldFormT } from '@src/types';
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
-
+import jsPDF from 'jspdf';
 type Props = {
   form: UseFormReturn<StudentRegistrationModelWithDomainType>;
   fields: StepsFieldFormT[];
 };
 export const PreviewForm = ({ form, fields }: Props) => {
-  console.log(form.formState);
+ 
   return (
     <div className="space-y-5">
       {fields.map((field, i) => (

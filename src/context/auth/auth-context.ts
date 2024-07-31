@@ -20,7 +20,6 @@ export type AuthContextT = {
   ) => Promise<void>;
   isLoading: boolean;
   isLoggedIn: boolean;
-  //   onRegister: ({ email, password, balang_id, name }: RegistrationType) => void;
 };
 
 export const AuthContext = createContext<AuthContextT | null>({

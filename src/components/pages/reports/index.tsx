@@ -9,6 +9,9 @@ import { Button } from '@components/ui/button';
 import { Download } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { reportQueryKey } from '@constants/query-keys';
+import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
+import { Form, FormFieldType } from '@components/index';
+import { useForm } from 'react-hook-form';
 
 export const ReportPage = () => {
   const search = useSearchParams().get('reports');
@@ -17,7 +20,22 @@ export const ReportPage = () => {
     url: search ? search : 'centre',
     queryKey: [reportQueryKey, search]
   });
-
+  const form = useForm();
+  const { options } = useCategorySelectOptions();
+  const fields: FormFieldType[] = [
+    {
+      name: 'centre_id',
+      select: true,
+      label: 'Centre',
+      options: options.centre
+    },
+    {
+      name: 'domain_id',
+      select: true,
+      label: 'Domain',
+      options: options.domain
+    }
+  ];
   return (
     <div className="flex-1 space-y-4">
       <div className="flex items-start justify-between">
@@ -40,6 +58,16 @@ export const ReportPage = () => {
           </Button>
         )}
       </div>
+      {isFetched && (
+        <Form
+          btnText="Search"
+          className="md:col-span-6"
+          form={form}
+          fields={fields}
+          onSubmit={() => {}}
+          loading={!isFetched}
+        />
+      )}
       <Separator />
       <DataTable
         searchKey="name"

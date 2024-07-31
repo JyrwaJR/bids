@@ -19,6 +19,7 @@ const StaffPage = () => {
     url: 'staff',
     queryKey: staffQueryKey
   });
+  console.log(data);
   return (
     <ScrollArea>
       <div className="flex w-full flex-col space-y-4">
@@ -37,7 +38,11 @@ const StaffPage = () => {
           searchKey="name"
           columns={staffColumn}
           isLoading={isLoading}
-          data={isFetched && !isError ? data.data.data : []}
+          data={
+            isFetched && !isError && data && data.data
+              ? data.data.data ?? []
+              : []
+          }
         />
       </div>
       {isOpen && <AddStaff open={isOpen} onClose={() => setIsOpen(false)} />}

@@ -12,8 +12,6 @@ import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import { Separator } from '@components/ui/separator';
 import { useEffect } from 'react';
-import { useQuery } from 'react-query';
-import { getStudentDataIfExist } from '@src/app/dashboard/registration/_lib/function';
 import UploadImageModal from '@components/upload-image-modal';
 export type StepType = {
   id: string;
@@ -102,7 +100,7 @@ export default function MultiStepForm({
     <section>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          {/* <Stepper
+          <Stepper
             steps={steps.map((step) => ({
               label: step.name
             }))}
@@ -121,7 +119,7 @@ export default function MultiStepForm({
               circleFontSize: ''
             }}
             activeStep={currentStep}
-          /> */}
+          />
           {steps.map((step, index) => (
             <div
               key={step.name + index}
@@ -179,7 +177,6 @@ export default function MultiStepForm({
               )}
             </div>
           ))}
-
           <div className="mt-8 pt-5">
             <div className="flex justify-between">
               <Button type="button" onClick={prev} disabled={currentStep === 0}>

@@ -13,7 +13,6 @@ import { FailedToastTitle } from '@constants/toast-message';
 import { showToast } from '@components/ui/show-toast';
 import { useCQuery } from '@hooks/useCQuery';
 import { z } from 'zod';
-import { UpdateAppliedStudentForm } from './update-applied-students';
 import { useAppliedStudentsStore } from '@lib/store';
 import {
   appliedApplicantQueryKey,
@@ -90,7 +89,7 @@ const AppliedStudentPage = () => {
     resolver: zodResolver(UpdateStudentSchema)
   });
 
-  const { mutateAsync, isLoading, data,  } = useCMutation({
+  const { mutateAsync, isLoading, data } = useCMutation({
     method: 'POST',
     url: 'registration/candidate-registration-list',
     queryKey: appliedApplicantQueryKey
@@ -156,12 +155,12 @@ const AppliedStudentPage = () => {
       });
     } catch (error: any) {
       showToast(FailedToastTitle, error.error);
-    }finally{
+    } finally {
       await mutateAsync({
-        status:form.getValues('status'),
-        project_id:form.getValues('project_id'),
-        domain_id:form.getValues('domain_id')
-      })
+        status: form.getValues('status'),
+        project_id: form.getValues('project_id'),
+        domain_id: form.getValues('domain_id')
+      });
     }
   }
   const columns: ColumnDef<StudentRegistrationModelType | any>[] = [

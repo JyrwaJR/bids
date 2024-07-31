@@ -41,21 +41,50 @@ export function DashboardNav({
   const { isMinimized, toggle } = useSidebar();
   const [openSubMenuId, setOpenSubMenuId] = useState<string | null>(null);
   const [isAlertLogout, setIsAlertLogout] = useState(false);
+
   useEffect(() => {
     if (isMinimized) setOpenSubMenuId(null);
   }, [isMinimized]);
-  // Assuming you have a user object that contains the role information
+
   const userRole = user?.role;
-  // Filter out admin-related items if the user role is not 'superadmin'
-  const filteredNavItems =
-    // with coridinator role can see all nav
-    userRole !== 'superadmin'
-      ? items
-        .filter((item) => item.title !== 'Admin')
-        .filter((item) => item.title !== 'Staff')
-        .filter((item) => item.title !== 'Settings')
-        .filter((item) => item.title !== 'Reports')
-      : items.filter((item) => item.title !== 'Project').filter((item) => item.title !== 'Batch');
+  const excludeTitles = {
+    mobilizer: ['Batch', 'Registration', 'Events', 'Search'],
+    coordinator: [
+      'Dashboard',
+      'Staff',
+      'Reports',
+      'Project',
+      'Events',
+      'Search',
+      'Batch',
+      'Registration',
+      'Applied Student'
+    ],
+    superadmin: [
+      'Dashboard',
+      // TODO : Remove when going live
+      'Test Page',
+      'Admin',
+      'Staff',
+      'Reports',
+      'Project',
+      'Events',
+      'Search',
+      'Batch',
+      'Registration',
+      'Applied Student',
+      'Settings'
+    ]
+  };
+
+  const filteredNavItems = items.filter((item) => {
+    // Ensure userRole is a valid string
+    const role = typeof userRole === 'string' ? userRole : 'mobilizer';
+    //@ts-ignore
+    const titlesToExclude = excludeTitles[role] || excludeTitles.default;
+    return titlesToExclude.includes(item.title);
+  });
+
   if (!items?.length) {
     return null;
   }
@@ -145,7 +174,7 @@ export function DashboardNav({
                                     ? 'bg-accent'
                                     : 'transparent',
                                   subItem.disabled &&
-                                  'cursor-not-allowed opacity-80'
+                                    'cursor-not-allowed opacity-80'
                                 )}
                                 onClick={() => {
                                   if (setOpen) setOpen(false);
@@ -153,7 +182,7 @@ export function DashboardNav({
                               >
                                 <SubIcon className={`ml-3 size-5`} />
                                 {isMobileNav ||
-                                  (!isMinimized && !isMobileNav) ? (
+                                (!isMinimized && !isMobileNav) ? (
                                   <span className="mr-2 truncate">
                                     {subItem.title}
                                   </span>

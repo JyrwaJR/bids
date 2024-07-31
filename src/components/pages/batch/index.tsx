@@ -18,7 +18,7 @@ interface ColType extends DomainModelType {
   id: string;
 }
 const BatchPage = () => {
-  const { user } = useAuthContext()
+  const { user } = useAuthContext();
   const [selectedIds, setSelectedIds] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isFetched, isLoading } = useCQuery({
@@ -94,16 +94,13 @@ const BatchPage = () => {
                   title={`Project`}
                   description="Select a Project to add a batch"
                 />
-                {user && user?.role === 'superadmin' || user?.role === 'coordinator' && (
-
-                  <Button
-                    className="text-xs md:text-sm"
-                    disabled={selectedIds.length === 0}
-                    onClick={() => setIsOpen(true)}
-                  >
-                    <Plus className="mr-2 h-4 w-4" /> New Batch
-                  </Button>
-                )}
+                <Button
+                  className="text-xs md:text-sm"
+                  disabled={selectedIds.length === 0}
+                  onClick={() => setIsOpen(true)}
+                >
+                  <Plus className="mr-2 h-4 w-4" /> New Batch
+                </Button>
               </div>
               <DataTable
                 searchKey="name"
