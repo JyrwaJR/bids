@@ -24,7 +24,10 @@ import { AlertModal } from '@components/modal/alert-modal';
 import { UpdateEventsManagement } from './update-events-managements';
 import { Icons } from '@components/icons';
 import { UploadEventsMangementImage } from './upload-event-mangement-image';
-import { centreQueryKey, eventsManagementQueryKey } from '@constants/query-keys';
+import {
+  centreQueryKey,
+  eventsManagementQueryKey
+} from '@constants/query-keys';
 import { EventManagementModelType } from '@models/events-management-model';
 
 const searyBy: OptionsT[] = [
@@ -48,7 +51,7 @@ const searyBy: OptionsT[] = [
     label: 'Total',
     value: 'total_participants'
   }
-]
+];
 const defaultEventsManagement: EventManagementModelType = {
   event_name: '',
   event_date: '',
@@ -63,43 +66,48 @@ const defaultEventsManagement: EventManagementModelType = {
   community_leaders: 0,
   id: '',
   total_participants: 0
-}
+};
 export const EventsManagementPage = () => {
-  const { user } = useAuthContext()
-  const [isSelectedEvent, setIsSelectedEvent] = useState<EventManagementModelType>(defaultEventsManagement)
-  const [isDelConfirm, setIsDelConfirm] = useState<boolean>(false)
+  const { user } = useAuthContext();
+  const [isSelectedEvent, setIsSelectedEvent] =
+    useState<EventManagementModelType>(defaultEventsManagement);
+  const [isDelConfirm, setIsDelConfirm] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isUploading, setIsUploading] = useState<boolean>(false)
-  const [isSelectedId, setIsSelectedId] = useState<string>('')
-  const [isUpdate, setIsUpdate] = useState<boolean>(false)
-  const isSuperAdmin: boolean = user?.role === 'superadmin'
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [isSelectedId, setIsSelectedId] = useState<string>('');
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const isSuperAdmin: boolean = user?.role === 'superadmin';
   const form = useForm({
     defaultValues: {
       centre_id: isSuperAdmin ? '' : user?.centre_id
     }
-  })
-  const url = isSuperAdmin ? 'events' : `events/get-event-by-centre/${user?.centre_id}`
-  const uri = `events/get-event-by-centre/${form.watch('centre_id')}`
-  const { data, isFetched, isError, isLoading, refetch } = useCQuery({
+  });
+  console.log(user?.centre_id);
+  const url = isSuperAdmin
+    ? 'events'
+    : `events/get-event-by-centre/${user?.centre_id}`;
+  const uri = `events/get-event-by-centre/${form.watch('centre_id')}`;
+  const { data, isFetched, isLoading, refetch } = useCQuery({
     url: form.watch('centre_id') !== '' ? uri : url,
     queryKey: eventsManagementQueryKey
   });
   const centreQuery = useCQuery({
     url: 'centre',
     queryKey: centreQueryKey
-  })
+  });
   const delMutate = useCMutation({
     url: `events/${isSelectedId}`,
-    method: "DELETE",
+    method: 'DELETE',
     queryKey: eventsManagementQueryKey
-  })
+  });
 
-  const cOptions: OptionsT[] = (centreQuery.isFetched && centreQuery.data?.data)
-    ? centreQuery.data.data.map((item: any) => ({
-      label: item.name,
-      value: item.id
-    }))
-    : []; // Default to an empty array if data is not fetched
+  const cOptions: OptionsT[] =
+    centreQuery.isFetched && centreQuery.data?.data
+      ? centreQuery.data.data.map((item: any) => ({
+          label: item.name,
+          value: item.id
+        }))
+      : []; // Default to an empty array if data is not fetched
 
   const centreOptions: OptionsT[] = [
     {
@@ -111,79 +119,83 @@ export const EventsManagementPage = () => {
   const onDeleteEvents = async () => {
     try {
       if (!!isSelectedId) {
-        showToast(FailedToastTitle, "Please select an event to delet")
+        showToast(FailedToastTitle, 'Please select an event to delete');
       }
-      await delMutate.mutateAsync({})
+      await delMutate.mutateAsync({});
     } catch (error: any) {
-      showToast(FailedToastTitle, error.message)
+      showToast(FailedToastTitle, error.message);
     } finally {
-      setIsSelectedId('')
-      setIsDelConfirm(false)
-      refetch()
+      setIsSelectedId('');
+      setIsDelConfirm(false);
+      refetch();
     }
-  }
+  };
   const updatedColumn: ColumnDef<any>[] = [
     {
       accessorKey: 'id',
       cell: ({ row }) => {
-        return row.index + 1
+        return row.index + 1;
       }
     },
     ...eventsMangementColumn,
     {
       header: 'Upload Image',
       cell: ({ row }) => {
-        return <Button
-          disabled={isUploading}
-          onClick={() => setIsUploading(true)}
-          size={'icon'} variant={'link'}>
-          <Icons.upload className='w-4 h-4' />
-        </Button>
+        return (
+          <Button
+            disabled={isUploading}
+            onClick={() => setIsUploading(true)}
+            size={'icon'}
+            variant={'link'}
+          >
+            <Icons.upload className="h-4 w-4" />
+          </Button>
+        );
       }
     },
     {
       accessorKey: 'status',
-      header: 'Status',
+      header: 'Status'
     },
     {
       id: 'actions',
       cell: ({ row }) => {
-        return <CellAction
-          onEdit={() => {
-            if (row.original) {
-              setIsSelectedEvent(row.original)
-              setIsUpdate(true)
-            }
-          }
-          }
-          onDelete={() => {
-            const id = row.original.id
-            if (id) {
-              console.log(id)
-              setIsSelectedId(id)
-              setIsDelConfirm(true)
-              console.log(isSelectedId)
-            }
-          }
-          }
-        />
+        return (
+          <CellAction
+            onEdit={() => {
+              if (row.original) {
+                setIsSelectedEvent(row.original);
+                setIsUpdate(true);
+              }
+            }}
+            onDelete={() => {
+              const id = row.original.id;
+              if (id) {
+                console.log(id);
+                setIsSelectedId(id);
+                setIsDelConfirm(true);
+                console.log(isSelectedId);
+              }
+            }}
+          />
+        );
       }
     }
-  ]
+  ];
   const onCloseUpdate = () => {
-    setIsSelectedEvent(defaultEventsManagement)
-    setIsSelectedId('')
-    setIsUpdate(false)
-  }
+    setIsSelectedEvent(defaultEventsManagement);
+    setIsSelectedId('');
+    setIsUpdate(false);
+  };
   useEffect(() => {
-    refetch()
-  }, [form.watch('centre_id')])
+    refetch();
+  }, [form.watch('centre_id')]);
 
   return (
     <ScrollArea>
-      <div className="flex-1 px-1 space-y-4">
-        <div className="flex space-x-2 items-start justify-between">
-          <div className='flex items-center space-x-2'>
+      <div className="flex-1 space-y-4 px-1">
+        <div className="flex items-start justify-between space-x-2">
+          <div className="flex items-center space-x-2">
             <Heading title={`Events`} description="Manage Events" />
             {user?.role === 'superadmin' && (
               <div>
@@ -202,15 +214,14 @@ export const EventsManagementPage = () => {
                 </Form>
               </div>
             )}
-            <div>
-            </div>
+            <div></div>
           </div>
           <Button
-            disabled={!isFetched || !user?.role || user?.role !== 'superadmin'}
+            disabled={!isFetched}
             className="text-xs md:text-sm"
             onClick={() => setIsOpen(true)}
           >
-            <Plus className="mr-2 h-4 w-4" /> Add New
+            <Plus className="mr-2 h-4 w-4" /> Add Staff
           </Button>
         </div>
         <Separator />
@@ -222,17 +233,23 @@ export const EventsManagementPage = () => {
           data={isFetched ? data.data : []}
         />
       </div>
-      {isOpen && <AddEventsManagement
-        open={isOpen} onClose={() => setIsOpen(false)} />
-      }
-      {isUpdate && <UpdateEventsManagement
-        data={isSelectedEvent}
-        open={isUpdate} onClose={onCloseUpdate} />
-      }
-      {isUploading && <UploadEventsMangementImage
-        id={isSelectedId}
-        open={isUploading} onClose={() => setIsUploading(false)} />
-      }
+      {isOpen && (
+        <AddEventsManagement open={isOpen} onClose={() => setIsOpen(false)} />
+      )}
+      {isUpdate && (
+        <UpdateEventsManagement
+          data={isSelectedEvent}
+          open={isUpdate}
+          onClose={onCloseUpdate}
+        />
+      )}
+      {isUploading && (
+        <UploadEventsMangementImage
+          id={isSelectedId}
+          open={isUploading}
+          onClose={() => setIsUploading(false)}
+        />
+      )}
       {isDelConfirm && (
         <AlertModal
           isOpen={isDelConfirm}
