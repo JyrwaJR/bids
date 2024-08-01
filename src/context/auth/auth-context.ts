@@ -4,7 +4,7 @@ export type UserType = {
   role: string;
   name: string;
   email: string;
-  centre_id?: string;
+  centre_id: string;
   staff?: string;
 };
 
@@ -30,7 +30,8 @@ export const AuthContext = createContext<AuthContextT | null>({
     id: '',
     name: '',
     role: '',
-    staff: ''
+    staff: '',
+    centre_id: ''
   } as UserType,
   isLoggedIn: false,
   onLogout: () => {},

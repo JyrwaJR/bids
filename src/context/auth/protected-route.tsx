@@ -34,7 +34,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }, [isAuthenticated, loading, pathName, router]);
 
   if (showLoading) {
-    return <LoadingPage />;
+    return <LoadingPage>{children}</LoadingPage>;
   }
 
   return isAuthenticated || pathName === '/' ? children : null; // Render children only if authenticated or on login page
