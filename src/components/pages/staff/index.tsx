@@ -19,7 +19,6 @@ const StaffPage = () => {
     url: 'staff',
     queryKey: staffQueryKey
   });
-  console.log(data);
   return (
     <ScrollArea>
       <div className="flex w-full flex-col space-y-4">
