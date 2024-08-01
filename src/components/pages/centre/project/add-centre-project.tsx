@@ -12,7 +12,6 @@ import {
   DialogTitle
 } from '@components/ui/dialog';
 import { showToast } from '@components/ui/show-toast';
-import { domainColumn } from '@constants/columns';
 import { FailedToastTitle } from '@constants/toast-message';
 import { useCMutation } from '@hooks/useCMutation';
 import { useCQuery } from '@hooks/useCQuery';
@@ -29,8 +28,11 @@ import { FieldsIsRequired } from '@constants/index';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { Label } from '@components/ui/label';
-import { ScrollArea } from '@components/ui/scroll-area'
-import { centreQueryKey, domainQueryKey, projectsQueryKey } from '@constants/query-keys';
+import {
+  centreQueryKey,
+  domainQueryKey,
+  projectsQueryKey
+} from '@constants/query-keys';
 type Props = {
   open: boolean;
   onClose: () => void;
@@ -46,7 +48,7 @@ const schema = z.object({
     })
     .uuid(),
   domain_id: z.string().uuid().array(),
-  project_id: z.string().uuid(),
+  project_id: z.string().uuid()
 });
 type schemaType = z.infer<typeof schema>;
 const AddCentreProject = ({ onClose, open, projectId }: Props) => {
@@ -108,7 +110,7 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
   useEffect(() => {
     setIsSelectedDomainId([]);
     setIsSelectedCenterId('');
-  }, [])
+  }, []);
   const domainCol: ColumnDef<DomType | any>[] = [
     {
       id: 'select',
@@ -120,14 +122,15 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
             const rows = table.getRowModel().rows;
             if (value) {
               const ids = rows.map((row) => row.original.id);
-              console.log("Selected Ids", ids);
+              console.log('Selected Ids', ids);
               setIsSelectedDomainId([...ids]);
             } else {
               setIsSelectedDomainId([]);
             }
           }}
           aria-label="Select all"
-        />),
+        />
+      ),
       cell: ({ row }) => (
         <Checkbox
           checked={isSelectedDomainId.includes(row.original.id)}
@@ -136,27 +139,30 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
             if (!isSelectedDomainId.includes(id)) {
               setIsSelectedDomainId([...isSelectedDomainId, id]);
             } else {
-              const ids = isSelectedDomainId.filter((selectedId) => selectedId !== id);
+              const ids = isSelectedDomainId.filter(
+                (selectedId) => selectedId !== id
+              );
               setIsSelectedDomainId(ids);
             }
           }}
           aria-label="Select row"
-        />),
+        />
+      ),
       enableSorting: false,
       enableHiding: false
     },
     {
       accessorKey: 'domain',
-      header: () => 'Domain',
+      header: () => 'Domain'
     },
     {
       accessorKey: 'centre',
-      header: () => 'Centre Name',
+      header: () => 'Centre Name'
     },
 
     {
       accessorKey: 'status',
-      header: () => 'Status',
+      header: () => 'Status'
     }
   ];
 
@@ -170,7 +176,7 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
     }
   ];
 
-  const { mutateAsync, isSuccess, isLoading } = useCMutation({
+  const { mutateAsync, isLoading } = useCMutation({
     url: 'project-centre/save',
     method: 'POST',
     queryKey: [centreQueryKey, projectsQueryKey]
@@ -186,8 +192,8 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
         domain_id: isSelectedDomainId,
         centre_id: data.centre_id,
         project_id: data.project_id
-      }
-      await mutateAsync(payload)
+      };
+      await mutateAsync(payload);
     } catch (error) {
       showToast(FailedToastTitle, 'Something went wrong');
     } finally {
@@ -206,35 +212,38 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onClickSubmit)}>
-            <div className='space-y-2'>
+            <div className="space-y-2">
               <CForm
                 form={form}
                 fields={selectCenterFields}
                 loading={isLoading}
               />
-              <div className='space-y-2'>
-                <Label>
-                  Select Domain
-                </Label>
+              <div className="space-y-2">
+                <Label>Select Domain</Label>
                 <DataTable
                   searchKey="domain"
-                  className='max-h-[300px]'
+                  className="max-h-[300px]"
                   columns={domainCol}
                   data={
                     domainQuery.isFetched &&
-                      !domainQuery.isLoading &&
-                      !domainQuery.isError && domainQuery.data?.data ?
-                      domainQuery.data?.data : []
+                    !domainQuery.isLoading &&
+                    !domainQuery.isError &&
+                    domainQuery.data?.data
+                      ? domainQuery.data?.data
+                      : []
                   }
                   isLoading={domainQuery.isLoading}
                 />
               </div>
             </div>
             <DialogFooter>
-              <Button type='button' variant={'outline'} onClick={onClose}>
+              <Button type="button" variant={'outline'} onClick={onClose}>
                 Cancel
               </Button>
-              <Button type='submit' disabled={isLoading || isSelectedDomainId.length === 0} >
+              <Button
+                type="submit"
+                disabled={isLoading || isSelectedDomainId.length === 0}
+              >
                 Submit
               </Button>
             </DialogFooter>

@@ -1,5 +1,4 @@
 import { FormFieldType } from '@components/index';
-import Page from '@src/app/dashboard/centre/page';
 
 export const eventManagementFields: FormFieldType[] = [
   {

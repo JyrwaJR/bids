@@ -1,10 +1,12 @@
-import { Button } from '@components/ui/button'
-import { DataTable } from '@components/ui/data-table'
-import { Heading } from '@components/ui/heading'
-import { Separator } from '@components/ui/separator'
-import { searchStudentsBy, studentsColumn } from '@constants/columns/students-column'
-import { ColumnDef } from '@tanstack/react-table'
-import { Plus } from 'lucide-react'
+import { Button } from '@components/ui/button';
+import { DataTable } from '@components/ui/data-table';
+import { Heading } from '@components/ui/heading';
+import { Separator } from '@components/ui/separator';
+import {
+  searchStudentsBy,
+  studentsColumn
+} from '@constants/columns/students-column';
+import { Plus } from 'lucide-react';
 export const StudentsPage = () => {
   return (
     <div className="flex-1 space-y-4">
@@ -13,7 +15,7 @@ export const StudentsPage = () => {
         <Button
           // disabled={!isFetched || !user?.role || user?.role !== 'superadmin'}
           className="text-xs md:text-sm"
-        // onClick={() => setOpen(true)}
+          // onClick={() => setOpen(true)}
         >
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
@@ -26,6 +28,5 @@ export const StudentsPage = () => {
         data={[]}
       />
     </div>
-  )
-}
-
+  );
+};

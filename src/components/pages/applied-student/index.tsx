@@ -204,7 +204,9 @@ const AppliedStudentPage = () => {
                       <SelectContent>
                         <SelectGroup>
                           {StudentStatusOptions.map(({ label, value }) => (
-                            <SelectItem value={value}>{label}</SelectItem>
+                            <SelectItem value={value} key={value}>
+                              {label}
+                            </SelectItem>
                           ))}
                         </SelectGroup>
                       </SelectContent>

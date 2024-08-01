@@ -3,14 +3,11 @@ import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '@src/components';
-import { buttonVariants } from '@src/components/ui/button';
 import { showToast } from '@src/components/ui/show-toast';
 import { loginFields } from '@src/constants/input-fields';
 import { FailedToastTitle } from '@src/constants/toast-message';
 import { useAuthContext } from '@src/context/auth';
-import { cn } from '@src/lib/utils';
 import { LoginModel, LoginModelType } from '@src/models';
-import { LoadingPage } from '@components/pages/loading';
 export default function AuthenticationPage() {
   const { onLogin, isLoading, isLoggedIn } = useAuthContext();
   const form = useForm<LoginModelType>({
@@ -33,9 +30,6 @@ export default function AuthenticationPage() {
       showToast(FailedToastTitle, error.message);
     }
   };
-  if (isLoggedIn || isLoading) {
-    return <LoadingPage />;
-  }
   return (
     <div className="relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">

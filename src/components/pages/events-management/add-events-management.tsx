@@ -16,7 +16,6 @@ import {
   EventManagementModel,
   EventManagementModelType
 } from '@models/events-management-model';
-import { log } from 'console';
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 type Props = {

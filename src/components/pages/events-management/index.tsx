@@ -1,7 +1,6 @@
 'use client';
 import { Plus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { staffColumn } from '@constants/columns';
 import { Button } from '@src/components/ui/button';
 import { DataTable } from '@src/components/ui/data-table';
 import { Heading } from '@src/components/ui/heading';

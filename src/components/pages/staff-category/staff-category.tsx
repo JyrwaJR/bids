@@ -1,7 +1,6 @@
 'use client';
 import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
-import { staffColumn } from '@constants/columns';
 import { Button } from '@src/components/ui/button';
 import { DataTable } from '@src/components/ui/data-table';
 import { Heading } from '@src/components/ui/heading';
@@ -18,13 +17,13 @@ const categoryColumn: ColumnDef<{ name: string }>[] = [
     header: 'S.No',
     cell: (info) => {
       return info.row.index + 1;
-    },
+    }
   },
   {
     accessorKey: 'name',
     header: 'Name'
-  },
-]
+  }
+];
 
 export const StaffCategory = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -54,7 +53,9 @@ export const StaffCategory = () => {
           data={isFetched && !isError ? data.data.data : []}
         />
       </div>
-      {isOpen && <AddStaffCategory open={isOpen} onClose={() => setIsOpen(false)} />}
+      {isOpen && (
+        <AddStaffCategory open={isOpen} onClose={() => setIsOpen(false)} />
+      )}
     </ScrollArea>
   );
 };

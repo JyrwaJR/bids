@@ -12,13 +12,11 @@ import { Plus } from 'lucide-react';
 import { Checkbox } from '@components/ui/checkbox';
 import { ColumnDef } from '@tanstack/react-table';
 import { DomainModelType } from '@src/models';
-import { useAuthContext } from '@context/auth';
 import { batchQueryKey, projectsQueryKey } from '@constants/query-keys';
 interface ColType extends DomainModelType {
   id: string;
 }
 const BatchPage = () => {
-  const { user } = useAuthContext();
   const [selectedIds, setSelectedIds] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isFetched, isLoading } = useCQuery({

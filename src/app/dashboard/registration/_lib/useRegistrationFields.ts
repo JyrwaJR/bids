@@ -12,7 +12,6 @@ import { StepType } from '@components/form/stepper-form';
 import { useQuery } from 'react-query';
 import { OptionsT } from '@components/form/type';
 import { useCallback, useEffect, useState } from 'react';
-import { StudentRegistrationModelType } from '@models/student';
 import { batchQueryKey, domainQueryKey } from '@constants/query-keys';
 
 type Props = {
