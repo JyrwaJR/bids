@@ -172,7 +172,7 @@ const UpdateForm = ({ data }: Props) => {
     if (data.id) {
       setId(data.id);
     }
-  }, [data]);
+  }, [data, setId]);
   const { field } = useRegistrationFields({
     form: updateForm
   });
