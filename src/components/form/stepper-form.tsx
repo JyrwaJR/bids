@@ -13,6 +13,8 @@ import { Label } from '@components/ui/label';
 import { Separator } from '@components/ui/separator';
 import { useEffect } from 'react';
 import UploadImageModal from '@components/upload-image-modal';
+import { PreviewForm } from '@components/pages/registration/preview-form';
+
 export type StepType = {
   id: string;
   name: string;
@@ -25,12 +27,14 @@ type MultiStepType = {
   setPreviousStep: (step: number) => void;
   setCurrentStep: (step: number) => void;
 };
+
 export const useMultiStepFormStore = create<MultiStepType>((set) => ({
   currentStep: 0,
   previousStep: 0,
   setPreviousStep: (step) => set({ previousStep: step }),
   setCurrentStep: (step) => set({ currentStep: step })
 }));
+
 type Props = {
   onSubmit: SubmitHandler<any>;
   form: UseFormReturn<any>;
@@ -54,8 +58,10 @@ export default function MultiStepForm({
   const { currentStep, setCurrentStep, setPreviousStep } =
     useMultiStepFormStore();
   const { trigger } = form;
-  const fieldNames = steps[currentStep].fields.map((field) => field.name);
-
+  const fieldNames =
+    currentStep < steps.length
+      ? steps[currentStep].fields.map((field) => field.name)
+      : [];
   const next = async () => {
     const data = form.getValues();
     const output = await trigger(fieldNames, {
@@ -63,7 +69,8 @@ export default function MultiStepForm({
     });
 
     if (!output) return;
-    if (currentStep < steps.length - 1) {
+
+    if (currentStep < steps.length) {
       setPreviousStep(currentStep);
       const step = currentStep + 1;
       setCurrentStep(step);
@@ -96,6 +103,7 @@ export default function MultiStepForm({
       });
     }
   }, [checked, form]);
+
   return (
     <section>
       <Form {...form}>
@@ -120,84 +128,87 @@ export default function MultiStepForm({
             }}
             activeStep={currentStep}
           />
-          {steps.map((step, index) => (
-            <div
-              key={step.name + index}
-              className={index === currentStep ? '' : 'hidden'}
-            >
-              {step.name === 'Upload Documents' ? (
-                <UploadImageModal fields={step.fields} />
-              ) : (
-                <>
-                  {onClick && step.name === 'Address' ? (
-                    <>
-                      <CForm
-                        form={form}
-                        className={formStyle}
-                        loading={loading ?? false}
-                        disabled={disabled}
-                        fields={step.fields.filter(
-                          (field) => !field.name.startsWith('p_')
-                        )}
-                      />
-                      <Separator />
-                      <div className="flex items-center space-x-2 py-4">
-                        <Checkbox
-                          checked={checked}
-                          onClick={() => onClick()}
-                          name="address"
+
+          {currentStep < steps.length ? (
+            steps.map((step, index) => (
+              <div
+                key={step.name + index}
+                className={index === currentStep ? '' : 'hidden'}
+              >
+                {step.name === 'Upload Documents' ? (
+                  <UploadImageModal fields={step.fields} />
+                ) : (
+                  <>
+                    {onClick && step.name === 'Address' ? (
+                      <>
+                        <CForm
+                          form={form}
+                          className={formStyle}
+                          loading={loading ?? false}
+                          disabled={disabled}
+                          fields={step.fields.filter(
+                            (field) => !field.name.startsWith('p_')
+                          )}
                         />
-                        <Label>Same as present</Label>
-                      </div>
-                      <CForm
-                        form={form}
-                        disabled={disabled}
-                        loading={loading ?? false}
-                        className={formStyle}
-                        fields={step.fields
-                          .filter((field) => field.name.startsWith('p_'))
-                          ?.map((field) => {
-                            return {
+                        <Separator />
+                        <div className="flex items-center space-x-2 py-4">
+                          <Checkbox
+                            checked={checked}
+                            onClick={() => onClick()}
+                            name="address"
+                          />
+                          <Label>Same as present</Label>
+                        </div>
+                        <CForm
+                          form={form}
+                          disabled={disabled}
+                          loading={loading ?? false}
+                          className={formStyle}
+                          fields={step.fields
+                            .filter((field) => field.name.startsWith('p_'))
+                            ?.map((field) => ({
                               ...field,
                               readOnly: checked
-                            };
-                          })}
+                            }))}
+                        />
+                      </>
+                    ) : (
+                      <CForm
+                        form={form}
+                        className={formStyle}
+                        disabled={disabled}
+                        loading={loading ?? false}
+                        fields={step.fields}
                       />
-                    </>
-                  ) : (
-                    <CForm
-                      form={form}
-                      className={formStyle}
-                      disabled={disabled}
-                      loading={loading ?? false}
-                      fields={step.fields}
-                    />
-                  )}
-                </>
-              )}
-            </div>
-          ))}
+                    )}
+                  </>
+                )}
+              </div>
+            ))
+          ) : (
+            <PreviewForm fields={steps} form={form} />
+          )}
+
           <div className="mt-8 pt-5">
             <div className="flex justify-between">
               <Button type="button" onClick={prev} disabled={currentStep === 0}>
                 <ArrowLeft className="mr-4" />
                 Back
               </Button>
-              {currentStep < steps.length - 1 && (
-                <Button
-                  disabled={disabled || loading}
-                  type="button"
-                  onClick={next}
-                >
-                  Next
-                  <ArrowRight className="ml-4" />
-                </Button>
-              )}
-              {currentStep === steps.length - 1 && (
-                <Button disabled={disabled || loading} type="submit">
-                  Submit
-                </Button>
-              )}
+              <Button
+                disabled={disabled || loading}
+                type="button"
+                onClick={next}
+              >
+                {currentStep < steps.length ? (
+                  <>
+                    Next
+                    <ArrowRight className="ml-4" />
+                  </>
+                ) : (
+                  'Preview'
+                )}
+              </Button>
             </div>
           </div>
         </form>

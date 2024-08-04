@@ -1,4 +1,5 @@
 import { Typography } from '@components/index';
+import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
 import { StudentRegistrationModelWithDomainType } from '@src/app/dashboard/registration/_lib/function';
 import { StepsFieldFormT } from '@src/types';
@@ -39,6 +40,7 @@ export const PreviewForm = ({ form, fields }: Props) => {
           </div>
         </Card>
       ))}
+      <Button>Submit</Button>
     </div>
   );
 };
