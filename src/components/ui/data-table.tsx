@@ -51,15 +51,13 @@ export function DataTable<TData, TValue>({
   const style = cn('h-[calc(80vh-220px)] rounded-md border', className);
   return (
     <>
-      {
-        enableSearch && (
-          <SearchTableInput
-            table={table}
-            searchOptions={searchOptions}
-            searchTableBy={searchKey}
-          />
-        )
-      }
+      {enableSearch && (
+        <SearchTableInput
+          table={table}
+          searchOptions={searchOptions}
+          searchTableBy={searchKey}
+        />
+      )}
       <ScrollArea className={style}>
         <Table className="relative">
           <TableHeader>
@@ -71,9 +69,9 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}

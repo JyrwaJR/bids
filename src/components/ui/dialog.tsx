@@ -111,19 +111,16 @@ const DialogDescription = React.forwardRef<
   />
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
-const Dialog = React.forwardRef<React.ElementRef<typeof Dia>, React.ComponentPropsWithoutRef<typeof Dia>>(
-
-  ({ children, ...props }, ref) => {
-    return (
-      <Dia
-        {...props}
-        modal={false}
-      >
-        {children}
-      </Dia>
-    );
-  }
-)
+const Dialog = React.forwardRef<
+  React.ElementRef<typeof Dia>,
+  React.ComponentPropsWithoutRef<typeof Dia>
+>(({ children, ...props }, ref) => {
+  return (
+    <Dia {...props} modal={false}>
+      {children}
+    </Dia>
+  );
+});
 Dialog.displayName = 'Dialog';
 export {
   Dialog,

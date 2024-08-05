@@ -21,5 +21,5 @@ export const BatchColumn: ColumnDef<BatchModelType>[] = [
   {
     accessorKey: 'capacity',
     header: 'Capacity'
-  },
+  }
 ];
