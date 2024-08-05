@@ -23,6 +23,7 @@ import {
   staffCategoryQueryKey,
   staffQueryKey
 } from '@constants/query-keys';
+import { OptionsT } from '@components/form/type';
 
 type Props = {
   open: boolean;
@@ -47,7 +48,11 @@ export const AddStaff = ({ onClose, open }: Props) => {
     queryKey: centreQueryKey
   });
 
-  const { isLoading: scLoading, data: scData } = useCQuery({
+  const {
+    isLoading: scLoading,
+    data: scData,
+    isFetched
+  } = useCQuery({
     url: 'staffcategory',
     queryKey: staffCategoryQueryKey
   });
@@ -64,18 +69,19 @@ export const AddStaff = ({ onClose, open }: Props) => {
       showToast(FailedToastTitle, error.message);
     }
   };
-  const StaffCategoryOption =
-    !scLoading &&
-    scData.data.data
-      .filter((item: { position: string }) =>
-        user?.role === 'superadmin'
-          ? item.position === 'all'
-          : item.position === 'hq'
-      )
-      .map((item: { name: string; id: string }) => ({
-        label: item.name,
-        value: item.id
-      }));
+  const StaffCategoryOption: OptionsT[] =
+    isFetched && !scLoading && scData.data && user?.role === 'superadmin'
+      ? scData.data.data.map((item: { name: string; id: string }) => ({
+          label: item.name,
+          value: item.id
+        }))
+      : isFetched &&
+        scData.data.data
+          .filter((item: { position: string }) => item.position !== 'hq')
+          .map((item: { name: string; id: string }) => ({
+            label: item.name,
+            value: item.id
+          }));
 
   const centerOptions =
     !cLoading &&

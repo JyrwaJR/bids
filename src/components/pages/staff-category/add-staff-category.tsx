@@ -22,11 +22,11 @@ type Props = {
 const positionOptions: OptionsT[] = [
   {
     label: 'All',
-    value: 'ALL'
+    value: 'all'
   },
   {
     label: 'HQ',
-    value: 'HQ'
+    value: 'hq'
   }
 ];
 const addStaffCategoryFields: FormFieldType[] = [
