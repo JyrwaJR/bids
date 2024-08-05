@@ -7,8 +7,12 @@ export const BatchColumn: ColumnDef<BatchModelType>[] = [
     header: 'Batch Code'
   },
   {
-    accessorKey: 'batchid',
-    header: 'Batch ID'
+    accessorKey: 'project',
+    header: 'Project'
+  },
+  {
+    accessorKey: 'domain',
+    header: 'Domain'
   },
   {
     accessorKey: 'start_date',
