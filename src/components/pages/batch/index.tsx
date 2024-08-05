@@ -82,14 +82,14 @@ const BatchPage = () => {
               searchKey="batch_code"
               isLoading={isLoading}
               columns={BatchColumn}
-              data={isFetched && !isError ? data.data : []}
+              data={isFetched ? data.data : []}
             />
           </TabsContent>
           <TabsContent value="new-batch" className="space-y-4">
             <div className="flex-1 space-y-4">
               <div className="flex items-start justify-between">
                 <Heading
-                  title={`Project`}
+                  title={`Existing Project`}
                   description="Select a Project to add a batch"
                 />
                 <Button
