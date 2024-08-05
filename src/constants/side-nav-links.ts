@@ -8,12 +8,6 @@ export const navItems: NavItem[] = [
     label: 'Dashboard'
   },
   {
-    title: 'Attendance',
-    href: '/dashboard/attendance',
-    icon: 'employee',
-    label: 'Attendance'
-  },
-  {
     title: 'Admin',
     icon: 'add',
     label: 'centre',
@@ -114,6 +108,12 @@ export const navItems: NavItem[] = [
     href: '/dashboard/applied-student',
     icon: 'chevronRight',
     label: 'registration'
+  },
+  {
+    title: 'Attendance',
+    href: '/dashboard/attendance',
+    icon: 'employee',
+    label: 'Attendance'
   },
   {
     title: 'Reports',
