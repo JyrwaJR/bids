@@ -58,7 +58,8 @@ export function DashboardNav({
       'Search',
       'Batch',
       'Registration',
-      'Applied Student'
+      'Applied Student',
+      'Attendance'
     ],
     superadmin: [
       'Dashboard',
@@ -73,7 +74,8 @@ export function DashboardNav({
       'Batch',
       'Registration',
       'Applied Student',
-      'Settings'
+      'Settings',
+      'Attendance'
     ]
   };
 
