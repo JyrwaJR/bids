@@ -10,6 +10,13 @@ import {
   SelectContent,
   SelectTrigger
 } from './select';
+import { Button } from './button';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger
+} from '@components/ui/dropdown-menu';
 const searchSchema = z.object({
   searchTableBy: z.string().optional()
 });
@@ -19,11 +26,15 @@ type searchSchmaType = z.infer<typeof searchSchema>;
 export const SearchTableInput = ({
   table,
   searchOptions,
-  searchTableBy
+  searchTableBy,
+  aBtnTitle = 'Save',
+  onClick
 }: {
   table?: any;
   searchOptions?: OptionsT[];
+  aBtnTitle?: string;
   searchTableBy?: string;
+  onClick?: () => void;
 }) => {
   const form = useForm<searchSchmaType>({
     defaultValues: {
@@ -33,56 +44,87 @@ export const SearchTableInput = ({
 
   return (
     <>
-      <div className="flex h-full items-center space-x-2">
-        <Input
-          placeholder={`Search`}
-          value={
-            table
-              .getColumn(form.getValues('searchTableBy') ?? searchTableBy)
-              ?.getFilterValue() as string
-          }
-          onChange={(event) =>
-            table
-              .getColumn(form.getValues('searchTableBy') ?? searchTableBy)
-              ?.setFilterValue(event.target.value)
-          }
-          className="w-full md:max-w-sm"
-        />
-        {searchOptions && searchOptions?.length > 0 && (
-          <Form {...form}>
-            <FormField
-              control={form.control}
-              name="searchTableBy"
-              render={({ field }) => (
-                <FormItem>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={searchTableBy}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          defaultValue={searchTableBy}
-                          placeholder="Select search"
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {searchOptions &&
-                        searchOptions?.length > 0 &&
-                        searchOptions.map((opt, i) => (
-                          <SelectItem key={i} value={opt.value}>
-                            {opt.label}
-                          </SelectItem>
-                        ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </Form>
-        )}
+      <div className="flex h-full w-full  items-center justify-between space-x-2">
+        <div>
+          <Input
+            placeholder={`Search`}
+            value={
+              table
+                .getColumn(form.getValues('searchTableBy') ?? searchTableBy)
+                ?.getFilterValue() as string
+            }
+            onChange={(event) =>
+              table
+                .getColumn(form.getValues('searchTableBy') ?? searchTableBy)
+                ?.setFilterValue(event.target.value)
+            }
+            className="w-full md:max-w-sm"
+          />
+          {searchOptions && searchOptions?.length > 0 && (
+            <Form {...form}>
+              <FormField
+                control={form.control}
+                name="searchTableBy"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={searchTableBy}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue
+                            defaultValue={searchTableBy}
+                            placeholder="Select search"
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {searchOptions &&
+                          searchOptions?.length > 0 &&
+                          searchOptions.map((opt, i) => (
+                            <SelectItem key={i} value={opt.value}>
+                              {opt.label}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </Form>
+          )}
+        </div>
+        <div className="flex space-x-2">
+          {onClick && <Button onClick={onClick}>{aBtnTitle}</Button>}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                Hide
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column: any) => column.getCanHide())
+                .map((column: any) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </>
   );

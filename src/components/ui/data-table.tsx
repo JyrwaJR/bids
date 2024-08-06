@@ -31,6 +31,7 @@ interface DataTableProps<TData, TValue> {
   isLoading?: boolean;
   className?: string;
   searchOptions?: OptionsT[];
+  onClick?: () => void;
 }
 export function DataTable<TData, TValue>({
   columns,
@@ -39,7 +40,8 @@ export function DataTable<TData, TValue>({
   isLoading,
   className,
   searchOptions,
-  enableSearch = true
+  enableSearch = true,
+  onClick
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data: isLoading ? [] : data,
@@ -56,6 +58,7 @@ export function DataTable<TData, TValue>({
           table={table}
           searchOptions={searchOptions}
           searchTableBy={searchKey}
+          onClick={onClick}
         />
       )}
       <ScrollArea className={style}>
