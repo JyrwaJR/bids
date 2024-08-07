@@ -2,7 +2,7 @@ import { DataTable } from '@components/ui/data-table';
 import { searchStudentByName } from '@src/app/dashboard/registration/_lib/function';
 import { ColumnDef } from '@tanstack/react-table';
 import { useSearchParams } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useMutation } from 'react-query';
 import { studentQueryKey } from '@constants/query-keys';
 import { FormControl, FormField, FormItem, Form } from '@components/ui/form';
