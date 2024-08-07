@@ -26,9 +26,6 @@ export const BatchModel = z.object({
   batchid: z
     .string({
       required_error: FieldsIsRequired
-    })
-    .refine((val) => !isNaN(Number(val)), {
-      message: 'Batch ID must be a number'
     }),
   start_date: z
     .string({
@@ -48,7 +45,6 @@ export const BatchModel = z.object({
     .string({
       required_error: FieldsIsRequired
     })
-    .transform((val) => Number(val))
 });
 
 export type BatchModelType = z.infer<typeof BatchModel>;

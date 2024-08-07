@@ -10,7 +10,6 @@ export const batchFields: FormFieldType[] = [
   {
     name: 'batchid',
     label: 'Batch ID',
-    type: 'number',
     required: true
   },
   {
@@ -26,6 +25,5 @@ export const batchFields: FormFieldType[] = [
   {
     name: 'capacity',
     label: 'Capacity',
-    type: 'number'
   }
 ];
