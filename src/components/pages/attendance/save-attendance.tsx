@@ -55,7 +55,6 @@ export const SaveAttendance = ({
       showToast(FailedToastTitle, error.message);
     }
   };
-  console.log(form.formState.errors);
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
