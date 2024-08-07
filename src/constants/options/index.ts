@@ -57,5 +57,9 @@ export const SectorsOptions: OptionsT[] = [
   {
     label: 'Urban',
     value: 'Urban'
+  },
+  {
+    label: 'Both',
+    value: 'Both'
   }
 ];
