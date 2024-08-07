@@ -58,6 +58,8 @@ export const AddBatch = ({ open, onClose, projectId }: Props) => {
       }
     } catch (error: any) {
       showToast(FailedToastTitle, error.message);
+    } finally {
+      onClose();
     }
   };
   useEffect(() => {

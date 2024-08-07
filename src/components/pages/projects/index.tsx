@@ -21,10 +21,10 @@ const ProjectsPage = () => {
 
   const projects =
     !isError &&
-      isFetched &&
-      !isLoading &&
-      data.data &&
-      user?.role === 'superadmin'
+    isFetched &&
+    !isLoading &&
+    data.data &&
+    user?.role === 'superadmin'
       ? data?.data
       : data?.data.map((item: any) => item.project);
 

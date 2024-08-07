@@ -12,13 +12,11 @@ import { Plus } from 'lucide-react';
 import { Checkbox } from '@components/ui/checkbox';
 import { ColumnDef } from '@tanstack/react-table';
 import { DomainModelType } from '@src/models';
-import { useAuthContext } from '@context/auth';
 import { batchQueryKey, projectsQueryKey } from '@constants/query-keys';
 interface ColType extends DomainModelType {
   id: string;
 }
 const BatchPage = () => {
-  const { user } = useAuthContext()
   const [selectedIds, setSelectedIds] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data, isFetched, isLoading } = useCQuery({
@@ -84,26 +82,23 @@ const BatchPage = () => {
               searchKey="batch_code"
               isLoading={isLoading}
               columns={BatchColumn}
-              data={isFetched && !isError ? data.data : []}
+              data={isFetched ? data.data : []}
             />
           </TabsContent>
           <TabsContent value="new-batch" className="space-y-4">
             <div className="flex-1 space-y-4">
               <div className="flex items-start justify-between">
                 <Heading
-                  title={`Project`}
+                  title={`Existing Project`}
                   description="Select a Project to add a batch"
                 />
-                {user && user?.role === 'superadmin' || user?.role === 'coordinator' && (
-
-                  <Button
-                    className="text-xs md:text-sm"
-                    disabled={selectedIds.length === 0}
-                    onClick={() => setIsOpen(true)}
-                  >
-                    <Plus className="mr-2 h-4 w-4" /> New Batch
-                  </Button>
-                )}
+                <Button
+                  className="text-xs md:text-sm"
+                  disabled={selectedIds.length === 0}
+                  onClick={() => setIsOpen(true)}
+                >
+                  <Plus className="mr-2 h-4 w-4" /> New Batch
+                </Button>
               </div>
               <DataTable
                 searchKey="name"

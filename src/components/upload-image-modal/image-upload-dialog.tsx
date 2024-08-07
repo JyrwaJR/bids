@@ -9,7 +9,10 @@ import {
 } from '@components/ui/dialog';
 import { showToast } from '@components/ui/show-toast';
 import { ACCEPTED_FILE_TYPES, MAX_UPLOAD_SIZE } from '@constants/index';
-import { documentTypeQueryKey, registrationQueryKey } from '@constants/query-keys';
+import {
+  documentTypeQueryKey,
+  registrationQueryKey
+} from '@constants/query-keys';
 import { FailedToastTitle } from '@constants/toast-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCMutation } from '@hooks/useCMutation';
@@ -130,12 +133,12 @@ export const ImageUploadDialog = ({
   const isFieldWithDocNo: FormFieldType[] = [
     !filter
       ? {
-        required: true,
-        name: 'proof_type',
-        label: 'Proof type',
-        type: 'select',
-        select: true
-      }
+          required: true,
+          name: 'proof_type',
+          label: 'Proof type',
+          type: 'select',
+          select: true
+        }
       : undefined,
     {
       required: true,
@@ -145,10 +148,10 @@ export const ImageUploadDialog = ({
     },
     form.watch('proof_type') === 'ID Proof'
       ? {
-        name: 'document_number',
-        label: 'Document No',
-        type: 'text'
-      }
+          name: 'document_number',
+          label: 'Document No',
+          type: 'text'
+        }
       : undefined,
     {
       required: true,

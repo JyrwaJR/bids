@@ -1,12 +1,11 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Heading } from '@components/ui/heading';
 import { showToast } from '@components/ui/show-toast';
 import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
-import { z, ZodError } from 'zod';
+import { ZodError } from 'zod';
 import { AxiosError } from 'axios';
-import { useMutation, useQuery } from 'react-query';
 import {
   addAddressDetails,
   addFamilyDetails,
@@ -25,7 +24,6 @@ import { MultiStepForm } from '@components/form';
 import { useRegistrationFields } from './_lib/useRegistrationFields';
 import { useRegisterStudentStore } from '@lib/store';
 import { AlertModal } from '@components/modal/alert-modal';
-import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 import { useMultiStepFormStore } from '@components/form/stepper-form';
 

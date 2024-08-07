@@ -110,6 +110,12 @@ export const navItems: NavItem[] = [
     label: 'registration'
   },
   {
+    title: 'Attendance',
+    href: '/dashboard/attendance',
+    icon: 'employee',
+    label: 'Attendance'
+  },
+  {
     title: 'Reports',
     icon: 'media',
     label: 'registration',
@@ -137,6 +143,12 @@ export const navItems: NavItem[] = [
         href: '/dashboard/reports?reports=sector',
         icon: 'logo',
         label: 'Domian Report'
+      },
+      {
+        title: 'No. Applicants',
+        href: '/dashboard/reports?reports=noofapplicants',
+        icon: 'post',
+        label: 'No. applicants reports'
       }
     ]
   },

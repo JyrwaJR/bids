@@ -33,7 +33,7 @@ import {
   X,
   Upload,
   ExternalLink,
-  UserSquare,
+  UserSquare
 } from 'lucide-react';
 
 export type Icon = LucideIcon;

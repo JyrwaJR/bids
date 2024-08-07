@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, } from '@src/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@src/components/ui/avatar';
 import { ScrollArea } from './ui/scroll-area';
 const dummyData = [
   {

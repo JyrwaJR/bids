@@ -18,7 +18,12 @@ import { useCMutation, useCQuery } from '@src/hooks';
 import { CenterModelType, StaffModel, StaffModelType } from '@src/models';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { useAuthContext } from '@context/auth';
-import { centreQueryKey, staffCategoryQueryKey, staffQueryKey } from '@constants/query-keys';
+import {
+  centreQueryKey,
+  staffCategoryQueryKey,
+  staffQueryKey
+} from '@constants/query-keys';
+import { OptionsT } from '@components/form/type';
 
 type Props = {
   open: boolean;
@@ -26,7 +31,7 @@ type Props = {
 };
 
 export const AddStaff = ({ onClose, open }: Props) => {
-  const { user } = useAuthContext()
+  const { user } = useAuthContext();
   const form = useForm<StaffModelType>({
     resolver: zodResolver(StaffModel),
     defaultValues: {
@@ -43,7 +48,11 @@ export const AddStaff = ({ onClose, open }: Props) => {
     queryKey: centreQueryKey
   });
 
-  const { isLoading: scLoading, data: scData } = useCQuery({
+  const {
+    isLoading: scLoading,
+    data: scData,
+    isFetched
+  } = useCQuery({
     url: 'staffcategory',
     queryKey: staffCategoryQueryKey
   });
@@ -60,14 +69,19 @@ export const AddStaff = ({ onClose, open }: Props) => {
       showToast(FailedToastTitle, error.message);
     }
   };
-  const StaffCategoryOption =
-    !scLoading &&
-    scData.data.data
-      .filter((item: { position: string }) => user?.role === 'superadmin' ? item.position === 'ALL' : item.position === "HQ")
-      .map((item: { name: string, id: string }) => ({
-        label: item.name,
-        value: item.id
-      }));
+  const StaffCategoryOption: OptionsT[] =
+    isFetched && !scLoading && scData.data && user?.role === 'superadmin'
+      ? scData.data.data.map((item: { name: string; id: string }) => ({
+          label: item.name,
+          value: item.id
+        }))
+      : isFetched &&
+        scData.data.data
+          .filter((item: { position: string }) => item.position !== 'hq')
+          .map((item: { name: string; id: string }) => ({
+            label: item.name,
+            value: item.id
+          }));
 
   const centerOptions =
     !cLoading &&
@@ -77,15 +91,18 @@ export const AddStaff = ({ onClose, open }: Props) => {
       value: item.id
     }));
 
-
   const staffFormWithCenterId: FormFieldType[] = [
-    ...(user?.role === 'superadmin' ? [{
-      name: 'centre_id',
-      label: 'Center',
-      select: true,
-      options: centerOptions,
-      required: true
-    }] : []),
+    ...(user?.role === 'superadmin'
+      ? [
+          {
+            name: 'centre_id',
+            label: 'Center',
+            select: true,
+            options: centerOptions,
+            required: true
+          }
+        ]
+      : []),
     {
       name: 'staff_category_id',
       label: 'Staff Category',
@@ -95,16 +112,18 @@ export const AddStaff = ({ onClose, open }: Props) => {
     },
     ...staffFields,
     ...(form.getValues('create_username') === 'Yes'
-      ? [{
-        name: 'password',
-        label: 'Password',
-        type: 'password'
-      }] : [])
+      ? [
+          {
+            name: 'password',
+            label: 'Password',
+            type: 'password'
+          }
+        ]
+      : [])
   ];
 
   return (
-    <Dialog
-      open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-h-screen  w-full max-w-[1200px]">
         <DialogHeader>
           <DialogTitle>
@@ -130,7 +149,7 @@ export const AddStaff = ({ onClose, open }: Props) => {
             fields={staffFormWithCenterId}
             form={form}
             loading={isLoading || cLoading || scLoading}
-            className=" md:col-span-6 md:w-full lg:col-span-4"
+            className="md:col-span-6 md:w-full lg:col-span-4"
           />
         </ScrollArea>
       </DialogContent>

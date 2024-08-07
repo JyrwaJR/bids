@@ -1,5 +1,6 @@
-"use client";
-import { StudentsPage } from "@components/pages/students";
+'use client';
+
+import { StudentsPage } from '@components/pages';
 
 export default function Page() {
   return <StudentsPage />;

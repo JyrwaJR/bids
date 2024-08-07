@@ -23,13 +23,9 @@ export const BatchModel = z.object({
     .max(10, {
       message: 'Batch code must be 10 characters or less'
     }),
-  batchid: z
-    .string({
-      required_error: FieldsIsRequired
-    })
-    .refine((val) => !isNaN(Number(val)), {
-      message: 'Batch ID must be a number'
-    }),
+  batchid: z.string({
+    required_error: FieldsIsRequired
+  }),
   start_date: z
     .string({
       required_error: FieldsIsRequired
@@ -44,11 +40,9 @@ export const BatchModel = z.object({
     .refine((date) => !isNaN(Date.parse(date)), {
       message: 'End date must be a valid date'
     }),
-  capacity: z
-    .string({
-      required_error: FieldsIsRequired
-    })
-    .transform((val) => Number(val))
+  capacity: z.string({
+    required_error: FieldsIsRequired
+  })
 });
 
 export type BatchModelType = z.infer<typeof BatchModel>;

@@ -1,21 +1,26 @@
-import { Form } from '@components/index'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@components/ui/dialog'
-import { showToast } from '@components/ui/show-toast'
-import { imageValidation } from '@constants/regex/image'
-import { FailedToastTitle } from '@constants/toast-message'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useCMutation } from '@hooks/useCMutation'
-import React from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { axiosInstance } from '@lib/utils'
+import { Form } from '@components/index';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
+} from '@components/ui/dialog';
+import { showToast } from '@components/ui/show-toast';
+import { FailedToastTitle } from '@constants/toast-message';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useCMutation } from '@hooks/useCMutation';
+import React from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { ACCEPTED_FILE_TYPES, MAX_UPLOAD_SIZE } from '@constants/index';
-import { eventsManagementQueryKey } from '@constants/query-keys'
+import { eventsManagementQueryKey } from '@constants/query-keys';
+
 type Props = {
-  open: boolean
-  id: string
-  onClose: () => void
-}
+  open: boolean;
+  id: string;
+  onClose: () => void;
+};
 const ImageModel = z.object({
   image: z
     .instanceof(File, {
@@ -29,39 +34,37 @@ const ImageModel = z.object({
     }, 'File size must be less than 2MB')
     .refine((file) => {
       return file && ACCEPTED_FILE_TYPES.includes(file.type);
-    }, 'File must be a PNG/jpg/jpeg'),
-})
-type ImageModelType = z.infer<typeof ImageModel>
+    }, 'File must be a PNG/jpg/jpeg')
+});
+type ImageModelType = z.infer<typeof ImageModel>;
 export const UploadEventsMangementImage = ({ open, id, onClose }: Props) => {
   const form = useForm<ImageModelType>({
     resolver: zodResolver(ImageModel)
-  })
+  });
   const mutate = useCMutation({
     url: `events/upload-image/${id}`,
-    method: "POST",
+    method: 'POST',
     queryKey: eventsManagementQueryKey
-  })
+  });
   const onSubmit: SubmitHandler<ImageModelType> = async (data) => {
     try {
-      const formData = new FormData()
-      formData.append('image', data.image)
-      const response = await mutate.mutateAsync(formData)
+      const formData = new FormData();
+      formData.append('image', data.image);
+      const response = await mutate.mutateAsync(formData);
       if (response.success === true) {
-        form.reset()
-        onClose()
+        form.reset();
+        onClose();
       }
     } catch (error: any) {
-      showToast(FailedToastTitle, error.message)
+      showToast(FailedToastTitle, error.message);
     }
-  }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            Upload Image
-          </DialogTitle>
+          <DialogTitle>Upload Image</DialogTitle>
           <DialogDescription>
             Please enter the following detail
           </DialogDescription>
@@ -70,13 +73,15 @@ export const UploadEventsMangementImage = ({ open, id, onClose }: Props) => {
           form={form}
           onSubmit={onSubmit}
           loading={mutate.isLoading}
-          fields={[{
-            name: 'image',
-            label: 'Image',
-            type: 'file',
-          }]}
+          fields={[
+            {
+              name: 'image',
+              label: 'Image',
+              type: 'file'
+            }
+          ]}
         />
       </DialogContent>
-    </Dialog>)
-}
-
+    </Dialog>
+  );
+};

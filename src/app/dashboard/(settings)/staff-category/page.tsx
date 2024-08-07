@@ -1,5 +1,5 @@
-import { StaffCategory } from "@components/pages/staff-category/staff-category";
+import { StaffCategory } from '@components/pages/staff-category/staff-category';
 
 export default function page() {
-  return <StaffCategory />
+  return <StaffCategory />;
 }

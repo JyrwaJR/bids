@@ -1,5 +1,4 @@
 import { FormFieldType } from '@components/index';
-import Page from '@src/app/dashboard/centre/page';
 
 export const eventManagementFields: FormFieldType[] = [
   {
@@ -16,11 +15,6 @@ export const eventManagementFields: FormFieldType[] = [
   {
     name: 'event_location',
     label: 'Event Location',
-    required: true
-  },
-  {
-    name: 'remarks',
-    label: 'Remarks',
     required: true
   },
   {

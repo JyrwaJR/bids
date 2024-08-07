@@ -1,7 +1,11 @@
 'use client';
 import { ReportPage } from '@components/pages';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 export default function page() {
-  return <ReportPage />;
+  return (
+    <Suspense>
+      <ReportPage />
+    </Suspense>
+  );
 }

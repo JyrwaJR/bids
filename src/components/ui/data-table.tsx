@@ -31,6 +31,8 @@ interface DataTableProps<TData, TValue> {
   isLoading?: boolean;
   className?: string;
   searchOptions?: OptionsT[];
+  onClick?: () => void;
+  disabled?: boolean;
 }
 export function DataTable<TData, TValue>({
   columns,
@@ -39,7 +41,9 @@ export function DataTable<TData, TValue>({
   isLoading,
   className,
   searchOptions,
-  enableSearch = true
+  enableSearch = true,
+  onClick,
+  disabled
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data: isLoading ? [] : data,
@@ -51,15 +55,15 @@ export function DataTable<TData, TValue>({
   const style = cn('h-[calc(80vh-220px)] rounded-md border', className);
   return (
     <>
-      {
-        enableSearch && (
-          <SearchTableInput
-            table={table}
-            searchOptions={searchOptions}
-            searchTableBy={searchKey}
-          />
-        )
-      }
+      {enableSearch && (
+        <SearchTableInput
+          table={table}
+          searchOptions={searchOptions}
+          searchTableBy={searchKey}
+          onClick={onClick}
+          disable={disabled}
+        />
+      )}
       <ScrollArea className={style}>
         <Table className="relative">
           <TableHeader>
@@ -71,9 +75,9 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}

@@ -4,7 +4,7 @@ export type UserType = {
   role: string;
   name: string;
   email: string;
-  centre_id?: string;
+  centre_id: string;
   staff?: string;
 };
 
@@ -20,7 +20,6 @@ export type AuthContextT = {
   ) => Promise<void>;
   isLoading: boolean;
   isLoggedIn: boolean;
-  //   onRegister: ({ email, password, balang_id, name }: RegistrationType) => void;
 };
 
 export const AuthContext = createContext<AuthContextT | null>({
@@ -31,7 +30,8 @@ export const AuthContext = createContext<AuthContextT | null>({
     id: '',
     name: '',
     role: '',
-    staff: ''
+    staff: '',
+    centre_id: ''
   } as UserType,
   isLoggedIn: false,
   onLogout: () => {},

@@ -1,16 +1,6 @@
 'use client';
-import { FormFieldType } from '@components/index';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@components/ui/dialog';
-import { Label } from '@components/ui/label';
 import { FieldsIsRequired } from '@constants/index';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ZodError, z } from 'zod';
@@ -20,7 +10,11 @@ import {
   StudentRegistrationModelWithDomainType,
   addFamilyDetails,
   addPersonalDetails,
-  searchStudentByName, addStudentBpl, otherDetails, addAddressDetails, studentAppliedDomain
+  searchStudentByName,
+  addStudentBpl,
+  otherDetails,
+  addAddressDetails,
+  studentAppliedDomain
 } from '../_lib/function';
 import { MultiStepForm } from '@components/form';
 import { useRegisterStudentStore } from '@lib/store/useStudentRegistration';
@@ -30,16 +24,12 @@ import { DataTable } from '@components/ui/data-table';
 import { showToast } from '@components/ui/show-toast';
 import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
 import { ColumnDef } from '@tanstack/react-table';
-import {
-  StudentRegistrationModel,
-  StudentRegistrationModelType
-} from '@models/student';
+import { StudentRegistrationModelType } from '@models/student';
 import { PencilIcon } from 'lucide-react';
 import { Button } from '@components/ui/button';
 import { AxiosError } from 'axios';
 import { useMultiStepFormStore } from '@components/form/stepper-form';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@components/ui/form';
-import { SelectItem, SelectTrigger, Select, SelectContent, SelectValue } from '@components/ui/select';
+import { Form, FormControl, FormField, FormItem } from '@components/ui/form';
 import { Input } from '@components/ui/input';
 
 const FindStudentModel = z.object({
@@ -51,7 +41,7 @@ const FindStudentModel = z.object({
 });
 type FindStudentModelType = z.infer<typeof FindStudentModel>;
 const Page = () => {
-  const [isSearching, setIsSearching] = useState<boolean>(false)
+  const [isSearching, setIsSearching] = useState<boolean>(false);
   const [isStudentList, setIsStudentList] = React.useState<
     StudentRegistrationModelWithDomainType[]
   >([]);
@@ -107,11 +97,6 @@ const Page = () => {
       }
     }
   ];
-  const searchStudentFields: FormFieldType[] = [
-    {
-      name: 'name'
-    }
-  ];
   return (
     <div>
       {isSelectedApplicant ? (
@@ -127,21 +112,32 @@ const Page = () => {
                 />
               </div>
               <Form {...form}>
-                <form className='flex space-x-2' onSubmit={form.handleSubmit(onSubmit)} >
+                <form
+                  className="flex space-x-2"
+                  onSubmit={form.handleSubmit(onSubmit)}
+                >
                   <FormField
                     control={form.control}
                     name="name"
                     render={({ field }) => (
-                      <FormItem className='flex space-x-2 items-center'>
+                      <FormItem className="flex items-center space-x-2">
                         <FormControl>
-                          <Input placeholder="Please enter your full name" {...field} />
+                          <Input
+                            placeholder="Please enter your full name"
+                            {...field}
+                          />
                         </FormControl>
                       </FormItem>
                     )}
                   />
                   <Button
-                    disabled={form.getValues('name') === '' || form.getValues('name') === undefined || isSearching}
-                    type="submit">
+                    disabled={
+                      form.getValues('name') === '' ||
+                      form.getValues('name') === undefined ||
+                      isSearching
+                    }
+                    type="submit"
+                  >
                     Search
                   </Button>
                 </form>
@@ -156,9 +152,8 @@ const Page = () => {
             </div>
           )}
         </>
-      )
-      }
-    </div >
+      )}
+    </div>
   );
 };
 
@@ -177,11 +172,13 @@ const UpdateForm = ({ data }: Props) => {
     if (data.id) {
       setId(data.id);
     }
-  }, [data]);
+  }, [data, setId]);
   const { field } = useRegistrationFields({
     form: updateForm
   });
-  const onSubmit: SubmitHandler<StudentRegistrationModelWithDomainType> = async (data) => {
+  const onSubmit: SubmitHandler<
+    StudentRegistrationModelWithDomainType
+  > = async (data) => {
     try {
       switch (currentStep) {
         case 0:
@@ -243,6 +240,6 @@ const UpdateForm = ({ data }: Props) => {
         showToast('Error', error.message || 'An unexpected error occurred');
       }
     }
-  }
+  };
   return <MultiStepForm form={updateForm} onSubmit={onSubmit} steps={field} />;
 };

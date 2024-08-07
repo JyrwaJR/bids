@@ -1,10 +1,11 @@
-'use client'
-import { SearchPage } from '@components/pages/search'
-import React from 'react'
+'use client';
+import { SearchPage } from '@components/pages/search';
+import React, { Suspense } from 'react';
 
 export default function page() {
   return (
-    <SearchPage />
-  )
+    <Suspense>
+      <SearchPage />
+    </Suspense>
+  );
 }
-

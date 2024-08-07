@@ -11,7 +11,6 @@ import {
 } from '@src/constants/toast-message';
 import { useCMutation } from '@src/hooks';
 import { Props } from '@src/types';
-
 import { AuthContext, UserType } from './auth-context';
 import { axiosInstance } from '@lib/utils';
 
@@ -91,6 +90,9 @@ export const AuthProvider = ({ children }: Props) => {
 
   const onLogin = async ({ email, password, redirect }: LoginTProps) => {
     try {
+      if (!baseUrl) {
+        showToast(FailedToastTitle, 'Base url now found');
+      }
       setIsLoading(true);
       const res = await loginMutation.mutateAsync({
         email: email,
@@ -115,7 +117,8 @@ export const AuthProvider = ({ children }: Props) => {
           email: response.data.data.email,
           id: response.data.data.id,
           name: response.data.data.name,
-          role: response.data.data.role[0]
+          role: response.data.data.role[0],
+          centre_id: response.data.data.center_id
         });
         setIsToken(cookies?.token);
         setIsLoggedIn(!!cookies?.token);
@@ -163,7 +166,7 @@ export const AuthProvider = ({ children }: Props) => {
           id: data.id,
           name: data.name,
           role: data.role[0],
-          centre_id: data.center,
+          centre_id: data.centre_id,
           staff: data.staff
         });
         setIsToken(cookies?.token);

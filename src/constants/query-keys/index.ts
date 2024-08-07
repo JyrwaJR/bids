@@ -1,3 +1,10 @@
+export const attendanceQueryKey = [
+  'attendance',
+  'get-attendance',
+  'add-attendance',
+  'update-attendance',
+  'delete-attendance'
+];
 export const projectsQueryKey = [
   'projects',
   'get-projects',

@@ -5,7 +5,7 @@ import { DataTable } from '@components/ui/data-table';
 import { ColumnDef } from '@tanstack/react-table';
 import { StudentRegistrationModelType } from '@models/student';
 import { useCMutation } from '@hooks/useCMutation';
-import { Form, FormFieldType } from '@components/form';
+import { FormFieldType, Form } from '@components/form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { OptionsT } from '@components/form/type';
@@ -13,11 +13,28 @@ import { FailedToastTitle } from '@constants/toast-message';
 import { showToast } from '@components/ui/show-toast';
 import { useCQuery } from '@hooks/useCQuery';
 import { z } from 'zod';
-import { UpdateAppliedStudentForm } from './update-applied-students';
 import { useAppliedStudentsStore } from '@lib/store';
-import { CellAction } from '@components/cell-action';
-import { appliedApplicantQueryKey, domainQueryKey, projectsQueryKey } from '@constants/query-keys';
-
+import {
+  appliedApplicantQueryKey,
+  domainQueryKey,
+  projectsQueryKey
+} from '@constants/query-keys';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@components/ui/select';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  Form as FormTag
+} from '@components/ui/form';
+import { SaveIcon } from 'lucide-react';
+import { Button } from '@components/ui/button';
 const StudentStatusOptions: OptionsT[] = [
   {
     label: 'Applied',
@@ -51,18 +68,25 @@ const emptyOptions: OptionsT[] = [
     value: ''
   }
 ];
+const UpdateStudentSchema = z.object({
+  status: z
+    .string()
+    .refine((value) => StudentStatusOptions.some((o) => o.value === value), {
+      message: 'Please select a status'
+    })
+});
+type UpdateStudentSchemaType = z.infer<typeof UpdateStudentSchema>;
 const AppliedStudentPage = () => {
-  const {
-    setId,
-    openUpdate: isOpen,
-    setOpenUpdate: setIsOpen
-  } = useAppliedStudentsStore();
+  const { setId, id } = useAppliedStudentsStore();
   const [isSelectedProjectId, setIsSelectedProjectId] = useState('');
   const form = useForm<ModelType>({
     resolver: zodResolver(AppliedStudentModel),
     defaultValues: {
       status: 'Applied'
     }
+  });
+  const updateForm = useForm<UpdateStudentSchemaType>({
+    resolver: zodResolver(UpdateStudentSchema)
   });
 
   const { mutateAsync, isLoading, data } = useCMutation({
@@ -96,6 +120,12 @@ const AppliedStudentPage = () => {
     })
   );
 
+  const url: string = `registration/update-candidate-registration-status/${id}`;
+  const mutate = useCMutation({
+    url: url,
+    method: 'PUT',
+    queryKey: appliedApplicantQueryKey
+  });
   const formFields: FormFieldType[] = [
     {
       name: 'project_id',
@@ -118,51 +148,87 @@ const AppliedStudentPage = () => {
       options: StudentStatusOptions ?? emptyOptions
     }
   ];
-
+  async function updateStudentStatus(status: string) {
+    try {
+      await mutate.mutateAsync({
+        status: status
+      });
+    } catch (error: any) {
+      showToast(FailedToastTitle, error.error);
+    } finally {
+      await mutateAsync({
+        status: form.getValues('status'),
+        project_id: form.getValues('project_id'),
+        domain_id: form.getValues('domain_id')
+      });
+    }
+  }
   const columns: ColumnDef<StudentRegistrationModelType | any>[] = [
     {
       accessorKey: 'name',
       header: 'Name'
     },
     {
-      accessorKey: 'email',
-      header: 'Email',
-      cell: ({ row }) => {
-        return row.original.email ?? 'N/A';
-      }
-    },
-    {
       accessorKey: 'gender',
       header: 'Gender'
     },
     {
-      accessorKey: 'mobile',
-      header: 'Mobile No.'
-    },
-    {
-      accessorKey: 'application_date',
-      header: 'Application Date',
-      cell: ({ row }) => {
-        return row.original.email ?? 'N/A';
-      }
+      accessorKey: 'email',
+      header: 'Father'
     },
     {
       accessorKey: 'status',
-      header: 'Status'
-    },
-    {
-      accessorKey: 'Action',
-      cell: ({ row }) => (
-        <CellAction
-          onEdit={() => {
-            const idx = row.original.id;
-            if (idx) {
-              setId(idx);
-              setIsOpen(true);
-            }
-          }}
-        />
-      )
+      header: 'Status',
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center space-x-2">
+            <FormTag {...updateForm}>
+              <FormField
+                control={updateForm.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem className="w-28">
+                    <Select
+                      defaultValue={
+                        row.original.id === id
+                          ? updateForm.getValues('status')
+                          : row.original.status
+                      }
+                      onValueChange={field.onChange}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectGroup>
+                          {StudentStatusOptions.map(({ label, value }) => (
+                            <SelectItem value={value} key={value}>
+                              {label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+            </FormTag>
+            <Button
+              variant="outline"
+              size={'icon'}
+              onClick={async () => {
+                setId(row.original.id);
+                if (id)
+                  await updateStudentStatus(updateForm.getValues('status'));
+              }}
+            >
+              <SaveIcon className="h-4 w-4" />
+            </Button>
+          </div>
+        );
+      }
     }
   ];
 
@@ -198,7 +264,7 @@ const AppliedStudentPage = () => {
         <div className="flex items-start justify-between">
           <Heading
             title={`Applied Students`}
-            description="Manage ur Student table"
+            description="Manage Applied Student"
           />
         </div>
         <Separator />
@@ -217,7 +283,6 @@ const AppliedStudentPage = () => {
           data={data?.data ? data.data : []}
         />
       </div>
-      {isOpen && <UpdateAppliedStudentForm />}
     </>
   );
 };

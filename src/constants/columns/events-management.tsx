@@ -1,5 +1,5 @@
-import { EventManagementModelType } from "@models/events-management-model";
-import { ColumnDef } from "@tanstack/react-table";
+import { EventManagementModelType } from '@models/events-management-model';
+import { ColumnDef } from '@tanstack/react-table';
 
 export const eventsMangementColumn: ColumnDef<EventManagementModelType>[] = [
   {
@@ -20,14 +20,14 @@ export const eventsMangementColumn: ColumnDef<EventManagementModelType>[] = [
   },
   {
     accessorKey: 'youth',
-    header: 'Total Youth',
+    header: 'Total Youth'
   },
   {
     accessorKey: 'event_date',
-    header: 'Date',
+    header: 'Date'
   },
   {
     accessorKey: 'total_participants',
     header: 'Total Participants'
   }
-]
+];
