@@ -17,6 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@components/ui/dropdown-menu';
+import { Table } from '@src/types/common';
 const searchSchema = z.object({
   searchTableBy: z.string().optional()
 });
@@ -28,20 +29,22 @@ export const SearchTableInput = ({
   searchOptions,
   searchTableBy,
   aBtnTitle = 'Save',
-  onClick
+  onClick,
+  disable
 }: {
-  table?: any;
+  table: Table | any;
   searchOptions?: OptionsT[];
   aBtnTitle?: string;
   searchTableBy?: string;
   onClick?: () => void;
+  disable?: boolean;
 }) => {
   const form = useForm<searchSchmaType>({
     defaultValues: {
       searchTableBy: searchOptions?.[0].value ?? searchTableBy
     }
   });
-
+  console.log(table);
   return (
     <>
       <div className="flex h-full w-full  items-center justify-between space-x-2">
@@ -97,7 +100,11 @@ export const SearchTableInput = ({
           )}
         </div>
         <div className="flex space-x-2">
-          {onClick && <Button onClick={onClick}>{aBtnTitle}</Button>}
+          {onClick && (
+            <Button disabled={disable} onClick={onClick}>
+              {aBtnTitle}
+            </Button>
+          )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
@@ -118,7 +125,7 @@ export const SearchTableInput = ({
                         column.toggleVisibility(!!value)
                       }
                     >
-                      {column.id}
+                      {column.columnDef.header}
                     </DropdownMenuCheckboxItem>
                   );
                 })}
