@@ -164,68 +164,6 @@ export const AddAttendance: React.FC = () => {
   const onsubmit: SubmitHandler<AttendanceModelType> = () => {
     attendanceQuery.refetch();
   };
-  const dummy = [
-    {
-      id: '9b1d67ea-8d4a-4e1d-bf57-cae0e1f34c3d',
-      batch: '9c66e355-3c72-4d82-a753-bbe22a39951c',
-      date: today,
-      status: 'present'
-    },
-    {
-      id: 'f14b36d3-0d72-4e24-b530-b2e9a2e2b9a6',
-      batch: '1d8f8d7a-48b0-46d5-9f7c-bbde2a4e1c5a',
-      date: today,
-      status: 'absent'
-    },
-    {
-      id: '4a2e8d4f-5b3d-4b2b-94e4-5e4e84d2b67c',
-      batch: '6e1a3c29-2e1f-4e94-bde4-249c74e5c7e2',
-      date: today,
-      status: 'late'
-    },
-    {
-      id: 'a2c8f2d3-5f7a-4b8b-8d3b-cf4d066d5e5e',
-      batch: '3b1b4f6c-d4fb-4a2f-9ed6-5e2b8db0f5f3',
-      date: today,
-      status: 'present'
-    },
-    {
-      id: 'd6eae83b-bf15-44d1-bd5e-e9f6e3b539e6',
-      batch: '54e6f0d8-31c1-4d84-bbb2-dcdf40eec58e',
-      date: today,
-      status: 'present'
-    },
-    {
-      id: 'bfffb95b-6fc5-4a92-bb14-604dfb30c6fc',
-      batch: '7e92b829-7c5c-4efb-9e25-6e6f7a46d07c',
-      date: today,
-      status: 'absent'
-    },
-    {
-      id: '5b418c3e-89e3-4a9e-9f6c-066d2f46d9d4',
-      batch: 'ae1c9a23-5b8e-4e8b-b30e-533c50b03f1b',
-      date: today,
-      status: 'late'
-    },
-    {
-      id: 'f10470e4-f09c-4c1b-9276-2df4f8a8a244',
-      batch: 'b374b08e-2f87-4f87-88f1-e9c632c7d444',
-      date: today,
-      status: 'present'
-    },
-    {
-      id: 'b1a7644e-e0f1-4fdc-a3d6-2e5d8493fa9e',
-      batch: 'f234c012-3c18-4bbf-8c28-735f84db473c',
-      date: today,
-      status: 'absent'
-    },
-    {
-      id: 'f5350f8b-5b74-4dc2-812c-15d7f97883ae',
-      batch: 'c7893e32-8df3-46b7-b55c-e5b04e7d1cf9',
-      date: today,
-      status: 'present'
-    }
-  ];
   return (
     <div className="flex w-full flex-col space-y-4">
       <div className="flex items-start justify-between space-y-2">
@@ -258,6 +196,7 @@ export const AddAttendance: React.FC = () => {
           }
         }}
         columns={columns}
+        disabled={isAbsentStudents.length > 0 ? false : true}
         className="h-full"
         isLoading={false}
         // TODO: correct data add
