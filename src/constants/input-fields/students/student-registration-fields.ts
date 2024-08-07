@@ -268,8 +268,7 @@ const studentRegistrationPresentAddressFields: FormFieldType[] = [
   {
     name: 'district',
     label: 'District',
-    required: false,
-    select: true
+    required: false
   },
   {
     name: '',
