@@ -2,7 +2,7 @@ import { DataTable } from '@components/ui/data-table';
 import { searchStudentByName } from '@src/app/dashboard/registration/_lib/function';
 import { ColumnDef } from '@tanstack/react-table';
 import { useSearchParams } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { studentQueryKey } from '@constants/query-keys';
 import { FormControl, FormField, FormItem, Form } from '@components/ui/form';
@@ -52,9 +52,6 @@ export const SearchPage = () => {
   const search = useSearchParams().get('q');
   const defaultQuery = search ? search : 'students';
   const isSearchApplicants: boolean = defaultQuery === 'applicants';
-  // const url = isSearchApplicants
-  //   ? 'registration/candidate-registration-list'
-  //   : '';
   const form = useForm({
     defaultValues: {
       name: ''

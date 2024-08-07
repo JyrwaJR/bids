@@ -1,5 +1,5 @@
 'use client';
-import { PreviewForm } from '@components/pages/registration/preview-form';
+import { PreviewRegistrationForm as PreviewForm } from '@components/pages/registration/preview-registration-form';
 import { useForm } from 'react-hook-form';
 import { StudentRegistrationModelWithDomainType } from '../registration/_lib/function';
 import { useRegistrationFields } from '../registration/_lib/useRegistrationFields';

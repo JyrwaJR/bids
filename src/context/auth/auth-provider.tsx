@@ -117,7 +117,8 @@ export const AuthProvider = ({ children }: Props) => {
           email: response.data.data.email,
           id: response.data.data.id,
           name: response.data.data.name,
-          role: response.data.data.role[0]
+          role: response.data.data.role[0],
+          centre_id: response.data.data.center_id
         });
         setIsToken(cookies?.token);
         setIsLoggedIn(!!cookies?.token);

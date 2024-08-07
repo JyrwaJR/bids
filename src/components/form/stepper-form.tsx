@@ -13,7 +13,7 @@ import { Label } from '@components/ui/label';
 import { Separator } from '@components/ui/separator';
 import { useEffect } from 'react';
 import UploadImageModal from '@components/upload-image-modal';
-import { PreviewForm } from '@components/pages/registration/preview-form';
+import { PreviewRegistrationForm as PreviewForm } from '@components/pages/registration/preview-registration-form';
 
 export type StepType = {
   id: string;

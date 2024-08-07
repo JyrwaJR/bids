@@ -9,7 +9,7 @@ type Props = {
   form: UseFormReturn<StudentRegistrationModelWithDomainType>;
   fields: StepsFieldFormT[];
 };
-export const PreviewForm = ({ form, fields }: Props) => {
+export const PreviewRegistrationForm = ({ form, fields }: Props) => {
   return (
     <div className="space-y-5">
       {fields.map((field, i) => (
