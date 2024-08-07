@@ -2,6 +2,7 @@
 import { Plus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Button } from '@src/components/ui/button';
+event;
 import { DataTable } from '@src/components/ui/data-table';
 import { Heading } from '@src/components/ui/heading';
 import { Separator } from '@src/components/ui/separator';
@@ -220,7 +221,7 @@ export const EventsManagementPage = () => {
             className="text-xs md:text-sm"
             onClick={() => setIsOpen(true)}
           >
-            <Plus className="mr-2 h-4 w-4" /> Add Staff
+            <Plus className="mr-2 h-4 w-4" /> Add Event
           </Button>
         </div>
         <Separator />
