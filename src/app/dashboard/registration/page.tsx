@@ -32,6 +32,7 @@ const Registration = () => {
   const { setId, id } = useRegisterStudentStore();
   const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(!!id);
+  const today = format(new Date(), 'yyyy-MM-dd');
   const form = useForm<StudentRegistrationModelWithDomainType>({
     resolver: zodResolver(StudentRegistrationModelWithDomain),
     defaultValues: {
@@ -39,7 +40,7 @@ const Registration = () => {
       religion: 'Christian',
       category: 'ST',
       education: '10 pass',
-      registration_date: format(new Date(), 'yyyy-MM-dd'),
+      registration_date: today,
       is_bpl: 'No',
       is_disabled: 'No',
       is_minority: 'No'

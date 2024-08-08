@@ -36,26 +36,31 @@ const Schema = z
         required_error: 'Document type is required'
       })
       .min(1, { message: 'Document type is required' }),
+
     image: z
+      // Ensures the value is an instance of File.
       .instanceof(File, {
         message: 'Please select an image'
       })
-      .refine((file) => file !== undefined && file !== null, {
-        message: 'Please select an image'
+      // Corrected: Checks the file size, ensuring it is less than or equal to MAX_UPLOAD_SIZE.
+      .refine((file) => file && file.size <= MAX_UPLOAD_SIZE, {
+        message: 'File size must be less than 2MB'
       })
-      .refine((file) => {
-        return file && file.size <= MAX_UPLOAD_SIZE;
-      }, 'File size must be less than 2MB')
-      .refine((file) => {
-        return file && ACCEPTED_FILE_TYPES.includes(file.type);
-      }, 'File must be a PNG/jpg/jpeg'),
-    document_number: z.string().optional()
+      // Corrected: Ensures the file type is one of the accepted types.
+      .refine((file) => file && ACCEPTED_FILE_TYPES.includes(file.type), {
+        message: 'File must be a PNG/jpg/jpeg'
+      }),
+    document_number: z.string().optional(),
+    remark: z.string().optional()
   })
+
   .superRefine((data, ctx) => {
+    // Corrected: Added a condition to check if proof_type is "ID Proof"
+    // and document_number is missing, then add a custom issue.
     if (data.proof_type === 'ID Proof' && !data.document_number) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'Document number is required',
+        message: 'Document number is required when proof type is "ID Proof"',
         path: ['document_number']
       });
     }
@@ -84,7 +89,8 @@ export const ImageUploadDialog = ({
     resolver: zodResolver(Schema),
     defaultValues: {
       proof_type: filter || ''
-    }
+    },
+    mode: 'onTouched'
   });
 
   const { data, isLoading } = useCQuery({
@@ -158,7 +164,14 @@ export const ImageUploadDialog = ({
       name: 'image',
       label: 'File Upload',
       type: 'file'
-    }
+    },
+
+    form.watch('proof_type') === 'Exceptional Proof'
+      ? {
+          name: 'remark',
+          label: 'Remark'
+        }
+      : undefined
   ].filter(Boolean) as FormFieldType[];
 
   const updatedFields: FormFieldType[] = isFieldWithDocNo.map(
