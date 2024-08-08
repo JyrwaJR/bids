@@ -12,11 +12,11 @@ export const eventsMangementColumn: ColumnDef<EventManagementModelType>[] = [
   },
   {
     accessorKey: 'men',
-    header: 'Total Men'
+    header: 'Total Male'
   },
   {
     accessorKey: 'women',
-    header: 'Total Women'
+    header: 'Total Female'
   },
   {
     accessorKey: 'youth',

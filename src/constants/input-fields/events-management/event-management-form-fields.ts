@@ -24,13 +24,13 @@ export const eventManagementFields: FormFieldType[] = [
   },
   {
     name: 'men',
-    label: 'No. of Men',
+    label: 'No. of Males',
     required: true,
     type: 'number'
   },
   {
     name: 'women',
-    label: 'No. of Women',
+    label: 'No. of females',
     required: true,
     type: 'number'
   },
