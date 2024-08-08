@@ -6,6 +6,7 @@ import { DashboardNav } from '@src/components/dashboard-nav';
 import { navItems } from '@src/constants';
 import { useSidebar } from '@src/hooks/useSidebar';
 import { cn } from '@src/lib/utils';
+import { ScrollArea } from '@components/ui/scroll-area';
 
 type SidebarProps = {
   className?: string;
@@ -36,13 +37,11 @@ export default function Sidebar({ className }: SidebarProps) {
         )}
         onClick={handleToggle}
       />
-      <div className="space-y-4 py-4">
-        <div className="px-3 py-2">
-          <div className="mt-3 space-y-1">
-            <DashboardNav items={navItems} />
-          </div>
+      <ScrollArea className="relative h-full space-y-1">
+        <div className="space-y-1 px-4">
+          <DashboardNav items={navItems} />
         </div>
-      </div>
+      </ScrollArea>
     </nav>
   );
 }
