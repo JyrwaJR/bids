@@ -538,7 +538,7 @@ const studentRegistrationParentDetailFields: FormFieldType[] = [
     name: 'mother_mobile',
     label: 'Mother Mobile',
     required: false,
-    type: 'text',
+    type: 'number',
     placeholder: 'Enter Mother Mobile'
   },
   {
@@ -566,8 +566,9 @@ const studentRegistrationParentDetailFields: FormFieldType[] = [
     name: 'head_of_family',
     label: 'Head of Family',
     required: false,
-    type: 'text',
-    placeholder: 'Enter Head of Family'
+    placeholder: 'Enter Head of Family',
+    select: true,
+    options: yesNoOptions
   }
 ];
 
@@ -588,7 +589,7 @@ export const studentRegistrationFields: StepType[] = [
     fields: studentRegistrationDomain
   },
   {
-    name: 'Parental Details',
+    name: 'Parent Details',
     id: 'Parental Details',
     fields: studentRegistrationParentDetailFields
   },
