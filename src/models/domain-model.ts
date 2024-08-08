@@ -49,6 +49,24 @@ export const DomainModel = z.object({
       {
         message: 'Must be a valid number'
       }
-    )
+    ),
+  op_code: z
+    .string({
+      required_error: FieldsIsRequired
+    })
+    .max(10, {
+      message: 'Should be less than 10 in length'
+    })
+    .optional(),
+  last_review: z
+    .string({
+      required_error: FieldsIsRequired
+    })
+    .optional(),
+  next_review: z
+    .string({
+      required_error: FieldsIsRequired
+    })
+    .optional()
 });
 export type DomainModelType = z.infer<typeof DomainModel>;

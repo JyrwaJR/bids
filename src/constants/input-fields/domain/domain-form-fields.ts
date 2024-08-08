@@ -1,6 +1,6 @@
 import { FormFieldType } from '@components/index';
 import { StatusOptions } from '@constants/options';
-export const domainFields: FormFieldType[] = [
+export const domainFormFields: FormFieldType[] = [
   {
     name: 'name',
     label: 'Name',
@@ -16,5 +16,19 @@ export const domainFields: FormFieldType[] = [
     name: 'level',
     label: 'Level',
     type: 'number'
+  },
+  {
+    name: 'op_code',
+    label: 'OP Code'
+  },
+  {
+    name: 'last_review',
+    label: 'Last Review',
+    type: 'date'
+  },
+  {
+    name: 'next_review',
+    label: 'Next Review',
+    type: 'date'
   }
 ];

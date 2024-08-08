@@ -6,7 +6,7 @@ import {
   DialogTitle
 } from '@components/ui/dialog';
 import { Form, FormFieldType } from '@src/components';
-import { domainFields } from '@constants/input-fields/domain';
+import { domainFormFields as domainFields } from '@constants/input-fields/domain/domain-form-fields';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DomainModel, DomainModelType } from '@src/models';
 import React from 'react';
@@ -71,7 +71,7 @@ export const AddDomain = ({ onClose, open }: Props) => {
         <DialogHeader>
           <DialogTitle>Add Domain</DialogTitle>
           <DialogDescription>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit.{' '}
+            Please enter the following details
           </DialogDescription>
         </DialogHeader>
         <Form
