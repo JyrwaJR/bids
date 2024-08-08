@@ -1,8 +1,7 @@
 'use client';
 import { Plus } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button } from '@src/components/ui/button';
-event;
 import { DataTable } from '@src/components/ui/data-table';
 import { Heading } from '@src/components/ui/heading';
 import { Separator } from '@src/components/ui/separator';
@@ -140,7 +139,7 @@ export const EventsManagementPage = () => {
     ...eventsMangementColumn,
     {
       header: 'Upload Image',
-      cell: ({ row }) => {
+      cell: () => {
         return (
           <Button
             disabled={isUploading}
@@ -187,9 +186,17 @@ export const EventsManagementPage = () => {
     setIsSelectedId('');
     setIsUpdate(false);
   };
+
+  const onChangeCentreId = useCallback(() => {
+    let id;
+    if (form.getValues('centre_id') !== id) {
+      refetch();
+    }
+  }, [form, refetch]);
+
   useEffect(() => {
-    refetch();
-  }, [form.watch('centre_id')]);
+    onChangeCentreId();
+  }, [onChangeCentreId]);
 
   return (
     <ScrollArea>
