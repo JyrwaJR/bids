@@ -271,7 +271,7 @@ const studentRegistrationPresentAddressFields: FormFieldType[] = [
     required: false
   },
   {
-    name: '',
+    name: 'state',
     label: 'State',
     required: false,
     select: true
@@ -339,8 +339,7 @@ const studentRegistrationPermanentsAddressDetailFields: FormFieldType[] = [
     name: 'p_district',
     label: 'Permanent District',
     required: false,
-    placeholder: 'Enter Permanent District',
-    select: true
+    placeholder: 'Enter Permanent District'
   },
   {
     name: 'p_state',
@@ -601,7 +600,6 @@ export const studentRegistrationFields: StepType[] = [
       ...studentRegistrationPermanentsAddressDetailFields
     ]
   },
-
   {
     name: 'Upload Documents',
     id: 'Upload Documents',

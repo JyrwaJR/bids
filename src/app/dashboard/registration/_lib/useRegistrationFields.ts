@@ -31,7 +31,6 @@ export const useRegistrationFields = ({ form }: Props) => {
     enabled: !!form.watch('project_id'),
     queryKey: [batchQueryKey, form.watch('project_id')]
   });
-
   const domainQuery = useQuery({
     queryFn: async () => await getDomainByProjectId(form.watch('project_id')),
     enabled: !!form.watch('project_id'),
@@ -252,6 +251,8 @@ export const useRegistrationFields = ({ form }: Props) => {
     const updatedFields = element.fields.map((field: FormFieldType) => {
       if (field.select) {
         switch (field.name) {
+          case 'state':
+            return { ...field, options: options.states };
           case 'p_state':
             return { ...field, options: options.states };
           case 'p_district':
@@ -290,7 +291,6 @@ export const useRegistrationFields = ({ form }: Props) => {
       }
       return field;
     });
-
     return { ...element, fields: updatedFields };
   });
   return { field: updatedFields };
