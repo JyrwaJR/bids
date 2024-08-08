@@ -52,14 +52,14 @@ export interface AddressDetailsType {
 export interface FamilyDetailsType {
   father_name?: string;
   father_last_name?: string;
-  father_mobile?: string;
-  father_age?: string;
+  father_mobile?: string | number | null | undefined;
+  father_age?: string | number;
   father_occupation?: string;
-  father_income?: string;
+  father_income?: string | number | null | undefined;
   mother_name?: string;
   mother_last_name?: string;
-  mother_mobile?: string;
-  mother_age?: string;
+  mother_mobile?: string | number | null | undefined;
+  mother_age?: string | number;
   mother_occupation?: string;
   mother_income?: string | number | null | undefined;
   head_of_family?: string;

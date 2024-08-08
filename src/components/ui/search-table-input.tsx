@@ -44,7 +44,6 @@ export const SearchTableInput = ({
       searchTableBy: searchOptions?.[0].value ?? searchTableBy
     }
   });
-  console.log(table);
   return (
     <>
       <div className="flex h-full w-full  items-center justify-between space-x-2">
