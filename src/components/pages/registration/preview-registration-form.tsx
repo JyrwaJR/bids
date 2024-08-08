@@ -1,5 +1,4 @@
 import { Typography } from '@components/index';
-import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
 import { StudentRegistrationModelWithDomainType } from '@src/app/dashboard/registration/_lib/function';
 import { StepsFieldFormT } from '@src/types';
@@ -28,11 +27,9 @@ export const PreviewRegistrationForm = ({ form, fields }: Props) => {
                 </div>
                 <div>
                   <Typography>
-                    {
-                      form.getValues()[
-                        item.name as keyof StudentRegistrationModelWithDomainType
-                      ] as string
-                    }
+                    {(form.getValues()[
+                      item.name as keyof StudentRegistrationModelWithDomainType
+                    ] as string) ?? 'N/A'}
                   </Typography>
                 </div>
               </div>
@@ -40,7 +37,6 @@ export const PreviewRegistrationForm = ({ form, fields }: Props) => {
           </div>
         </Card>
       ))}
-      <Button>Submit</Button>
     </div>
   );
 };
