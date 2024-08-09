@@ -47,7 +47,7 @@ export const SearchTableInput = ({
   return (
     <>
       <div className="flex h-full w-full  items-center justify-between space-x-2">
-        <div>
+        <div className="flex justify-between space-x-2">
           <Input
             placeholder={`Search`}
             value={
