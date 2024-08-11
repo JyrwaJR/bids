@@ -13,6 +13,7 @@ import {
   documentTypeQueryKey,
   registrationQueryKey
 } from '@constants/query-keys';
+import { imageValidation } from '@constants/regex/image';
 import { FailedToastTitle } from '@constants/toast-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCMutation } from '@hooks/useCMutation';
@@ -37,19 +38,7 @@ const Schema = z
       })
       .min(1, { message: 'Document type is required' }),
 
-    image: z
-      // Ensures the value is an instance of File.
-      .instanceof(File, {
-        message: 'Please select an image'
-      })
-      // Corrected: Checks the file size, ensuring it is less than or equal to MAX_UPLOAD_SIZE.
-      .refine((file) => file && file.size <= MAX_UPLOAD_SIZE, {
-        message: 'File size must be less than 2MB'
-      })
-      // Corrected: Ensures the file type is one of the accepted types.
-      .refine((file) => file && ACCEPTED_FILE_TYPES.includes(file.type), {
-        message: 'File must be a PNG/jpg/jpeg'
-      }),
+    image: imageValidation,
     document_number: z.string().optional(),
     remark: z.string().optional()
   })
