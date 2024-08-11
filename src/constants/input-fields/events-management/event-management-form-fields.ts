@@ -57,5 +57,11 @@ export const eventManagementFields: FormFieldType[] = [
     label: 'Total Participants',
     required: true,
     type: 'number'
+  },
+  {
+    name: 'image',
+    label: 'Event Image',
+    required: true,
+    type: 'file'
   }
 ];
