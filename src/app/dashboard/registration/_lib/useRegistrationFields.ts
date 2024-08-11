@@ -212,7 +212,7 @@ export const useRegistrationFields = ({ form }: Props) => {
         {
           name: 'disability_type',
           label: 'Disability Type',
-          required: false,
+          required: form.watch('is_disabled') === 'Yes' ? true : false,
           select: true
         },
         {
