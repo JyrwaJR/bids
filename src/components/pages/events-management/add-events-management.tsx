@@ -48,10 +48,8 @@ export const AddEventsManagement = ({ open, onClose }: Props) => {
       const res = await mutateAsync(data);
       if (res.success && data.image && res.data?.id) {
         setId(res.data.id);
-
         const formData = new FormData();
         formData.append('image', data.image);
-
         const response = await mutate.mutateAsync(formData);
         if (response.success) {
           showToast(SuccessToastTitle, response.message);
