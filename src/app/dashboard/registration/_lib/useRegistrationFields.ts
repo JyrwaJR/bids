@@ -270,8 +270,7 @@ export const useRegistrationFields = ({ form }: Props) => {
           case 'project_id':
             return { ...field, options: options.projects };
           case 'disability_type':
-            // TODO : correct options for  disable from the backend
-            return { ...field, options: emptyOptions };
+            return { ...field, options: options.disabilities };
           case 'domain_id':
             return {
               ...field,
