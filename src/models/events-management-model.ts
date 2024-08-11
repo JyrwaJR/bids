@@ -1,3 +1,5 @@
+import { ACCEPTED_FILE_TYPES, MAX_UPLOAD_SIZE } from '@constants/index';
+import { imageValidation } from '@constants/regex/image';
 import { format, parse } from 'date-fns';
 import { z } from 'zod';
 
@@ -25,6 +27,7 @@ export const EventManagementModel = z.object({
     message: 'Invalid date format. Expected format: yyyy-MM-dd'
   }),
 
+  image: imageValidation.optional(),
   extended_till: z
     .string()
     .refine((val) => isValidDate(val), {
