@@ -9,7 +9,7 @@ import {
 import { showToast } from '@components/ui/show-toast';
 import { eventManagementFields } from '@constants/input-fields';
 import { eventsManagementQueryKey } from '@constants/query-keys';
-import { FailedToastTitle } from '@constants/toast-message';
+import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCMutation } from '@hooks/useCMutation';
 import {
@@ -17,38 +17,71 @@ import {
   EventManagementModelType
 } from '@models/events-management-model';
 import React, { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 type Props = {
   open: boolean;
   onClose: () => void;
 };
+
 export const AddEventsManagement = ({ open, onClose }: Props) => {
+  const [id, setId] = React.useState<String>('');
   const form = useForm<EventManagementModelType>({
-    resolver: zodResolver(EventManagementModel)
+    resolver: zodResolver(EventManagementModel),
+    defaultValues: {
+      total_participants: 0,
+      men: 0,
+      women: 0
+    }
   });
   const { isLoading, mutateAsync } = useCMutation({
     url: 'events/save',
     method: 'POST',
     queryKey: eventsManagementQueryKey
   });
+  const mutate = useCMutation({
+    url: `events/upload-image/${id}`,
+    method: 'POST',
+    queryKey: eventsManagementQueryKey
+  });
   const onSubmit: SubmitHandler<EventManagementModelType> = async (data) => {
     try {
-      const response = await mutateAsync(data);
-      if (response.success === true) {
-        form.reset();
-        onClose();
+      const res = await mutateAsync(data);
+      if (res.success && data.image && res.data?.id) {
+        setId(res.data.id);
+
+        const formData = new FormData();
+        formData.append('image', data.image);
+
+        const response = await mutate.mutateAsync(formData);
+        if (response.success) {
+          showToast(SuccessToastTitle, response.message);
+        } else {
+          throw new Error(response.message || 'Image upload failed');
+        }
+      } else if (res.success) {
+        showToast(SuccessToastTitle, res.message);
       }
     } catch (error: any) {
-      showToast(FailedToastTitle, error.message);
+      showToast(FailedToastTitle, error.message || 'An error occurred');
+    } finally {
+      form.reset();
+      onClose();
+      setId('');
     }
   };
+  const men = useWatch({ control: form.control, name: 'men', defaultValue: 0 });
+  const women = useWatch({
+    control: form.control,
+    name: 'women',
+    defaultValue: 0
+  });
   useEffect(() => {
-    const totalMen: number = form.watch('men');
-    const totalWomen: number = form.watch('women');
-    if (form.watch('men') && form.watch('women')) {
-      form.setValue('total_participants', totalMen + totalWomen);
-    }
-  }, [form.watch('men'), form.watch('women')]);
+    const totalParticipants = men + women;
+    form.setValue('total_participants', totalParticipants, {
+      shouldDirty: true
+    });
+  }, [men, women, form]);
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
