@@ -1,4 +1,3 @@
-import { ACCEPTED_FILE_TYPES, MAX_UPLOAD_SIZE } from '@constants/index';
 import { imageValidation } from '@constants/regex/image';
 import { format, parse } from 'date-fns';
 import { z } from 'zod';

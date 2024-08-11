@@ -16,8 +16,8 @@ import {
   EventManagementModel,
   EventManagementModelType
 } from '@models/events-management-model';
-import React, { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import React, { useCallback, useEffect } from 'react';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 
 type Props = {
   open: boolean;
@@ -28,6 +28,14 @@ export const UpdateEventsManagement = ({ open, onClose, data }: Props) => {
   const form = useForm({
     resolver: zodResolver(EventManagementModel),
     defaultValues: data
+  });
+  const watchMen = useWatch({
+    control: form.control,
+    name: 'men'
+  });
+  const watchWomen = useWatch({
+    control: form.control,
+    name: 'women'
   });
   const { mutateAsync, isLoading } = useCMutation({
     url: `events/update/${data.id}`,
@@ -46,13 +54,14 @@ export const UpdateEventsManagement = ({ open, onClose, data }: Props) => {
     }
   };
 
-  useEffect(() => {
-    const totalMen: number = form.watch('men');
-    const totalWomen: number = form.watch('women');
-    if (form.watch('men') && form.watch('women')) {
-      form.setValue('total_participants', totalMen + totalWomen);
+  const onChangeMenAndWomen = useCallback(() => {
+    if (watchMen || watchWomen) {
+      form.setValue('total_participants', watchMen + watchWomen);
     }
-  }, [form.watch('men'), form.watch('women')]);
+  }, [watchMen, watchWomen, form]);
+  useEffect(() => {
+    onChangeMenAndWomen();
+  }, [onChangeMenAndWomen]);
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>

@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ColumnDef } from '@tanstack/react-table';
@@ -65,6 +65,9 @@ export const AddAttendance: React.FC = () => {
     }
   });
 
+  const watch_batch_id = useWatch({ control: form.control, name: 'batch_id' });
+  const watch_date = useWatch({ control: form.control, name: 'date' });
+
   const domainQuery = useCQuery({ url: 'domain', queryKey: domainQueryKey });
   const batchQuery = useCQuery({ url: 'batch', queryKey: batchQueryKey });
   const attendanceQuery = useQuery({
@@ -82,11 +85,14 @@ export const AddAttendance: React.FC = () => {
       showToast(FailedToastTitle, error.message);
     }
   });
-  useEffect(() => {
-    if (form.watch('batch_id') || form.watch('date')) {
+  const onChangeDateOrBatch = useCallback(() => {
+    if (watch_batch_id || watch_date) {
       attendanceQuery.refetch();
     }
-  }, [form.watch('batch_id')]);
+  }, [watch_batch_id, watch_date, attendanceQuery]);
+  useEffect(() => {
+    onChangeDateOrBatch();
+  }, [onChangeDateOrBatch]);
 
   const domainOptions: OptionsT[] = useMemo(
     () =>

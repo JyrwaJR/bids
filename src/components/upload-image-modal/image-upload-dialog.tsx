@@ -8,7 +8,6 @@ import {
   DialogTitle
 } from '@components/ui/dialog';
 import { showToast } from '@components/ui/show-toast';
-import { ACCEPTED_FILE_TYPES, MAX_UPLOAD_SIZE } from '@constants/index';
 import {
   documentTypeQueryKey,
   registrationQueryKey

@@ -4,7 +4,6 @@ import { BatchColumn } from '@constants/columns/batch-column';
 import React, { useState } from 'react';
 import { AddBatch } from './add-batch';
 import { useCQuery } from '@hooks/useCQuery';
-import { isError } from 'react-query';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ProjectColumn } from '@constants/columns';
 import { Button } from '@components/ui/button';

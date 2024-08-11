@@ -1,8 +1,8 @@
 import { Form } from '@components/ui/form';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { AddAttendance } from './add-attendance';
 
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@src/components/ui/button';
 import { DataTable } from '@src/components/ui/data-table';
@@ -64,6 +64,8 @@ export const AttendancePage = () => {
       date: today
     }
   });
+  const dateChanged = useWatch({ control: form.control, name: 'date' });
+  const batchChanged = useWatch({ control: form.control, name: 'batch_id' });
   const {
     data,
     isError,
@@ -71,7 +73,7 @@ export const AttendancePage = () => {
     mutateAsync: AttendanceMutate
   } = useCMutation({
     url: 'attendance',
-    // queryKey: attendanceQueryKey,
+    queryKey: attendanceQueryKey,
     method: 'POST'
   });
 
@@ -92,11 +94,14 @@ export const AttendancePage = () => {
   });
   const batchQuery = useCQuery({ url: 'batch', queryKey: batchQueryKey });
   const domainQuery = useCQuery({ url: 'domain', queryKey: domainQueryKey });
-  useEffect(() => {
-    if (form.watch('batch_id') || form.watch('date')) {
+  const onChangeDateOrBatch = useCallback(() => {
+    if (dateChanged || batchChanged) {
       attendanceQuery.refetch();
     }
-  }, [form.watch('batch_id')]);
+  }, [dateChanged, batchChanged, attendanceQuery]);
+  useEffect(() => {
+    onChangeDateOrBatch();
+  }, [onChangeDateOrBatch]);
 
   const domainOptions: OptionsT[] = useMemo(
     () =>
