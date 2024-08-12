@@ -67,17 +67,13 @@ export const AddAttendance: React.FC = () => {
 
   const watch_batch_id = useWatch({ control: form.control, name: 'batch_id' });
   const watch_date = useWatch({ control: form.control, name: 'date' });
-
   const domainQuery = useCQuery({ url: 'domain', queryKey: domainQueryKey });
   const batchQuery = useCQuery({ url: 'batch', queryKey: batchQueryKey });
   const attendanceQuery = useQuery({
     queryFn: async () =>
-      await getAttendanceByBatchId(
-        form.getValues('batch_id'),
-        form.getValues('date')
-      ),
+      await getAttendanceByBatchId(watch_batch_id, watch_date),
     queryKey: [attendanceQueryKey, today],
-    enabled: !!form.watch('batch_id'),
+    enabled: !!watch_batch_id,
     onError: (error: any) => {
       if (error instanceof AxiosError) {
         showToast(FailedToastTitle, error.response?.data.message);
@@ -135,9 +131,6 @@ export const AddAttendance: React.FC = () => {
       }),
     [domainOptions, batchOptions]
   );
-  useEffect(() => {
-    console.log('Updated isAbsentStudents:', isAbsentStudents);
-  }, [isAbsentStudents]);
   const columns: ColumnDef<any>[] = [
     ...attendanceColumn,
     {
@@ -167,7 +160,7 @@ export const AddAttendance: React.FC = () => {
       enableHiding: false
     }
   ];
-  const onsubmit: SubmitHandler<AttendanceModelType> = () => {
+  const onSubmit: SubmitHandler<AttendanceModelType> = () => {
     attendanceQuery.refetch();
   };
   return (
@@ -177,7 +170,7 @@ export const AddAttendance: React.FC = () => {
       </div>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onsubmit)}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="flex items-center space-x-2"
         >
           <div>
