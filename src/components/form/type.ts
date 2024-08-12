@@ -19,5 +19,6 @@ export interface FormFieldType {
   options?: OptionsT[];
   inputProps?: any;
   placeholder?: string;
+  accept?: string;
   uploadFn?: (file: File) => any;
 }
