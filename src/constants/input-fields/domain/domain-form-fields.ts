@@ -18,8 +18,20 @@ export const domainFormFields: FormFieldType[] = [
     type: 'number'
   },
   {
-    name: 'op_code',
-    label: 'OP Code'
+    name: 'qp_code',
+    label: 'QP-Code'
+  },
+  {
+    name: 'curriculum',
+    label: 'Curriculum',
+    type: 'file',
+    accept: 'application/pdf,image/*'
+  },
+  {
+    name: 'guide',
+    label: 'Guide',
+    type: 'file',
+    accept: 'application/pdf,image/*'
   },
   {
     name: 'last_review',

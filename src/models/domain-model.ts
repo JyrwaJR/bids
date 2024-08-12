@@ -1,7 +1,27 @@
 import { FieldsIsRequired } from '@constants/index';
 import { StatusOptions } from '@constants/options';
 import { lettersAndSpacesRegex } from '@constants/regex';
+import { format } from 'date-fns';
 import { z } from 'zod';
+const ACCEPTED_FILES_TYPES = [
+  'application/pdf',
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/gif',
+  'image/svg'
+];
+
+export const fileValidation = z
+  .instanceof(File, {
+    message: 'Please select an image'
+  })
+  .refine((file) => file && file.size <= 1024 * 1024 * 10, {
+    message: 'File size must be less than 10MB'
+  })
+  .refine((file) => file && ACCEPTED_FILES_TYPES.includes(file.type), {
+    message: 'File must be a PNG/jpg/jpeg'
+  });
 
 export const DomainModel = z.object({
   id: z.string().uuid().optional(),
@@ -50,14 +70,6 @@ export const DomainModel = z.object({
         message: 'Must be a valid number'
       }
     ),
-  op_code: z
-    .string({
-      required_error: FieldsIsRequired
-    })
-    .max(10, {
-      message: 'Should be less than 10 in length'
-    })
-    .optional(),
   last_review: z
     .string({
       required_error: FieldsIsRequired
@@ -67,6 +79,13 @@ export const DomainModel = z.object({
     .string({
       required_error: FieldsIsRequired
     })
+    .optional(),
+  qp_code: z.string({ required_error: FieldsIsRequired }).max(10),
+  curriculum: fileValidation.optional(),
+  guide: fileValidation.optional(),
+  approval_date: z
+    .string()
+    .refine((val) => format(new Date(val), 'yyyy-MM-dd'))
     .optional()
 });
 export type DomainModelType = z.infer<typeof DomainModel>;
