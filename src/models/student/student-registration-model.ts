@@ -86,7 +86,11 @@ export const StudentRegistrationModel = z.object({
   p_post_office: z.string().max(60).nullable().optional(),
   p_district: z.string().max(60).nullable().optional(),
   p_state: z.string().max(60).nullable().optional(),
-  p_pin_code: z.string().length(6).nullable().optional(),
+  p_pin_code: z
+    .string()
+    .refine((val) => val.toString())
+    .nullable()
+    .optional(),
   // Other Info
   is_technical_education: z.enum(['Yes', 'No']).default('No'),
   diploma_certificate: z.string().max(100).nullable().optional(),
