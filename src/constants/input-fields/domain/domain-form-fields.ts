@@ -34,6 +34,12 @@ export const domainFormFields: FormFieldType[] = [
     accept: 'application/pdf,image/*'
   },
   {
+    name: 'duration',
+    label: 'Duration',
+    type: 'number',
+    required: true
+  },
+  {
     name: 'last_review',
     label: 'Last Review',
     type: 'date'

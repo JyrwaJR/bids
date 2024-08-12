@@ -46,7 +46,9 @@ export const AddDomain = ({ onClose, open }: Props) => {
 
   const onSubmit: SubmitHandler<DomainModelType> = async (data) => {
     try {
-      const res = await mutateAsync(data);
+      const formData = new FormData();
+      // TODO: add currilum and guide to formdata
+      const res = await mutateAsync({ ...data, ...formData });
       if (res.success === true) {
         form.reset();
         onClose();
@@ -79,6 +81,7 @@ export const AddDomain = ({ onClose, open }: Props) => {
           form={form}
           loading={isLoading}
           onSubmit={onSubmit}
+          className="md:col-span-6"
         />
       </DialogContent>
     </Dialog>

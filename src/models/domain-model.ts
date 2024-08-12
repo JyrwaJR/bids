@@ -52,24 +52,10 @@ export const DomainModel = z.object({
       message: 'Invalid value'
     }),
   level: z
-    .string({
+    .number({
       required_error: FieldsIsRequired
     })
-    .transform((val) => {
-      const parsed = parseInt(val, 10);
-      if (isNaN(parsed)) {
-        throw new Error('Invalid number');
-      }
-      return parsed;
-    })
-    .refine(
-      (data) => {
-        return typeof data === 'number' && !isNaN(data);
-      },
-      {
-        message: 'Must be a valid number'
-      }
-    ),
+    .optional(),
   last_review: z
     .string({
       required_error: FieldsIsRequired
@@ -86,6 +72,7 @@ export const DomainModel = z.object({
   approval_date: z
     .string()
     .refine((val) => format(new Date(val), 'yyyy-MM-dd'))
-    .optional()
+    .optional(),
+  duration: z.number({ required_error: FieldsIsRequired }).int().positive()
 });
 export type DomainModelType = z.infer<typeof DomainModel>;
