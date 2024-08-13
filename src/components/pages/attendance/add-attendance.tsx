@@ -1,29 +1,16 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react';
-import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ColumnDef } from '@tanstack/react-table';
-
 import { DataTable } from '@components/ui/data-table';
 import { Separator } from '@components/ui/separator';
 import { showToast } from '@components/ui/show-toast';
 import { Checkbox } from '@components/ui/checkbox';
 import { CForm, FormFieldType } from '@components/form';
 import { OptionsT } from '@components/form/type';
-
-import {
-  attendanceQueryKey,
-  batchQueryKey,
-  domainQueryKey
-} from '@constants/query-keys';
+import { batchQueryKey } from '@constants/query-keys';
 import { FailedToastTitle } from '@constants/toast-message';
-import { useCQuery } from '@hooks/useCQuery';
 import { AttendanceModelType } from '@models/attendance-model';
 import { attendanceColumn } from '@constants/columns/attendance';
 import { Heading } from '@components/ui/heading';
@@ -34,6 +21,25 @@ import { useQuery } from 'react-query';
 import { AxiosError } from 'axios';
 import { format } from 'date-fns';
 import { SaveAttendance } from './save-attendance';
+import { useCQuery } from '@hooks/useCQuery';
+import { debounce } from 'lodash';
+const schema = z.object({
+  batch_id: z
+    .string({
+      required_error: 'Batch is required'
+    })
+    .uuid(),
+  date: z
+    .string()
+    .refine((v) => format(new Date(v), 'yyyy-MM-dd') !== 'invalid date')
+    .optional()
+});
+
+const searchFormFields: FormFieldType[] = [
+  { name: 'batch_id', label: 'Batch', select: true },
+  { name: 'date', label: 'Date', type: 'date' }
+];
+
 const getAttendanceByBatchId = async (batchId: string, date?: string) => {
   try {
     if (!batchId) {
@@ -45,40 +51,29 @@ const getAttendanceByBatchId = async (batchId: string, date?: string) => {
     throw error;
   }
 };
-
-const schema = z.object({
-  batch_id: z.string().uuid(),
-  domain_id: z.string().uuid().optional(),
-  date: z
-    .string()
-    .refine((v) => format(new Date(v), 'yyyy-MM-dd') !== 'invalid date')
-    .optional()
-});
-
-const getStudentFields: FormFieldType[] = [
-  { name: 'batch_id', label: 'Batch', select: true },
-  { name: 'date', label: 'Date', type: 'date' }
-];
-
+// FIX: attencance query is making to many requests when press search so the page freeze on search
+// NOTE: This is a temporary fix using debounce
 export const AddAttendance: React.FC = () => {
   const [isAbsentStudents, setIsAbsentStudents] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const today = format(new Date(), 'yyyy-MM-dd');
   const form = useForm<AttendanceModelType>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      date: today
-    }
+    defaultValues: { date: today }
   });
 
   const watch_batch_id = useWatch({ control: form.control, name: 'batch_id' });
   const watch_date = useWatch({ control: form.control, name: 'date' });
-  const domainQuery = useCQuery({ url: 'domain', queryKey: domainQueryKey });
   const batchQuery = useCQuery({ url: 'batch', queryKey: batchQueryKey });
   const attendanceQuery = useQuery({
     queryFn: async () =>
       await getAttendanceByBatchId(watch_batch_id, watch_date),
-    queryKey: attendanceQueryKey,
+    queryKey: [
+      'add',
+      'attendance',
+      form.getValues('batch_id'),
+      form.getValues('date')
+    ],
     enabled: false,
     onError: (error: any) => {
       if (error instanceof AxiosError) {
@@ -89,63 +84,47 @@ export const AddAttendance: React.FC = () => {
   });
   const prevBatchId = useRef<string | undefined>(undefined);
   const prevDate = useRef<string | undefined>(undefined);
+  const debouncedRefetch = useRef(
+    debounce(() => {
+      attendanceQuery.refetch();
+    }, 1000) // Adjust the delay as needed
+  ).current;
+
   const onChangeDateOrBatch = useCallback(() => {
     if (
       watch_batch_id !== prevBatchId.current ||
       watch_date !== prevDate.current
     ) {
-      attendanceQuery.refetch();
+      debouncedRefetch();
       prevBatchId.current = watch_batch_id;
       prevDate.current = watch_date;
     }
-  }, [watch_batch_id, watch_date, attendanceQuery]);
+  }, [watch_batch_id, watch_date, debouncedRefetch]);
 
   useEffect(() => {
     onChangeDateOrBatch();
   }, [onChangeDateOrBatch]);
 
-  const domainOptions: OptionsT[] = useMemo(
-    () =>
-      domainQuery.isFetched && domainQuery.data
-        ? domainQuery.data.data.map((item: { id: string; name: string }) => ({
-            label: item.name,
-            value: item.id
-          }))
-        : [],
-    [domainQuery]
+  const batchOptions: OptionsT[] = batchQuery.data?.data.map(
+    (item: { id: string; batch_code: string }) => ({
+      label: item.batch_code,
+      value: item.id
+    })
   );
 
-  const batchOptions: OptionsT[] = useMemo(
-    () =>
-      batchQuery.isFetched && batchQuery.data
-        ? batchQuery.data.data.map(
-            (item: { id: string; batch_code: string }) => ({
-              label: item.batch_code,
-              value: item.id
-            })
-          )
-        : [],
-    [batchQuery]
-  );
+  const updatedFields: FormFieldType[] = searchFormFields.map((field) => {
+    if (field.select) {
+      switch (field.name) {
+        case 'batch_id':
+          return { ...field, options: batchOptions };
+        default:
+          return field;
+      }
+    }
+    return field;
+  });
 
-  const updatedFields: FormFieldType[] = useMemo(
-    () =>
-      getStudentFields.map((field) => {
-        if (field.select) {
-          switch (field.name) {
-            case 'domain_id':
-              return { ...field, options: domainOptions };
-            case 'batch_id':
-              return { ...field, options: batchOptions };
-            default:
-              return field;
-          }
-        }
-        return field;
-      }),
-    [domainOptions, batchOptions]
-  );
-  const columns: ColumnDef<any>[] = [
+  const columns: ColumnDef<AttendanceModelType | any>[] = [
     ...attendanceColumn,
     {
       id: 'select',
@@ -157,14 +136,12 @@ export const AddAttendance: React.FC = () => {
             isAbsentStudents.includes(row.original.id ?? '')
           }
           onCheckedChange={(value) => {
-            if (value && row.original.id) {
+            if (row.original.id) {
+              const newSelected = value
+                ? [...isAbsentStudents, row.original.id]
+                : isAbsentStudents.filter((id) => id !== row.original.id);
+              setIsAbsentStudents(newSelected);
               row.getToggleSelectedHandler()(!!value);
-              setIsAbsentStudents([...isAbsentStudents, row.original.id]);
-            } else {
-              row.getToggleSelectedHandler()(!!value);
-              setIsAbsentStudents([
-                ...isAbsentStudents.filter((id) => id !== row.original.id)
-              ]);
             }
           }}
           aria-label="Select row"
@@ -174,55 +151,42 @@ export const AddAttendance: React.FC = () => {
       enableHiding: false
     }
   ];
-  const onSubmit: SubmitHandler<AttendanceModelType> = () => {
-    attendanceQuery.refetch();
-  };
   return (
     <div className="flex w-full flex-col space-y-4">
       <div className="flex items-start justify-between space-y-2">
         <Heading title="New Attendance" description="Manage Attendance" />
       </div>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col items-start justify-center space-x-2 md:flex-row md:items-center md:justify-start"
-        >
-          <div>
-            <CForm
-              form={form}
-              fields={updatedFields}
-              loading={false}
-              className="md:col-span-6"
-            />
-          </div>
+        <div className="flex flex-col items-start justify-center space-x-2 md:flex-row md:items-center md:justify-start">
+          <CForm
+            form={form}
+            fields={updatedFields}
+            loading={false}
+            className="md:col-span-6"
+          />
           <Button
-            type="submit"
             disabled={attendanceQuery.isFetching}
+            onClick={debouncedRefetch}
             className="mt-4"
           >
             Search
           </Button>
-        </form>
+        </div>
       </Form>
       <Separator />
       <DataTable
         searchKey="batch"
-        onClick={() => {
-          if (isAbsentStudents.length > 0) {
-            setOpen(true);
-          }
-        }}
+        onClick={() => setOpen(isAbsentStudents.length > 0)}
         columns={columns}
-        disabled={isAbsentStudents.length > 0 ? false : true}
+        disabled={isAbsentStudents.length === 0}
         className="h-full"
-        isLoading={false}
-        // TODO: correct data add
-        data={attendanceQuery.data ?? []} // Use appropriate data source
+        isLoading={attendanceQuery.isFetching}
+        data={attendanceQuery.data?.data ?? []} // Use the fetched data
       />
       {open && (
         <SaveAttendance
           batch_id={form.getValues('batch_id')}
-          open={isAbsentStudents.length > 0 && open}
+          open={open}
           ids={isAbsentStudents}
           onClose={() => setOpen(false)}
         />

@@ -57,6 +57,7 @@
     "eslint": "8.48.0",
     "eslint-config-next": "^14.0.1",
     "jspdf": "^2.5.1",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.291.0",
     "next": "^14.2.3",
     "next-auth": "^5.0.0-beta.18",
@@ -84,6 +85,7 @@
     "zustand": "^4.4.6"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.7",
     "@types/react-csv": "^1.1.10",
     "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
