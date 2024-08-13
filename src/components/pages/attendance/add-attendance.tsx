@@ -161,8 +161,8 @@ export const AddAttendance: React.FC = () => {
           <CForm
             form={form}
             fields={updatedFields}
-            loading={false}
-            className="md:col-span-6"
+            loading={attendanceQuery.isFetching}
+            className="w-full md:col-span-6"
           />
           <Button
             disabled={attendanceQuery.isFetching}

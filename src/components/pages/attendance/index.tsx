@@ -22,6 +22,7 @@ import { z } from 'zod';
 import { AttendanceModelType } from '@models/attendance-model';
 import { axiosInstance } from '@lib/utils';
 import { attendanceColumn } from '@constants/columns/attendance';
+import { debounce } from 'lodash';
 const getAttendanceByBatchId = async (batchId: string, date?: string) => {
   try {
     if (!batchId) {
@@ -73,53 +74,46 @@ export const AttendancePage = () => {
   });
   const prevBatchId = useRef<string | undefined>(undefined);
   const prevDate = useRef<string | undefined>(undefined);
+  const debouncedRefetch = useRef(
+    debounce(() => {
+      attendanceQuery.refetch();
+    }, 1000) // Adjust the delay as needed
+  ).current;
+
   const onChangeDateOrBatch = useCallback(() => {
     if (
       watch_batch_id !== prevBatchId.current ||
       watch_date !== prevDate.current
     ) {
-      attendanceQuery.refetch();
+      debouncedRefetch();
       prevBatchId.current = watch_batch_id;
       prevDate.current = watch_date;
     }
-  }, [watch_batch_id, watch_date, attendanceQuery]);
+  }, [watch_batch_id, watch_date, debouncedRefetch]);
 
   useEffect(() => {
     onChangeDateOrBatch();
   }, [onChangeDateOrBatch]);
 
-  const batchOptions: OptionsT[] = useMemo(
-    () =>
-      batchQuery.isFetched && batchQuery.data
-        ? batchQuery.data.data.map(
-            (item: { id: string; batch_code: string }) => ({
-              label: item.batch_code,
-              value: item.id
-            })
-          )
-        : [],
-    [batchQuery]
-  );
+  const batchOptions: OptionsT[] = batchQuery.isFetched
+    ? batchQuery.data.data.map((item: { id: string; batch_code: string }) => ({
+        label: item.batch_code,
+        value: item.id
+      }))
+    : [];
 
-  const updatedFields: FormFieldType[] = useMemo(
-    () =>
-      getStudentFields.map((field) => {
-        if (field.select) {
-          switch (field.name) {
-            case 'batch_id':
-              return { ...field, options: batchOptions };
-            default:
-              return field;
-          }
-        }
-        return field;
-      }),
-    [batchOptions]
-  );
+  const updatedFields: FormFieldType[] = getStudentFields.map((field) => {
+    if (field.select) {
+      switch (field.name) {
+        case 'batch_id':
+          return { ...field, options: batchOptions };
+        default:
+          return field;
+      }
+    }
+    return field;
+  });
 
-  const onSubmit: SubmitHandler<AttendanceModelType> = () => {
-    attendanceQuery.refetch();
-  };
   return (
     <ScrollArea>
       <div className="flex-1 space-y-4">
@@ -133,26 +127,23 @@ export const AttendancePage = () => {
               <Heading title="New Attendance" description="Manage Attendance" />
             </div>
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col items-start justify-start space-x-2 md:flex-row md:items-center md:justify-start"
-              >
+              <div className="flex flex-col items-start justify-start space-x-2 md:flex-row md:items-center md:justify-start">
                 <div>
                   <CForm
                     form={form}
                     fields={updatedFields}
-                    loading={false}
+                    loading={attendanceQuery.isFetching}
                     className="md:col-span-6"
                   />
                 </div>
                 <Button
-                  type="submit"
                   disabled={attendanceQuery.isFetching}
+                  onClick={debouncedRefetch}
                   className="mt-4"
                 >
                   Search
                 </Button>
-              </form>
+              </div>
             </Form>
             <Separator />
             <DataTable
@@ -160,7 +151,11 @@ export const AttendancePage = () => {
               columns={attendanceColumn}
               className="h-full"
               isLoading={attendanceQuery.isFetching}
-              data={attendanceQuery.data.data ?? []} // Use appropriate data source
+              data={
+                attendanceQuery.isFetched && attendanceQuery.data
+                  ? attendanceQuery.data.data
+                  : []
+              } // Use appropriate data source
             />
           </TabsContent>
           <TabsContent value="new-attendance" className="space-y-4">
