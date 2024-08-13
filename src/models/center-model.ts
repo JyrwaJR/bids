@@ -56,7 +56,8 @@ export const CenterModel = z.object({
     })
     .max(50, {
       message: 'Should be less than 50 in length'
-    }),
+    })
+    .refine((val) => val.toString()),
   state_id: z
     .string({
       required_error: FieldsIsRequired

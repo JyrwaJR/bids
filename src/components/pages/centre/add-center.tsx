@@ -4,8 +4,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showToast } from '@src/components/ui/show-toast';
 import { addCenterFields } from '@src/constants/input-fields';
-import { FailedToastTitle } from '@src/constants/toast-message';
-import { useCMutation, useCQuery } from '@src/hooks';
+import {
+  FailedToastTitle,
+  SuccessToastTitle
+} from '@src/constants/toast-message';
+import { useCMutation, useCategorySelectOptions } from '@src/hooks';
 import { CenterModel, CenterModelType } from '@src/models';
 
 import { Form } from '../../form';
@@ -16,18 +19,15 @@ import {
   DialogHeader,
   DialogTitle
 } from '../../ui/dialog';
-import { FormFieldType, OptionsT } from '@components/form/type';
-import { centreQueryKey, stateQueryKey } from '@constants/query-keys';
+import { FormFieldType } from '@components/form/type';
+import { centreQueryKey } from '@constants/query-keys';
 
 type Props = {
   open: boolean;
   onClose: () => void;
 };
-type StateT = {
-  name: string;
-  id: string;
-};
 export const AddCentre = ({ onClose, open }: Props) => {
+  const { options, isLoading: isStateLoading } = useCategorySelectOptions();
   const form = useForm<CenterModelType>({
     resolver: zodResolver(CenterModel)
   });
@@ -36,21 +36,14 @@ export const AddCentre = ({ onClose, open }: Props) => {
     method: 'POST',
     queryKey: centreQueryKey
   });
-  const { data, isLoading: isStateLoading } = useCQuery({
-    url: 'state',
-    queryKey: stateQueryKey
-  });
-
-  const stateOptions: OptionsT[] =
-    !isStateLoading &&
-    data.data.map((item: StateT) => ({
-      value: item.id,
-      label: item.name
-    }));
 
   const onSubmitAddCentre: SubmitHandler<CenterModelType> = async (data) => {
     try {
-      await mutateAsync(data);
+      const res = await mutateAsync(data);
+      if (res.success) {
+        showToast(SuccessToastTitle, res.message);
+        onClose();
+      }
     } catch (error: any) {
       showToast(FailedToastTitle, error.message);
     }
@@ -63,7 +56,7 @@ export const AddCentre = ({ onClose, open }: Props) => {
       label: 'State',
       required: true,
       select: true,
-      options: stateOptions ?? []
+      options: options.states
     },
     {
       name: 'district_id',
