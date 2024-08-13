@@ -37,9 +37,6 @@ export const DomainModel = z.object({
     })
     .max(155, {
       message: 'Should be less than 155 in length'
-    })
-    .regex(lettersAndSpacesRegex, {
-      message: 'Should contain only letters'
     }),
   status: z
     .string({

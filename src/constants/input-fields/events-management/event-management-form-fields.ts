@@ -24,19 +24,19 @@ export const eventManagementFields: FormFieldType[] = [
   },
   {
     name: 'men',
-    label: 'No. of Males',
+    label: 'Male',
     required: true,
     type: 'number'
   },
   {
     name: 'women',
-    label: 'No. of females',
+    label: 'Female',
     required: true,
     type: 'number'
   },
   {
     name: 'youth',
-    label: 'No. of Youth',
+    label: 'Youth',
     required: true,
     type: 'number'
   },
@@ -61,7 +61,10 @@ export const eventManagementFields: FormFieldType[] = [
   {
     name: 'image',
     label: 'Event Image',
-    required: true,
     type: 'file'
+  },
+  {
+    name: 'image_title',
+    label: 'Image Title'
   }
 ];

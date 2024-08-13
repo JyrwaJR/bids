@@ -10,7 +10,7 @@ import { showToast } from '@components/ui/show-toast';
 import { FailedToastTitle } from '@constants/toast-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCMutation } from '@hooks/useCMutation';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ACCEPTED_FILE_TYPES, MAX_UPLOAD_SIZE } from '@constants/index';
@@ -41,6 +41,9 @@ export const UploadEventsMangementImage = ({ open, id, onClose }: Props) => {
   const form = useForm<ImageModelType>({
     resolver: zodResolver(ImageModel)
   });
+  useEffect(() => {
+    if (!id) onClose();
+  }, [id, onClose]);
   const mutate = useCMutation({
     url: `events/upload-image/${id}`,
     method: 'POST',

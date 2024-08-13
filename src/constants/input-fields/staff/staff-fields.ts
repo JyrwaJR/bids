@@ -16,8 +16,7 @@ export const staffFields: FormFieldType[] = [
   {
     name: 'phone',
     label: 'Phone',
-    required: true,
-    type: 'number'
+    required: true
   },
   {
     name: 'address',

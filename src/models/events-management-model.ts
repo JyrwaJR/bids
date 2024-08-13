@@ -25,7 +25,10 @@ export const EventManagementModel = z.object({
   event_date: z.string().refine((val) => isValidDate(val), {
     message: 'Invalid date format. Expected format: yyyy-MM-dd'
   }),
-
+  title: z
+    .string()
+    .max(250, 'Title should be at most 250 characters long.')
+    .optional(),
   image: imageValidation.optional(),
   extended_till: z
     .string()
@@ -34,13 +37,10 @@ export const EventManagementModel = z.object({
     })
     .optional()
     .nullable(),
-
   event_location: z
     .string()
     .max(200, 'Event location should be at most 200 characters long.'),
-
   remarks: z.string().optional(), // Assuming remarks is optional
-
   status: z
     .string()
     .max(12, 'Status should be at most 12 characters long.')

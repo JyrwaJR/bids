@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { FieldsIsRequired } from '@constants/index';
 import { yesNoOptions } from '@constants/options';
 import { lettersAndSpacesRegex } from '@constants/regex';
+import { numberRegex } from '@constants/regex/number-regex';
 
 export const StaffModel = z
   .object({
@@ -20,6 +21,7 @@ export const StaffModel = z
     }),
     phone: z
       .string({ required_error: FieldsIsRequired })
+      .regex(numberRegex, 'Phone number should only contain number')
       .min(10, {
         message: 'Should contained at least 10 no '
       })

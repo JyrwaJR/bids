@@ -130,20 +130,19 @@ export const EventsManagementPage = () => {
     }
   };
   const updatedColumn: ColumnDef<any>[] = [
-    {
-      accessorKey: 'id',
-      cell: ({ row }) => {
-        return row.index + 1;
-      }
-    },
     ...eventsMangementColumn,
     {
       header: 'Upload Image',
-      cell: () => {
+      cell: ({ row }) => {
         return (
           <Button
             disabled={isUploading}
-            onClick={() => setIsUploading(true)}
+            onClick={() => {
+              if (row.original.id) {
+                setIsSelectedId(row.original.id);
+                setIsUploading(true);
+              }
+            }}
             size={'icon'}
             variant={'link'}
           >

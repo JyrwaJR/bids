@@ -3,9 +3,8 @@ import { ColumnDef } from '@tanstack/react-table';
 export const domainColumn: ColumnDef<DomainModelType>[] = [
   {
     accessorKey: 'name',
-    header: 'Name'
+    header: 'Domain'
   },
-
   {
     accessorKey: 'sector',
     header: 'Sector'

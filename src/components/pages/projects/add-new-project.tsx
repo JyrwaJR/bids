@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FailedToastTitle } from '@constants/toast-message';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DomainModelType, ProjectModel, ProjectModelType } from '@src/models';
 import { projectsFields } from '@constants/input-fields/projects/project-fields';
@@ -16,16 +16,14 @@ import { Separator } from '@components/ui/separator';
 import { CForm, FormTag } from '@components/form';
 import { Card } from '@components/ui/card';
 import { projectsQueryKey } from '@constants/query-keys';
-
 const AddNewProject = () => {
   const [isSelectedIds, setSelectedIds] = useState<string[]>([]);
-  const form = useForm({
+  const form = useForm<ProjectModelType>({
     resolver: zodResolver(ProjectModel),
     defaultValues: {
       domain_id: isSelectedIds
     }
   });
-
   const {
     isLoading: isMutateLoading,
     isSuccess,
@@ -107,12 +105,24 @@ const AddNewProject = () => {
       enableSorting: false,
       enableHiding: false
     },
-    {
-      accessorKey: 'sector',
-      header: 'Sector'
-    },
     ...domainColumn
   ];
+
+  const targetSector = form.watch('target_sector');
+
+  const domainData = (() => {
+    if (targetSector === 'Both') {
+      // Filter for both 'Rural' and 'Urban'
+      return domain?.data.filter(
+        (item: any) => item.sector === 'Rural' || item.sector === 'Urban'
+      );
+    } else if (targetSector) {
+      // Filter based on the selected target sector
+      return domain?.data.filter((item: any) => item.sector === targetSector);
+    }
+    // Return all data if targetSector is falsy
+    return domain?.data;
+  })();
 
   return (
     <FormTag
@@ -146,12 +156,11 @@ const AddNewProject = () => {
         </div>
         <DataTable
           searchKey="name"
-          data={isDomainFetch && !isDomainError ? domain?.data : []}
+          data={isDomainFetch && !isDomainError ? domainData : []}
           columns={columns}
           className="h-96"
         />
       </Card>
-      <Separator />
     </FormTag>
   );
 };

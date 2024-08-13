@@ -4,7 +4,7 @@ import { ProjectModelType } from '@src/models';
 export const ProjectColumn: ColumnDef<ProjectModelType>[] = [
   {
     accessorKey: 'name',
-    header: 'Name'
+    header: 'Project'
   },
   {
     accessorKey: 'target',

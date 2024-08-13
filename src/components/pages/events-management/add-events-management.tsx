@@ -12,6 +12,7 @@ import { eventsManagementQueryKey } from '@constants/query-keys';
 import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCMutation } from '@hooks/useCMutation';
+import { appendNonFileDataToFormData } from '@lib/appendNoneFileDataToFileData';
 import {
   EventManagementModel,
   EventManagementModelType
@@ -38,35 +39,47 @@ export const AddEventsManagement = ({ open, onClose }: Props) => {
     method: 'POST',
     queryKey: eventsManagementQueryKey
   });
-  const mutate = useCMutation({
-    url: `events/upload-image/${id}`,
-    method: 'POST',
-    queryKey: eventsManagementQueryKey
-  });
   const onSubmit: SubmitHandler<EventManagementModelType> = async (data) => {
     try {
-      const res = await mutateAsync(data);
-      if (res.success && data.image && res.data?.id) {
-        setId(res.data.id);
+      // Check if image is present
+      if (data.image) {
+        // Create a FormData object to send all data, including the image
         const formData = new FormData();
+
+        // Append non-file data to FormData
+        appendNonFileDataToFormData(data, formData);
+
+        // Append the image file
         formData.append('image', data.image);
-        const response = await mutate.mutateAsync(formData);
+
+        // Send the FormData object
+        const response = await mutateAsync(formData);
+
         if (response.success) {
           showToast(SuccessToastTitle, response.message);
         } else {
-          throw new Error(response.message || 'Image upload failed');
+          throw new Error(response.message || 'Data submission failed');
         }
-      } else if (res.success) {
-        showToast(SuccessToastTitle, res.message);
+      } else {
+        // If no image, send the data directly as a regular object
+        const res = await mutateAsync(data);
+
+        if (res.success) {
+          showToast(SuccessToastTitle, res.message);
+        } else {
+          throw new Error(res.message || 'Data submission failed');
+        }
       }
     } catch (error: any) {
       showToast(FailedToastTitle, error.message || 'An error occurred');
     } finally {
+      // Reset the form and clean up
       form.reset();
       onClose();
       setId('');
     }
   };
+  console.log(form.formState.errors);
   const men = useWatch({ control: form.control, name: 'men', defaultValue: 0 });
   const women = useWatch({
     control: form.control,
