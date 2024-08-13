@@ -16,16 +16,6 @@ export const BatchModel = z.object({
     .uuid({
       message: 'Project ID must be a valid UUID'
     }),
-  batch_code: z
-    .string({
-      required_error: FieldsIsRequired
-    })
-    .max(10, {
-      message: 'Batch code must be 10 characters or less'
-    }),
-  batchid: z.string({
-    required_error: FieldsIsRequired
-  }),
   start_date: z
     .string({
       required_error: FieldsIsRequired
@@ -40,7 +30,11 @@ export const BatchModel = z.object({
     .refine((date) => !isNaN(Date.parse(date)), {
       message: 'End date must be a valid date'
     }),
-  capacity: z.string({
+  capacity: z.number({
+    required_error: FieldsIsRequired
+  }),
+  duration: z.number({ required_error: FieldsIsRequired }),
+  unit: z.enum(['hr', 'min'], {
     required_error: FieldsIsRequired
   })
 });

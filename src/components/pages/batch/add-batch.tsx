@@ -124,6 +124,7 @@ export const AddBatch = ({ open, onClose, projectId }: Props) => {
           <Form
             form={form}
             onSubmit={onSubmit}
+            className="md:col-span-6"
             fields={batchFields}
             loading={isLoading || loading}
             btnStyle="md:w-full"
