@@ -16,7 +16,13 @@ export const ProjectModel = z.object({
       required_error: FieldsIsRequired
     })
     .max(250),
-  target: z.string().refine((value) => Number(value)),
+  target: z
+    .number({
+      required_error: FieldsIsRequired
+    })
+    .positive({
+      message: 'Should be positive'
+    }),
   start_date: z
     .string()
     .refine((value) => format(new Date(value), 'yyyy-MM-dd')),
@@ -25,7 +31,7 @@ export const ProjectModel = z.object({
     .refine((value) => format(new Date(value), 'yyyy-MM-dd'))
     .nullable(),
   status: z.string().max(20),
-  duration: z.string(),
+  duration: z.number().positive({ message: 'Should be positive' }),
   target_sector: z
     .string()
     .max(20)

@@ -9,7 +9,8 @@ export const projectsFields: FormFieldType[] = [
   {
     name: 'target',
     label: 'Target',
-    required: true
+    required: true,
+    type: 'number'
   },
   {
     name: 'start_date',
@@ -33,7 +34,8 @@ export const projectsFields: FormFieldType[] = [
   {
     name: 'duration',
     label: 'Duration',
-    required: true
+    required: true,
+    type: 'number'
   },
   {
     name: 'target_sector',
