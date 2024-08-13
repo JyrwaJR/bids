@@ -18,7 +18,7 @@ export const batchFields: FormFieldType[] = [
   },
   {
     name: 'duration',
-    label: 'duration in hour/ class',
+    label: 'hour/class',
     type: 'number'
   },
   {
