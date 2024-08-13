@@ -13,10 +13,13 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useCMutation } from '@hooks/useCMutation';
 import { showToast } from '@components/ui/show-toast';
-import { FailedToastTitle } from '@constants/toast-message';
+import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
 import { useCQuery } from '@hooks/useCQuery';
 import { OptionsT } from '@components/form/type';
 import { domainQueryKey, sectorQueryKey } from '@constants/query-keys';
+import { axiosInstance } from '@lib/utils';
+import { AxiosError } from 'axios';
+import { appendNonFileDataToFormData } from '@lib/appendNoneFileDataToFileData';
 
 type Props = {
   open: true | false;
@@ -46,15 +49,35 @@ export const AddDomain = ({ onClose, open }: Props) => {
 
   const onSubmit: SubmitHandler<DomainModelType> = async (data) => {
     try {
-      const formData = new FormData();
-      // TODO: add currilum and guide to formdata
-      const res = await mutateAsync({ ...data, ...formData });
-      if (res.success === true) {
-        form.reset();
-        onClose();
+      if (!data.guide && !data.curriculum) {
+        const res = await mutateAsync(data);
+        if (res.success) {
+          showToast(SuccessToastTitle, res.message);
+          onClose();
+        }
+      } else if (data.curriculum && data.guide) {
+        const formData = new FormData();
+        formData.append('guide', data.guide);
+        formData.append('curriculum', data.curriculum);
+
+        // Append other data to formData
+        appendNonFileDataToFormData<DomainModelType>(data, formData);
+        const res = await axiosInstance.post('/domain/save', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        if (res.status === 200 && res.data.success) {
+          showToast(SuccessToastTitle, res.data.message);
+          onClose();
+        }
       }
     } catch (error: any) {
-      showToast(FailedToastTitle, error.message);
+      if (error instanceof AxiosError) {
+        showToast(FailedToastTitle, error.response?.data.message);
+      } else {
+        showToast(FailedToastTitle, error.message);
+      }
     }
   };
   const updateFields: FormFieldType[] = [

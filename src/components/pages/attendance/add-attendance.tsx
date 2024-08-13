@@ -181,7 +181,11 @@ export const AddAttendance: React.FC = () => {
               className="col-span-6"
             />
           </div>
-          <Button disabled={attendanceQuery.isFetching} className="mt-4">
+          <Button
+            type="submit"
+            disabled={attendanceQuery.isFetching}
+            className="mt-4"
+          >
             Search
           </Button>
         </form>

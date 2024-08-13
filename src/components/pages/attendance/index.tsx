@@ -79,12 +79,9 @@ export const AttendancePage = () => {
 
   const attendanceQuery = useQuery({
     queryFn: async () =>
-      await getAttendanceByBatchId(
-        form.getValues('batch_id'),
-        form.getValues('date')
-      ),
+      await getAttendanceByBatchId(batchChanged, dateChanged),
     queryKey: [attendanceQueryKey, today],
-    enabled: !!form.watch('batch_id'),
+    enabled: !!batchChanged,
     onError: (error: any) => {
       if (error instanceof AxiosError) {
         showToast(FailedToastTitle, error.response?.data.message);
@@ -94,6 +91,7 @@ export const AttendancePage = () => {
   });
   const batchQuery = useCQuery({ url: 'batch', queryKey: batchQueryKey });
   const domainQuery = useCQuery({ url: 'domain', queryKey: domainQueryKey });
+
   const onChangeDateOrBatch = useCallback(() => {
     if (dateChanged || batchChanged) {
       attendanceQuery.refetch();
@@ -173,7 +171,7 @@ export const AttendancePage = () => {
                     <CForm
                       form={form}
                       fields={updatedFields}
-                      loading={false}
+                      loading={batchQuery.isLoading}
                       className="col-span-6"
                     />
                   </div>
