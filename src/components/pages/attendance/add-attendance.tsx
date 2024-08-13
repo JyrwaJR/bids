@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -72,8 +78,8 @@ export const AddAttendance: React.FC = () => {
   const attendanceQuery = useQuery({
     queryFn: async () =>
       await getAttendanceByBatchId(watch_batch_id, watch_date),
-    queryKey: [attendanceQueryKey, today],
-    enabled: !!watch_batch_id,
+    queryKey: attendanceQueryKey,
+    enabled: false,
     onError: (error: any) => {
       if (error instanceof AxiosError) {
         showToast(FailedToastTitle, error.response?.data.message);
@@ -81,11 +87,19 @@ export const AddAttendance: React.FC = () => {
       showToast(FailedToastTitle, error.message);
     }
   });
+  const prevBatchId = useRef<string | undefined>(undefined);
+  const prevDate = useRef<string | undefined>(undefined);
   const onChangeDateOrBatch = useCallback(() => {
-    if (watch_batch_id || watch_date) {
+    if (
+      watch_batch_id !== prevBatchId.current ||
+      watch_date !== prevDate.current
+    ) {
       attendanceQuery.refetch();
+      prevBatchId.current = watch_batch_id;
+      prevDate.current = watch_date;
     }
   }, [watch_batch_id, watch_date, attendanceQuery]);
+
   useEffect(() => {
     onChangeDateOrBatch();
   }, [onChangeDateOrBatch]);
@@ -171,14 +185,14 @@ export const AddAttendance: React.FC = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex items-center space-x-2"
+          className="flex flex-col items-start justify-center space-x-2 md:flex-row md:items-center md:justify-start"
         >
           <div>
             <CForm
               form={form}
               fields={updatedFields}
               loading={false}
-              className="col-span-6"
+              className="md:col-span-6"
             />
           </div>
           <Button
