@@ -21,7 +21,9 @@ export const SectorPage = () => {
   const column: ColumnDef<any>[] = [
     {
       accessorKey: 'name',
-      header: 'Name'
+      header: 'Name',
+      enableSorting: false,
+      enableHiding: false
     },
     {
       accessorKey: 'Action',
@@ -34,7 +36,9 @@ export const SectorPage = () => {
             }
           }}
         />
-      )
+      ),
+      enableSorting: false,
+      enableHiding: false
     }
   ];
   return (
