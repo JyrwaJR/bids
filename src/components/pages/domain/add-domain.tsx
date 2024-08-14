@@ -16,10 +16,9 @@ import { showToast } from '@components/ui/show-toast';
 import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
 import { useCQuery } from '@hooks/useCQuery';
 import { OptionsT } from '@components/form/type';
-import { domainQueryKey, sectorQueryKey } from '@constants/query-keys';
-import { axiosInstance } from '@lib/utils';
 import { AxiosError } from 'axios';
 import { appendNonFileDataToFormData } from '@lib/appendNoneFileDataToFileData';
+import { domainQueryKey, sectorQueryKey } from '@constants/query-keys';
 
 type Props = {
   open: true | false;
@@ -59,16 +58,11 @@ export const AddDomain = ({ onClose, open }: Props) => {
         const formData = new FormData();
         formData.append('guide', data.guide);
         formData.append('curriculum', data.curriculum);
-
         // Append other data to formData
         appendNonFileDataToFormData<DomainModelType>(data, formData);
-        const res = await axiosInstance.post('/domain/save', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-        if (res.status === 200 && res.data.success) {
-          showToast(SuccessToastTitle, res.data.message);
+        const res = await mutateAsync(formData);
+        if (res.success) {
+          showToast(SuccessToastTitle, res.message);
           onClose();
         }
       }
@@ -104,6 +98,7 @@ export const AddDomain = ({ onClose, open }: Props) => {
           form={form}
           loading={isLoading}
           onSubmit={onSubmit}
+          btnStyle="md:w-full"
           className="md:col-span-6"
         />
       </DialogContent>
