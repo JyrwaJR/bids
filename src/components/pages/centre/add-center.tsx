@@ -1,6 +1,5 @@
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showToast } from '@src/components/ui/show-toast';
 import { addCenterFields } from '@src/constants/input-fields';
@@ -70,8 +69,7 @@ export const AddCentre = ({ onClose, open }: Props) => {
         <DialogHeader>
           <DialogTitle>Center</DialogTitle>
           <DialogDescription>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
-            reprehenderit sit quisquam
+            Please enter the following details
           </DialogDescription>
         </DialogHeader>
         <Form
@@ -79,7 +77,6 @@ export const AddCentre = ({ onClose, open }: Props) => {
           fields={fields}
           form={form}
           loading={isLoading || isStateLoading}
-          btnStyle="md:w-full"
           className="w-full md:col-span-6 md:w-full"
         />
       </DialogContent>

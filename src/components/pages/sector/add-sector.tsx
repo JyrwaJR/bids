@@ -63,7 +63,7 @@ export const AddSector = () => {
         <DialogHeader>
           <DialogTitle>{!!id ? 'Update' : 'Add'} Sector</DialogTitle>
           <DialogDescription>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit.{' '}
+            Please enter the name of the sector
           </DialogDescription>
         </DialogHeader>
         <Form
