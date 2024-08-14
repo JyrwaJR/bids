@@ -30,6 +30,11 @@ import {
 import { EventManagementModelType } from '@models/events-management-model';
 import { ViewImages } from '@components/view-images';
 
+type ImageT = {
+  image: string;
+  id: string;
+  event_management_id: string;
+};
 const searyBy: OptionsT[] = [
   {
     label: 'Name',
@@ -70,10 +75,7 @@ const defaultEventsManagement: EventManagementModelType = {
 export const EventsManagementPage = () => {
   const { user } = useAuthContext();
   const [openViewImages, setOpenViewImages] = useState<boolean>(false);
-  const [selectedImages, setSelectedImages] = useState<{
-    id: string;
-    images: string[];
-  }>({ id: '', images: [] });
+  const [selectedImages, setSelectedImages] = useState<ImageT[]>();
   const [isSelectedEvent, setIsSelectedEvent] =
     useState<EventManagementModelType>(defaultEventsManagement);
   const [isDelConfirm, setIsDelConfirm] = useState<boolean>(false);

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
-import { ScrollArea } from './ui/scroll-area';
 import {
   Carousel,
   CarouselContent,
@@ -17,7 +16,7 @@ type ImageT = {
 type PropsT = {
   open: boolean;
   onClose: () => void;
-  images: ImageT[];
+  images?: ImageT[];
 };
 export const ViewImages = ({ open, onClose, images }: PropsT) => {
   const baseUrl = 'https://bids.masstech.in/public';
@@ -36,7 +35,7 @@ export const ViewImages = ({ open, onClose, images }: PropsT) => {
                     <img
                       src={`${baseUrl}/${image.image}`} //${image.image}
                       alt="image not found"
-                      className="w-full object-cover"
+                      className="aspect-video w-full object-cover"
                       loading="lazy"
                     />
                   </CarouselItem>
