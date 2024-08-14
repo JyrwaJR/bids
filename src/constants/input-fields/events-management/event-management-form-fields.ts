@@ -64,7 +64,7 @@ export const eventManagementFields: FormFieldType[] = [
     type: 'file'
   },
   {
-    name: 'image_title',
+    name: 'title',
     label: 'Image Title'
   }
 ];
