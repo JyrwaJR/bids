@@ -143,11 +143,8 @@ export const AddStaff = ({ onClose, open }: Props) => {
               Add new Staff
             </Typography>
           </DialogTitle>
-          <DialogDescription asChild>
-            <Typography>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
-              reprehenderit sit quisquam
-            </Typography>
+          <DialogDescription>
+            Please enter the following details
           </DialogDescription>
         </DialogHeader>
         <ScrollArea>

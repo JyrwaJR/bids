@@ -93,8 +93,7 @@ export const AddCentreDomain = ({ onClose, open, domain_id }: Props) => {
         <DialogHeader>
           <DialogTitle>Add Center Domain</DialogTitle>
           <DialogDescription>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam totam
-            magnam pariatur maxime, autem quibusdam!
+            Please enter the following details
           </DialogDescription>
         </DialogHeader>
         {isFetched && (
