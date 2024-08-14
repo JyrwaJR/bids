@@ -1,5 +1,5 @@
 'use client';
-import { Plus } from 'lucide-react';
+import { BanIcon, EyeIcon, Plus } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button } from '@src/components/ui/button';
 import { DataTable } from '@src/components/ui/data-table';
@@ -28,6 +28,7 @@ import {
   eventsManagementQueryKey
 } from '@constants/query-keys';
 import { EventManagementModelType } from '@models/events-management-model';
+import { ViewImages } from '@components/view-images';
 
 const searyBy: OptionsT[] = [
   {
@@ -68,6 +69,11 @@ const defaultEventsManagement: EventManagementModelType = {
 };
 export const EventsManagementPage = () => {
   const { user } = useAuthContext();
+  const [openViewImages, setOpenViewImages] = useState<boolean>(false);
+  const [selectedImages, setSelectedImages] = useState<{
+    id: string;
+    images: string[];
+  }>({ id: '', images: [] });
   const [isSelectedEvent, setIsSelectedEvent] =
     useState<EventManagementModelType>(defaultEventsManagement);
   const [isDelConfirm, setIsDelConfirm] = useState<boolean>(false);
@@ -81,7 +87,6 @@ export const EventsManagementPage = () => {
       centre_id: isSuperAdmin ? '' : user?.centre_id
     }
   });
-  console.log(user?.centre_id);
   const url = isSuperAdmin
     ? 'events'
     : `events/get-event-by-centre/${user?.centre_id}`;
@@ -152,6 +157,35 @@ export const EventsManagementPage = () => {
       }
     },
     {
+      header: 'View Images',
+      cell: ({ row }) => {
+        return (
+          <Button
+            disabled={row.original.event_images?.length === 0}
+            onClick={() => {
+              if (row.original.id) {
+                setSelectedImages(row.original.event_images);
+                if (
+                  row.original.event_images &&
+                  row.original.event_images.length > 0
+                ) {
+                  setOpenViewImages(true);
+                }
+              }
+            }}
+            size={'icon'}
+            variant={'link'}
+          >
+            {row.original.event_images?.length === 0 ? (
+              <BanIcon className="h-4 w-4" />
+            ) : (
+              <EyeIcon className="h-4 w-4" />
+            )}{' '}
+          </Button>
+        );
+      }
+    },
+    {
       accessorKey: 'status',
       header: 'Status'
     },
@@ -169,10 +203,8 @@ export const EventsManagementPage = () => {
             onDelete={() => {
               const id = row.original.id;
               if (id) {
-                console.log(id);
                 setIsSelectedId(id);
                 setIsDelConfirm(true);
-                console.log(isSelectedId);
               }
             }}
           />
@@ -264,6 +296,13 @@ export const EventsManagementPage = () => {
           desc="Are you sure you want to delete this event?"
           loading={!isDelConfirm}
           onConfirm={onDeleteEvents}
+        />
+      )}
+      {openViewImages && (
+        <ViewImages
+          open={openViewImages}
+          onClose={() => setOpenViewImages(false)}
+          images={selectedImages}
         />
       )}
     </ScrollArea>
