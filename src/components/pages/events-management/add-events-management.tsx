@@ -25,7 +25,6 @@ type Props = {
 };
 
 export const AddEventsManagement = ({ open, onClose }: Props) => {
-  const [id, setId] = React.useState<String>('');
   const form = useForm<EventManagementModelType>({
     resolver: zodResolver(EventManagementModel),
     defaultValues: {
@@ -76,7 +75,6 @@ export const AddEventsManagement = ({ open, onClose }: Props) => {
       // Reset the form and clean up
       form.reset();
       onClose();
-      setId('');
     }
   };
   console.log(form.formState.errors);
