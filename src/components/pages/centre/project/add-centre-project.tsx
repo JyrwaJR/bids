@@ -122,7 +122,6 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
             const rows = table.getRowModel().rows;
             if (value) {
               const ids = rows.map((row) => row.original.id);
-              console.log('Selected Ids', ids);
               setIsSelectedDomainId([...ids]);
             } else {
               setIsSelectedDomainId([]);
