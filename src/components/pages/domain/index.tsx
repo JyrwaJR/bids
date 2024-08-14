@@ -50,9 +50,7 @@ const DomainPage = () => {
           searchOptions={searchDomainBy}
           searchKey="name"
           columns={domainColumn}
-          data={
-            isFetched && !isLoading && !isError && data.data ? data.data : []
-          }
+          data={isFetched && !isLoading && !isError ? data.data : []}
         />
       </div>
       {isOpen && <AddDomain open={isOpen} onClose={() => setIsOpen(false)} />}
