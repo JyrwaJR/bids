@@ -188,7 +188,6 @@ export const CForm = <T,>({
                               accept={input.accept ?? 'image/*'}
                               onBlur={onBlur}
                               onChange={(e) => {
-                                console.log(e.target.files);
                                 const file = e.target.files?.[0];
                                 onChange(file);
                               }}
