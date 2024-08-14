@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FailedToastTitle } from '@constants/toast-message';
-import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DomainModelType, ProjectModel, ProjectModelType } from '@src/models';
 import { projectsFields } from '@constants/input-fields/projects/project-fields';
@@ -15,7 +15,7 @@ import { DataTable } from '@components/ui/data-table';
 import { Separator } from '@components/ui/separator';
 import { CForm, FormTag } from '@components/form';
 import { Card } from '@components/ui/card';
-import { projectsQueryKey } from '@constants/query-keys';
+import { domainQueryKey, projectsQueryKey } from '@constants/query-keys';
 const AddNewProject = () => {
   const [isSelectedIds, setSelectedIds] = useState<string[]>([]);
   const form = useForm<ProjectModelType>({
@@ -61,7 +61,7 @@ const AddNewProject = () => {
     isError: isDomainError
   } = useCQuery({
     url: 'domain',
-    queryKey: ['get', 'domain']
+    queryKey: domainQueryKey
   });
 
   const columns: ColumnDef<DomainModelType | any>[] = [
@@ -113,9 +113,7 @@ const AddNewProject = () => {
   const domainData = (() => {
     if (targetSector === 'Both') {
       // Filter for both 'Rural' and 'Urban'
-      return domain?.data.filter(
-        (item: any) => item.sector === 'Rural' || item.sector === 'Urban'
-      );
+      return domain?.data;
     } else if (targetSector) {
       // Filter based on the selected target sector
       return domain?.data.filter((item: any) => item.sector === targetSector);
