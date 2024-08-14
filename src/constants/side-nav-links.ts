@@ -13,12 +13,6 @@ export const navItems: NavItem[] = [
     label: 'centre',
     items: [
       {
-        title: 'Project',
-        href: '/dashboard/projects',
-        icon: 'kanban',
-        label: 'project'
-      },
-      {
         title: 'Centre',
         href: '/dashboard/centre',
         icon: 'add',
@@ -29,6 +23,12 @@ export const navItems: NavItem[] = [
         href: '/dashboard/domain',
         icon: 'user',
         label: 'domain'
+      },
+      {
+        title: 'Project',
+        href: '/dashboard/projects',
+        icon: 'kanban',
+        label: 'project'
       },
       {
         title: 'Batch',
