@@ -13,7 +13,10 @@ import {
 import { staffFields } from '@constants/input-fields/staff/staff-fields';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showToast } from '@src/components/ui/show-toast';
-import { FailedToastTitle } from '@src/constants/toast-message';
+import {
+  FailedToastTitle,
+  SuccessToastTitle
+} from '@src/constants/toast-message';
 import { useCMutation, useCQuery } from '@src/hooks';
 import { CenterModelType, StaffModel, StaffModelType } from '@src/models';
 import { ScrollArea } from '@components/ui/scroll-area';
@@ -64,7 +67,11 @@ export const AddStaff = ({ onClose, open }: Props) => {
   });
   const onSubmitAddStaff: SubmitHandler<StaffModelType> = async (data) => {
     try {
-      await mutateAsync(data);
+      const res = await mutateAsync(data);
+      if (res.success) {
+        showToast(SuccessToastTitle, res.message);
+        onClose();
+      }
     } catch (error: any) {
       showToast(FailedToastTitle, error.message);
     }
