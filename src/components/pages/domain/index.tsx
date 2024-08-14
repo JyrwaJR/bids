@@ -28,7 +28,7 @@ const searchDomainBy: OptionsT[] = [
 const DomainPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { data, isFetched } = useCQuery({
+  const { data, isFetched, isLoading, isError } = useCQuery({
     url: 'domain',
     queryKey: domainQueryKey
   });
@@ -50,7 +50,9 @@ const DomainPage = () => {
           searchOptions={searchDomainBy}
           searchKey="name"
           columns={domainColumn}
-          data={isFetched && data.data}
+          data={
+            isFetched && !isLoading && !isError && data.data ? data.data : []
+          }
         />
       </div>
       {isOpen && <AddDomain open={isOpen} onClose={() => setIsOpen(false)} />}
