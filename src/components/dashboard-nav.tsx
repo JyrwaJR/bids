@@ -63,15 +63,11 @@ export function DashboardNav({
     ],
     superadmin: [
       'Dashboard',
-      // TODO : Remove when going live
-      'Test Page',
       'Admin',
       'Staff',
       'Reports',
-      'Project',
       'Events',
       'Search',
-      'Batch',
       'Registration',
       'Applied Student',
       'Settings',
