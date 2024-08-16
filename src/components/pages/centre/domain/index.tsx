@@ -7,7 +7,7 @@ import { showToast } from '@components/ui/show-toast';
 import { domainColumn } from '@constants/columns';
 import { useCQuery } from '@hooks/useCQuery';
 import { ColumnDef } from '@tanstack/react-table';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   CenterDomainModel,
   CenterDomainModelType,
@@ -32,7 +32,7 @@ const CenterDomainPage = () => {
       domain_id: isSelectedDomId
     }
   });
-  const { data: domainData, isLoading: domainLoading } = useCQuery({
+  const { data: domainsData, isLoading: domainLoading } = useCQuery({
     url: 'domain',
     queryKey: domainQueryKey
   });
@@ -146,7 +146,7 @@ const CenterDomainPage = () => {
         <DataTable
           searchKey="name"
           columns={columns}
-          data={domainLoading ? [] : domainData.data}
+          data={domainLoading ? [] : domainsData.data}
         />
       </div>
     </>
