@@ -71,8 +71,39 @@ export const ImageUploadDialog = ({
   desc = 'Please upload your document'
 }: Props) => {
   const { id } = useRegisterStudentStore();
-  const { open, setOpen, onUploadedImage } = useUploadDocStore();
-
+  const {
+    open,
+    setOpen,
+    onUploadedImage,
+    setProofOfIdImageUrl,
+    setResidentProofImageUrl,
+    setAgeProofImageUrl,
+    setEducationImageUrl,
+    setCastProofImageUrl,
+    setOtherProofImageUrl
+  } = useUploadDocStore();
+  const updateImageUrl = (name: string, url: string) => {
+    switch (name) {
+      case 'ID Proof':
+        setProofOfIdImageUrl(url);
+        break;
+      case 'Residence Proof':
+        setResidentProofImageUrl(url);
+        break;
+      case 'Age Proof':
+        setAgeProofImageUrl(url);
+        break;
+      case 'Education Qaulification Proof':
+        setEducationImageUrl(url);
+        break;
+      case 'Proof of Caste':
+        setCastProofImageUrl(url);
+        break;
+      case 'Proof of Disability':
+        setOtherProofImageUrl(url);
+        break;
+    }
+  };
   const form = useForm<SchemaType>({
     resolver: zodResolver(Schema),
     defaultValues: {
@@ -209,6 +240,8 @@ export const ImageUploadDialog = ({
       const res = await mutate.mutateAsync(data);
       if (res.success) {
         onUploadedImage(form.getValues('proof_type'));
+        // TODO: Update the image URL
+        updateImageUrl(form.getValues('proof_type'), res.data.image);
         setOpen(false);
       }
     } catch (error) {

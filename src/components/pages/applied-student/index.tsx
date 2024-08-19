@@ -169,6 +169,10 @@ const AppliedStudentPage = () => {
       header: 'Name'
     },
     {
+      accessorKey: 'dob',
+      header: 'Date of Birth'
+    },
+    {
       accessorKey: 'gender',
       header: 'Gender'
     },

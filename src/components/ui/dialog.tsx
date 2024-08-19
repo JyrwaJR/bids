@@ -116,7 +116,7 @@ const Dialog = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof Dia>
 >(({ children, ...props }, ref) => {
   return (
-    <Dia {...props} modal={false}>
+    <Dia {...props} modal={props.modal ?? false}>
       {children}
     </Dia>
   );

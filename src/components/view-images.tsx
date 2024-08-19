@@ -13,6 +13,7 @@ type ImageT = {
   id: string;
   event_management_id: string;
 };
+
 type PropsT = {
   open: boolean;
   onClose: () => void;

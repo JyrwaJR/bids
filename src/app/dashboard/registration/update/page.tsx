@@ -1,36 +1,25 @@
 'use client';
 import { FieldsIsRequired } from '@constants/index';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ZodError, z } from 'zod';
-import { useRegistrationFields } from '../_lib/useRegistrationFields';
+import { z } from 'zod';
 import {
-  StudentRegistrationModelWithDomain,
   StudentRegistrationModelWithDomainType,
-  addFamilyDetails,
-  addPersonalDetails,
-  searchStudentByName,
-  addStudentBpl,
-  otherDetails,
-  addAddressDetails,
-  studentAppliedDomain
+  searchStudentByName
 } from '../_lib/function';
-import { MultiStepForm } from '@components/form';
-import { useRegisterStudentStore } from '@lib/store/useStudentRegistration';
 import { Heading } from '@components/ui/heading';
 import { Separator } from '@components/ui/separator';
 import { DataTable } from '@components/ui/data-table';
 import { showToast } from '@components/ui/show-toast';
-import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
+import { FailedToastTitle } from '@constants/toast-message';
 import { ColumnDef } from '@tanstack/react-table';
-import { StudentRegistrationModelType } from '@models/student';
 import { PencilIcon } from 'lucide-react';
 import { Button } from '@components/ui/button';
-import { AxiosError } from 'axios';
-import { useMultiStepFormStore } from '@components/form/stepper-form';
 import { Form, FormControl, FormField, FormItem } from '@components/ui/form';
 import { Input } from '@components/ui/input';
+import { UpdateRegistrationStepperForm } from '@components/pages/registration/update-registration';
+import { searchRegistrationStudentColumn } from '@constants/columns/search/registration-students-column';
 
 const FindStudentModel = z.object({
   name: z
@@ -40,12 +29,14 @@ const FindStudentModel = z.object({
     .trim()
 });
 type FindStudentModelType = z.infer<typeof FindStudentModel>;
+
 const Page = () => {
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [isStudentList, setIsStudentList] = React.useState<
     StudentRegistrationModelWithDomainType[]
   >([]);
-  const [isSelectedApplicant, setSelectedApplicant] = useState<any>();
+  const [isSelectedApplicant, setSelectedApplicant] =
+    useState<StudentRegistrationModelWithDomainType>();
   const form = useForm({
     resolver: zodResolver(FindStudentModel),
     defaultValues: {
@@ -64,43 +55,35 @@ const Page = () => {
       setIsSearching(false);
     }
   };
-  const studentColumn: ColumnDef<StudentRegistrationModelType>[] = [
+
+  const studentColumn: ColumnDef<StudentRegistrationModelWithDomainType>[] = [
+    ...searchRegistrationStudentColumn,
     {
-      accessorKey: 'first_name'
-    },
-    {
-      accessorKey: 'last_name'
-    },
-    {
-      accessorKey: 'dob'
-    },
-    {
-      accessorKey: 'email'
-    },
-    {
-      accessorKey: 'mobile'
-    },
-    {
-      accessorKey: 'Update',
+      id: 'select',
+      header: 'Select',
       cell: ({ row }) => {
         const data = row.original;
         return (
           <Button
             onClick={() => {
-              setSelectedApplicant(data);
+              setSelectedApplicant(
+                data as StudentRegistrationModelWithDomainType
+              );
             }}
             variant={'secondary'}
           >
             Update <PencilIcon className="ml-4 h-4 w-4" />
           </Button>
         );
-      }
+      },
+      enableSorting: false,
+      enableHiding: false
     }
   ];
   return (
     <div>
       {isSelectedApplicant ? (
-        <UpdateForm data={isSelectedApplicant} />
+        <UpdateRegistrationStepperForm data={isSelectedApplicant} />
       ) : (
         <>
           {isStudentList && (
@@ -158,88 +141,3 @@ const Page = () => {
 };
 
 export default Page;
-type Props = {
-  data: StudentRegistrationModelWithDomainType;
-};
-const UpdateForm = ({ data }: Props) => {
-  const { currentStep } = useMultiStepFormStore();
-  const { setId, id } = useRegisterStudentStore();
-  const updateForm = useForm<StudentRegistrationModelWithDomainType>({
-    resolver: zodResolver(StudentRegistrationModelWithDomain),
-    defaultValues: data
-  });
-  useEffect(() => {
-    if (data.id) {
-      setId(data.id);
-    }
-  }, [data, setId]);
-  const { field } = useRegistrationFields({
-    form: updateForm
-  });
-  const onSubmit: SubmitHandler<
-    StudentRegistrationModelWithDomainType
-  > = async (data) => {
-    try {
-      switch (currentStep) {
-        case 0:
-          break;
-        case 1:
-          // Perform the second step operations
-          const personalRes = await addPersonalDetails(id, data);
-
-          if (!personalRes.success) {
-            showToast(FailedToastTitle, 'Error when adding personal detail');
-          }
-
-          break;
-        case 2:
-          const domainAppliedRes = await studentAppliedDomain(id, data);
-          if (!domainAppliedRes.success) {
-            showToast(FailedToastTitle, 'Error when adding domain applied');
-          }
-          break;
-        case 3:
-          const familyRes = await addFamilyDetails(id, data);
-          if (!familyRes.success) {
-            showToast(FailedToastTitle, 'Error when adding family detail');
-          }
-          break;
-        case 4:
-          const addressRes = await addAddressDetails(id, data);
-          if (!addressRes.success) {
-            showToast(FailedToastTitle, 'Error when adding address detail');
-          }
-          break;
-        case 5:
-          break;
-        case 6:
-          if (data.is_bpl === 'Yes') {
-            const bplRes = await addStudentBpl(id, data);
-            if (!bplRes.success) {
-              showToast(FailedToastTitle, 'Error when adding BPL detail');
-            }
-          }
-          const otherDetailRes = await otherDetails(id, data);
-          if (!otherDetailRes.success) {
-            showToast(FailedToastTitle, 'Error when adding other detail');
-          }
-          showToast(SuccessToastTitle, 'Registration Successful');
-          break;
-        default:
-          break;
-      }
-    } catch (error: any) {
-      if (error instanceof ZodError) {
-        showToast('Validation Error', error.errors[0].message);
-      } else if (error instanceof AxiosError) {
-        showToast(
-          'Request Error',
-          error.response?.data.message || 'An error occurred'
-        );
-      } else {
-        showToast('Error', error.message || 'An unexpected error occurred');
-      }
-    }
-  };
-  return <MultiStepForm form={updateForm} onSubmit={onSubmit} steps={field} />;
-};

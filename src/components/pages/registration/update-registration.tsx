@@ -1,9 +1,23 @@
 'use client';
+import { useState } from 'react';
+import { showToast } from '@components/ui/show-toast';
+import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
+import { ZodError } from 'zod';
+import { AxiosError } from 'axios';
+import {
+  StudentRegistrationModelWithDomain,
+  StudentRegistrationModelWithDomainType,
+  addAddressDetails,
+  addFamilyDetails,
+  addPersonalDetails,
+  addStudentBpl,
+  otherDetails,
+  studentAppliedDomain
+} from '@src/app/dashboard/registration/_lib/function';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import { SubmitHandler, UseFormReturn } from 'react-hook-form';
-import { FormFieldType } from './type';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { create } from 'zustand';
-import { CForm } from './form';
 import { Form } from '@components/ui/form';
 import { Button } from '@components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -14,6 +28,9 @@ import { Separator } from '@components/ui/separator';
 import { useEffect } from 'react';
 import UploadImageModal from '@components/upload-image-modal';
 import { PreviewRegistrationForm as PreviewForm } from '@components/pages/registration/preview-registration-form';
+import { useRegistrationFields } from '@src/app/dashboard/registration/_lib/useRegistrationFields';
+import { FormFieldType } from '@components/index';
+import { CForm } from '@components/form';
 
 export type StepType = {
   id: string;
@@ -28,7 +45,7 @@ type MultiStepType = {
   setCurrentStep: (step: number) => void;
 };
 
-export const useMultiStepFormStore = create<MultiStepType>((set) => ({
+const useMultiStepFormStore = create<MultiStepType>((set) => ({
   currentStep: 0,
   previousStep: 0,
   setPreviousStep: (step) => set({ previousStep: step }),
@@ -36,45 +53,55 @@ export const useMultiStepFormStore = create<MultiStepType>((set) => ({
 }));
 
 type Props = {
-  onSubmit: SubmitHandler<any>;
-  form: UseFormReturn<any>;
-  steps: StepType[];
-  onClick?: () => void;
-  checked?: boolean;
-  loading?: boolean;
-  disabled?: boolean;
+  data: StudentRegistrationModelWithDomainType;
 };
-
-export default function MultiStepForm({
-  form,
-  onSubmit,
-  steps,
-  onClick,
-  checked,
-  loading,
-  disabled
-}: Props) {
+export const UpdateRegistrationStepperForm = ({ data }: Props) => {
+  const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);
+  const [id, setId] = useState<string>('');
   const formStyle: string = 'w-full sm:col-span-6 md:col-span-6 xl:col-span-4';
+  const form = useForm<StudentRegistrationModelWithDomainType>({
+    resolver: zodResolver(StudentRegistrationModelWithDomain),
+    defaultValues: data
+  });
+  useEffect(() => {
+    if (data.id) {
+      setId(data.id);
+    }
+  }, [data, setId]);
+  const { field: steps } = useRegistrationFields({
+    form: form
+  });
   const { currentStep, setCurrentStep, setPreviousStep } =
     useMultiStepFormStore();
   const { trigger } = form;
-  const fieldNames =
-    currentStep < steps.length
-      ? steps[currentStep].fields.map((field) => field.name)
-      : [];
+  // check here for the error argument type string[] is not assignable to parameter type ('id'|| so on)
+
   const next = async () => {
     const data = form.getValues();
-    const output = await trigger(fieldNames, {
+
+    // Ensure fieldNames is properly typed as an array of valid form field names
+    const fieldNames =
+      steps[currentStep]?.fields.map(
+        (field) =>
+          field.name as keyof StudentRegistrationModelWithDomainType as string
+      ) ?? [];
+
+    // Validate the fields of the current step
+    const isValid = await trigger(fieldNames, {
       shouldFocus: true
     });
 
-    if (!output) return;
+    // If the validation fails, do not proceed
+    if (!isValid) return;
 
-    if (currentStep < steps.length) {
+    // Submit the data
+    const submitSuccess = await onSubmit(data);
+
+    // Move to the next step only if submit was successful
+    if (submitSuccess) {
       setPreviousStep(currentStep);
       const step = currentStep + 1;
       setCurrentStep(step);
-      onSubmit(data);
     }
   };
 
@@ -86,8 +113,80 @@ export default function MultiStepForm({
     }
   };
 
+  const onSubmit: SubmitHandler<
+    StudentRegistrationModelWithDomainType
+  > = async (data) => {
+    try {
+      switch (currentStep) {
+        case 0:
+        case 1:
+          const personalRes = await addPersonalDetails(id, data);
+          if (!personalRes.success) {
+            showToast(FailedToastTitle, 'Error when adding personal detail');
+            return false; // Return false if submission failed
+          }
+          break;
+        case 2:
+          const domainAppliedRes = await studentAppliedDomain(id, data);
+          if (!domainAppliedRes.success) {
+            showToast(FailedToastTitle, 'Error when adding domain applied');
+            return false;
+          }
+          break;
+        case 3:
+          const familyRes = await addFamilyDetails(id, data);
+          if (!familyRes.success) {
+            showToast(FailedToastTitle, 'Error when adding family detail');
+            return false;
+          }
+          break;
+        case 4:
+          const addressRes = await addAddressDetails(id, data);
+          if (!addressRes.success) {
+            showToast(FailedToastTitle, 'Error when adding address detail');
+            return false;
+          }
+          break;
+        case 5:
+          break;
+        case 6:
+          if (data.is_bpl === 'Yes') {
+            const bplRes = await addStudentBpl(id, data);
+            if (!bplRes.success) {
+              showToast(FailedToastTitle, 'Error when adding BPL detail');
+              return false;
+            }
+          }
+          const otherDetailRes = await otherDetails(id, data);
+          if (!otherDetailRes.success) {
+            showToast(FailedToastTitle, 'Error when adding other detail');
+            return false;
+          }
+          showToast(SuccessToastTitle, 'Registration Successful');
+          break;
+        default:
+          break;
+      }
+
+      return true; // Return true if submission was successful
+    } catch (error: any) {
+      if (error instanceof ZodError) {
+        showToast('Validation Error', error.errors[0].message);
+      } else if (error instanceof AxiosError) {
+        showToast(
+          'Request Error',
+          error.response?.data.message || 'An error occurred'
+        );
+      } else {
+        showToast('Error', error.message || 'An unexpected error occurred');
+      }
+
+      return false; // Return false if any error was caught
+    }
+  };
+
   useEffect(() => {
-    if (checked) {
+    if (isSameAsPresent) {
       form.reset({
         ...form.getValues(),
         p_address: form.getValues('present_address'),
@@ -102,8 +201,7 @@ export default function MultiStepForm({
         p_pin_code: form.getValues('pin_code')
       });
     }
-  }, [checked, form]);
-
+  }, [isSameAsPresent, form]);
   return (
     <section>
       <Form {...form}>
@@ -139,13 +237,13 @@ export default function MultiStepForm({
                   <UploadImageModal fields={step.fields} />
                 ) : (
                   <>
-                    {onClick && step.name === 'Address' ? (
+                    {step.name === 'Address' ? (
                       <>
                         <CForm
                           form={form}
                           className={formStyle}
-                          loading={loading ?? false}
-                          disabled={disabled}
+                          loading={false}
+                          disabled={false}
                           fields={step.fields.filter(
                             (field) => !field.name.startsWith('p_')
                           )}
@@ -153,22 +251,22 @@ export default function MultiStepForm({
                         <Separator />
                         <div className="flex items-center space-x-2 py-4">
                           <Checkbox
-                            checked={checked}
-                            onClick={() => onClick()}
+                            checked={isSameAsPresent}
+                            onClick={() => setIsSameAsPresent(!isSameAsPresent)}
                             name="address"
                           />
                           <Label>Same as present</Label>
                         </div>
                         <CForm
                           form={form}
-                          disabled={disabled}
-                          loading={loading ?? false}
+                          disabled={false}
+                          loading={false}
                           className={formStyle}
                           fields={step.fields
                             .filter((field) => field.name.startsWith('p_'))
                             ?.map((field) => ({
                               ...field,
-                              readOnly: checked
+                              readOnly: isSameAsPresent
                             }))}
                         />
                       </>
@@ -176,8 +274,8 @@ export default function MultiStepForm({
                       <CForm
                         form={form}
                         className={formStyle}
-                        disabled={disabled}
-                        loading={loading ?? false}
+                        disabled={false}
+                        loading={false}
                         fields={step.fields}
                       />
                     )}
@@ -196,7 +294,7 @@ export default function MultiStepForm({
                 Back
               </Button>
               <Button
-                disabled={disabled || loading}
+                // disabled={disabled || loading}
                 type="button"
                 onClick={next}
               >
@@ -215,4 +313,4 @@ export default function MultiStepForm({
       </Form>
     </section>
   );
-}
+};

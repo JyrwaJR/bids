@@ -1,4 +1,4 @@
-import { StepType } from '@components/form/stepper-form';
+import { StepType } from '@components/form/registration-stepper-form';
 import { FormFieldType } from '@components/index';
 import { MAX_UPLOAD_SIZE } from '@constants/index';
 import { gender, SectorsOptions, yesNoOptions } from '@constants/options';
@@ -11,29 +11,42 @@ const studentImageUploadFields: FormFieldType[] = [
   },
   {
     name: 'Residence Proof',
+    label: 'Residence Proof',
     required: true,
     type: 'file'
   },
   {
     name: 'Age Proof',
-    required: true
+    label: 'Age Proof',
+    required: true,
+    type: 'file'
   },
   {
     name: 'Education Qualification Proof',
-    required: true
+    label: 'Education Qualification Proof',
+    required: true,
+    type: 'file'
   },
   {
     name: 'BPL Proof',
-    required: true
+    label: 'BPL Proof',
+    required: true,
+    type: 'file'
   },
   {
-    name: 'Proof of Caste'
+    name: 'Proof of Caste',
+    label: 'Proof of Caste',
+    type: 'file'
   },
   {
-    name: 'Proof of Disability'
+    name: 'Proof of Disability',
+    label: 'Proof of Disability',
+    type: 'file'
   },
   {
-    name: 'Exceptional Proof'
+    name: 'Exceptional Proof',
+    label: 'Exceptional Proof',
+    type: 'file'
   }
 ];
 const startStudentRegistrationFields: FormFieldType[] = [
@@ -578,29 +591,29 @@ export const studentRegistrationFields: StepType[] = [
     id: 'Start Registration',
     fields: startStudentRegistrationFields
   },
-  {
-    name: 'Personal Information',
-    id: 'Personal Information',
-    fields: studentRegistrationPersonalDetailsFields
-  },
+  // {
+  //   name: 'Personal Information',
+  //   id: 'Personal Information',
+  //   fields: studentRegistrationPersonalDetailsFields
+  // },
   {
     name: 'Apply Domain',
     id: 'Apply Domain',
     fields: studentRegistrationDomain
   },
-  {
-    name: 'Parent Details',
-    id: 'Parental Details',
-    fields: studentRegistrationParentDetailFields
-  },
-  {
-    name: 'Address',
-    id: 'Address',
-    fields: [
-      ...studentRegistrationPresentAddressFields,
-      ...studentRegistrationPermanentsAddressDetailFields
-    ]
-  },
+  // {
+  //   name: 'Parent Details',
+  //   id: 'Parental Details',
+  //   fields: studentRegistrationParentDetailFields
+  // },
+  // {
+  //   name: 'Address',
+  //   id: 'Address',
+  //   fields: [
+  //     ...studentRegistrationPresentAddressFields,
+  //     ...studentRegistrationPermanentsAddressDetailFields
+  //   ]
+  // },
   {
     name: 'Upload Documents',
     id: 'Upload Documents',

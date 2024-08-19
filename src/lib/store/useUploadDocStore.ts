@@ -2,20 +2,34 @@ import { create } from 'zustand';
 
 interface UploadStoreType {
   educationalProofUploaded: boolean;
+  setEducationalProofUploaded: (uploaded: boolean) => void;
+  educationImageUrl: string;
+  setEducationImageUrl: (url: string) => void;
+
   proofOfIdUploaded: boolean;
-  setProofOfIdUploaded: (open: boolean) => void;
+  setProofOfIdUploaded: (uploaded: boolean) => void;
+  proofOfIdImageUrl: string;
+  setProofOfIdImageUrl: (url: string) => void;
 
   residentProofUploaded: boolean;
-  setResidentProofUploaded: (open: boolean) => void;
+  setResidentProofUploaded: (uploaded: boolean) => void;
+  residentProofImageUrl: string;
+  setResidentProofImageUrl: (url: string) => void;
 
   ageProofUploaded: boolean;
-  setAgeProofUploaded: (open: boolean) => void;
+  setAgeProofUploaded: (uploaded: boolean) => void;
+  ageProofImageUrl: string;
+  setAgeProofImageUrl: (url: string) => void;
 
   castProofUploaded: boolean;
-  setCastProofUploaded: (open: boolean) => void;
+  setCastProofUploaded: (uploaded: boolean) => void;
+  castProofImageUrl: string;
+  setCastProofImageUrl: (url: string) => void;
 
   otherProofUploaded: boolean;
-  setOtherProofUploaded: (open: boolean) => void;
+  setOtherProofUploaded: (uploaded: boolean) => void;
+  otherProofImageUrl: string;
+  setOtherProofImageUrl: (url: string) => void;
 
   isSelectedFilterType: string;
   setSelectedFilterType: (type: string) => void;
@@ -24,25 +38,45 @@ interface UploadStoreType {
   setOpen: (open: boolean) => void;
 
   onUploadedImage: (name: string) => void;
-  // uploadedImages: (name: string) => boolean;
 }
 
 export const useUploadDocStore = create<UploadStoreType>((set) => ({
+  educationalProofUploaded: false,
+  setEducationalProofUploaded: (uploaded: boolean) =>
+    set({ educationalProofUploaded: uploaded }),
+  educationImageUrl: '',
+  setEducationImageUrl: (url: string) => set({ educationImageUrl: url }),
+
   proofOfIdUploaded: false,
-  setProofOfIdUploaded: (open: boolean) => set({ proofOfIdUploaded: open }),
+  setProofOfIdUploaded: (uploaded: boolean) =>
+    set({ proofOfIdUploaded: uploaded }),
+  proofOfIdImageUrl: '',
+  setProofOfIdImageUrl: (url: string) => set({ proofOfIdImageUrl: url }),
 
   residentProofUploaded: false,
-  setResidentProofUploaded: (open: boolean) =>
-    set({ residentProofUploaded: open }),
+  setResidentProofUploaded: (uploaded: boolean) =>
+    set({ residentProofUploaded: uploaded }),
+  residentProofImageUrl: '',
+  setResidentProofImageUrl: (url: string) =>
+    set({ residentProofImageUrl: url }),
 
   ageProofUploaded: false,
-  setAgeProofUploaded: (open: boolean) => set({ ageProofUploaded: open }),
+  setAgeProofUploaded: (uploaded: boolean) =>
+    set({ ageProofUploaded: uploaded }),
+  ageProofImageUrl: '',
+  setAgeProofImageUrl: (url: string) => set({ ageProofImageUrl: url }),
 
   castProofUploaded: false,
-  setCastProofUploaded: (open: boolean) => set({ castProofUploaded: open }),
+  setCastProofUploaded: (uploaded: boolean) =>
+    set({ castProofUploaded: uploaded }),
+  castProofImageUrl: '',
+  setCastProofImageUrl: (url: string) => set({ castProofImageUrl: url }),
 
   otherProofUploaded: false,
-  setOtherProofUploaded: (open: boolean) => set({ otherProofUploaded: open }),
+  setOtherProofUploaded: (uploaded: boolean) =>
+    set({ otherProofUploaded: uploaded }),
+  otherProofImageUrl: '',
+  setOtherProofImageUrl: (url: string) => set({ otherProofImageUrl: url }),
 
   isSelectedFilterType: '',
   setSelectedFilterType: (type: string) => set({ isSelectedFilterType: type }),
@@ -50,22 +84,26 @@ export const useUploadDocStore = create<UploadStoreType>((set) => ({
   open: false,
   setOpen: (open: boolean) => set({ open }),
 
-  educationalProofUploaded: false,
-
   onUploadedImage: (name: string) => {
     switch (name) {
       case 'ID Proof':
-        return set({ proofOfIdUploaded: true });
+        set({ proofOfIdUploaded: true });
+        break;
       case 'Residence Proof':
-        return set({ residentProofUploaded: true });
+        set({ residentProofUploaded: true });
+        break;
       case 'Age Proof':
-        return set({ ageProofUploaded: true });
+        set({ ageProofUploaded: true });
+        break;
       case 'Proof of Caste':
-        return set({ castProofUploaded: true });
+        set({ castProofUploaded: true });
+        break;
       case 'Exceptional Proof':
-        return set({ otherProofUploaded: true });
-      case 'Education Qaulification Proof':
-        return set({ educationalProofUploaded: true });
+        set({ otherProofUploaded: true });
+        break;
+      case 'Education Qualification Proof':
+        set({ educationalProofUploaded: true });
+        break;
       default:
         break;
     }
