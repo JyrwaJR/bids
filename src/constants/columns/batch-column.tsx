@@ -23,6 +23,10 @@ export const BatchColumn: ColumnDef<BatchModelType>[] = [
     header: 'End Date'
   },
   {
+    accessorKey: 'enroll_count',
+    header: 'No. of enroll Students'
+  },
+  {
     accessorKey: 'capacity',
     header: 'Capacity'
   }

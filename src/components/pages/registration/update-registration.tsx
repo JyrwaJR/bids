@@ -31,6 +31,7 @@ import { PreviewRegistrationForm as PreviewForm } from '@components/pages/regist
 import { useRegistrationFields } from '@src/app/dashboard/registration/_lib/useRegistrationFields';
 import { FormFieldType } from '@components/index';
 import { CForm } from '@components/form';
+import { format, parse, isValid } from 'date-fns';
 
 export type StepType = {
   id: string;
@@ -68,6 +69,7 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
       setId(data.id);
     }
   }, [data, setId]);
+
   const { field: steps } = useRegistrationFields({
     form: form
   });
@@ -82,8 +84,8 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
     // Ensure fieldNames is properly typed as an array of valid form field names
     const fieldNames =
       steps[currentStep]?.fields.map(
-        (field) =>
-          field.name as keyof StudentRegistrationModelWithDomainType as string
+        (field: FormFieldType) =>
+          field.name as keyof StudentRegistrationModelWithDomainType
       ) ?? [];
 
     // Validate the fields of the current step
@@ -112,7 +114,6 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
       setCurrentStep(step);
     }
   };
-
   const onSubmit: SubmitHandler<
     StudentRegistrationModelWithDomainType
   > = async (data) => {
@@ -170,6 +171,7 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
 
       return true; // Return true if submission was successful
     } catch (error: any) {
+      console.log(error);
       if (error instanceof ZodError) {
         showToast('Validation Error', error.errors[0].message);
       } else if (error instanceof AxiosError) {
@@ -207,9 +209,11 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <Stepper
-            steps={steps.map((step) => ({
-              label: step.name
-            }))}
+            steps={steps
+              .filter((stp) => stp.name !== 'Start Registration')
+              .map((step) => ({
+                label: step.name
+              }))}
             className="max-w-full overflow-auto"
             styleConfig={{
               activeBgColor: '#333333',
@@ -226,63 +230,69 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
             }}
             activeStep={currentStep}
           />
-
           {currentStep < steps.length ? (
-            steps.map((step, index) => (
-              <div
-                key={step.name + index}
-                className={index === currentStep ? '' : 'hidden'}
-              >
-                {step.name === 'Upload Documents' ? (
-                  <UploadImageModal fields={step.fields} />
-                ) : (
-                  <>
-                    {step.name === 'Address' ? (
-                      <>
-                        <CForm
-                          form={form}
-                          className={formStyle}
-                          loading={false}
-                          disabled={false}
-                          fields={step.fields.filter(
-                            (field) => !field.name.startsWith('p_')
-                          )}
-                        />
-                        <Separator />
-                        <div className="flex items-center space-x-2 py-4">
-                          <Checkbox
-                            checked={isSameAsPresent}
-                            onClick={() => setIsSameAsPresent(!isSameAsPresent)}
-                            name="address"
+            steps
+              .filter((stp) => stp.name !== 'Start Registration')
+              .map((step, index) => (
+                <div
+                  key={step.name + index}
+                  className={index === currentStep ? '' : 'hidden'}
+                >
+                  {step.name === 'Upload Documents' ? (
+                    <UploadImageModal fields={step.fields} />
+                  ) : (
+                    <>
+                      {step.name === 'Address' ? (
+                        <>
+                          <CForm
+                            form={form}
+                            className={formStyle}
+                            loading={false}
+                            disabled={false}
+                            fields={step.fields.filter(
+                              (field: FormFieldType) =>
+                                !field.name.startsWith('p_')
+                            )}
                           />
-                          <Label>Same as present</Label>
-                        </div>
+                          <Separator />
+                          <div className="flex items-center space-x-2 py-4">
+                            <Checkbox
+                              checked={isSameAsPresent}
+                              onClick={() =>
+                                setIsSameAsPresent(!isSameAsPresent)
+                              }
+                              name="address"
+                            />
+                            <Label>Same as present</Label>
+                          </div>
+                          <CForm
+                            form={form}
+                            disabled={false}
+                            loading={false}
+                            className={formStyle}
+                            fields={step.fields
+                              .filter((field: FormFieldType) =>
+                                field.name.startsWith('p_')
+                              )
+                              ?.map((field: FormFieldType) => ({
+                                ...field,
+                                readOnly: isSameAsPresent
+                              }))}
+                          />
+                        </>
+                      ) : (
                         <CForm
                           form={form}
+                          className={formStyle}
                           disabled={false}
                           loading={false}
-                          className={formStyle}
-                          fields={step.fields
-                            .filter((field) => field.name.startsWith('p_'))
-                            ?.map((field) => ({
-                              ...field,
-                              readOnly: isSameAsPresent
-                            }))}
+                          fields={step.fields}
                         />
-                      </>
-                    ) : (
-                      <CForm
-                        form={form}
-                        className={formStyle}
-                        disabled={false}
-                        loading={false}
-                        fields={step.fields}
-                      />
-                    )}
-                  </>
-                )}
-              </div>
-            ))
+                      )}
+                    </>
+                  )}
+                </div>
+              ))
           ) : (
             <PreviewForm fields={steps} form={form} />
           )}

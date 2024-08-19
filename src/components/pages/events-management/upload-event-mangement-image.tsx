@@ -34,7 +34,11 @@ const ImageModel = z.object({
     }, 'File size must be less than 2MB')
     .refine((file) => {
       return file && ACCEPTED_FILE_TYPES.includes(file.type);
-    }, 'File must be a PNG/jpg/jpeg')
+    }, 'File must be a PNG/jpg/jpeg'),
+  title: z
+    .string()
+    .min(3, { message: 'Title must be at least 3 characters' })
+    .optional()
 });
 type ImageModelType = z.infer<typeof ImageModel>;
 export const UploadEventsMangementImage = ({ open, id, onClose }: Props) => {
@@ -67,7 +71,9 @@ export const UploadEventsMangementImage = ({ open, id, onClose }: Props) => {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Upload Image</DialogTitle>
+          <DialogTitle className="uppercase tracking-wide">
+            Upload Image
+          </DialogTitle>
           <DialogDescription>
             Please enter the following detail
           </DialogDescription>
@@ -76,11 +82,17 @@ export const UploadEventsMangementImage = ({ open, id, onClose }: Props) => {
           form={form}
           onSubmit={onSubmit}
           loading={mutate.isLoading}
+          btnStyle="md:w-full"
           fields={[
             {
               name: 'image',
               label: 'Image',
-              type: 'file'
+              type: 'file',
+              helperText: 'Accepted file types: PNG, JPG, JPEG'
+            },
+            {
+              name: 'title',
+              label: 'Description'
             }
           ]}
         />

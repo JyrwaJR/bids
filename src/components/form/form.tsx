@@ -30,6 +30,7 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import { format } from 'date-fns';
+import { Textarea } from '@components/ui/textarea';
 
 type FormProps<T> = {
   onSubmit: SubmitHandler<T | any>;
@@ -184,6 +185,7 @@ export const CForm = <T,>({
                               type="file"
                               disabled={disabled || input.readOnly}
                               ref={ref}
+                              autoFocus={i === 0}
                               name={name}
                               accept={input.accept ?? 'image/*'}
                               onBlur={onBlur}
@@ -191,6 +193,30 @@ export const CForm = <T,>({
                                 const file = e.target.files?.[0];
                                 onChange(file);
                               }}
+                            />
+                            <FormDescription>
+                              {input.helperText}
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        </React.Fragment>
+                      ) : input.type === 'textarea' ? (
+                        <React.Fragment key={i}>
+                          <FormItem className="w-full">
+                            <FormLabel htmlFor={input.name}>
+                              {input.label}{' '}
+                              {input.required && (
+                                <span className="text-red-500">*</span>
+                              )}
+                            </FormLabel>
+                            <Textarea
+                              {...field}
+                              className="flex"
+                              placeholder={
+                                input.placeholder ??
+                                `Please enter ${input.label}`
+                              }
+                              disabled={input.readOnly || disabled}
                             />
                             <FormDescription>
                               {input.helperText}
@@ -211,7 +237,8 @@ export const CForm = <T,>({
                               {...field}
                               className="flex"
                               placeholder={
-                                input.placeholder ?? 'Please enter a value'
+                                input.placeholder ??
+                                `Please enter ${input.label}`
                               }
                               disabled={input.readOnly || disabled}
                               onChange={(e) => {

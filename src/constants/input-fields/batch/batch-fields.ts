@@ -12,14 +12,10 @@ export const batchFields: FormFieldType[] = [
     type: 'date'
   },
   {
-    name: 'capacity',
-    label: 'Capacity',
-    type: 'number'
-  },
-  {
     name: 'duration',
     label: 'Duration/class',
-    type: 'number'
+    type: 'number',
+    helperText: 'in minutes/hours'
   },
   {
     name: 'unit',
@@ -29,5 +25,10 @@ export const batchFields: FormFieldType[] = [
       { label: 'Hour', value: 'hr' },
       { value: 'min', label: 'Minute' }
     ]
+  },
+  {
+    name: 'capacity',
+    label: 'Capacity',
+    type: 'number'
   }
 ];

@@ -35,8 +35,8 @@ const Schema = z
       .string({
         required_error: 'Document type is required'
       })
-      .min(1, { message: 'Document type is required' }),
-
+      .min(1, { message: 'Document type is required' })
+      .optional(),
     image: imageValidation,
     document_number: z.string().optional(),
     remark: z.string().optional()
@@ -46,6 +46,12 @@ const Schema = z
     // Corrected: Added a condition to check if proof_type is "ID Proof"
     // and document_number is missing, then add a custom issue.
     if (data.proof_type === 'ID Proof' && !data.document_number) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Document number is required when proof type is "ID Proof"',
+        path: ['document_number']
+      });
+    } else if (data.proof_type === 'ID Proof' && !data.document_number) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Document number is required when proof type is "ID Proof"',
@@ -165,12 +171,14 @@ export const ImageUploadDialog = ({
           select: true
         }
       : undefined,
-    {
-      required: true,
-      name: 'document_type',
-      label: 'Document Type',
-      select: true
-    },
+    form.watch('proof_type') === 'Exceptional Proof'
+      ? undefined
+      : {
+          required: true,
+          name: 'document_type',
+          label: 'Document Type',
+          select: true
+        },
     form.watch('proof_type') === 'ID Proof'
       ? {
           name: 'document_number',

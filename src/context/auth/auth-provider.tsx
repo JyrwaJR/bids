@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }: Props) => {
 
       if (res.status === 200) {
         removeCookie('token');
-        router.push('/');
+        router.refresh();
         setIsLoggedIn(false);
         setIsToken('');
         setUser(null);
@@ -122,8 +122,8 @@ export const AuthProvider = ({ children }: Props) => {
         });
         setIsToken(cookies?.token);
         setIsLoggedIn(!!cookies?.token);
-        const url = redirect ? redirect : '/dashboard';
-        router.push(url);
+        // const url = redirect ? redirect : '/dashboard';
+        router.refresh();
         return;
       } else if (res.data.success === false) {
         showToast(

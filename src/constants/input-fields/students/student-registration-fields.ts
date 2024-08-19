@@ -78,6 +78,13 @@ const startStudentRegistrationFields: FormFieldType[] = [
     placeholder: 'Enter Last Name'
   },
   {
+    name: 'mobile',
+    label: 'Mobile',
+    required: true,
+    type: 'text',
+    placeholder: 'Enter Mobile'
+  },
+  {
     name: 'dob',
     label: 'Date of Birth',
     required: true,
@@ -169,13 +176,6 @@ const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     required: true,
     type: 'text',
     select: true
-  },
-  {
-    name: 'mobile',
-    label: 'Mobile',
-    required: true,
-    type: 'text',
-    placeholder: 'Enter Mobile'
   },
   {
     name: 'religion',
@@ -591,29 +591,29 @@ export const studentRegistrationFields: StepType[] = [
     id: 'Start Registration',
     fields: startStudentRegistrationFields
   },
-  // {
-  //   name: 'Personal Information',
-  //   id: 'Personal Information',
-  //   fields: studentRegistrationPersonalDetailsFields
-  // },
+  {
+    name: 'Personal Information',
+    id: 'Personal Information',
+    fields: studentRegistrationPersonalDetailsFields
+  },
   {
     name: 'Apply Domain',
     id: 'Apply Domain',
     fields: studentRegistrationDomain
   },
-  // {
-  //   name: 'Parent Details',
-  //   id: 'Parental Details',
-  //   fields: studentRegistrationParentDetailFields
-  // },
-  // {
-  //   name: 'Address',
-  //   id: 'Address',
-  //   fields: [
-  //     ...studentRegistrationPresentAddressFields,
-  //     ...studentRegistrationPermanentsAddressDetailFields
-  //   ]
-  // },
+  {
+    name: 'Parent Details',
+    id: 'Parental Details',
+    fields: studentRegistrationParentDetailFields
+  },
+  {
+    name: 'Address',
+    id: 'Address',
+    fields: [
+      ...studentRegistrationPresentAddressFields,
+      ...studentRegistrationPermanentsAddressDetailFields
+    ]
+  },
   {
     name: 'Upload Documents',
     id: 'Upload Documents',

@@ -20,6 +20,7 @@ import { Form, FormControl, FormField, FormItem } from '@components/ui/form';
 import { Input } from '@components/ui/input';
 import { UpdateRegistrationStepperForm } from '@components/pages/registration/update-registration';
 import { searchRegistrationStudentColumn } from '@constants/columns/search/registration-students-column';
+import { PersonIcon } from '@radix-ui/react-icons';
 
 const FindStudentModel = z.object({
   name: z
@@ -83,7 +84,19 @@ const Page = () => {
   return (
     <div>
       {isSelectedApplicant ? (
-        <UpdateRegistrationStepperForm data={isSelectedApplicant} />
+        <>
+          <div className="flex justify-end">
+            <Button
+              variant="secondary"
+              className="capitalize "
+              onClick={() => setSelectedApplicant(undefined)}
+            >
+              <PersonIcon className="mr-2 h-4 w-4" />
+              change
+            </Button>
+          </div>
+          <UpdateRegistrationStepperForm data={isSelectedApplicant} />
+        </>
       ) : (
         <>
           {isStudentList && (

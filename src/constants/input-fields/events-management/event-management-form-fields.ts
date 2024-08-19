@@ -18,11 +18,6 @@ export const eventManagementFields: FormFieldType[] = [
     required: true
   },
   {
-    name: 'remarks',
-    label: 'Remarks',
-    required: true
-  },
-  {
     name: 'men',
     label: 'Male',
     required: true,
@@ -61,10 +56,18 @@ export const eventManagementFields: FormFieldType[] = [
   {
     name: 'image',
     label: 'Event Image',
-    type: 'file'
+    type: 'file',
+    helperText: 'Accepted file types: PNG, JPG, JPEG'
   },
   {
     name: 'title',
-    label: 'Image Title'
+    label: 'Image Description',
+    type: 'textarea'
+  },
+  {
+    name: 'remarks',
+    label: 'Remarks',
+    required: true,
+    type: 'textarea'
   }
 ];

@@ -18,7 +18,7 @@ interface ColType extends DomainModelType {
 const BatchPage = () => {
   const [selectedIds, setSelectedIds] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { data, isFetched, isLoading } = useCQuery({
+  const batchQuery = useCQuery({
     url: 'batch',
     queryKey: batchQueryKey
   });
@@ -79,9 +79,16 @@ const BatchPage = () => {
             </div>
             <DataTable
               searchKey="batch_code"
-              isLoading={isLoading}
+              isLoading={batchQuery.isLoading}
               columns={BatchColumn}
-              data={isFetched ? data.data : []}
+              data={
+                batchQuery.isFetched &&
+                !batchQuery.isError &&
+                !batchQuery.isLoading &&
+                batchQuery.data
+                  ? batchQuery.data.data
+                  : []
+              }
             />
           </TabsContent>
           <TabsContent value="new-batch" className="space-y-4">
@@ -103,7 +110,11 @@ const BatchPage = () => {
                 searchKey="name"
                 isLoading={projectIsLoading}
                 columns={projectColumns}
-                data={projectIsFetching && !projectIsError ? project.data : []}
+                data={
+                  projectIsFetching && !projectIsError && project.data
+                    ? project.data
+                    : []
+                }
               />
             </div>
           </TabsContent>

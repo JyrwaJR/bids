@@ -13,6 +13,11 @@ export const searchRegistrationStudentColumn: ColumnDef<StudentRegistrationModel
       id: 'last_name'
     },
     {
+      accessorKey: 'registration_date',
+      header: 'Date of Registration',
+      id: 'dob'
+    },
+    {
       accessorKey: 'dob',
       header: 'Date of Birth',
       id: 'dob'

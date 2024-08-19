@@ -38,12 +38,13 @@ export const staffFields: FormFieldType[] = [
   {
     name: 'dob',
     label: 'Date of Birth',
-    type: 'date'
+    type: 'date',
+    required: true
   },
-
   {
     name: 'doj',
     label: 'Date of Joining',
+    required: true,
     type: 'date'
   },
   {

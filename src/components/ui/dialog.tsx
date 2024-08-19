@@ -6,13 +6,17 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { cn } from '@src/lib/utils';
 
-const Dia = DialogPrimitive.Root;
+const Dialog = DialogPrimitive.Root;
 
 const DialogTrigger = DialogPrimitive.Trigger;
 
 const DialogPortal = DialogPrimitive.Portal;
 
 const DialogClose = DialogPrimitive.Close;
+
+const avoidDefaultDomBehavior = (e: Event) => {
+  e.preventDefault();
+};
 
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
@@ -27,10 +31,8 @@ const DialogOverlay = React.forwardRef<
     {...props}
   />
 ));
+
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
-const avoidDefaultDomBehavior = (e: Event) => {
-  e.preventDefault();
-};
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
@@ -92,7 +94,7 @@ const DialogTitle = React.forwardRef<
   <DialogPrimitive.Title
     ref={ref}
     className={cn(
-      'text-lg font-semibold leading-none tracking-tight',
+      'text-lg font-semibold uppercase leading-none tracking-normal',
       className
     )}
     {...props}
@@ -111,17 +113,7 @@ const DialogDescription = React.forwardRef<
   />
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
-const Dialog = React.forwardRef<
-  React.ElementRef<typeof Dia>,
-  React.ComponentPropsWithoutRef<typeof Dia>
->(({ children, ...props }, ref) => {
-  return (
-    <Dia {...props} modal={props.modal ?? false}>
-      {children}
-    </Dia>
-  );
-});
-Dialog.displayName = 'Dialog';
+
 export {
   Dialog,
   DialogPortal,

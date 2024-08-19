@@ -63,7 +63,9 @@ export const DomainModel = z.object({
       required_error: FieldsIsRequired
     })
     .optional(),
-  qp_code: z.string({ required_error: FieldsIsRequired }).max(10),
+  qp_code: z.string({ required_error: FieldsIsRequired }).max(20, {
+    message: 'Should be less than 20 in length'
+  }),
   curriculum: fileValidation.optional(),
   guide: fileValidation.optional(),
   approval_date: z

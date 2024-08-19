@@ -13,11 +13,7 @@ import { domainQueryKey } from '@constants/query-keys';
 
 const searchDomainBy: OptionsT[] = [
   {
-    label: 'Sector',
-    value: 'sector'
-  },
-  {
-    label: 'Name',
+    label: 'Domain',
     value: 'name'
   },
   {

@@ -77,7 +77,6 @@ export const AddEventsManagement = ({ open, onClose }: Props) => {
       onClose();
     }
   };
-  console.log(form.formState.errors);
   const men = useWatch({ control: form.control, name: 'men', defaultValue: 0 });
   const women = useWatch({
     control: form.control,
@@ -93,7 +92,7 @@ export const AddEventsManagement = ({ open, onClose }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="w-full md:max-w-4xl">
         <DialogHeader>
           <DialogTitle>Add Events Management</DialogTitle>
           <DialogDescription>
@@ -105,8 +104,8 @@ export const AddEventsManagement = ({ open, onClose }: Props) => {
           onSubmit={onSubmit}
           loading={isLoading}
           fields={eventManagementFields}
-          className="md:col-span-6"
-          btnStyle="md:w-full"
+          className="md:col-span-6 lg:col-span-4"
+          btnStyle="md:w-full lg:w-auto"
         />
       </DialogContent>
     </Dialog>

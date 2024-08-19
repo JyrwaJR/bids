@@ -33,6 +33,7 @@ import { useEffect } from 'react';
 import UploadImageModal from '@components/upload-image-modal';
 import { PreviewRegistrationForm as PreviewForm } from '@components/pages/registration/preview-registration-form';
 import { useRegistrationFields } from '@src/app/dashboard/registration/_lib/useRegistrationFields';
+import { useUploadDocStore } from '@lib/store';
 
 export type StepType = {
   id: string;
@@ -72,6 +73,16 @@ export const RegistrationStepperForm = () => {
       is_minority: 'No'
     }
   });
+  const {
+    isSelectedFilterType,
+    setSelectedFilterType,
+    proofOfIdUploaded,
+    residentProofUploaded,
+    ageProofUploaded,
+    educationalProofUploaded,
+    castProofUploaded,
+    otherProofUploaded
+  } = useUploadDocStore();
   const { field: steps } = useRegistrationFields({
     form: form
   });
@@ -256,7 +267,8 @@ export const RegistrationStepperForm = () => {
                           loading={false}
                           disabled={false}
                           fields={step.fields.filter(
-                            (field) => !field.name.startsWith('p_')
+                            (field: FormFieldType) =>
+                              !field.name.startsWith('p_')
                           )}
                         />
                         <Separator />
@@ -274,8 +286,10 @@ export const RegistrationStepperForm = () => {
                           loading={false}
                           className={formStyle}
                           fields={step.fields
-                            .filter((field) => field.name.startsWith('p_'))
-                            ?.map((field) => ({
+                            .filter((field: FormFieldType) =>
+                              field.name.startsWith('p_')
+                            )
+                            ?.map((field: FormFieldType) => ({
                               ...field,
                               readOnly: isSameAsPresent
                             }))}
@@ -311,7 +325,7 @@ export const RegistrationStepperForm = () => {
               >
                 {currentStep < steps.length ? (
                   <>
-                    Next
+                    Save
                     <ArrowRight className="ml-4" />
                   </>
                 ) : (
