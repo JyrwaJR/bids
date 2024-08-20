@@ -75,7 +75,7 @@ const BatchPage = () => {
           </TabsList>
           <TabsContent value="batch" className="space-y-4">
             <div className="flex items-start justify-between">
-              <Heading title={`Batch`} description="Manage ur Batch table" />
+              <Heading title={`Batch`} description="Manage Batch table" />
             </div>
             <DataTable
               searchKey="batch_code"

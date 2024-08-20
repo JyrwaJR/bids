@@ -45,7 +45,7 @@ export const SectorPage = () => {
     <>
       <div className="flex-1 space-y-4">
         <div className="flex items-start justify-between">
-          <Heading title={`Sector`} description="Manage ur Sector table" />
+          <Heading title={`Sector`} description="Manage your Sector table" />
           <Button
             className="text-xs md:text-sm"
             onClick={() => onOpenChange(true)}

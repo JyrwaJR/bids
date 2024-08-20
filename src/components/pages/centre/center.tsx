@@ -54,7 +54,7 @@ export const CenterPageComponents = () => {
     <>
       <div className="flex-1 space-y-4">
         <div className="flex items-start justify-between">
-          <Heading title={`Center`} description="Manage ur center table" />
+          <Heading title={`Center`} description="Manage center table" />
           <Button
             disabled={!isFetched || !user?.role || user?.role !== 'superadmin'}
             className="text-xs md:text-sm"

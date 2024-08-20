@@ -14,21 +14,61 @@ export const navItems: NavItem[] = [
     items: [
       {
         title: 'Centre',
-        href: '/dashboard/centre',
         icon: 'add',
-        label: 'centre'
+        label: 'centre',
+        items: [
+          {
+            title: 'Centre',
+            href: '/dashboard/centre',
+            icon: 'user',
+            label: 'domain'
+          }
+        ]
       },
       {
         title: 'Domain',
-        href: '/dashboard/domain',
         icon: 'user',
-        label: 'domain'
+        label: 'domain',
+        items: [
+          {
+            title: 'Domain',
+            href: '/dashboard/domain',
+            icon: 'user',
+            label: 'Domain'
+          },
+          {
+            title: 'Assign Domain',
+            href: '/dashboard/domain/assign',
+            icon: 'user',
+            label: 'Assign Domain'
+          }
+        ]
       },
       {
         title: 'Project',
         href: '/dashboard/projects',
         icon: 'kanban',
-        label: 'project'
+        label: 'project',
+        items: [
+          {
+            title: 'Project',
+            href: '/dashboard/projects',
+            icon: 'kanban',
+            label: 'Project'
+          },
+          {
+            title: 'Add Project',
+            href: '/dashboard/projects/new',
+            icon: 'user',
+            label: 'New Project'
+          },
+          {
+            title: 'Assign Projects',
+            href: '/dashboard/projects/assign',
+            icon: 'user',
+            label: 'Assign Project'
+          }
+        ]
       },
       {
         title: 'Batch',

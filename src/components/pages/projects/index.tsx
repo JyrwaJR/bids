@@ -31,35 +31,15 @@ const ProjectsPage = () => {
   return (
     <>
       <div className="flex-1 space-y-4">
-        <Tabs defaultValue="project" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="project">Project</TabsTrigger>
-            {user?.role === 'superadmin' && (
-              <>
-                <TabsTrigger value="new-project">Add New Project</TabsTrigger>
-                <TabsTrigger value="assign-project">Assign Project</TabsTrigger>
-              </>
-            )}
-          </TabsList>
-
-          <TabsContent value="project" className="space-y-4 ">
-            <div className="flex items-start justify-between">
-              <Heading title={`Projects`} description="Manage ur Staff" />
-            </div>
-            <Separator />
-            <DataTable
-              searchKey="name"
-              columns={ProjectColumn}
-              data={projects ?? []}
-            />
-          </TabsContent>
-          <TabsContent value="new-project" className="space-y-4">
-            <AddNewProject />
-          </TabsContent>
-          <TabsContent value="assign-project" className="space-y-4">
-            <CentreProjectPage />
-          </TabsContent>
-        </Tabs>
+        <div className="flex items-start justify-between">
+          <Heading title={`Projects`} description="Manage Staff" />
+        </div>
+        <Separator />
+        <DataTable
+          searchKey="name"
+          columns={ProjectColumn}
+          data={projects ?? []}
+        />
       </div>
     </>
   );
