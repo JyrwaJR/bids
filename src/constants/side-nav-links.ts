@@ -104,10 +104,29 @@ export const navItems: NavItem[] = [
     ]
   },
   {
-    title: 'Applied Student',
-    href: '/dashboard/applied-student',
+    title: 'Applicants',
     icon: 'chevronRight',
-    label: 'registration'
+    label: 'registration',
+    items: [
+      {
+        title: 'Applied ',
+        href: '/dashboard/applied-student?status=Applied',
+        icon: 'user',
+        label: 'applied applicants'
+      },
+      {
+        title: 'Selected ',
+        href: '/dashboard/applied-student?status=Selected',
+        icon: 'user',
+        label: 'selected applicants'
+      },
+      {
+        title: 'Remove ',
+        href: '/dashboard/applied-student?status=Selected',
+        icon: 'user',
+        label: 'remove applicants'
+      }
+    ]
   },
   {
     title: 'Attendance',
