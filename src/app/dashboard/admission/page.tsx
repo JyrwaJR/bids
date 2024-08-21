@@ -1,5 +1,5 @@
 'use client';
-import AppliedStudentPage from '@pages/applied-student';
+import PrepareAdmissionList from '@components/pages/applied-student/prepare-admission';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 
@@ -8,7 +8,7 @@ const Page = () => {
   useEffect(() => {
     router.push('/dashboard/admission/applied');
   }, [router]);
-  return <AppliedStudentPage />;
+  return <PrepareAdmissionList />;
 };
 
 export default Page;

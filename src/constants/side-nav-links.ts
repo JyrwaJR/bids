@@ -158,7 +158,7 @@ export const navItems: NavItem[] = [
     items: [
       {
         title: 'Prepare Admission List ',
-        href: '/dashboard/admission/applied?status=Applied',
+        href: '/dashboard/admission/prepare?status=Applied',
         icon: 'user',
         label: 'applied applicants'
       },
