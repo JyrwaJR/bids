@@ -83,13 +83,13 @@ export const navItems: NavItem[] = [
             label: 'batch'
           },
           {
-            title: 'Assign Batch',
+            title: 'Create Batch',
             href: '/dashboard/batch/assign',
             icon: 'employee',
             label: 'assign batch'
           },
           {
-            title: 'Assign Teacher',
+            title: 'Assign Trainer',
             href: '/dashboard/batch/assign/teacher',
             icon: 'employee',
             disabled: true,
@@ -112,23 +112,10 @@ export const navItems: NavItem[] = [
     label: 'events management'
   },
   {
-    title: 'Search',
+    title: 'Search Student',
+    href: '/dashboard/search?q=applicants',
     icon: 'search',
-    label: 'search',
-    items: [
-      {
-        title: 'Applicants',
-        href: '/dashboard/search?q=applicants',
-        icon: 'userSquare',
-        label: 'search'
-      },
-      {
-        title: 'Students',
-        href: '/dashboard/search?q=students',
-        icon: 'search',
-        label: 'kanban'
-      }
-    ]
+    label: 'search'
   },
   {
     title: 'Project',
@@ -188,7 +175,7 @@ export const navItems: NavItem[] = [
         label: 'remove applicants'
       },
       {
-        title: 'Remove Selected Candidates',
+        title: 'Remove Admit Candidates',
         href: '/dashboard/admission/remove?status=selected',
         icon: 'user',
         label: 'remove applicants'
@@ -201,15 +188,21 @@ export const navItems: NavItem[] = [
     label: 'Attendance',
     items: [
       {
-        title: 'Attendance',
+        title: 'List Attendance',
         href: '/dashboard/attendance',
         icon: 'employee',
         label: 'Attendance'
       },
       {
-        title: 'Add Attendance',
+        title: 'Map Student',
+        href: '/dashboard/attendance',
+        icon: 'sun',
+        label: 'Attendance'
+      },
+      {
+        title: 'Upload Attendance',
         href: '/dashboard/attendance/new',
-        icon: 'employee',
+        icon: 'upload',
         label: 'Add Attendance'
       }
     ]
