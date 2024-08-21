@@ -1,4 +1,5 @@
-import { Form } from '@components/form';
+import { Form, FormFieldType } from '@components/form';
+import { OptionsT } from '@components/form/type';
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import { DataTable } from '@components/ui/data-table';
@@ -13,7 +14,11 @@ import {
 import { showToast } from '@components/ui/show-toast';
 import { domainColumn } from '@constants/columns';
 import { batchFields } from '@constants/input-fields';
-import { batchQueryKey, domainQueryKey } from '@constants/query-keys';
+import {
+  batchQueryKey,
+  domainQueryKey,
+  staffQueryKey
+} from '@constants/query-keys';
 import { FailedToastTitle } from '@constants/toast-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCMutation } from '@hooks/useCMutation';
@@ -77,6 +82,18 @@ export const AddBatch = ({ open, onClose, projectId }: Props) => {
     url: 'domain',
     queryKey: domainQueryKey
   });
+  const staffQuery = useCQuery({
+    url: 'staff',
+    queryKey: staffQueryKey
+  });
+  const staffOptions: OptionsT[] =
+    staffQuery.isFetched &&
+    staffQuery.data &&
+    !staffQuery.isLoading &&
+    staffQuery.data?.data?.data.map((item: any) => ({
+      label: item.name,
+      value: item.id
+    }));
   const column: ColumnDef<ColType | any>[] = [
     {
       id: 'select',
@@ -109,6 +126,19 @@ export const AddBatch = ({ open, onClose, projectId }: Props) => {
     },
     ...domainColumn
   ];
+  const updateFields: FormFieldType[] = batchFields.map((items) => {
+    if (items.select) {
+      switch (items.name) {
+        case 'trainer_id':
+          return { ...items, options: staffOptions };
+        case 'support_trainer_id':
+          return { ...items, options: staffOptions };
+        default:
+          return items;
+      }
+    }
+    return items;
+  });
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
@@ -125,7 +155,7 @@ export const AddBatch = ({ open, onClose, projectId }: Props) => {
             form={form}
             onSubmit={onSubmit}
             className="md:col-span-6"
-            fields={batchFields}
+            fields={updateFields}
             loading={isLoading || loading}
             btnStyle="md:w-full"
           />

@@ -1,10 +1,26 @@
 import { Separator } from '@components/ui/separator';
+import { Button } from '@components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@components/ui/select';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@components/ui/form';
 import React, { useEffect, useState } from 'react';
 import { DataTable } from '@components/ui/data-table';
 import { ColumnDef } from '@tanstack/react-table';
 import { StudentRegistrationModelType } from '@models/student';
 import { useCMutation } from '@hooks/useCMutation';
-import { FormFieldType, Form } from '@components/form';
+import { FormFieldType } from '@components/form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { OptionsT } from '@components/form/type';
@@ -174,14 +190,53 @@ const RemoveSelectedCandidate = () => {
           />
         </div>
         <Separator />
-        <Form
-          form={form}
-          fields={formFields}
-          loading={isLoading}
-          onSubmit={onSubmit}
-          className="sm:col-span-4 md:col-span-4"
-          btnText="Search"
-        />
+        <Form {...form}>
+          <form
+            className="grid grid-cols-12 space-x-2"
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
+            {formFields.map((input: FormFieldType, i) => (
+              <div className="col-span-4" key={i}>
+                <FormField
+                  control={form.control}
+                  disabled={input.readOnly}
+                  name={input.name as any}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{input.label}</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue
+                              className="w-full min-w-[200px]"
+                              placeholder="Select a value"
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {input.options?.map((option: OptionsT, i: number) => (
+                            <SelectItem value={option.value} key={i}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            ))}
+            <div className="mt-8">
+              <Button type="submit" disabled={isLoading}>
+                Search
+              </Button>
+            </div>
+          </form>
+        </Form>
         <Separator />
         <DataTable
           searchKey="first_name"

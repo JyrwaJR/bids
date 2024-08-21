@@ -114,7 +114,6 @@ const AdmitCandidate = () => {
     queryKey: batchQueryKey,
     enabled: !!watchProjectId && !!watchDomainId
   });
-  console.log(batchQuery.data?.data);
   const batchOptions: OptionsT[] = batchQuery.data?.data?.map((item: any) => ({
     label: item.batch_code,
     value: item.id
@@ -294,7 +293,8 @@ const AdmitCandidate = () => {
               <div className="col-span-4" key={i}>
                 <FormField
                   control={form.control}
-                  name={input.name as keyof Model}
+                  disabled={input.readOnly || isLoading}
+                  name={input.name as any}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>{input.label}</FormLabel>
@@ -325,7 +325,9 @@ const AdmitCandidate = () => {
               </div>
             ))}
             <div className="mt-8">
-              <Button type="submit">Search</Button>
+              <Button type="submit" disabled={isLoading}>
+                Search
+              </Button>
             </div>
           </form>
         </Form>

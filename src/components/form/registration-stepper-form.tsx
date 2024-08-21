@@ -11,7 +11,6 @@ import { FormFieldType } from './type';
 import { Form } from './form';
 import { startStudentRegistrationFields } from '@constants/input-fields/students/student-registration-fields';
 import { useCMutation } from '@hooks/useCMutation';
-import { Heading } from '@components/ui/heading';
 
 export type StepType = {
   id: string;
@@ -80,7 +79,7 @@ export const RegistrationStepperForm = () => {
         loading={mutate.isLoading}
         fields={startStudentRegistrationFields}
         onSubmit={onSubmit}
-        className="md:col-span-4"
+        className="md:col-span-6"
         btnText="Register"
       />
     </div>

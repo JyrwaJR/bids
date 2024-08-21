@@ -36,7 +36,15 @@ export const BatchModel = z.object({
   duration: z.number({ required_error: FieldsIsRequired }),
   unit: z.enum(['hr', 'min'], {
     required_error: FieldsIsRequired
-  })
+  }),
+  trainer_id: z
+    .string({
+      required_error: FieldsIsRequired
+    })
+    .uuid({
+      message: 'Trainer ID must be a valid UUID'
+    }),
+  support_trainer_id: z.string().uuid().optional()
 });
 
 export type BatchModelType = z.infer<typeof BatchModel>;

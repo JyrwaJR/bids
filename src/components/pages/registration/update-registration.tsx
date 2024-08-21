@@ -31,6 +31,8 @@ import { PreviewRegistrationForm as PreviewForm } from '@components/pages/regist
 import { useRegistrationFields } from '@src/app/dashboard/registration/_lib/useRegistrationFields';
 import { FormFieldType } from '@components/index';
 import { CForm } from '@components/form';
+import { appendNonFileDataToFormData } from '@lib/appendNoneFileDataToFileData';
+import { axiosInstance } from '@lib/utils';
 
 export type StepType = {
   id: string;
@@ -68,7 +70,6 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
       setId(data.id);
     }
   }, [data, setId]);
-
   const { field: steps } = useRegistrationFields({
     form: form
   });
@@ -119,37 +120,52 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
     try {
       switch (currentStep) {
         case 0:
-        case 1:
-          const personalRes = await addPersonalDetails(id, data);
-          if (!personalRes.success) {
-            showToast(FailedToastTitle, 'Error when adding personal detail');
-            return false; // Return false if submission failed
+          try {
+            if (!id) {
+              return;
+            }
+            const formData = new FormData();
+            appendNonFileDataToFormData(data, formData);
+            if (data.passport) {
+              formData.append('passport', data.passport);
+            }
+            const response = await axiosInstance.put(
+              `/registration/add-personal-details/${id}`,
+              formData
+            );
+            return response.data.success;
+          } catch (error) {
+            throw error;
           }
+          // if (!personalRes.success) {
+          //   showToast(FailedToastTitle, 'Error when adding personal detail');
+          //   return false; // Return false if submission failed
+          // }
           break;
-        case 2:
+        case 1:
           const domainAppliedRes = await studentAppliedDomain(id, data);
           if (!domainAppliedRes.success) {
             showToast(FailedToastTitle, 'Error when adding domain applied');
             return false;
           }
           break;
-        case 3:
+        case 2:
           const familyRes = await addFamilyDetails(id, data);
           if (!familyRes.success) {
             showToast(FailedToastTitle, 'Error when adding family detail');
             return false;
           }
           break;
-        case 4:
+        case 3:
           const addressRes = await addAddressDetails(id, data);
           if (!addressRes.success) {
             showToast(FailedToastTitle, 'Error when adding address detail');
             return false;
           }
           break;
-        case 5:
+        case 4:
           break;
-        case 6:
+        case 5:
           if (data.is_bpl === 'Yes') {
             const bplRes = await addStudentBpl(id, data);
             if (!bplRes.success) {
@@ -302,14 +318,10 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
                 <ArrowLeft className="mr-4" />
                 Back
               </Button>
-              <Button
-                // disabled={disabled || loading}
-                type="button"
-                onClick={next}
-              >
+              <Button type="button" onClick={next}>
                 {currentStep < steps.length ? (
                   <>
-                    Next
+                    Save
                     <ArrowRight className="ml-4" />
                   </>
                 ) : (

@@ -1,11 +1,28 @@
 import { Separator } from '@components/ui/separator';
+
+import { Button } from '@components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@components/ui/select';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@components/ui/form';
 import React, { useEffect, useState } from 'react';
 import { DataTable } from '@components/ui/data-table';
 import { ColumnDef } from '@tanstack/react-table';
 import { StudentRegistrationModelType } from '@models/student';
 import { useCMutation } from '@hooks/useCMutation';
-import { FormFieldType, Form } from '@components/form';
-import { useForm } from 'react-hook-form';
+import { FormFieldType } from '@components/form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { OptionsT } from '@components/form/type';
 import { FailedToastTitle } from '@constants/toast-message';
@@ -21,10 +38,15 @@ import {
 import { addmissionColumn } from '@constants/columns/admission-column';
 import { Checkbox } from '@components/ui/checkbox';
 import { Heading } from '@components/ui/heading';
+import { FieldsIsRequired } from '@constants/index';
 
 const Model = z.object({
-  project_id: z.string().uuid(),
-  domain_id: z.string().uuid(),
+  project_id: z
+    .string({ required_error: FieldsIsRequired })
+    .uuid({ message: FieldsIsRequired }),
+  domain_id: z
+    .string({ required_error: FieldsIsRequired })
+    .uuid({ message: FieldsIsRequired }),
   status: z.string()
 });
 
@@ -45,7 +67,10 @@ const ViewSelectedCandidate = () => {
       status: 'Selected'
     }
   });
-
+  const project_id = useWatch({
+    control: form.control,
+    name: 'project_id'
+  });
   const { mutateAsync, isLoading, data } = useCMutation({
     method: 'POST',
     url: 'registration/candidate-registration-list',
@@ -88,7 +113,7 @@ const ViewSelectedCandidate = () => {
       name: 'project_id',
       label: 'Project Name',
       select: true,
-      options: isProjectOptions
+      options: isProjectOptions ?? emptyOptions
     },
     {
       name: 'domain_id',
@@ -159,14 +184,11 @@ const ViewSelectedCandidate = () => {
   };
 
   useEffect(() => {
-    if (
-      form.watch('project_id') &&
-      form.watch('project_id') !== isSelectedProjectId
-    ) {
+    if (project_id && project_id !== isSelectedProjectId) {
+      setIsSelectedProjectId(project_id);
       domainQuery.refetch();
-      setIsSelectedProjectId(form.getValues('project_id'));
     }
-  }, [form, domainQuery, isSelectedProjectId]);
+  }, [project_id, isSelectedProjectId, domainQuery]);
 
   return (
     <div className="flex-1 space-y-4">
@@ -177,14 +199,53 @@ const ViewSelectedCandidate = () => {
         />
       </div>
       <Separator />
-      <Form
-        form={form}
-        fields={formFields}
-        loading={isLoading}
-        onSubmit={onSubmit}
-        className="sm:col-span-4 md:col-span-4"
-        btnText="Search"
-      />
+      <Form {...form}>
+        <form
+          className="grid grid-cols-12 space-x-2"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          {formFields.map((input: FormFieldType, i) => (
+            <div className="col-span-4" key={i}>
+              <FormField
+                control={form.control}
+                disabled={input.readOnly}
+                name={input.name as any}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{input.label}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue
+                            className="w-full min-w-[200px]"
+                            placeholder="Select a value"
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {input.options?.map((option: OptionsT, i: number) => (
+                          <SelectItem value={option.value} key={i}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          ))}
+          <div className="mt-8">
+            <Button type="submit" disabled={isLoading}>
+              Search
+            </Button>
+          </div>
+        </form>
+      </Form>
       <Separator />
       <DataTable
         searchKey="first_name"
