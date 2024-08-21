@@ -63,7 +63,7 @@ export default function Page() {
     <div className="flex-1 space-y-4">
       <div className="flex items-start justify-between">
         <Heading
-          title={`Existing Project`}
+          title={`Create Batch`}
           description="Select a Project to add a batch"
         />
         <Button
