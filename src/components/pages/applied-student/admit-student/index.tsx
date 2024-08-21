@@ -13,7 +13,7 @@ import {
   FormLabel,
   FormMessage
 } from '@components/ui/form';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { OptionsT } from '@components/form/type';
 import { FailedToastTitle } from '@constants/toast-message';
@@ -70,15 +70,23 @@ const AdmitCandidate = () => {
   const form = useForm<Model>({
     resolver: zodResolver(Model),
     defaultValues: {
-      status: 'Applied'
+      status: 'Selected'
     }
+  });
+  const watchProjectId = useWatch({
+    control: form.control,
+    name: 'project_id'
+  });
+  const watchDomainId = useWatch({
+    control: form.control,
+    name: 'domain_id'
   });
 
   const batchForm = useForm<BatchModel>({
     resolver: zodResolver(BatchModel)
   });
 
-  const { mutateAsync, isLoading, data, isSuccess } = useCMutation({
+  const { mutateAsync, isLoading, data } = useCMutation({
     method: 'POST',
     url: 'registration/candidate-registration-list',
     queryKey: appliedApplicantQueryKey
@@ -98,17 +106,17 @@ const AdmitCandidate = () => {
   const domainQuery = useCQuery({
     url: `project-domain/get-domain-by-project/${form.watch('project_id')}`,
     queryKey: [projectsQueryKey, domainQueryKey],
-    enabled: !!form.watch('project_id')
+    enabled: !!watchProjectId
   });
 
   const batchQuery = useCQuery({
     url: `batch`,
     queryKey: batchQueryKey,
-    enabled: !!form.watch('project_id') && !!form.watch('domain_id')
+    enabled: !!watchProjectId && !!watchDomainId
   });
   console.log(batchQuery.data?.data);
   const batchOptions: OptionsT[] = batchQuery.data?.data?.map((item: any) => ({
-    label: item.batch,
+    label: item.batch_code,
     value: item.id
   }));
   const isProjectOptions: OptionsT[] = projectQuery.data?.data?.map(
@@ -141,7 +149,7 @@ const AdmitCandidate = () => {
       name: 'domain_id',
       label: 'Domain Name',
       select: true,
-      readOnly: form.getValues('project_id') ? false : true,
+      readOnly: !!watchProjectId ? false : true,
       options: isDomainOptions ?? emptyOptions
     }
   ];
@@ -152,6 +160,7 @@ const AdmitCandidate = () => {
   ) {
     try {
       // Handle "Alloted" status
+      showToast(FailedToastTitle, 'Here');
       if (status === 'Alloted') {
         if (!batch_id) {
           showToast(FailedToastTitle, 'Please select a batch to allot');
@@ -165,7 +174,7 @@ const AdmitCandidate = () => {
         const res = await allotBatch.mutateAsync({
           status: 'Alloted',
           batch_id,
-          id
+          domain_applied_id: id
         });
 
         if (res.success) {
@@ -221,14 +230,14 @@ const AdmitCandidate = () => {
         return (
           <Checkbox
             checked={row.original.status === 'Alloted'}
-            onCheckedChange={async () => {
+            onClick={async () => {
               if (row.original.status === 'Selected' && row.original.id) {
                 setId(row.original.id);
                 if (id) {
                   await updateStudentStatus(
                     'Alloted',
                     batchForm.getValues('batch_id'),
-                    id
+                    watchDomainId
                   );
                 }
               } else if (row.original.status === 'Alloted' && row.original.id) {
@@ -242,6 +251,7 @@ const AdmitCandidate = () => {
                 }
               }
             }}
+            onCheckedChange={async () => row.toggleSelected()}
           />
         );
       }
@@ -251,30 +261,19 @@ const AdmitCandidate = () => {
 
   const onSubmit = async (data: Model) => {
     try {
-      Model.parse(data);
       await mutateAsync(data);
     } catch (error: any) {
-      if (error instanceof Error) {
-        showToast(FailedToastTitle, error.message);
-      }
-      if (error instanceof z.ZodError) {
-        showToast(FailedToastTitle, error.errors[0].message);
-        return;
-      }
       showToast(FailedToastTitle, error.message);
       return;
     }
   };
 
   useEffect(() => {
-    if (
-      form.watch('project_id') &&
-      form.watch('project_id') !== isSelectedProjectId
-    ) {
+    if (watchProjectId && watchProjectId !== isSelectedProjectId) {
       domainQuery.refetch();
       setIsSelectedProjectId(form.getValues('project_id'));
     }
-  }, [form, domainQuery, isSelectedProjectId]);
+  }, [form, domainQuery, watchProjectId, isSelectedProjectId]);
 
   return (
     <>
@@ -332,23 +331,19 @@ const AdmitCandidate = () => {
         </Form>
         <Separator />
         <Form {...batchForm}>
-          {form.getValues('domain_id') &&
-            form.getValues('project_id') &&
-            isSuccess && (
-              <CForm
-                form={form}
-                fields={[
-                  {
-                    label: 'Allot to Batch',
-                    name: 'batch_id',
-                    select: true,
-                    options: batchOptions
-                  }
-                ]}
-                loading={isLoading}
-                className="sm:col-span-4 md:col-span-4"
-              />
-            )}
+          <CForm
+            form={batchForm}
+            fields={[
+              {
+                label: 'Allot to Batch',
+                name: 'batch_id',
+                select: true,
+                options: batchOptions
+              }
+            ]}
+            loading={isLoading}
+            className="sm:col-span-4 md:col-span-4"
+          />
         </Form>
         <Separator />
         <DataTable
