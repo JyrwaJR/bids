@@ -16,11 +16,18 @@ import { FailedToastTitle } from '@constants/toast-message';
 import { ColumnDef } from '@tanstack/react-table';
 import { PencilIcon } from 'lucide-react';
 import { Button } from '@components/ui/button';
-import { Form, FormControl, FormField, FormItem } from '@components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage
+} from '@components/ui/form';
 import { Input } from '@components/ui/input';
 import { UpdateRegistrationStepperForm } from '@components/pages/registration/update-registration';
 import { searchRegistrationStudentColumn } from '@constants/columns/search/registration-students-column';
 import { PersonIcon } from '@radix-ui/react-icons';
+import { useAuthContext } from '@context/auth';
 
 const FindStudentModel = z.object({
   name: z
@@ -36,6 +43,7 @@ const Page = () => {
   const [isStudentList, setIsStudentList] = React.useState<
     StudentRegistrationModelWithDomainType[]
   >([]);
+  const { user } = useAuthContext();
   const [isSelectedApplicant, setSelectedApplicant] =
     useState<StudentRegistrationModelWithDomainType>();
   const form = useForm({
@@ -48,7 +56,12 @@ const Page = () => {
   const onSubmit: SubmitHandler<FindStudentModelType> = async (data) => {
     try {
       setIsSearching(true);
-      const res = await searchStudentByName(data.name.toLowerCase());
+      const centerId = user?.role === 'superadmin' ? null : user?.centre_id;
+      const res = await searchStudentByName(
+        'applicantes',
+        data.name.toLowerCase(),
+        centerId
+      );
       if (res.success) setIsStudentList(res.data);
     } catch (error: any) {
       showToast(FailedToastTitle, error.message);
@@ -104,7 +117,7 @@ const Page = () => {
               <div className="flex items-start justify-between">
                 <Heading
                   title={`Search Student`}
-                  description={`Results by the name ${form.watch('name')}`}
+                  description={`Search Students by name,title, mobile number, registration number`}
                 />
               </div>
               <Form {...form}>
@@ -116,13 +129,11 @@ const Page = () => {
                     control={form.control}
                     name="name"
                     render={({ field }) => (
-                      <FormItem className="flex items-center space-x-2">
+                      <FormItem className="flex w-[40%] flex-col items-start justify-center space-x-2">
                         <FormControl>
-                          <Input
-                            placeholder="Please enter your full name"
-                            {...field}
-                          />
+                          <Input placeholder="Search..." {...field} />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />

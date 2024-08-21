@@ -9,12 +9,21 @@ import {
 } from './type';
 import { StudentRegistrationApplyDomainModel } from '@models/student/student-registration-apply-domain-model';
 import { z } from 'zod';
+import { appendNonFileDataToFormData } from '@lib/appendNoneFileDataToFileData';
 
-export async function searchStudentByName(name?: string | undefined) {
+export async function searchStudentByName(
+  type: string,
+  name: string | undefined,
+  id?: string | null
+) {
   try {
     if (!name || name == ' ' || name === undefined) return;
-    const res = await axiosInstance.post(`registration/search-student`, {
-      search: name
+    const url = id
+      ? `registration/search-student/${id}`
+      : 'registration/search-student';
+    const res = await axiosInstance.post(url, {
+      search: name,
+      type: type
     });
     return res.data;
   } catch (error: any) {
@@ -121,27 +130,14 @@ export const addPersonalDetails = async (
     if (!isRegistrationId) {
       return;
     }
-    const form = new FormData();
-    form.append('first_name', data.first_name);
-    form.append('middle_name', data.middle_name ?? '');
-    form.append('last_name', data.last_name);
-    form.append('dob', data.dob);
-    form.append('gender', data.gender);
-    form.append('marital_status', data.marital_status);
-    form.append('mobilisation_source', data.mobilisation_source ?? '');
-    form.append('mobile', data.mobile);
-    form.append('email', data.email ?? '');
-    form.append('aadhaar', data.aadhaar ?? '');
-    form.append('category', data.category);
-    form.append('education', data.education);
-    form.append('religion', data.religion);
-    form.append('remarks', data.remarks ?? '');
-    form.append('registration_date', data.registration_date ?? '');
-    form.append('passport', data.passport ?? '');
-
+    const formData = new FormData();
+    appendNonFileDataToFormData(data, formData);
+    if (data.passport) {
+      formData.append('passport', data.passport);
+    }
     const response = await axiosInstance.put(
       `/registration/add-personal-details/${isRegistrationId}`,
-      form
+      formData
     );
     return response.data;
   } catch (error) {
