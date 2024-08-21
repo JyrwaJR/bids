@@ -6,15 +6,15 @@ export const addmissionColumn: ColumnDef<StudentRegistrationModelType>[] = [
     header: 'Name'
   },
   {
-    accessorKey: 'dob',
-    header: 'Date of Birth'
+    accessorKey: 'father_name',
+    header: 'Father Name'
   },
   {
     accessorKey: 'gender',
     header: 'Gender'
   },
   {
-    accessorKey: 'status',
-    header: 'Status'
+    accessorKey: 'mobile',
+    header: 'Mobile'
   }
 ];
