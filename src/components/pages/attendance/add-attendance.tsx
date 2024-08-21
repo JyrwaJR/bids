@@ -12,7 +12,7 @@ import { OptionsT } from '@components/form/type';
 import { batchQueryKey } from '@constants/query-keys';
 import { FailedToastTitle } from '@constants/toast-message';
 import { AttendanceModelType } from '@models/attendance-model';
-import { attendanceColumn } from '@constants/columns/attendance';
+import { attendanceColumn } from '@constants/columns/attendance-column';
 import { Heading } from '@components/ui/heading';
 import { Form } from '@components/ui/form';
 import { Button } from '@components/ui/button';
@@ -84,6 +84,7 @@ export const AddAttendance: React.FC = () => {
   });
   const prevBatchId = useRef<string | undefined>(undefined);
   const prevDate = useRef<string | undefined>(undefined);
+
   const debouncedRefetch = useRef(
     debounce(() => {
       attendanceQuery.refetch();

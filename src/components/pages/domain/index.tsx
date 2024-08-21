@@ -10,6 +10,11 @@ import { domainColumn } from '@constants/columns';
 import { AddDomain } from '@components/pages';
 import { OptionsT } from '@components/form/type';
 import { domainQueryKey } from '@constants/query-keys';
+import { ColumnDef } from '@tanstack/react-table';
+import { UpdateDomain } from './update-domain';
+import { DomainModelType } from '@models/domain-model';
+import { CellAction } from '@components/cell-action';
+import { format } from 'date-fns';
 
 const searchDomainBy: OptionsT[] = [
   {
@@ -23,12 +28,31 @@ const searchDomainBy: OptionsT[] = [
 ];
 const DomainPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  const { data, isFetched, isLoading, isError } = useCQuery({
+  const [openUpdate, setOpenUpdate] = useState<boolean>(false);
+  const [selectedDomain, setSelectedDomain] = useState<DomainModelType>();
+  const { data, isFetched, isLoading, isError, refetch } = useCQuery({
     url: 'domain',
     queryKey: domainQueryKey
   });
-
+  const column: ColumnDef<DomainModelType>[] = [
+    ...domainColumn,
+    {
+      id: 'actions',
+      header: 'Actions',
+      cell: ({ row }) => {
+        return (
+          <CellAction
+            onEdit={() => {
+              if (row.original.id) {
+                setSelectedDomain(row.original);
+                setOpenUpdate(true);
+              }
+            }}
+          />
+        );
+      }
+    }
+  ];
   return (
     <>
       <div className="flex-1 space-y-4">
@@ -44,12 +68,29 @@ const DomainPage = () => {
         <Separator />
         <DataTable
           searchOptions={searchDomainBy}
+          refetch={refetch}
+          isLoading={isLoading}
           searchKey="name"
-          columns={domainColumn}
+          columns={column}
           data={isFetched && !isLoading && !isError ? data.data : []}
         />
       </div>
       {isOpen && <AddDomain open={isOpen} onClose={() => setIsOpen(false)} />}
+      {openUpdate && (
+        <UpdateDomain
+          open={openUpdate}
+          data={{
+            name: selectedDomain?.name ?? '',
+            status: selectedDomain?.status ?? '',
+            id: selectedDomain?.id,
+            level: selectedDomain?.level,
+            duration: selectedDomain?.duration ?? 0,
+            qp_code: selectedDomain?.qp_code ?? ''
+          }}
+          id={selectedDomain?.id ?? ''}
+          onClose={() => setOpenUpdate(false)}
+        />
+      )}
     </>
   );
 };

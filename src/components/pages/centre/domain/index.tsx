@@ -32,7 +32,11 @@ const CenterDomainPage = () => {
       domain_id: isSelectedDomId
     }
   });
-  const { data: domainsData, isLoading: domainLoading } = useCQuery({
+  const {
+    data: domainsData,
+    isLoading: domainLoading,
+    isFetched: domainIsFetched
+  } = useCQuery({
     url: 'domain',
     queryKey: domainQueryKey
   });
@@ -146,7 +150,11 @@ const CenterDomainPage = () => {
         <DataTable
           searchKey="name"
           columns={columns}
-          data={domainLoading ? [] : domainsData.data}
+          data={
+            domainIsFetched && !domainLoading && domainsData?.data
+              ? domainsData?.data
+              : []
+          }
         />
       </div>
     </>

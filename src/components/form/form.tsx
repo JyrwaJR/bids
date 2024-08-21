@@ -181,8 +181,11 @@ export const CForm = <T,>({
                                 <span className="text-red-500">*</span>
                               )}
                             </FormLabel>
+                            {/* check if value is null or undefined or ""  */}
+
                             <Input
                               type="file"
+                              className="flex"
                               disabled={disabled || input.readOnly}
                               ref={ref}
                               autoFocus={i === 0}
@@ -191,7 +194,13 @@ export const CForm = <T,>({
                               onBlur={onBlur}
                               onChange={(e) => {
                                 const file = e.target.files?.[0];
-                                onChange(file);
+                                if (file && file instanceof File) {
+                                  // Optionally, add more file validation if needed (e.g., file type, size)
+                                  onChange(file);
+                                } else {
+                                  // Return null or handle invalid file case
+                                  onChange(null);
+                                }
                               }}
                             />
                             <FormDescription>

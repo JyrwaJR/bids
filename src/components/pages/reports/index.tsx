@@ -9,9 +9,10 @@ import { Button } from '@components/ui/button';
 import { Download } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { reportQueryKey } from '@constants/query-keys';
-import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
-import { Form, FormFieldType } from '@components/index';
-import { useForm } from 'react-hook-form';
+import { ProjectColumn, domainColumn } from '@constants/columns';
+import { ColumnDef } from '@tanstack/react-table';
+import { sectorColumn } from '@constants/columns/sector-column';
+import { BatchColumn } from '@constants/columns/batch-column';
 
 export const ReportPage = () => {
   const search = useSearchParams().get('reports');
@@ -20,22 +21,24 @@ export const ReportPage = () => {
     queryKey: [reportQueryKey, search],
     url: isDefaultReportUrl
   });
-  const form = useForm();
-  const { options } = useCategorySelectOptions();
-  const fields: FormFieldType[] = [
-    {
-      name: 'centre_id',
-      select: true,
-      label: 'Centre',
-      options: options.centre
-    },
-    {
-      name: 'domain_id',
-      select: true,
-      label: 'Domain',
-      options: options.domain
+  const getColumns = (): ColumnDef<any>[] => {
+    switch (search) {
+      case 'centre':
+        return CentreColumn;
+      case 'domain':
+        return domainColumn;
+      case 'project':
+        return ProjectColumn;
+      case 'sector':
+        return sectorColumn;
+      case 'batch':
+        return BatchColumn;
+      case 'admission':
+        return BatchColumn;
+      default:
+        return CentreColumn;
     }
-  ];
+  };
   return (
     <Suspense>
       <div className="flex-1 space-y-4">
@@ -43,6 +46,7 @@ export const ReportPage = () => {
           <Heading
             title={`Reports ${search}`}
             description={`Manage ${search} reports`}
+            className="capitalize"
           />
           {isFetched && (
             <Button asChild>
@@ -59,20 +63,10 @@ export const ReportPage = () => {
             </Button>
           )}
         </div>
-        {isFetched && (
-          <Form
-            btnText="Search"
-            className="md:col-span-6"
-            form={form}
-            fields={fields}
-            onSubmit={() => {}}
-            loading={!isFetched}
-          />
-        )}
         <Separator />
         <DataTable
           searchKey="name"
-          columns={CentreColumn}
+          columns={getColumns()}
           data={isFetched && data.data ? data.data : []}
         />
       </div>

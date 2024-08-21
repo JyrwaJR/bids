@@ -32,7 +32,7 @@ const searchCentreBy: OptionsT[] = [
 export const CenterPageComponents = () => {
   const { setIsDeleting, isDeleting, open, setOpen } = useCenterStore();
   const { user } = useAuthContext();
-  const { data, isFetched, isLoading } = useCQuery({
+  const { data, isFetched, isLoading, refetch } = useCQuery({
     url: 'centre',
     queryKey: centreQueryKey
   });
@@ -65,6 +65,7 @@ export const CenterPageComponents = () => {
         </div>
         <Separator />
         <DataTable
+          refetch={refetch}
           searchKey="name"
           searchOptions={searchCentreBy}
           isLoading={isLoading}

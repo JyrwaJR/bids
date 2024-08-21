@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { showToast } from '@components/ui/show-toast';
 import { attendanceQueryKey, batchQueryKey } from '@constants/query-keys';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { AddAttendance } from './add-attendance';
 import { useQuery } from 'react-query';
 import { AxiosError } from 'axios';
 import { ScrollArea } from '@components/ui/scroll-area';
@@ -21,7 +19,7 @@ import { format } from 'date-fns';
 import { z } from 'zod';
 import { AttendanceModelType } from '@models/attendance-model';
 import { axiosInstance } from '@lib/utils';
-import { attendanceColumn } from '@constants/columns/attendance';
+import { attendanceColumn } from '@constants/columns/attendance-column';
 import { debounce } from 'lodash';
 const getAttendanceByBatchId = async (batchId: string, date?: string) => {
   try {
@@ -117,51 +115,40 @@ export const AttendancePage = () => {
   return (
     <ScrollArea>
       <div className="flex-1 space-y-4">
-        <Tabs defaultValue="attendance" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="attendance">Attendance</TabsTrigger>
-            <TabsTrigger value="new-attendance">New Attendance</TabsTrigger>
-          </TabsList>
-          <TabsContent value="attendance" className="space-y-4">
-            <div className="flex items-start justify-between space-y-2">
-              <Heading title="New Attendance" description="Manage Attendance" />
+        <div className="flex items-start justify-between space-y-2">
+          <Heading title="New Attendance" description="Manage Attendance" />
+        </div>
+        <Form {...form}>
+          <div className="flex flex-col items-start justify-start space-x-2 md:flex-row md:items-center md:justify-start">
+            <div>
+              <CForm
+                form={form}
+                fields={updatedFields}
+                loading={attendanceQuery.isFetching}
+                className="md:col-span-6"
+              />
             </div>
-            <Form {...form}>
-              <div className="flex flex-col items-start justify-start space-x-2 md:flex-row md:items-center md:justify-start">
-                <div>
-                  <CForm
-                    form={form}
-                    fields={updatedFields}
-                    loading={attendanceQuery.isFetching}
-                    className="md:col-span-6"
-                  />
-                </div>
-                <Button
-                  disabled={attendanceQuery.isFetching}
-                  onClick={debouncedRefetch}
-                  className="mt-4"
-                >
-                  Search
-                </Button>
-              </div>
-            </Form>
-            <Separator />
-            <DataTable
-              searchKey="batch"
-              columns={attendanceColumn}
-              className="h-full"
-              isLoading={attendanceQuery.isFetching}
-              data={
-                attendanceQuery.isFetched && attendanceQuery.data
-                  ? attendanceQuery.data.data
-                  : []
-              } // Use appropriate data source
-            />
-          </TabsContent>
-          <TabsContent value="new-attendance" className="space-y-4">
-            <AddAttendance />
-          </TabsContent>
-        </Tabs>
+            <Button
+              disabled={attendanceQuery.isFetching}
+              onClick={debouncedRefetch}
+              className="mt-4"
+            >
+              Search
+            </Button>
+          </div>
+        </Form>
+        <Separator />
+        <DataTable
+          searchKey="batch"
+          columns={attendanceColumn}
+          className="h-full"
+          isLoading={attendanceQuery.isFetching}
+          data={
+            attendanceQuery.isFetched && attendanceQuery.data
+              ? attendanceQuery.data.data
+              : []
+          } // Use appropriate data source
+        />
       </div>
     </ScrollArea>
   );

@@ -7,6 +7,10 @@ export const eventsMangementColumn: ColumnDef<EventManagementModelType>[] = [
     header: 'Name'
   },
   {
+    accessorKey: 'user',
+    header: 'User'
+  },
+  {
     accessorKey: 'event_location',
     header: 'Location'
   },

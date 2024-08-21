@@ -9,7 +9,7 @@ const Registration = () => {
       <div className="flex items-center justify-start">
         <Heading
           title="Student Registration"
-          description="Follow the steps to complete your profile"
+          description="Please enter the following information"
         />
       </div>
       <RegistrationStepperForm />

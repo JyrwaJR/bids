@@ -49,13 +49,7 @@ const studentImageUploadFields: FormFieldType[] = [
     type: 'file'
   }
 ];
-const startStudentRegistrationFields: FormFieldType[] = [
-  // {
-  //   name: 'registration_date',
-  //   label: 'Registration Date',
-  //   required: true,
-  //   type: 'date'
-  // },
+export const startStudentRegistrationFields: FormFieldType[] = [
   {
     name: 'first_name',
     label: 'First Name',
@@ -81,7 +75,7 @@ const startStudentRegistrationFields: FormFieldType[] = [
     name: 'mobile',
     label: 'Mobile',
     required: true,
-    type: 'text',
+    type: 'number',
     placeholder: 'Enter Mobile'
   },
   {

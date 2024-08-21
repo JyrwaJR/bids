@@ -31,7 +31,6 @@ import { PreviewRegistrationForm as PreviewForm } from '@components/pages/regist
 import { useRegistrationFields } from '@src/app/dashboard/registration/_lib/useRegistrationFields';
 import { FormFieldType } from '@components/index';
 import { CForm } from '@components/form';
-import { format, parse, isValid } from 'date-fns';
 
 export type StepType = {
   id: string;

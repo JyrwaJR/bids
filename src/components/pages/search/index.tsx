@@ -5,13 +5,21 @@ import { useSearchParams } from 'next/navigation';
 import React from 'react';
 import { useMutation } from 'react-query';
 import { studentQueryKey } from '@constants/query-keys';
-import { FormControl, FormField, FormItem, Form } from '@components/ui/form';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  Form,
+  FormMessage
+} from '@components/ui/form';
 import { Input } from '@components/ui/input';
 import { Button } from '@components/ui/button';
 import { FailedToastTitle } from '@constants/toast-message';
 import { showToast } from '@components/ui/show-toast';
 import { useForm } from 'react-hook-form';
 import { Heading } from '@components/ui/heading';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 const studentsColumn: ColumnDef<any>[] = [
   {
     header: 'Name',
@@ -48,11 +56,23 @@ const applicantsColumn: ColumnDef<any>[] = [
     accessorKey: 'email'
   }
 ];
+
+const Model = z.object({
+  name: z
+    .string()
+    .min(1, { message: 'Please enter name' }) // Ensures the name is not empty
+    .refine((v) => v.trim().length > 0, {
+      message: 'Name cannot contain only spaces'
+    })
+});
+
+type Model = z.infer<typeof Model>;
 export const SearchPage = () => {
   const search = useSearchParams().get('q');
   const defaultQuery = search ? search : 'students';
   const isSearchApplicants: boolean = defaultQuery === 'applicants';
-  const form = useForm({
+  const form = useForm<Model>({
+    resolver: zodResolver(Model),
     defaultValues: {
       name: ''
     }
@@ -82,7 +102,9 @@ export const SearchPage = () => {
       <div className="space-y-2">
         <Heading
           title={`Search ${isSearchApplicants ? 'Applicants' : 'Students'}`}
-          description={``}
+          description={`Search ${
+            isSearchApplicants ? 'Applicants' : 'Students'
+          } by name,title, mobile number, registration number`}
         />
         <Form {...form}>
           <form
@@ -93,13 +115,14 @@ export const SearchPage = () => {
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem className="flex w-[30%] items-center space-x-2">
+                <FormItem className="flex w-[40%] flex-col items-start justify-center space-x-2">
                   <FormControl>
                     <Input
-                      placeholder="Please enter your full name"
+                      placeholder="Search by name, title, mobile number, registration number"
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />

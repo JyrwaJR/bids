@@ -33,12 +33,14 @@ import {
   X,
   Upload,
   ExternalLink,
-  UserSquare
+  UserSquare,
+  Award
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
 
 export const Icons = {
+  award: Award,
   dashboard: LayoutDashboardIcon,
   logo: Command,
   login: LogIn,

@@ -139,7 +139,7 @@ export const EventsManagementPage = () => {
   const updatedColumn: ColumnDef<any>[] = [
     ...eventsMangementColumn,
     {
-      header: 'Upload Image',
+      header: 'Upload',
       cell: ({ row }) => {
         return (
           <Button
@@ -159,7 +159,7 @@ export const EventsManagementPage = () => {
       }
     },
     {
-      header: 'View Images',
+      header: 'View',
       cell: ({ row }) => {
         return (
           <Button

@@ -8,11 +8,11 @@ import {
 } from './function';
 import { yesNoOptions } from '@constants/options';
 import { studentRegistrationFields } from '@constants/input-fields/students';
-import { StepType } from '@components/form/stepper-form';
 import { useQuery } from 'react-query';
 import { OptionsT } from '@components/form/type';
 import { useCallback, useEffect, useState } from 'react';
 import { batchQueryKey, domainQueryKey } from '@constants/query-keys';
+import { StepType } from '@components/form/registration-stepper-form';
 
 type Props = {
   form: UseFormReturn<StudentRegistrationModelWithDomainType>;
@@ -118,6 +118,7 @@ export const useRegistrationFields = ({ form }: Props) => {
           }
         ]
       : [];
+
   const fieldInput: StepType[] = [
     ...studentRegistrationFields,
     {

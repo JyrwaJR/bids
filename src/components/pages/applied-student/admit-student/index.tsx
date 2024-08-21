@@ -1,4 +1,3 @@
-import { Heading } from '@components/ui/heading';
 import { Separator } from '@components/ui/separator';
 import React, { useEffect, useState } from 'react';
 import { DataTable } from '@components/ui/data-table';
@@ -19,40 +18,9 @@ import {
   domainQueryKey,
   projectsQueryKey
 } from '@constants/query-keys';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@components/ui/select';
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  Form as FormTag
-} from '@components/ui/form';
-import { SaveIcon } from 'lucide-react';
-import { Button } from '@components/ui/button';
-const StudentStatusOptions: OptionsT[] = [
-  {
-    label: 'Applied',
-    value: 'Applied'
-  },
-  {
-    label: 'Selected',
-    value: 'Selected'
-  },
-  {
-    label: 'Waiting',
-    value: 'Waiting'
-  },
-  {
-    label: 'Rejected',
-    value: 'Rejected'
-  }
-];
+import { addmissionColumn } from '@constants/columns/admission-column';
+import { Checkbox } from '@components/ui/checkbox';
+import { Heading } from '@components/ui/heading';
 
 const AppliedStudentModel = z.object({
   project_id: z.string().uuid(),
@@ -68,15 +36,7 @@ const emptyOptions: OptionsT[] = [
     value: ''
   }
 ];
-const UpdateStudentSchema = z.object({
-  status: z
-    .string()
-    .refine((value) => StudentStatusOptions.some((o) => o.value === value), {
-      message: 'Please select a status'
-    })
-});
-type UpdateStudentSchemaType = z.infer<typeof UpdateStudentSchema>;
-const AppliedStudentPage = () => {
+const AdmitCandidate = () => {
   const { setId, id } = useAppliedStudentsStore();
   const [isSelectedProjectId, setIsSelectedProjectId] = useState('');
   const form = useForm<ModelType>({
@@ -84,9 +44,6 @@ const AppliedStudentPage = () => {
     defaultValues: {
       status: 'Applied'
     }
-  });
-  const updateForm = useForm<UpdateStudentSchemaType>({
-    resolver: zodResolver(UpdateStudentSchema)
   });
 
   const { mutateAsync, isLoading, data } = useCMutation({
@@ -120,10 +77,9 @@ const AppliedStudentPage = () => {
     })
   );
 
-  const url: string = `registration/update-candidate-registration-status/${id}`;
-  const mutate = useCMutation({
-    url: url,
-    method: 'PUT',
+  const allotBatch = useCMutation({
+    url: 'registration/add-student-to-batch',
+    method: 'POST',
     queryKey: appliedApplicantQueryKey
   });
   const formFields: FormFieldType[] = [
@@ -139,101 +95,41 @@ const AppliedStudentPage = () => {
       select: true,
       readOnly: form.getValues('project_id') ? false : true,
       options: isDomainOptions ?? emptyOptions
-    },
-    {
-      name: 'status',
-      label: 'Status',
-      select: true,
-      readOnly: form.getValues('project_id') ? false : true,
-      options: StudentStatusOptions ?? emptyOptions
     }
   ];
-  async function updateStudentStatus(status: string) {
+  async function updateStudentStatus() {
     try {
-      await mutate.mutateAsync({
-        status: status
-      });
-    } catch (error: any) {
-      showToast(FailedToastTitle, error.error);
-    } finally {
-      await mutateAsync({
-        status: form.getValues('status'),
+      // /registration/add-student-to-batch
+      await allotBatch.mutateAsync({
+        status: 'Alloted',
         project_id: form.getValues('project_id'),
         domain_id: form.getValues('domain_id')
       });
+    } catch (error: any) {
+      showToast(FailedToastTitle, error.error);
     }
   }
-  const columns: ColumnDef<StudentRegistrationModelType | any>[] = [
+  const columns: ColumnDef<StudentRegistrationModelType>[] = [
     {
-      accessorKey: 'name',
-      header: 'Name'
-    },
-    {
-      accessorKey: 'dob',
-      header: 'Date of Birth'
-    },
-    {
-      accessorKey: 'gender',
-      header: 'Gender'
-    },
-    {
-      accessorKey: 'email',
-      header: 'Father'
-    },
-    {
-      accessorKey: 'status',
-      header: 'Status',
+      id: 'select',
+      header: () => <Checkbox disabled aria-label="Select all" />,
       cell: ({ row }) => {
         return (
-          <div className="flex items-center space-x-2">
-            <FormTag {...updateForm}>
-              <FormField
-                control={updateForm.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem className="w-28">
-                    <Select
-                      defaultValue={
-                        row.original.id === id
-                          ? updateForm.getValues('status')
-                          : row.original.status
-                      }
-                      onValueChange={field.onChange}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectGroup>
-                          {StudentStatusOptions.map(({ label, value }) => (
-                            <SelectItem value={value} key={value}>
-                              {label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-            </FormTag>
-            <Button
-              variant="outline"
-              size={'icon'}
-              onClick={async () => {
+          <Checkbox
+            checked={row.original.status === 'Alloted'}
+            onCheckedChange={async () => {
+              if (row.original.status === 'Selected' && row.original.id) {
                 setId(row.original.id);
-                if (id)
-                  await updateStudentStatus(updateForm.getValues('status'));
-              }}
-            >
-              <SaveIcon className="h-4 w-4" />
-            </Button>
-          </div>
+                if (id) {
+                  await updateStudentStatus();
+                }
+              }
+            }}
+          />
         );
       }
-    }
+    },
+    ...addmissionColumn
   ];
 
   const onSubmit = async (data: ModelType) => {
@@ -252,6 +148,7 @@ const AppliedStudentPage = () => {
       return;
     }
   };
+
   useEffect(() => {
     if (
       form.watch('project_id') &&
@@ -267,7 +164,7 @@ const AppliedStudentPage = () => {
       <div className="flex-1 space-y-4">
         <div className="flex items-start justify-between">
           <Heading
-            title={`Applied Students`}
+            title={`Admit Candidate`}
             description="Manage Applied Student"
           />
         </div>
@@ -291,4 +188,4 @@ const AppliedStudentPage = () => {
   );
 };
 
-export default AppliedStudentPage;
+export default AdmitCandidate;

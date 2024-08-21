@@ -66,7 +66,7 @@ export const eventManagementFields: FormFieldType[] = [
   },
   {
     name: 'remarks',
-    label: 'Remarks',
+    label: 'Events Description',
     required: true,
     type: 'textarea'
   }

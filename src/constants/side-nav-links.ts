@@ -14,32 +14,32 @@ export const navItems: NavItem[] = [
     items: [
       {
         title: 'Centre',
-        icon: 'add',
+        icon: 'award',
         label: 'centre',
         items: [
           {
             title: 'Centre',
             href: '/dashboard/centre',
-            icon: 'user',
+            icon: 'award',
             label: 'domain'
           }
         ]
       },
       {
         title: 'Domain',
-        icon: 'user',
+        icon: 'help',
         label: 'domain',
         items: [
           {
             title: 'Domain',
             href: '/dashboard/domain',
-            icon: 'user',
+            icon: 'media',
             label: 'Domain'
           },
           {
             title: 'Assign Domain',
             href: '/dashboard/domain/assign',
-            icon: 'user',
+            icon: 'media',
             label: 'Assign Domain'
           }
         ]
@@ -51,21 +51,21 @@ export const navItems: NavItem[] = [
         label: 'project',
         items: [
           {
-            title: 'Project',
+            title: 'Existing Projects',
             href: '/dashboard/projects',
-            icon: 'kanban',
+            icon: 'post',
             label: 'Project'
           },
           {
-            title: 'Add Project',
+            title: 'Add New Project',
             href: '/dashboard/projects/new',
-            icon: 'user',
+            icon: 'post',
             label: 'New Project'
           },
           {
             title: 'Assign Projects',
             href: '/dashboard/projects/assign',
-            icon: 'user',
+            icon: 'post',
             label: 'Assign Project'
           }
         ]
@@ -74,7 +74,28 @@ export const navItems: NavItem[] = [
         title: 'Batch',
         href: '/dashboard/batch',
         icon: 'employee',
-        label: 'batch'
+        label: 'batch',
+        items: [
+          {
+            title: 'Batch',
+            href: '/dashboard/batch',
+            icon: 'employee',
+            label: 'batch'
+          },
+          {
+            title: 'Assign Batch',
+            href: '/dashboard/batch/assign',
+            icon: 'employee',
+            label: 'assign batch'
+          },
+          {
+            title: 'Assign Teacher',
+            href: '/dashboard/batch/assign/teacher',
+            icon: 'employee',
+            disabled: true,
+            label: 'add batch'
+          }
+        ]
       }
     ]
   },
@@ -144,25 +165,31 @@ export const navItems: NavItem[] = [
     ]
   },
   {
-    title: 'Applicants',
+    title: 'Admission',
     icon: 'chevronRight',
     label: 'registration',
     items: [
       {
-        title: 'Applied ',
-        href: '/dashboard/applied-student?status=Applied',
+        title: 'Prepare Admission List ',
+        href: '/dashboard/admission/applied?status=Applied',
         icon: 'user',
         label: 'applied applicants'
       },
       {
-        title: 'Selected ',
-        href: '/dashboard/applied-student?status=Selected',
+        title: 'View Selected Candidates',
+        href: '/dashboard/admission/selected?status=Selected',
         icon: 'user',
         label: 'selected applicants'
       },
       {
-        title: 'Remove ',
-        href: '/dashboard/applied-student?status=Selected',
+        title: 'Admit Students',
+        href: '/dashboard/admission/admit?status=selected',
+        icon: 'user',
+        label: 'remove applicants'
+      },
+      {
+        title: 'Remove Selected Candidates',
+        href: '/dashboard/admission/remove?status=selected',
         icon: 'user',
         label: 'remove applicants'
       }
@@ -170,9 +197,22 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Attendance',
-    href: '/dashboard/attendance',
     icon: 'employee',
-    label: 'Attendance'
+    label: 'Attendance',
+    items: [
+      {
+        title: 'Attendance',
+        href: '/dashboard/attendance',
+        icon: 'employee',
+        label: 'Attendance'
+      },
+      {
+        title: 'Add Attendance',
+        href: '/dashboard/attendance/new',
+        icon: 'employee',
+        label: 'Add Attendance'
+      }
+    ]
   },
   {
     title: 'Reports',
@@ -198,6 +238,12 @@ export const navItems: NavItem[] = [
         label: 'Domian Report'
       },
       {
+        title: 'Batch',
+        href: '/dashboard/reports?reports=batch',
+        icon: 'help',
+        label: 'Domian Report'
+      },
+      {
         title: 'Sectors',
         href: '/dashboard/reports?reports=sector',
         icon: 'logo',
@@ -205,8 +251,9 @@ export const navItems: NavItem[] = [
       },
       {
         title: 'No. Applicants',
-        href: '/dashboard/reports?reports=noofapplicants',
+        href: '/dashboard/reports?reports=admission',
         icon: 'post',
+        disabled: true,
         label: 'No. applicants reports'
       }
     ]

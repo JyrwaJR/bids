@@ -108,20 +108,6 @@ const AddNewProject = () => {
     ...domainColumn
   ];
 
-  const targetSector = form.watch('target_sector');
-
-  const domainData = (() => {
-    if (targetSector === 'Both') {
-      // Filter for both 'Rural' and 'Urban'
-      return domain?.data;
-    } else if (targetSector) {
-      // Filter based on the selected target sector
-      return domain?.data.filter((item: any) => item.sector === targetSector);
-    }
-    // Return all data if targetSector is falsy
-    return domain?.data;
-  })();
-
   return (
     <FormTag
       form={form}
@@ -154,7 +140,7 @@ const AddNewProject = () => {
         </div>
         <DataTable
           searchKey="name"
-          data={isDomainFetch && !isDomainError ? domainData : []}
+          data={isDomainFetch && !isDomainError ? domain.data : []}
           columns={columns}
           className="h-96"
         />

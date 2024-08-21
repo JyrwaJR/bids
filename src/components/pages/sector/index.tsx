@@ -11,6 +11,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from '@components/cell-action';
 import { useSectorStore } from '@lib/store';
 import { sectorQueryKey } from '@constants/query-keys';
+import { sectorColumn } from '@constants/columns/sector-column';
 
 export const SectorPage = () => {
   const { setId, onOpenChange, open } = useSectorStore();
@@ -19,12 +20,7 @@ export const SectorPage = () => {
     queryKey: sectorQueryKey
   });
   const column: ColumnDef<any>[] = [
-    {
-      accessorKey: 'name',
-      header: 'Name',
-      enableSorting: false,
-      enableHiding: false
-    },
+    ...sectorColumn,
     {
       accessorKey: 'Action',
       cell: ({ row }) => (

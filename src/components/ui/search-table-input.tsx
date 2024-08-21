@@ -18,6 +18,13 @@ import {
   DropdownMenuTrigger
 } from '@components/ui/dropdown-menu';
 import { Table } from '@src/types/common';
+import { RefreshCw } from 'lucide-react';
+import {
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+  Tooltip
+} from './tooltip';
 const searchSchema = z.object({
   searchTableBy: z.string().optional()
 });
@@ -30,7 +37,8 @@ export const SearchTableInput = ({
   searchTableBy,
   aBtnTitle = 'Save',
   onClick,
-  disable
+  disable,
+  refresh
 }: {
   table: Table | any;
   searchOptions?: OptionsT[];
@@ -38,6 +46,7 @@ export const SearchTableInput = ({
   searchTableBy?: string;
   onClick?: () => void;
   disable?: boolean;
+  refresh?: () => void;
 }) => {
   const form = useForm<searchSchmaType>({
     defaultValues: {
@@ -99,6 +108,21 @@ export const SearchTableInput = ({
           )}
         </div>
         <div className="flex space-x-2">
+          {refresh && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button size={'sm'} disabled={disable} onClick={refresh}>
+                    <RefreshCw className="mr-2 h-4 w-4" />
+                    <span className="hidden md:flex">Refresh</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Reload</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
           {onClick && (
             <Button disabled={disable} onClick={onClick}>
               {aBtnTitle}

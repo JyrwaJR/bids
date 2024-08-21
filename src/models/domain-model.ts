@@ -1,7 +1,6 @@
 import { FieldsIsRequired } from '@constants/index';
 import { StatusOptions } from '@constants/options';
-import { lettersAndSpacesRegex } from '@constants/regex';
-import { format } from 'date-fns';
+import { format, parse, isValid } from 'date-fns';
 import { z } from 'zod';
 const ACCEPTED_FILES_TYPES = [
   'application/pdf',
@@ -25,9 +24,6 @@ export const fileValidation = z
 
 export const DomainModel = z.object({
   id: z.string().uuid().optional(),
-  sector_id: z.string({
-    required_error: FieldsIsRequired
-  }),
   name: z
     .string({
       required_error: FieldsIsRequired
@@ -70,8 +66,17 @@ export const DomainModel = z.object({
   guide: fileValidation.optional(),
   approval_date: z
     .string()
-    .refine((val) => format(new Date(val), 'yyyy-MM-dd'))
-    .optional(),
+    .optional()
+    .refine(
+      (val) => {
+        if (val === undefined || val === '') return true;
+        const parsedDate = parse(val, 'yyyy-MM-dd', new Date());
+        return isValid(parsedDate) && format(parsedDate, 'yyyy-MM-dd') === val;
+      },
+      {
+        message: 'Invalid date format. Expected yyyy-MM-dd'
+      }
+    ),
   duration: z.number({ required_error: FieldsIsRequired }).int().positive()
 });
 export type DomainModelType = z.infer<typeof DomainModel>;

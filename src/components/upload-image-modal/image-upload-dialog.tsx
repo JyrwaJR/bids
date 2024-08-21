@@ -234,10 +234,32 @@ export const ImageUploadDialog = ({
   const onSubmit: SubmitHandler<SchemaType> = async (fData) => {
     try {
       const data = new FormData();
-      data.append('proof_type', fData.proof_type);
-      data.append('document_type', fData.document_type);
-      data.append('document_number', fData.document_number || '');
-      data.append('image', fData.image);
+
+      // Ensure proof_type is always a string
+      if (fData.proof_type) {
+        data.append('proof_type', fData.proof_type);
+      }
+
+      // Only append document_type if it exists
+      if (fData.document_type) {
+        data.append('document_type', fData.document_type);
+      }
+
+      // Only append document_number if it exists
+      if (fData.document_number) {
+        data.append('document_number', fData.document_number);
+      }
+
+      // Ensure image is a valid Blob or File
+      if (fData.image instanceof Blob) {
+        data.append('image', fData.image);
+      } else {
+        // Handle the case where the image is not valid
+        showToast(FailedToastTitle, 'Please select a valid image');
+        return;
+      }
+
+      // Check if the user is registered before proceeding
       if (!id) {
         showToast(
           FailedToastTitle,
@@ -245,10 +267,12 @@ export const ImageUploadDialog = ({
         );
         return;
       }
+
+      // Perform the mutation to upload the document
       const res = await mutate.mutateAsync(data);
+
       if (res.success) {
         onUploadedImage(form.getValues('proof_type'));
-        // TODO: Update the image URL
         updateImageUrl(form.getValues('proof_type'), res.data.image);
         setOpen(false);
       }

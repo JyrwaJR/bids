@@ -3,10 +3,7 @@ import { Heading } from '@components/ui/heading';
 import { Separator } from '@components/ui/separator';
 import { ProjectColumn } from '@constants/columns';
 import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useAuthContext } from '@context/auth';
-import AddNewProject from './add-new-project';
-import CentreProjectPage from '../centre/project';
 import { useCQuery } from '@hooks/useCQuery';
 import { projectsQueryKey } from '@constants/query-keys';
 
