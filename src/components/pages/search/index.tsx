@@ -117,10 +117,7 @@ export const SearchPage = () => {
               render={({ field }) => (
                 <FormItem className="flex w-[40%] flex-col items-start justify-center space-x-2">
                   <FormControl>
-                    <Input
-                      placeholder="Search by name, title, mobile number, registration number"
-                      {...field}
-                    />
+                    <Input placeholder="Search..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
