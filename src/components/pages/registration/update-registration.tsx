@@ -329,7 +329,7 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
                 <ArrowLeft className="mr-4" />
                 Back
               </Button>
-              <Button type="button" onClick={next}>
+              <Button type="submit" onClick={next}>
                 {currentStep < steps.length ? (
                   <>
                     Save

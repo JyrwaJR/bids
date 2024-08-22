@@ -1,5 +1,6 @@
 import { FormFieldType } from '@components/index';
 import { SectorsOptions, StatusOptions } from '@constants/options';
+
 export const projectsFields: FormFieldType[] = [
   {
     name: 'name',
@@ -8,7 +9,7 @@ export const projectsFields: FormFieldType[] = [
   },
   {
     name: 'target',
-    label: 'Target',
+    label: 'Enrollment Target',
     required: true,
     type: 'number'
   },
@@ -33,7 +34,7 @@ export const projectsFields: FormFieldType[] = [
   },
   {
     name: 'duration',
-    label: 'Duration',
+    label: 'Duration in months',
     required: true,
     type: 'number'
   },

@@ -128,7 +128,7 @@ export const useRegistrationFields = ({ form }: Props) => {
         {
           name: 'is_technical_education',
           label: 'Technical Education',
-          required: false,
+          required: true,
           select: true,
           options: yesNoOptions
         },
@@ -143,7 +143,7 @@ export const useRegistrationFields = ({ form }: Props) => {
           name: 'year_passing',
           label: 'Year Passing',
           required: false,
-          type: 'date',
+          type: 'number',
           placeholder: 'Enter Year Passing'
         },
         {

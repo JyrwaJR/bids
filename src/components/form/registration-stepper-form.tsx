@@ -25,16 +25,16 @@ const Model = z.object({
   middle_name: z.string().optional(),
   last_name: z.string(),
   mobile: z
-    .number({
+    .string({
       required_error: 'Mobile number is required'
     })
-    .min(10)
-    .max(10),
+    .min(10, 'Mobile number is required')
+    .max(10, 'Mobile number is required'),
   dob: z
-    .date({
+    .string({
       required_error: 'Date of birth is required'
     })
-    .refine((val) => format(val, 'yyyy-MM-dd') !== '1970-01-01', {
+    .refine((val) => format(new Date(val), 'yyyy-MM-dd'), {
       message: 'Date of birth is required'
     })
 });
@@ -46,7 +46,7 @@ export const RegistrationStepperForm = () => {
   });
   const mutate = useCMutation({
     method: 'POST',
-    url: '/registration/start-registration'
+    url: 'registration/start-registration'
   });
   const onSubmit: SubmitHandler<Model> = async (data) => {
     try {

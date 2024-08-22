@@ -75,7 +75,6 @@ export const startStudentRegistrationFields: FormFieldType[] = [
     name: 'mobile',
     label: 'Mobile',
     required: true,
-    type: 'number',
     placeholder: 'Enter Mobile'
   },
   {
@@ -503,7 +502,6 @@ const studentRegistrationParentDetailFields: FormFieldType[] = [
     name: 'father_mobile',
     label: 'Father Mobile',
     required: false,
-    type: 'number',
     placeholder: 'Enter Father Mobile'
   },
   {
@@ -545,7 +543,6 @@ const studentRegistrationParentDetailFields: FormFieldType[] = [
     name: 'mother_mobile',
     label: 'Mother Mobile',
     required: false,
-    type: 'number',
     placeholder: 'Enter Mother Mobile'
   },
   {

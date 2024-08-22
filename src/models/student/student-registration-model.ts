@@ -1,4 +1,5 @@
 import { gender } from '@constants/options';
+import { phoneNoRegex } from '@constants/regex';
 import { fileValidation } from '@models/domain-model';
 import { format } from 'date-fns';
 import * as z from 'zod';
@@ -37,13 +38,29 @@ export const StudentRegistrationModel = z.object({
   // Parents details
   father_name: z.string().max(80).nullable().optional(),
   father_last_name: z.string().max(80).nullable().optional(),
-  father_mobile: z.number().nullable().optional(),
+  father_mobile: z
+    .string()
+    .min(10)
+    .max(10)
+    .regex(phoneNoRegex, {
+      message: 'Invalid mobile number'
+    })
+    .nullable()
+    .optional(),
   father_age: z.number().nullable().optional(),
   father_occupation: z.string().max(50).nullable().optional(),
   father_income: z.number().nullable().optional(),
   mother_name: z.string().max(80).nullable().optional(),
   mother_last_name: z.string().max(80).nullable().optional(),
-  mother_mobile: z.number().min(10).min(10).nullable().optional(),
+  mother_mobile: z
+    .string()
+    .min(10)
+    .max(10)
+    .regex(phoneNoRegex, {
+      message: 'Invalid mobile number'
+    })
+    .nullable()
+    .optional(),
   mother_age: z.number().nullable().optional(),
   mother_occupation: z.string().max(50).nullable().optional(),
   mother_income: z.number().int().nullable().optional(),
@@ -51,8 +68,7 @@ export const StudentRegistrationModel = z.object({
   // Present Address
   resident_type: z
     .string({ required_error: 'Resident type is required' })
-    .max(10)
-    .default('Rural'),
+    .max(10),
   landmark: z.string().max(255).nullable().optional(),
   present_address: z.string().max(255).nullable().optional(),
   village: z.string().max(60).nullable().optional(),
@@ -79,18 +95,18 @@ export const StudentRegistrationModel = z.object({
     .nullable()
     .optional(),
   // Other Info
-  is_technical_education: z.enum(['Yes', 'No']).default('No'),
+  is_technical_education: z.enum(['Yes', 'No']),
   diploma_certificate: z.string().max(100).nullable().optional(),
   // convert string to number
   year_passing: z
-    .string()
+    .number()
     .refine((val) => format(new Date(val), 'yyyy-MM-dd'))
     .nullable()
     .optional(),
   is_employed: z.enum(['Yes', 'No']).default('No'),
   occupation: z.string().max(50).nullable().optional(),
   year_experience: z
-    .string({ required_error: 'Year of experience is required' })
+    .number({ required_error: 'Year of experience is required' })
     .refine((val) => !isNaN(Number(val)), {
       message: 'Invalid number'
     })
@@ -98,7 +114,7 @@ export const StudentRegistrationModel = z.object({
     .nullable()
     .optional(),
   monthly_income: z
-    .string({ required_error: 'Monthly income is required' })
+    .number({ required_error: 'Monthly income is required' })
     .refine((val) => !isNaN(Number(val)), {
       message: 'Invalid number'
     })
@@ -112,7 +128,7 @@ export const StudentRegistrationModel = z.object({
   is_disabled: z.enum(['Yes', 'No']).default('No'),
   disability_type: z.string().max(250).nullable().optional(),
   family_size: z
-    .string({ required_error: 'Family size is required' })
+    .number({ required_error: 'Family size is required' })
     .refine((val) => !isNaN(Number(val)), {
       message: 'Invalid number'
     })
@@ -122,7 +138,7 @@ export const StudentRegistrationModel = z.object({
   catchment_area: z.enum(['Yes', 'No']).default('No'),
   nre_job_card_no: z.string().max(50).nullable().optional(),
   mgnrega_hours_worked: z
-    .string({ required_error: 'Mgnrega hours worked is required' })
+    .number({ required_error: 'Mgnrega hours worked is required' })
     .refine((val) => !isNaN(Number(val)), {
       message: 'Invalid number'
     })
@@ -133,7 +149,11 @@ export const StudentRegistrationModel = z.object({
   created_at: z.date().optional(),
   updated_at: z.date().optional(),
   bpl_card_no: z.string().max(50).nullable().optional(),
-  bpl_card_issue: z.number().int().nullable().optional(),
+  bpl_card_issue: z
+    .number()
+    .refine((val) => format(new Date(val), 'yyyy-MM-dd'))
+    .nullable()
+    .optional(),
   is_bpl_certified: z.enum(['Yes', 'No']).default('No'),
   bpl_certification_authority: z.string().max(100).nullable().optional(),
   bpl_other_certifying_authority: z.string().max(100).nullable().optional(),
