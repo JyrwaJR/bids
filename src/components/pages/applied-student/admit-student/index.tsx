@@ -293,7 +293,7 @@ const AdmitCandidate = () => {
               <div className="col-span-4" key={i}>
                 <FormField
                   control={form.control}
-                  disabled={input.readOnly || isLoading}
+                  disabled={input.readOnly ?? false}
                   name={input.name as any}
                   render={({ field }) => (
                     <FormItem>

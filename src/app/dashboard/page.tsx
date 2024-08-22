@@ -10,8 +10,10 @@ import {
   SelectTrigger,
   SelectValue
 } from '@components/ui/select';
+import { dashboardQueryKey, domainQueryKey } from '@constants/query-keys';
 import { useAuthContext } from '@context/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useCQuery } from '@hooks/useCQuery';
 import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 import { CalendarDateRangePicker } from '@src/components/date-range-picker';
 import { Overview } from '@src/components/overview';
@@ -31,7 +33,8 @@ import {
   TabsList,
   TabsTrigger
 } from '@src/components/ui/tabs';
-import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 const Schema = z.object({
   centre_id: z.string().uuid().optional()
@@ -44,7 +47,24 @@ const Page = () => {
   const form = useForm<SchemaType>({
     resolver: zodResolver(Schema)
   });
+  const url = isSuperUser
+    ? `dashboard/${form.getValues('centre_id') ?? 'All'}`
+    : `dashboard/${user?.centre_id}`;
+  const dashboardQuery = useCQuery({
+    url: url,
+    queryKey: dashboardQueryKey
+  });
+  const { refetch } = dashboardQuery;
+  const watchCentreChange = useWatch({
+    control: form.control,
+    name: 'centre_id'
+  });
 
+  useEffect(() => {
+    if (watchCentreChange) {
+      refetch();
+    }
+  }, [watchCentreChange, refetch]);
   return (
     <ScrollArea className="h-full">
       <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
@@ -72,6 +92,7 @@ const Page = () => {
                         <SelectContent>
                           <SelectGroup>
                             <SelectLabel>Center</SelectLabel>
+                            <SelectItem value={'all'}>All</SelectItem>
                             {option.options.centre.map((item) => (
                               <SelectItem key={item.value} value={item.value}>
                                 {item.label}
@@ -94,7 +115,9 @@ const Page = () => {
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger disabled value="analytics">
+              Analytics
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="overview" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -119,7 +142,9 @@ const Page = () => {
                   </svg>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">45</div>
+                  <div className="text-2xl font-bold">
+                    {dashboardQuery.data?.data.centres ?? 0}
+                  </div>
                   <p className="text-xs text-muted-foreground">
                     +10% from last month
                   </p>
@@ -146,7 +171,9 @@ const Page = () => {
                   </svg>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">+230</div>
+                  <div className="text-2xl font-bold">
+                    {dashboardQuery.data?.data.enrolled}
+                  </div>
                   <p className="text-xs text-muted-foreground">
                     +80.1% from last enrollment
                   </p>
@@ -172,7 +199,9 @@ const Page = () => {
                   </svg>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">+12</div>
+                  <div className="text-2xl font-bold">
+                    {dashboardQuery.data?.data.projects}
+                  </div>
                   <p className="text-xs text-muted-foreground">
                     +19% Lorem ipsum dolor.
                   </p>
@@ -197,7 +226,9 @@ const Page = () => {
                   </svg>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">+573</div>
+                  <div className="text-2xl font-bold">
+                    {dashboardQuery.data?.data.trained}
+                  </div>
                   <p className="text-xs text-muted-foreground">
                     +201 since last enrolled
                   </p>
