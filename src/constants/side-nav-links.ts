@@ -14,22 +14,9 @@ export const navItems: NavItem[] = [
     items: [
       {
         title: 'Centre',
+        href: '/dashboard/centre',
         icon: 'award',
-        label: 'centre',
-        items: [
-          {
-            title: 'List Centre',
-            href: '/dashboard/centre',
-            icon: 'award',
-            label: 'centre'
-          },
-          {
-            title: 'Create Centre',
-            href: '/dashboard/centre/add',
-            icon: 'award',
-            label: 'centre'
-          }
-        ]
+        label: 'centre'
       },
       {
         title: 'Domain',
@@ -37,14 +24,8 @@ export const navItems: NavItem[] = [
         label: 'domain',
         items: [
           {
-            title: 'List Domain',
+            title: 'Domain',
             href: '/dashboard/domain',
-            icon: 'media',
-            label: 'Domain'
-          },
-          {
-            title: 'Create Domain',
-            href: '/dashboard/domain/add-domain',
             icon: 'media',
             label: 'Domain'
           },
@@ -69,12 +50,6 @@ export const navItems: NavItem[] = [
             label: 'Project'
           },
           {
-            title: 'Add New Project',
-            href: '/dashboard/projects/new',
-            icon: 'post',
-            label: 'New Project'
-          },
-          {
             title: 'Assign Projects',
             href: '/dashboard/projects/assign',
             icon: 'post',
@@ -95,12 +70,6 @@ export const navItems: NavItem[] = [
             label: 'batch'
           },
           {
-            title: 'Create Batch',
-            href: '/dashboard/batch/assign',
-            icon: 'employee',
-            label: 'assign batch'
-          },
-          {
             title: 'Assign Trainer',
             href: '/dashboard/batch/assign/teacher',
             icon: 'employee',
@@ -114,41 +83,14 @@ export const navItems: NavItem[] = [
   {
     title: 'Staff',
     icon: 'billing',
-    label: 'staff',
-    items: [
-      {
-        title: 'List Staff',
-        href: '/dashboard/staff',
-        icon: 'billing',
-        label: 'staff'
-      },
-      {
-        title: 'Add Staff',
-        href: '/dashboard/staff/add-staff',
-        icon: 'billing',
-        label: 'add staff'
-      }
-    ]
+    href: '/dashboard/staff',
+    label: 'staff'
   },
   {
     title: 'Events',
     icon: 'sun',
     href: '/dashboard/events',
-    label: 'events management',
-    items: [
-      {
-        title: 'List Events',
-        href: '/dashboard/events',
-        icon: 'sun',
-        label: 'events management'
-      },
-      {
-        title: 'Add Event',
-        href: '/dashboard/events/add-events',
-        icon: 'sun',
-        label: 'add event'
-      }
-    ]
+    label: 'events management'
   },
   {
     title: 'Search Student',
