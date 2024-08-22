@@ -32,6 +32,7 @@ import { useRegistrationFields } from '@src/app/dashboard/registration/_lib/useR
 import { FormFieldType } from '@components/index';
 import { CForm } from '@components/form';
 import { handleBackendError } from '@constants/handle-backend-error';
+import { useRegisterStudentStore } from '@lib/store';
 
 export type StepType = {
   id: string;
@@ -58,7 +59,7 @@ type Props = {
 };
 export const UpdateRegistrationStepperForm = ({ data }: Props) => {
   const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);
-  const [id, setId] = useState<string>('');
+  const { id, setId } = useRegisterStudentStore();
   const formStyle: string = 'w-full sm:col-span-6 md:col-span-6 xl:col-span-4';
   const form = useForm<StudentRegistrationModelWithDomainType>({
     resolver: zodResolver(StudentRegistrationModelWithDomain),
