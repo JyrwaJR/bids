@@ -127,13 +127,15 @@ const CenterDomainPage = () => {
         </div>
         <Separator />
         <Form {...form}>
-          <div className="flex items-center space-x-2">
-            <CForm
-              form={form}
-              loading={isLoading || loading || !isFetched}
-              fields={fields}
-              className="w-full"
-            />
+          <div className="grid grid-cols-12 content-start items-center space-x-2">
+            <div className="col-span-5">
+              <CForm
+                form={form}
+                loading={isLoading || loading || !isFetched}
+                fields={fields}
+                className="w-full"
+              />
+            </div>
             <div className="pt-4">
               <Button
                 onClick={form.handleSubmit(onSubmit)}

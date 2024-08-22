@@ -31,8 +31,7 @@ import { PreviewRegistrationForm as PreviewForm } from '@components/pages/regist
 import { useRegistrationFields } from '@src/app/dashboard/registration/_lib/useRegistrationFields';
 import { FormFieldType } from '@components/index';
 import { CForm } from '@components/form';
-import { appendNonFileDataToFormData } from '@lib/appendNoneFileDataToFileData';
-import { axiosInstance } from '@lib/utils';
+import { handleBackendError } from '@constants/handle-backend-error';
 
 export type StepType = {
   id: string;
@@ -84,8 +83,7 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
     // Ensure fieldNames is properly typed as an array of valid form field names
     const fieldNames =
       steps[currentStep]?.fields.map(
-        (field: FormFieldType) =>
-          field.name as keyof StudentRegistrationModelWithDomainType
+        (field: FormFieldType) => field.name as any
       ) ?? [];
 
     // Validate the fields of the current step
@@ -114,33 +112,18 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
       setCurrentStep(step);
     }
   };
+
   const onSubmit: SubmitHandler<
     StudentRegistrationModelWithDomainType
   > = async (data) => {
     try {
       switch (currentStep) {
         case 0:
-          try {
-            if (!id) {
-              return;
-            }
-            const formData = new FormData();
-            appendNonFileDataToFormData(data, formData);
-            if (data.passport) {
-              formData.append('passport', data.passport);
-            }
-            const response = await axiosInstance.put(
-              `/registration/add-personal-details/${id}`,
-              formData
-            );
-            return response.data.success;
-          } catch (error) {
-            throw error;
+          const personalRes = await addPersonalDetails(id, data);
+          if (!personalRes.success) {
+            showToast(FailedToastTitle, 'Error when adding personal detail');
+            return false; // Return false if submission failed
           }
-          // if (!personalRes.success) {
-          //   showToast(FailedToastTitle, 'Error when adding personal detail');
-          //   return false; // Return false if submission failed
-          // }
           break;
         case 1:
           const domainAppliedRes = await studentAppliedDomain(id, data);
@@ -186,14 +169,23 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
 
       return true; // Return true if submission was successful
     } catch (error: any) {
-      console.log(error);
       if (error instanceof ZodError) {
         showToast('Validation Error', error.errors[0].message);
+        return false;
       } else if (error instanceof AxiosError) {
-        showToast(
-          'Request Error',
-          error.response?.data.message || 'An error occurred'
-        );
+        if (error.response?.data.status === 'error') {
+          const errorResponse = error.response?.data.errors;
+          const parsedErrors = handleBackendError(errorResponse);
+          showToast(
+            FailedToastTitle,
+            parsedErrors?.message ?? 'An error occurred'
+          );
+        }
+        if (error.response?.data.success === false) {
+          showToast(FailedToastTitle, error.response.data.message);
+          return false;
+        }
+        return false;
       } else {
         showToast('Error', error.message || 'An unexpected error occurred');
       }
@@ -219,6 +211,13 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
       });
     }
   }, [isSameAsPresent, form]);
+  console.log(form.formState.errors);
+  useEffect(() => {
+    // passport is not required and should be set to null if not provided
+    if (!form.getValues('passport') || id) {
+      form.setValue('passport', undefined);
+    }
+  }, [form, id]);
   return (
     <section>
       <Form {...form}>
@@ -229,7 +228,7 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
               .map((step) => ({
                 label: step.name
               }))}
-            className="max-w-full overflow-auto"
+            className="hidden max-w-full overflow-auto md:flex"
             styleConfig={{
               activeBgColor: '#333333',
               activeTextColor: '#FFFFFF',

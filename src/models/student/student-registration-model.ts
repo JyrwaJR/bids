@@ -5,7 +5,7 @@ import * as z from 'zod';
 
 export const StudentRegistrationModel = z.object({
   id: z.string().uuid().optional().nullable(),
-  // registration_no: z.string().uuid().optional(),
+  registration_no: z.string().uuid().optional(),
   admission_no: z.string().max(30).nullable().optional(),
   registration_date: z
     .string()

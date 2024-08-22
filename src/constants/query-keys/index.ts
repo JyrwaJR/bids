@@ -1,3 +1,10 @@
+export const dashboardQueryKey = [
+  'dashboard',
+  'get-dashboard',
+  'add-dashboard',
+  'update-dashboard',
+  'delete-dashboard'
+];
 export const attendanceQueryKey = [
   'attendance',
   'get-attendance',
