@@ -5,6 +5,7 @@ export const dashboardQueryKey = [
   'update-dashboard',
   'delete-dashboard'
 ];
+
 export const attendanceQueryKey = [
   'attendance',
   'get-attendance',
@@ -12,6 +13,7 @@ export const attendanceQueryKey = [
   'update-attendance',
   'delete-attendance'
 ];
+
 export const projectsQueryKey = [
   'projects',
   'get-projects',
@@ -20,6 +22,7 @@ export const projectsQueryKey = [
   'update-project',
   'delete-project'
 ];
+
 export const eventsManagementQueryKey = [
   'events-management',
   'get-events-management',
@@ -27,6 +30,7 @@ export const eventsManagementQueryKey = [
   'update-events-management',
   'delete-events-management'
 ];
+
 export const staffCategoryQueryKey = [
   'staff-category',
   'get-staff-category',
@@ -34,6 +38,7 @@ export const staffCategoryQueryKey = [
   'update-staff-category',
   'delete-staff-category'
 ];
+
 export const centreQueryKey = [
   'centre',
   'get-centre',
@@ -41,6 +46,7 @@ export const centreQueryKey = [
   'update-centre',
   'delete-centre'
 ];
+
 export const staffQueryKey = [
   'staff',
   'get-staff',
@@ -48,6 +54,7 @@ export const staffQueryKey = [
   'update-staff',
   'delete-staff'
 ];
+
 export const appliedApplicantQueryKey = [
   'applied-applicant',
   'get-applied-applicant',
@@ -55,6 +62,7 @@ export const appliedApplicantQueryKey = [
   'update-applied-applicant',
   'delete-applied-applicant'
 ];
+
 export const batchQueryKey = [
   'batch',
   'get-batch',
@@ -62,6 +70,7 @@ export const batchQueryKey = [
   'update-batch',
   'delete-batch'
 ];
+
 export const domainQueryKey = [
   'domain',
   'get-domain',
@@ -77,6 +86,7 @@ export const registrationQueryKey = [
   'update-registration',
   'delete-registration'
 ];
+
 export const reportQueryKey = [
   'report',
   'get-report',
@@ -84,6 +94,7 @@ export const reportQueryKey = [
   'update-report',
   'delete-report'
 ];
+
 export const sectorQueryKey = [
   'sector',
   'get-sector',
@@ -99,6 +110,7 @@ export const studentQueryKey = [
   'update-student',
   'delete-student'
 ];
+
 export const stateQueryKey = [
   'state',
   'get-state',
@@ -106,6 +118,7 @@ export const stateQueryKey = [
   'update-state',
   'delete-state'
 ];
+
 export const documentTypeQueryKey = [
   'document-type',
   'get-document-type',
@@ -113,6 +126,7 @@ export const documentTypeQueryKey = [
   'update-document-type',
   'delete-document-type'
 ];
+
 export const categoryQueryKey = [
   'category',
   'get-category',
@@ -120,6 +134,7 @@ export const categoryQueryKey = [
   'update-category',
   'delete-category'
 ];
+
 export const districtQueryKey = [
   'district',
   'get-district',
