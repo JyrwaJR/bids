@@ -15,6 +15,7 @@ import { AlertModal } from '@components/modal/alert-modal';
 import { useCenterStore } from '@lib/store';
 import { OptionsT } from '@components/form/type';
 import { centreQueryKey } from '@constants/query-keys';
+import { useRouter } from 'next/navigation';
 const searchCentreBy: OptionsT[] = [
   {
     label: 'Name',
@@ -30,25 +31,21 @@ const searchCentreBy: OptionsT[] = [
   }
 ];
 export const CenterPageComponents = () => {
-  const { setIsDeleting, isDeleting, open, setOpen } = useCenterStore();
+  const { setIsDeleting, isDeleting } = useCenterStore();
+  const router = useRouter();
   const { user } = useAuthContext();
   const { data, isFetched, isLoading, refetch } = useCQuery({
     url: 'centre',
     queryKey: centreQueryKey
   });
-  const column: ColumnDef<CenterModelType>[] = [
-    ...CentreColumn,
-    {
-      id: 'actions',
-      cell: ({ row }) => {
-        return <CellAction />;
-      }
-    }
-  ];
+  const column: ColumnDef<CenterModelType>[] = [...CentreColumn];
   const onClickDelete = () => {
     if (isDeleting) {
       setIsDeleting(false);
     }
+  };
+  const clickAddCenter = () => {
+    router.push('/dashboard/centre/add');
   };
   return (
     <>
@@ -58,7 +55,7 @@ export const CenterPageComponents = () => {
           <Button
             disabled={!isFetched || !user?.role || user?.role !== 'superadmin'}
             className="text-xs md:text-sm"
-            onClick={() => setOpen(true)}
+            onClick={clickAddCenter}
           >
             <Plus className="mr-2 h-4 w-4" /> Add New
           </Button>
@@ -73,7 +70,6 @@ export const CenterPageComponents = () => {
           data={isFetched ? data.data : []}
         />
       </div>
-      {open && <AddCentre open={open} onClose={() => setOpen(false)} />}
       {isDeleting && (
         <AlertModal
           isOpen={isDeleting}

@@ -88,6 +88,7 @@ export const ImageUploadDialog = ({
     setCastProofImageUrl,
     setOtherProofImageUrl
   } = useUploadDocStore();
+
   const updateImageUrl = (name: string, url: string) => {
     switch (name) {
       case 'ID Proof':

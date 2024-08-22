@@ -14,7 +14,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { UpdateDomain } from './update-domain';
 import { DomainModelType } from '@models/domain-model';
 import { CellAction } from '@components/cell-action';
-import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
 
 const searchDomainBy: OptionsT[] = [
   {
@@ -27,7 +27,7 @@ const searchDomainBy: OptionsT[] = [
   }
 ];
 const DomainPage = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const router = useRouter();
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [selectedDomain, setSelectedDomain] = useState<DomainModelType>();
   const { data, isFetched, isLoading, isError, refetch } = useCQuery({
@@ -60,7 +60,7 @@ const DomainPage = () => {
           <Heading title={`Domain`} description="Manage Domain table" />
           <Button
             className="text-xs md:text-sm"
-            onClick={() => setIsOpen(true)}
+            onClick={() => router.push('/dashboard/domain/add-domain')}
           >
             <Plus className="mr-2 h-4 w-4" /> Add Domain
           </Button>
@@ -75,7 +75,6 @@ const DomainPage = () => {
           data={isFetched && !isLoading && !isError ? data.data : []}
         />
       </div>
-      {isOpen && <AddDomain open={isOpen} onClose={() => setIsOpen(false)} />}
       {openUpdate && (
         <UpdateDomain
           open={openUpdate}

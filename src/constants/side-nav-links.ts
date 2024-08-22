@@ -18,10 +18,16 @@ export const navItems: NavItem[] = [
         label: 'centre',
         items: [
           {
-            title: 'Centre',
+            title: 'List Centre',
             href: '/dashboard/centre',
             icon: 'award',
-            label: 'domain'
+            label: 'centre'
+          },
+          {
+            title: 'Create Centre',
+            href: '/dashboard/centre/add',
+            icon: 'award',
+            label: 'centre'
           }
         ]
       },
@@ -31,8 +37,14 @@ export const navItems: NavItem[] = [
         label: 'domain',
         items: [
           {
-            title: 'Domain',
+            title: 'List Domain',
             href: '/dashboard/domain',
+            icon: 'media',
+            label: 'Domain'
+          },
+          {
+            title: 'Create Domain',
+            href: '/dashboard/domain/add-domain',
             icon: 'media',
             label: 'Domain'
           },
@@ -102,14 +114,41 @@ export const navItems: NavItem[] = [
   {
     title: 'Staff',
     icon: 'billing',
-    href: '/dashboard/staff',
-    label: 'staff'
+    label: 'staff',
+    items: [
+      {
+        title: 'List Staff',
+        href: '/dashboard/staff',
+        icon: 'billing',
+        label: 'staff'
+      },
+      {
+        title: 'Add Staff',
+        href: '/dashboard/staff/add-staff',
+        icon: 'billing',
+        label: 'add staff'
+      }
+    ]
   },
   {
     title: 'Events',
     icon: 'sun',
     href: '/dashboard/events',
-    label: 'events management'
+    label: 'events management',
+    items: [
+      {
+        title: 'List Events',
+        href: '/dashboard/events',
+        icon: 'sun',
+        label: 'events management'
+      },
+      {
+        title: 'Add Event',
+        href: '/dashboard/events/add-events',
+        icon: 'sun',
+        label: 'add event'
+      }
+    ]
   },
   {
     title: 'Search Student',

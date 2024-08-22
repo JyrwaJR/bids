@@ -11,22 +11,15 @@ import { useCMutation, useCategorySelectOptions } from '@src/hooks';
 import { CenterModel, CenterModelType } from '@src/models';
 
 import { Form } from '../../form';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle
-} from '../../ui/dialog';
 import { FormFieldType } from '@components/form/type';
 import { centreQueryKey } from '@constants/query-keys';
+import { Separator } from '@components/ui/separator';
+import { Heading } from '@components/ui/heading';
+import { useRouter } from 'next/navigation';
 
-type Props = {
-  open: boolean;
-  onClose: () => void;
-};
-export const AddCentre = ({ onClose, open }: Props) => {
+export const AddCentre = () => {
   const { options, isLoading: isStateLoading } = useCategorySelectOptions();
+  const router = useRouter();
   const form = useForm<CenterModelType>({
     resolver: zodResolver(CenterModel)
   });
@@ -41,7 +34,7 @@ export const AddCentre = ({ onClose, open }: Props) => {
       const res = await mutateAsync(data);
       if (res.success) {
         showToast(SuccessToastTitle, res.message);
-        onClose();
+        router.push('/dashboard/centre');
       }
     } catch (error: any) {
       showToast(FailedToastTitle, error.message);
@@ -64,22 +57,19 @@ export const AddCentre = ({ onClose, open }: Props) => {
     }
   ];
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Center</DialogTitle>
-          <DialogDescription>
-            Please enter the following details
-          </DialogDescription>
-        </DialogHeader>
-        <Form
-          onSubmit={onSubmitAddCentre}
-          fields={fields}
-          form={form}
-          loading={isLoading || isStateLoading}
-          className="w-full md:col-span-6 md:w-full"
-        />
-      </DialogContent>
-    </Dialog>
+    <div className="flex-1 space-y-4">
+      <Heading
+        title={`Add New Center`}
+        description="Please fill the following fields"
+      />
+      <Separator />
+      <Form
+        onSubmit={onSubmitAddCentre}
+        fields={fields}
+        form={form}
+        loading={isLoading || isStateLoading}
+        className="w-full md:col-span-6 md:w-full"
+      />
+    </div>
   );
 };

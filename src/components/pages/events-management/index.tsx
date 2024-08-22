@@ -29,6 +29,7 @@ import {
 } from '@constants/query-keys';
 import { EventManagementModelType } from '@models/events-management-model';
 import { ViewImages } from '@components/view-images';
+import { useRouter } from 'next/navigation';
 
 type ImageT = {
   image: string;
@@ -79,11 +80,12 @@ export const EventsManagementPage = () => {
   const [isSelectedEvent, setIsSelectedEvent] =
     useState<EventManagementModelType>(defaultEventsManagement);
   const [isDelConfirm, setIsDelConfirm] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [isSelectedId, setIsSelectedId] = useState<string>('');
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const isSuperAdmin: boolean = user?.role === 'superadmin';
+  const router = useRouter();
   const form = useForm({
     defaultValues: {
       centre_id: isSuperAdmin ? '' : user?.centre_id
@@ -259,7 +261,7 @@ export const EventsManagementPage = () => {
           <Button
             disabled={!isFetched}
             className="text-xs md:text-sm"
-            onClick={() => setIsOpen(true)}
+            onClick={() => router.push('/dashboard/events/add-events')}
           >
             <Plus className="mr-2 h-4 w-4" /> Add Event
           </Button>
@@ -273,9 +275,6 @@ export const EventsManagementPage = () => {
           data={isFetched ? data.data : []}
         />
       </div>
-      {isOpen && (
-        <AddEventsManagement open={isOpen} onClose={() => setIsOpen(false)} />
-      )}
       {isUpdate && (
         <UpdateEventsManagement
           data={isSelectedEvent}

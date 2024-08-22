@@ -35,7 +35,8 @@ export const ProjectModel = z.object({
   target_sector: z
     .string()
     .max(20)
-    .refine((val) => SectorsOptions.some((item) => item.value === val))
+    .refine((val) => SectorsOptions.some((item) => item.value === val)),
+  id: z.string().uuid().optional()
 });
 
 export type ProjectModelType = z.infer<typeof ProjectModel>;

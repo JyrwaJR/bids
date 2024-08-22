@@ -1,6 +1,6 @@
 'use client';
 import { Plus } from 'lucide-react';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { staffColumn } from '@constants/columns';
 import { Button } from '@src/components/ui/button';
@@ -8,13 +8,13 @@ import { DataTable } from '@src/components/ui/data-table';
 import { Heading } from '@src/components/ui/heading';
 import { Separator } from '@src/components/ui/separator';
 
-import { AddStaff } from './add-staff';
 import { useCQuery } from '@hooks/useCQuery';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { staffQueryKey } from '@constants/query-keys';
+import { useRouter } from 'next/navigation';
 
 const StaffPage = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const router = useRouter();
   const { data, isFetched, isError, isLoading } = useCQuery({
     url: 'staff',
     queryKey: staffQueryKey
@@ -27,7 +27,7 @@ const StaffPage = () => {
           <Button
             size={'sm'}
             className="text-xs md:text-sm"
-            onClick={() => setIsOpen(true)}
+            onClick={() => router.push('/dashboard/staff/add-staff')}
           >
             <Plus className="mr-2 h-4 w-4" /> Add Staff
           </Button>
@@ -44,7 +44,6 @@ const StaffPage = () => {
           }
         />
       </div>
-      {isOpen && <AddStaff open={isOpen} onClose={() => setIsOpen(false)} />}
     </ScrollArea>
   );
 };

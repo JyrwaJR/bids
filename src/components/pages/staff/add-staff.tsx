@@ -27,13 +27,9 @@ import {
   staffQueryKey
 } from '@constants/query-keys';
 import { OptionsT } from '@components/form/type';
+import { Heading } from '@components/ui/heading';
 
-type Props = {
-  open: boolean;
-  onClose: () => void;
-};
-
-export const AddStaff = ({ onClose, open }: Props) => {
+export const AddStaff = () => {
   const { user } = useAuthContext();
   const form = useForm<StaffModelType>({
     resolver: zodResolver(StaffModel),
@@ -130,33 +126,15 @@ export const AddStaff = ({ onClose, open }: Props) => {
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-h-screen  w-full max-w-[1200px]">
-        <DialogHeader>
-          <DialogTitle>
-            <Typography
-              size={'h2'}
-              className="uppercase"
-              weight={'bold'}
-              colors="primary"
-            >
-              Add new Staff
-            </Typography>
-          </DialogTitle>
-          <DialogDescription>
-            Please enter the following details
-          </DialogDescription>
-        </DialogHeader>
-        <ScrollArea>
-          <Form
-            onSubmit={onSubmitAddStaff}
-            fields={staffFormWithCenterId}
-            form={form}
-            loading={isLoading || cLoading || scLoading}
-            className="md:col-span-6 md:w-full lg:col-span-4"
-          />
-        </ScrollArea>
-      </DialogContent>
-    </Dialog>
+    <div className="flex w-full flex-col space-y-4">
+      <Heading title={`Add New Staff`} description="Please enter details" />
+      <Form
+        onSubmit={onSubmitAddStaff}
+        fields={staffFormWithCenterId}
+        form={form}
+        loading={isLoading || cLoading || scLoading}
+        className="md:col-span-6 md:w-full lg:col-span-4"
+      />
+    </div>
   );
 };

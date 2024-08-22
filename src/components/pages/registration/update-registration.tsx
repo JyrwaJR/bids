@@ -61,23 +61,27 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
   const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);
   const { id, setId } = useRegisterStudentStore();
   const formStyle: string = 'w-full sm:col-span-6 md:col-span-6 xl:col-span-4';
+
   const form = useForm<StudentRegistrationModelWithDomainType>({
     resolver: zodResolver(StudentRegistrationModelWithDomain),
     defaultValues: data
   });
+
   useEffect(() => {
     if (data.id) {
       setId(data.id);
     }
   }, [data, setId]);
+
   const { field: steps } = useRegistrationFields({
     form: form
   });
+
   const { currentStep, setCurrentStep, setPreviousStep } =
     useMultiStepFormStore();
   const { trigger } = form;
-  // check here for the error argument type string[] is not assignable to parameter type ('id'|| so on)
 
+  // check here for the error argument type string[] is not assignable to parameter type ('id'|| so on)
   const next = async () => {
     const data = form.getValues();
 
@@ -113,6 +117,12 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
       setCurrentStep(step);
     }
   };
+
+  useEffect(() => {
+    if (data.id !== id) {
+      setCurrentStep(0);
+    }
+  }, [data.id, id, setCurrentStep]);
 
   const onSubmit: SubmitHandler<
     StudentRegistrationModelWithDomainType
@@ -212,13 +222,14 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
       });
     }
   }, [isSameAsPresent, form]);
-  console.log(form.formState.errors);
+
   useEffect(() => {
     // passport is not required and should be set to null if not provided
     if (!form.getValues('passport') || id) {
       form.setValue('passport', undefined);
     }
   }, [form, id]);
+
   return (
     <section>
       <Form {...form}>

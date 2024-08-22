@@ -1,10 +1,3 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle
-} from '@components/ui/dialog';
 import { Form } from '@src/components';
 import { domainFormFields as domainFields } from '@constants/input-fields/domain/domain-form-fields';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,13 +10,12 @@ import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
 import { AxiosError } from 'axios';
 import { appendNonFileDataToFormData } from '@lib/appendNoneFileDataToFileData';
 import { domainQueryKey } from '@constants/query-keys';
+import { useRouter } from 'next/navigation';
+import { Separator } from '@components/ui/separator';
+import { Heading } from '@components/ui/heading';
 
-type Props = {
-  open: true | false;
-  onClose: () => void;
-};
-
-export const AddDomain = ({ onClose, open }: Props) => {
+export const AddDomain = () => {
+  const router = useRouter();
   const form = useForm<DomainModelType>({
     resolver: zodResolver(DomainModel)
   });
@@ -40,7 +32,7 @@ export const AddDomain = ({ onClose, open }: Props) => {
         const res = await mutateAsync(data);
         if (res.success) {
           showToast(SuccessToastTitle, res.message);
-          onClose();
+          router.push('/dashboard/domain');
         }
       } else if (data.curriculum && data.guide) {
         const formData = new FormData();
@@ -51,7 +43,7 @@ export const AddDomain = ({ onClose, open }: Props) => {
         const res = await mutateAsync(formData);
         if (res.success) {
           showToast(SuccessToastTitle, res.message);
-          onClose();
+          router.push('/dashboard/domain');
         }
       }
     } catch (error: any) {
@@ -63,23 +55,16 @@ export const AddDomain = ({ onClose, open }: Props) => {
     }
   };
   return (
-    <Dialog modal open={open} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Add Domain</DialogTitle>
-          <DialogDescription>
-            Please enter the following details
-          </DialogDescription>
-        </DialogHeader>
-        <Form
-          fields={domainFields}
-          form={form}
-          loading={isLoading}
-          onSubmit={onSubmit}
-          btnStyle="md:w-full"
-          className="md:col-span-6"
-        />
-      </DialogContent>
-    </Dialog>
+    <div className="flex-1 space-y-4">
+      <Heading title={`Domain`} description="Manage Domain table" />
+      <Separator />
+      <Form
+        fields={domainFields}
+        form={form}
+        loading={isLoading}
+        onSubmit={onSubmit}
+        className="sm:col-span-6 md:col-span-4"
+      />
+    </div>
   );
 };

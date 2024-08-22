@@ -1,11 +1,5 @@
 import { Form } from '@components/index';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle
-} from '@components/ui/dialog';
+import { Heading } from '@components/ui/heading';
 import { showToast } from '@components/ui/show-toast';
 import { eventManagementFields } from '@constants/input-fields';
 import { eventsManagementQueryKey } from '@constants/query-keys';
@@ -19,12 +13,7 @@ import {
 } from '@models/events-management-model';
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
-type Props = {
-  open: boolean;
-  onClose: () => void;
-};
-
-export const AddEventsManagement = ({ open, onClose }: Props) => {
+export const AddEventsManagement = () => {
   const form = useForm<EventManagementModelType>({
     resolver: zodResolver(EventManagementModel),
     defaultValues: {
@@ -74,7 +63,6 @@ export const AddEventsManagement = ({ open, onClose }: Props) => {
     } finally {
       // Reset the form and clean up
       form.reset();
-      onClose();
     }
   };
   const men = useWatch({ control: form.control, name: 'men', defaultValue: 0 });
@@ -91,23 +79,16 @@ export const AddEventsManagement = ({ open, onClose }: Props) => {
   }, [men, women, form]);
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="w-full md:max-w-4xl">
-        <DialogHeader>
-          <DialogTitle>Add Events Management</DialogTitle>
-          <DialogDescription>
-            Please enter the following detail
-          </DialogDescription>
-        </DialogHeader>
-        <Form
-          form={form}
-          onSubmit={onSubmit}
-          loading={isLoading}
-          fields={eventManagementFields}
-          className="md:col-span-6 lg:col-span-4"
-          btnStyle="md:w-full lg:w-auto"
-        />
-      </DialogContent>
-    </Dialog>
+    <div className="flex-1 space-y-4 px-1">
+      <Heading title={`Add new events`} description="Add new events" />
+      <Form
+        form={form}
+        onSubmit={onSubmit}
+        loading={isLoading}
+        fields={eventManagementFields}
+        className="md:col-span-6 lg:col-span-4"
+        btnStyle="md:w-full lg:w-auto"
+      />
+    </div>
   );
 };
