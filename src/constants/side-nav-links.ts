@@ -50,6 +50,12 @@ export const navItems: NavItem[] = [
             label: 'Project'
           },
           {
+            title: 'Add Projects',
+            href: '/dashboard/projects/add-project',
+            icon: 'post',
+            label: 'Project'
+          },
+          {
             title: 'Assign Projects',
             href: '/dashboard/projects/assign',
             icon: 'post',
