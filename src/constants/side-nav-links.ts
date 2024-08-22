@@ -24,7 +24,7 @@ export const navItems: NavItem[] = [
         label: 'domain',
         items: [
           {
-            title: 'Domain',
+            title: 'List Domain',
             href: '/dashboard/domain',
             icon: 'media',
             label: 'Domain'
@@ -70,7 +70,7 @@ export const navItems: NavItem[] = [
         label: 'batch',
         items: [
           {
-            title: 'Batch',
+            title: 'List Batch',
             href: '/dashboard/batch',
             icon: 'employee',
             label: 'batch'
