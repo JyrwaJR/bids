@@ -1,15 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { Form, FormFieldType } from '@components/form';
-import { Typography } from '@components/typography';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle
-} from '@components/ui/dialog';
 import { staffFields } from '@constants/input-fields/staff/staff-fields';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showToast } from '@src/components/ui/show-toast';
@@ -19,7 +11,6 @@ import {
 } from '@src/constants/toast-message';
 import { useCMutation, useCQuery } from '@src/hooks';
 import { CenterModelType, StaffModel, StaffModelType } from '@src/models';
-import { ScrollArea } from '@components/ui/scroll-area';
 import { useAuthContext } from '@context/auth';
 import {
   centreQueryKey,
@@ -38,6 +29,13 @@ export const AddStaff = () => {
       centre_id: user?.role === 'superadmin' ? '' : user?.centre_id
     }
   });
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    // Ensure this component only runs on the client-side
+    setIsClient(true);
+  }, []);
+
   const {
     isLoading: cLoading,
     data: cData,
@@ -61,17 +59,18 @@ export const AddStaff = () => {
     method: 'POST',
     queryKey: staffQueryKey
   });
+
   const onSubmitAddStaff: SubmitHandler<StaffModelType> = async (data) => {
     try {
       const res = await mutateAsync(data);
       if (res.success) {
         showToast(SuccessToastTitle, res.message);
-        onClose();
       }
     } catch (error: any) {
       showToast(FailedToastTitle, error.message);
     }
   };
+
   const StaffCategoryOption: OptionsT[] =
     isFetched && !scLoading && scData.data && user?.role === 'superadmin'
       ? scData.data.data.map((item: { name: string; id: string }) => ({
@@ -125,6 +124,7 @@ export const AddStaff = () => {
       : [])
   ];
 
+  if (!isClient) return null; // Prevent rendering on the server
   return (
     <div className="flex w-full flex-col space-y-4">
       <Heading title={`Add New Staff`} description="Please enter details" />
