@@ -29,12 +29,6 @@ export const AddStaff = () => {
       centre_id: user?.role === 'superadmin' ? '' : user?.centre_id
     }
   });
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    // Ensure this component only runs on the client-side
-    setIsClient(true);
-  }, []);
 
   const {
     isLoading: cLoading,
@@ -124,7 +118,6 @@ export const AddStaff = () => {
       : [])
   ];
 
-  if (!isClient) return null; // Prevent rendering on the server
   return (
     <div className="flex w-full flex-col space-y-4">
       <Heading title={`Add New Staff`} description="Please enter details" />

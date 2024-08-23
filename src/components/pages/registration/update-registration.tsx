@@ -232,30 +232,30 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
 
   return (
     <section>
+      <Stepper
+        steps={steps
+          .filter((stp) => stp.name !== 'Start Registration')
+          .map((step) => ({
+            label: step.name
+          }))}
+        className="hidden max-w-full overflow-auto md:flex"
+        styleConfig={{
+          activeBgColor: '#333333',
+          activeTextColor: '#FFFFFF',
+          completedBgColor: '#000000',
+          completedTextColor: '#FFFFFF',
+          inactiveBgColor: '#B0B0B0',
+          inactiveTextColor: '#FFFFFF',
+          labelFontSize: '1rem',
+          fontWeight: 'bold',
+          size: '2em',
+          borderRadius: '50%',
+          circleFontSize: ''
+        }}
+        activeStep={currentStep}
+      />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <Stepper
-            steps={steps
-              .filter((stp) => stp.name !== 'Start Registration')
-              .map((step) => ({
-                label: step.name
-              }))}
-            className="hidden max-w-full overflow-auto md:flex"
-            styleConfig={{
-              activeBgColor: '#333333',
-              activeTextColor: '#FFFFFF',
-              completedBgColor: '#000000',
-              completedTextColor: '#FFFFFF',
-              inactiveBgColor: '#B0B0B0',
-              inactiveTextColor: '#FFFFFF',
-              labelFontSize: '1rem',
-              fontWeight: 'bold',
-              size: '2em',
-              borderRadius: '50%',
-              circleFontSize: ''
-            }}
-            activeStep={currentStep}
-          />
           {currentStep < steps.length ? (
             steps
               .filter((stp) => stp.name !== 'Start Registration')
