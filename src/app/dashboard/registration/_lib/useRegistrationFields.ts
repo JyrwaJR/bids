@@ -1,6 +1,6 @@
 import { FormFieldType } from '@components/index';
 import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
-import { UseFormReturn } from 'react-hook-form';
+import { UseFormReturn, useWatch } from 'react-hook-form';
 import {
   getBatch,
   getDomainByProjectId,
@@ -44,7 +44,14 @@ export const useRegistrationFields = ({ form }: Props) => {
   const refetchDomainQuery = useCallback(() => {
     domainQuery.refetch();
   }, [domainQuery]);
-
+  const watchIsDisabled = useWatch({
+    name: 'is_disabled',
+    control: form.control
+  });
+  const watchIsTechnical = useWatch({
+    name: 'is_technical_education',
+    control: form.control
+  });
   const handleProjectIdChange = useCallback(() => {
     const currentProjectId = form.watch('project_id');
     if (currentProjectId !== projectId) {
@@ -135,6 +142,7 @@ export const useRegistrationFields = ({ form }: Props) => {
         {
           name: 'diploma_certificate',
           label: 'Diploma Certificate',
+          readOnly: watchIsTechnical === 'No',
           required: false,
           type: 'text',
           placeholder: 'Enter Diploma Certificate'
@@ -142,6 +150,7 @@ export const useRegistrationFields = ({ form }: Props) => {
         {
           name: 'year_passing',
           label: 'Year Passing',
+          readOnly: watchIsTechnical === 'No',
           required: false,
           type: 'number',
           placeholder: 'Enter Year Passing'
@@ -205,7 +214,7 @@ export const useRegistrationFields = ({ form }: Props) => {
         },
         {
           name: 'is_disabled',
-          label: 'Is Disabled',
+          label: 'Disabled',
           required: false,
           select: true,
           options: yesNoOptions
@@ -213,7 +222,8 @@ export const useRegistrationFields = ({ form }: Props) => {
         {
           name: 'disability_type',
           label: 'Disability Type',
-          required: form.watch('is_disabled') === 'Yes' ? true : false,
+          required: watchIsDisabled === 'Yes' ? true : false,
+          readOnly: watchIsDisabled === 'Yes' ? false : true,
           select: true
         },
         {

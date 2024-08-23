@@ -28,6 +28,7 @@ import { UpdateRegistrationStepperForm } from '@components/pages/registration/up
 import { searchRegistrationStudentColumn } from '@constants/columns/search/registration-students-column';
 import { PersonIcon } from '@radix-ui/react-icons';
 import { useAuthContext } from '@context/auth';
+import { Typography } from '@components/index';
 
 const FindStudentModel = z.object({
   name: z
@@ -98,9 +99,11 @@ const Page = () => {
     <div>
       {isSelectedApplicant ? (
         <>
-          <div className="flex justify-end">
+          <div className="flex justify-between">
+            <Typography size={'h3'} colors={'primary'}>
+              REGNO:{isSelectedApplicant.registration_no ?? ''}
+            </Typography>
             <Button
-              variant="secondary"
               className="capitalize "
               onClick={() => setSelectedApplicant(undefined)}
             >
