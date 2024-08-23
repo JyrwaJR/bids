@@ -2,7 +2,6 @@ import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-
 import ThemeProvider from '@components/layout/ThemeToggle/theme-provider';
 import { showToast } from '@src/components/ui/show-toast';
 import {
@@ -26,7 +25,8 @@ export const AuthProvider = ({ children }: Props) => {
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isToken, setIsToken] = useState<string>(cookies?.token);
+  const [isToken, setIsToken] = useState<string>(cookies?.token || '');
+  const [isTokenSet, setIsTokenSet] = useState<boolean>(false); // Track token setting
   const router = useRouter();
   const loginMutation = useCMutation({
     method: 'POST',
@@ -34,81 +34,64 @@ export const AuthProvider = ({ children }: Props) => {
     url: 'login'
   });
 
-  const headers = useCallback(() => {
-    return {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${cookies?.token}`
-      }
-    };
-  }, [cookies?.token]);
-
   const onLogout = useCallback(async () => {
     try {
       setIsLoading(true);
+      if (!isToken) {
+        return;
+      }
       const res = await axios.post(
         `${baseUrl}/logout`,
         {},
         {
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${cookies?.token}`
+            Authorization: `Bearer ${cookies?.token || isToken}`
           }
         }
       );
-
       if (res.status === 200) {
         removeCookie('token');
-        router.refresh();
-        setIsLoggedIn(false);
         setIsToken('');
+        setIsLoggedIn(false);
         setUser(null);
-        showToast(SuccessToastTitle, res.data.message);
+        setIsTokenSet(false); // Reset token state
+        router.refresh();
         localStorage.removeItem('savedRoute');
-        return;
+      } else {
+        showToast(FailedToastTitle, 'Something went wrong');
       }
-      showToast(FailedToastTitle, 'Something went wrong');
-      return;
     } catch (error: any) {
-      if (error instanceof AxiosError) {
-        showToast(
-          FailedToastTitle,
-          error.response?.data.message || 'An error occurred'
-        );
-        return;
-      }
+      removeCookie('token');
       showToast(
         FailedToastTitle,
-        error.message || 'An error occurred',
-        'destructive'
+        error.response?.data.message || 'An error occurred'
       );
-      return;
     } finally {
       setIsLoading(false);
     }
-  }, [removeCookie, router, cookies.token]);
+  }, [removeCookie, router, cookies?.token, isToken, setIsToken]);
 
-  const onLogin = async ({ email, password, redirect }: LoginTProps) => {
+  const onLogin = async ({ email, password }: LoginTProps) => {
     try {
-      if (!baseUrl) {
-        showToast(FailedToastTitle, 'Base url now found');
-      }
       setIsLoading(true);
-      const res = await loginMutation.mutateAsync({
-        email: email,
-        password: password
-      });
+      const res = await loginMutation.mutateAsync({ email, password });
 
-      if (!!res.data.token) {
+      if (res.data.token) {
         setCookie('token', res.data.token, {
           path: '/',
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week
           secure: true,
           sameSite: 'strict'
         });
+
+        axiosInstance.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${res.data.token}`;
+        setIsToken(res.data.token);
+        setIsTokenSet(true); // Token successfully set
+
         const response = await axios.get(`${baseUrl}/user`, {
           headers: {
-            'Content-Type': 'application/json',
             Authorization: `Bearer ${res.data.token}`
           }
         });
@@ -118,39 +101,18 @@ export const AuthProvider = ({ children }: Props) => {
           id: response.data.data.id,
           name: response.data.data.name,
           role: response.data.data.role[0],
-          centre_id: response.data.data.center_id
+          centre_id: response.data.data.centre_id
         });
-        setIsToken(cookies?.token);
-        setIsLoggedIn(!!cookies?.token);
-        // const url = redirect ? redirect : '/dashboard';
+
         router.refresh();
-        return;
-      } else if (res.data.success === false) {
-        showToast(
-          FailedToastTitle,
-          'Invalid email or password. Please try again'
-        );
-        return;
       } else {
-        showToast(FailedToastTitle, res.data.message);
-        return;
+        showToast(FailedToastTitle, 'Invalid email or password');
       }
     } catch (error: any) {
-      if (error instanceof AxiosError) {
-        showToast(
-          FailedToastTitle,
-          error.response?.data.message || 'An error occurred'
-        );
-
-        return;
-      }
       showToast(
         FailedToastTitle,
-        error.message || 'An error occurred',
-        'destructive'
+        error.response?.data.message || 'An error occurred'
       );
-
-      return;
     } finally {
       setIsLoading(false);
     }
@@ -158,73 +120,61 @@ export const AuthProvider = ({ children }: Props) => {
 
   const verifyToken = useCallback(async () => {
     try {
-      const res = await axios.get(`${baseUrl}/user`, headers());
-      if (!!res.data.data.id || res.status === 200) {
-        const data = res.data.data;
-        setUser({
-          email: data.email,
-          id: data.id,
-          name: data.name,
-          role: data.role[0],
-          centre_id: data.centre_id,
-          staff: data.staff
+      if (isToken) {
+        const res = await axios.get(`${baseUrl}/user`, {
+          headers: {
+            Authorization: `Bearer ${isToken}`
+          }
         });
-        setIsToken(cookies?.token);
-        setIsLoggedIn(!!cookies?.token);
-        return;
+        if (res.status === 200 && res.data.data.id) {
+          const data = res.data.data;
+
+          setUser({
+            email: data.email,
+            id: data.id,
+            name: data.name,
+            role: data.role[0],
+            centre_id: data.centre_id
+          });
+
+          setIsLoggedIn(true); // Only set after successful token verification
+        }
       }
-      return;
     } catch (error: any) {
-      if (error instanceof AxiosError) {
-        showToast(
-          FailedToastTitle,
-          error.response?.data.message || 'An error occurred'
-        );
-        return;
-      }
-
-      showToast(
-        FailedToastTitle,
-        error.message || 'An error occurred',
-        'destructive'
-      );
-      return;
+      removeCookie('token');
+      setUser(null);
+      setIsLoggedIn(false);
+      router.push('/login');
     }
-  }, [headers, cookies?.token]);
-
-  axiosInstance.interceptors.request.use(
-    (config) => {
-      if (cookies?.token) {
-        config.headers.Authorization = `Bearer ${cookies?.token}`;
-      }
-      return config;
-    },
-    (error: any) => {
-      return Promise.reject(error);
-    }
-  );
+  }, [removeCookie, router, isToken]);
 
   useEffect(() => {
-    if (cookies?.token === isToken) {
+    if (cookies?.token || isToken) {
       verifyToken();
     }
-  }, [cookies, verifyToken, isToken]);
-  axios.defaults.headers.common['Authorization'] = isToken;
+  }, [cookies?.token, verifyToken, isToken]);
+
+  // Set axios instance token when isToken is updated
+  useEffect(() => {
+    if (isToken && !isTokenSet) {
+      axiosInstance.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${isToken}`;
+      setIsTokenSet(true); // Mark token as set
+    }
+  }, [isToken, isTokenSet]);
+
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem={true}>
       <AuthContext.Provider
         value={{
-          isLoading: isLoading,
+          isLoading,
           onLogin: async (email, password, redirect) =>
-            await onLogin({
-              email: email,
-              password: password,
-              redirect: redirect
-            }),
-          onLogout: onLogout,
+            await onLogin({ email, password, redirect }),
+          onLogout,
           token: isToken,
-          user: user,
-          isLoggedIn: isLoggedIn
+          user,
+          isLoggedIn
         }}
       >
         {children}
