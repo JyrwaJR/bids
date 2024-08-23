@@ -205,7 +205,7 @@ export const AuthProvider = ({ children }: Props) => {
   );
 
   useEffect(() => {
-    if (cookies?.token || isToken) {
+    if (cookies?.token === isToken) {
       verifyToken();
     }
   }, [cookies, verifyToken, isToken]);
@@ -214,7 +214,6 @@ export const AuthProvider = ({ children }: Props) => {
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem={true}>
       <AuthContext.Provider
         value={{
-          id: '',
           isLoading: isLoading,
           onLogin: async (email, password, redirect) =>
             await onLogin({

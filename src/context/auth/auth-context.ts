@@ -10,7 +10,6 @@ export type UserType = {
 
 export type AuthContextT = {
   token: string;
-  id: string;
   user: UserType | null;
   onLogout: () => void;
   onLogin: (
@@ -23,7 +22,6 @@ export type AuthContextT = {
 };
 
 export const AuthContext = createContext<AuthContextT | null>({
-  id: '',
   user: {
     center: '',
     email: '',
