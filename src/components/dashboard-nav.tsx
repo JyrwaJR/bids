@@ -46,42 +46,25 @@ export function DashboardNav({
   useEffect(() => {
     if (isMinimized) setOpenSubMenuId(null);
   }, [isMinimized]);
-
   const userRole = user?.role;
   const excludeTitles = {
-    mobilizer: ['Batch', 'Registration', 'Events', 'Search'],
-    coordinator: [
-      'Dashboard',
-      'Staff',
-      'Reports',
-      'Project',
-      'Events',
-      'Search Student',
-      'Batch',
-      'Registration',
-      'Admission',
-      'Attendance'
-    ],
-    superadmin: [
-      'Dashboard',
-      'Admin',
-      'Staff',
-      'Reports',
-      'Events',
-      'Search Student',
-      'Registration',
-      'Admission',
-      'Settings',
-      'Attendance'
-    ]
+    mobilizer: ['admin', 'batch', 'staff', 'settings', 'project'],
+    trainer: ['admin', 'staff', 'settings', 'project'],
+    director: ['staff', 'project', 'search student', 'batch', 'attendance'],
+    coordinator: ['staff', 'project', 'search student', 'batch', 'attendance'],
+    superadmin: ['project', 'batch']
   };
 
   const filteredNavItems = items.filter((item) => {
-    // Ensure userRole is a valid string
-    const role = typeof userRole === 'string' ? userRole : 'mobilizer';
-    //@ts-ignore
-    const titlesToExclude = excludeTitles[role] || excludeTitles.default;
-    return titlesToExclude.includes(item.title);
+    // Ensure userRole is a valid string and fallback to 'mobilizer' if not a valid role
+    const role =
+      typeof userRole === 'string' && excludeTitles[userRole]
+        ? userRole
+        : 'mobilizer';
+
+    const titlesToExclude = excludeTitles[role] || [];
+
+    return !titlesToExclude.includes(item.title.toLowerCase()); // Return true if the title is not in the exclusion list
   });
 
   if (!items?.length) {
@@ -326,11 +309,11 @@ export function DashboardNav({
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant={'ghost'}
+              variant="destructive"
               onClickCapture={() => setIsAlertLogout(true)}
               type="button"
               className={cn(
-                'flex items-center justify-start  overflow-hidden rounded-md py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
+                'flex items-center justify-start  overflow-hidden rounded-md py-2 text-sm font-medium',
                 path === '/' ? 'bg-accent' : 'transparent',
                 'p-0'
               )}

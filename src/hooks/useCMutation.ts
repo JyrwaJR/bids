@@ -42,7 +42,6 @@ const mutationFn = async ({ token, data = {}, method, url }: MutationProps) => {
     let response;
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const uri = `${apiBaseUrl}/${url}`;
-    console.log('Mutation URL=> ', uri);
     const header: HeaderType = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -73,14 +72,12 @@ const mutationFn = async ({ token, data = {}, method, url }: MutationProps) => {
     return response.data;
   } catch (error: any) {
     if (error instanceof AxiosError) {
-      console.log('Mutation Axios Error => ', error.response?.data);
       showToast(
         FailedToastTitle,
         error.response?.data.message || error.response?.data.errors.name
       );
       return error.response;
     }
-    console.log('Mutation Error => ', error);
     showToast(
       FailedToastTitle,
       error.message || 'An error occurred',
