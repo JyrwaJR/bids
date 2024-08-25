@@ -155,10 +155,9 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
       header: () => 'Domain'
     },
     {
-      accessorKey: 'centre',
-      header: () => 'Centre Name'
+      accessorKey: 'qp_code',
+      header: () => 'QP Code'
     },
-
     {
       accessorKey: 'status',
       header: () => 'Status'
@@ -204,7 +203,7 @@ const AddCentreProject = ({ onClose, open, projectId }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="max-w-[50%]">
         <DialogHeader>
           <DialogTitle>Assign Project</DialogTitle>
           <DialogDescription>Please select centre and domain</DialogDescription>
