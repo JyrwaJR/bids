@@ -78,7 +78,7 @@ const options: OptionsT[] = [
   },
   {
     label: 'Applicants',
-    value: 'applicant'
+    value: 'applicants'
   }
 ];
 const Model = z.object({
