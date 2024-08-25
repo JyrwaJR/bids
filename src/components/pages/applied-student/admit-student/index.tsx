@@ -52,6 +52,8 @@ const Model = z.object({
 
 type Model = z.infer<typeof Model>;
 const BatchModel = z.object({
+  project_id: z.string().uuid({}).array(),
+  domain_id: z.string().uuid({}).array(),
   batch_id: z.string().uuid({
     message: 'Batch is required'
   })
@@ -88,7 +90,7 @@ const AdmitCandidate = () => {
 
   const { mutateAsync, isLoading, data } = useCMutation({
     method: 'POST',
-    url: 'registration/candidate-registration-list',
+    url: 'registration/get-student-for-batch',
     queryKey: appliedApplicantQueryKey
   });
 
@@ -118,6 +120,7 @@ const AdmitCandidate = () => {
     label: item.batch_code,
     value: item.id
   }));
+  console.log(batchQuery.data?.data);
   const isProjectOptions: OptionsT[] = projectQuery.data?.data?.map(
     (item: any) => ({
       label: item.name,
@@ -152,61 +155,28 @@ const AdmitCandidate = () => {
       options: isDomainOptions ?? emptyOptions
     }
   ];
-  async function updateStudentStatus(
-    status: string,
-    batch_id: string,
-    id: string
-  ) {
+  async function updateStudentStatus(batch_id: string, id: string) {
     try {
       // Handle "Alloted" status
-      showToast(FailedToastTitle, 'Here');
-      if (status === 'Alloted') {
-        if (!batch_id) {
-          showToast(FailedToastTitle, 'Please select a batch to allot');
-          return;
-        }
-        if (!id) {
-          showToast(FailedToastTitle, 'ID is required');
-          return;
-        }
-
-        const res = await allotBatch.mutateAsync({
-          status: 'Alloted',
-          batch_id,
-          domain_applied_id: id
-        });
-
-        if (res.success) {
-          setId('');
-        }
+      batchForm.trigger();
+      if (!batch_id) {
+        showToast(FailedToastTitle, 'Please select a batch to allot');
         return;
       }
-
-      // Handle "Selected" status
-      if (status === 'Selected') {
-        if (!id) {
-          showToast(FailedToastTitle, 'ID is required');
-          return;
-        }
-
-        const project_id = form.getValues('project_id');
-        const domain_id = form.getValues('domain_id');
-
-        if (!project_id || !domain_id) {
-          showToast(FailedToastTitle, 'Project ID and Domain ID are required');
-          return;
-        }
-
-        const res = await mutate.mutateAsync({
-          status: 'Selected',
-          project_id,
-          domain_id
-        });
-
-        if (res.success) {
-          setId('');
-        }
+      if (!id) {
+        showToast(FailedToastTitle, 'Domian ID is required');
+        return;
       }
+      const res = await allotBatch.mutateAsync({
+        status: 'Alloted',
+        batch_id: batch_id,
+        domain_applied_id: id
+      });
+
+      if (res.success) {
+        setId('');
+      }
+      return;
     } catch (error: any) {
       if (error instanceof AxiosError) {
         showToast(
@@ -234,7 +204,6 @@ const AdmitCandidate = () => {
                 setId(row.original.id);
                 if (id) {
                   await updateStudentStatus(
-                    'Alloted',
                     batchForm.getValues('batch_id'),
                     watchDomainId
                   );
@@ -273,7 +242,7 @@ const AdmitCandidate = () => {
       setIsSelectedProjectId(form.getValues('project_id'));
     }
   }, [form, domainQuery, watchProjectId, isSelectedProjectId]);
-
+  console.log(form.formState.errors);
   return (
     <>
       <div className="flex-1 space-y-4 px-1">
@@ -286,7 +255,7 @@ const AdmitCandidate = () => {
         <Separator />
         <Form {...form}>
           <form
-            className="grid grid-cols-12 space-x-2"
+            className="grid grid-cols-12 items-start gap-x-2"
             onSubmit={form.handleSubmit(onSubmit)}
           >
             {formFields.map((input: FormFieldType, i) => (
@@ -324,7 +293,7 @@ const AdmitCandidate = () => {
                 />
               </div>
             ))}
-            <div className="mt-8">
+            <div>
               <Button type="submit" disabled={isLoading}>
                 Search
               </Button>

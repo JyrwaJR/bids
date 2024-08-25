@@ -115,7 +115,7 @@ const PrepareAdmissionList = () => {
       name: 'domain_id',
       label: 'Domain Name',
       select: true,
-      readOnly: form.getValues('project_id') ? false : true,
+      readOnly: !!form.getValues('project_id'),
       options: isDomainOptions ?? emptyOptions
     }
   ];
