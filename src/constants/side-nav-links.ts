@@ -239,6 +239,19 @@ export const navItems: NavItem[] = [
     ]
   },
   {
+    title: 'Change Password',
+    icon: 'settings',
+    label: 'settings',
+    items: [
+      {
+        title: 'Change Password',
+        href: '/dashboard/change-password',
+        icon: 'sun',
+        label: 'Password'
+      }
+    ]
+  },
+  {
     title: 'Settings',
     icon: 'settings',
     label: 'settings',
@@ -250,7 +263,7 @@ export const navItems: NavItem[] = [
         label: 'sector'
       },
       {
-        title: 'Password',
+        title: 'Change User Password',
         href: '/dashboard/password',
         icon: 'sun',
         label: 'Password'

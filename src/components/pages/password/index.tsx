@@ -18,13 +18,17 @@ export const PasswordPage = () => {
     url: 'get-user',
     queryKey: ['change-password']
   });
-  const column: ColumnDef<DomainModelType>[] = [
+  const column: ColumnDef<any>[] = [
     {
       id: 'name',
       header: 'User name',
       cell: ({ row }) => {
         return <div>{row.original.name}</div>;
       }
+    },
+    {
+      id: 'email',
+      header: 'Email'
     },
     {
       id: 'actions',
@@ -50,7 +54,10 @@ export const PasswordPage = () => {
     <>
       <div className="flex-1 space-y-4">
         <div className="flex items-start justify-between">
-          <Heading title={`Password`} description="Manage Password table" />
+          <Heading
+            title={`Change User Password`}
+            description="Manage Password table"
+          />
         </div>
         <Separator />
         <DataTable

@@ -100,7 +100,7 @@ export const ChangeUserPassword = ({ open, onClose, id }: Props) => {
               ]}
             />
             <DialogFooter className="space-x-2">
-              <Button type="button" variant={'outline'} onClick={onClose}>
+              <Button type="button" variant={'secondary'} onClick={onClose}>
                 Close
               </Button>
               <Button type="submit" disabled={mutate.isLoading}>
