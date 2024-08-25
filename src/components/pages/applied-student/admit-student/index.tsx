@@ -120,7 +120,6 @@ const AdmitCandidate = () => {
     label: item.batch_code,
     value: item.id
   }));
-  console.log(batchQuery.data?.data);
   const isProjectOptions: OptionsT[] = projectQuery.data?.data?.map(
     (item: any) => ({
       label: item.name,
