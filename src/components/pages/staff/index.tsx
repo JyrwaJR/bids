@@ -40,7 +40,6 @@ const StaffPage = () => {
   const form = useForm<SchemaType>({
     resolver: zodResolver(Schema)
   });
-  // fetch from staff/{centre_id} when centre_id is changed
   const url = isSuperUser
     ? `staff/${form.getValues('centre_id') ?? user.centre_id}`
     : `staff`;
