@@ -65,9 +65,6 @@ export const DomainModel = z.object({
   sector: z
     .string({
       required_error: FieldsIsRequired
-    })
-    .refine((val) => SectorsOptions.find((opt) => opt.value === val), {
-      message: 'Invalid value'
     }),
   curriculum: fileValidation.optional(),
   guide: fileValidation.optional(),
