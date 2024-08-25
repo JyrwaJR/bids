@@ -29,11 +29,12 @@ import { useEffect } from 'react';
 import UploadImageModal from '@components/upload-image-modal';
 import { PreviewRegistrationForm as PreviewForm } from '@components/pages/registration/preview-registration-form';
 import { useRegistrationFields } from '@src/app/dashboard/registration/_lib/useRegistrationFields';
-import { FormFieldType } from '@components/index';
+import { FormFieldType, Typography } from '@components/index';
 import { CForm } from '@components/form';
 import { handleBackendError } from '@constants/handle-backend-error';
 import { useRegisterStudentStore } from '@lib/store';
 import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
+import { Card } from '@components/ui/card';
 
 export type StepType = {
   id: string;
@@ -271,43 +272,53 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
                   ) : (
                     <>
                       {step.name === 'Address' ? (
-                        <>
-                          <CForm
-                            form={form}
-                            className={formStyle}
-                            loading={false}
-                            disabled={false}
-                            fields={step.fields.filter(
-                              (field: FormFieldType) =>
-                                !field.name.startsWith('p_')
-                            )}
-                          />
-                          <Separator />
-                          <div className="flex items-center space-x-2 py-4">
-                            <Checkbox
-                              checked={isSameAsPresent}
-                              onClick={() =>
-                                setIsSameAsPresent(!isSameAsPresent)
-                              }
-                              name="address"
+                        <div className="flex flex-col space-y-4">
+                          <Card className="p-4">
+                            <Typography size={'h4'} weight={'bold'}>
+                              Present Address
+                            </Typography>
+                            <CForm
+                              form={form}
+                              className={formStyle}
+                              loading={false}
+                              disabled={false}
+                              fields={step.fields.filter(
+                                (field: FormFieldType) =>
+                                  !field.name.startsWith('p_')
+                              )}
                             />
-                            <Label>Same as present</Label>
-                          </div>
-                          <CForm
-                            form={form}
-                            disabled={false}
-                            loading={false}
-                            className={formStyle}
-                            fields={step.fields
-                              .filter((field: FormFieldType) =>
-                                field.name.startsWith('p_')
-                              )
-                              ?.map((field: FormFieldType) => ({
-                                ...field,
-                                readOnly: isSameAsPresent
-                              }))}
-                          />
-                        </>
+                          </Card>
+                          <Separator />
+                          <Card className="p-4">
+                            <Typography size={'h4'} weight={'bold'}>
+                              Parmanent Address
+                            </Typography>
+                            <div className="flex items-center space-x-2 py-4">
+                              <Checkbox
+                                checked={isSameAsPresent}
+                                onClick={() =>
+                                  setIsSameAsPresent(!isSameAsPresent)
+                                }
+                                name="address"
+                              />
+                              <Label>Same as present Address</Label>
+                            </div>
+                            <CForm
+                              form={form}
+                              disabled={false}
+                              loading={false}
+                              className={formStyle}
+                              fields={step.fields
+                                .filter((field: FormFieldType) =>
+                                  field.name.startsWith('p_')
+                                )
+                                ?.map((field: FormFieldType) => ({
+                                  ...field,
+                                  readOnly: isSameAsPresent
+                                }))}
+                            />
+                          </Card>
+                        </div>
                       ) : (
                         <CForm
                           form={form}
@@ -337,7 +348,7 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
               <Button type="submit" onClick={next}>
                 {currentStep < steps.length ? (
                   <>
-                    Save
+                    Next
                     <ArrowRight className="ml-4" />
                   </>
                 ) : (
