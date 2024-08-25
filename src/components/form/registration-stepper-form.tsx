@@ -53,7 +53,7 @@ export const RegistrationStepperForm = () => {
       const res = await mutate.mutateAsync(data);
       if (res.success === true) {
         form.reset();
-        showToast(SuccessToastTitle, res.message);
+        showToast(SuccessToastTitle, 'Registration started successfully');
       }
     } catch (error: any) {
       if (error instanceof ZodError) {

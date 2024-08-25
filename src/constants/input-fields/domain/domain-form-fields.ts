@@ -1,5 +1,5 @@
 import { FormFieldType } from '@components/index';
-import { StatusOptions } from '@constants/options';
+import { SectorsOptions, StatusOptions } from '@constants/options';
 export const domainFormFields: FormFieldType[] = [
   {
     name: 'name',
@@ -48,5 +48,11 @@ export const domainFormFields: FormFieldType[] = [
     name: 'next_review',
     label: 'Next Review',
     type: 'date'
+  },
+  {
+    name: 'sector',
+    label: 'Sector',
+    select: true,
+    options: SectorsOptions
   }
 ];

@@ -142,12 +142,6 @@ const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     placeholder: 'Enter Email'
   },
   {
-    name: 'registration_date',
-    label: 'Registration Date',
-    required: true,
-    type: 'date'
-  },
-  {
     name: 'aadhaar',
     label: 'Aadhaar',
     required: false,
@@ -587,11 +581,11 @@ export const studentRegistrationFields: StepType[] = [
     id: 'Personal Information',
     fields: studentRegistrationPersonalDetailsFields
   },
-  {
-    name: 'Apply Domain',
-    id: 'Apply Domain',
-    fields: studentRegistrationDomain
-  },
+  // {
+  //   name: 'Apply Domain',
+  //   id: 'Apply Domain',
+  //   fields: studentRegistrationDomain
+  // },
   {
     name: 'Parent Details',
     id: 'Parental Details',

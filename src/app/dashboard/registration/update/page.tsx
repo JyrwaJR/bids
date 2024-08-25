@@ -99,19 +99,13 @@ const Page = () => {
     <div>
       {isSelectedApplicant ? (
         <>
-          <div className="flex justify-between">
-            <Typography size={'h3'} colors={'primary'}>
-              REGNO:{isSelectedApplicant.registration_no ?? ''}
-            </Typography>
-            <Button
-              className="capitalize "
-              onClick={() => setSelectedApplicant(undefined)}
-            >
-              <PersonIcon className="mr-2 h-4 w-4" />
-              change
-            </Button>
-          </div>
-          <UpdateRegistrationStepperForm data={isSelectedApplicant} />
+          <Typography size={'h3'} colors={'primary'}>
+            REGNO:{isSelectedApplicant.registration_no ?? ''}
+          </Typography>
+          <UpdateRegistrationStepperForm
+            setData={() => setSelectedApplicant(undefined)}
+            data={isSelectedApplicant}
+          />
         </>
       ) : (
         <>

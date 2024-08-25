@@ -29,7 +29,7 @@ import { FormFieldType, OptionsT } from './type';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import { Textarea } from '@components/ui/textarea';
 
 type FormProps<T> = {
@@ -143,7 +143,19 @@ export const CForm = <T,>({
                                   )}
                                 >
                                   {field.value ? (
-                                    format(field.value, 'PPP')
+                                    typeof field.value === 'string' &&
+                                    field.value.includes('/') ? (
+                                      format(
+                                        parse(
+                                          field.value,
+                                          'dd/MM/yyyy',
+                                          new Date()
+                                        ),
+                                        'yyyy-MM-dd'
+                                      )
+                                    ) : (
+                                      format(field.value, 'yyyy-MM-dd')
+                                    )
                                   ) : (
                                     <span>Pick a date</span>
                                   )}
@@ -226,6 +238,51 @@ export const CForm = <T,>({
                                 `Please enter ${input.label}`
                               }
                               disabled={input.readOnly || disabled}
+                            />
+                            <FormDescription>
+                              {input.helperText}
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        </React.Fragment>
+                      ) : input.type === 'date' ? (
+                        <React.Fragment key={i}>
+                          <FormItem className="w-full">
+                            <FormLabel htmlFor={input.name}>
+                              {input.label}{' '}
+                              {input.required && (
+                                <span className="text-red-500">*</span>
+                              )}
+                            </FormLabel>
+                            <Input
+                              {...field}
+                              type="date"
+                              value={
+                                typeof field.value === 'string' &&
+                                field.value.includes('/')
+                                  ? format(
+                                      parse(
+                                        field.value,
+                                        'dd/MM/yyyy',
+                                        new Date()
+                                      ),
+                                      'yyyy-MM-dd'
+                                    )
+                                  : field.value
+                              }
+                              className="flex"
+                              placeholder={
+                                input.placeholder ??
+                                `Please enter ${input.label}`
+                              }
+                              disabled={input.readOnly || disabled}
+                              onChange={(e) => {
+                                const value =
+                                  input.type === 'number'
+                                    ? Number(e.target.value)
+                                    : e.target.value;
+                                onChange(value);
+                              }}
                             />
                             <FormDescription>
                               {input.helperText}

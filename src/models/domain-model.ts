@@ -1,5 +1,5 @@
 import { FieldsIsRequired } from '@constants/index';
-import { StatusOptions } from '@constants/options';
+import { SectorsOptions, StatusOptions } from '@constants/options';
 import { format, parse, isValid } from 'date-fns';
 import { z } from 'zod';
 const ACCEPTED_FILES_TYPES = [
@@ -62,6 +62,13 @@ export const DomainModel = z.object({
   qp_code: z.string({ required_error: FieldsIsRequired }).max(20, {
     message: 'Should be less than 20 in length'
   }),
+  sector: z
+    .string({
+      required_error: FieldsIsRequired
+    })
+    .refine((val) => SectorsOptions.find((opt) => opt.value === val), {
+      message: 'Invalid value'
+    }),
   curriculum: fileValidation.optional(),
   guide: fileValidation.optional(),
   approval_date: z

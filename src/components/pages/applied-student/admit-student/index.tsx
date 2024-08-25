@@ -160,11 +160,15 @@ const AdmitCandidate = () => {
       // Handle "Alloted" status
       batchForm.trigger();
       if (!batch_id) {
-        showToast(FailedToastTitle, 'Please select a batch to allot');
+        showToast(
+          FailedToastTitle,
+          'Please select a batch to allot',
+          'destructive'
+        );
         return;
       }
       if (!id) {
-        showToast(FailedToastTitle, 'Domian ID is required');
+        showToast(FailedToastTitle, 'Domian ID is required', 'destructive');
         return;
       }
       const res = await allotBatch.mutateAsync({
@@ -181,12 +185,14 @@ const AdmitCandidate = () => {
       if (error instanceof AxiosError) {
         showToast(
           FailedToastTitle,
-          error.response?.data?.message || 'An error occurred'
+          error.response?.data?.message || 'An error occurred',
+          'destructive'
         );
       } else {
         showToast(
           FailedToastTitle,
-          error.message || 'An unknown error occurred'
+          error.message || 'An unknown error occurred',
+          'destructive'
         );
       }
     }
@@ -231,7 +237,7 @@ const AdmitCandidate = () => {
     try {
       await mutateAsync(data);
     } catch (error: any) {
-      showToast(FailedToastTitle, error.message);
+      showToast(FailedToastTitle, error.message, 'destructive');
       return;
     }
   };
@@ -259,7 +265,7 @@ const AdmitCandidate = () => {
             onSubmit={form.handleSubmit(onSubmit)}
           >
             {formFields.map((input: FormFieldType, i) => (
-              <div className="col-span-4" key={i}>
+              <div className="col-span-full md:col-span-4" key={i}>
                 <FormField
                   control={form.control}
                   disabled={input.readOnly ?? false}
@@ -293,8 +299,12 @@ const AdmitCandidate = () => {
                 />
               </div>
             ))}
-            <div>
-              <Button type="submit" disabled={isLoading}>
+            <div className="col-span-full flex h-full items-center justify-start md:col-span-4 md:pt-5">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full md:w-auto"
+              >
                 Search
               </Button>
             </div>

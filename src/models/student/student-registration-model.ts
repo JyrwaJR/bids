@@ -1,24 +1,25 @@
 import { gender } from '@constants/options';
 import { phoneNoRegex } from '@constants/regex';
 import { fileValidation } from '@models/domain-model';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import * as z from 'zod';
 
 export const StudentRegistrationModel = z.object({
   id: z.string().uuid().optional().nullable(),
   registration_no: z.string().uuid().optional(),
   admission_no: z.string().max(30).nullable().optional(),
-  registration_date: z
-    .string()
-    .refine((val) => format(new Date(val), 'yyyy-MM-dd') !== 'Invalid Date')
-    .optional(),
+  // registration_date: z.string().optional(),
   aadhaar: z.string().length(12).nullable().optional(),
   first_name: z.string({ required_error: 'First name is required' }).max(80),
   middle_name: z.string().max(50).nullable().optional(),
   last_name: z.string({ required_error: 'Last name is required' }).max(50),
   dob: z
-    .string({ required_error: 'Date of birth is required' })
-    .refine((val) => format(new Date(val), 'yyyy-MM-dd') !== 'Invalid Date'),
+    .string()
+    .transform((val) =>
+      val.includes('/')
+        ? format(parse(val as string, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd')
+        : val
+    ),
   gender: z
     .string({ required_error: 'Gender is required' })
     .max(10)

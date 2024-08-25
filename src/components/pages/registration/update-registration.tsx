@@ -33,6 +33,7 @@ import { FormFieldType } from '@components/index';
 import { CForm } from '@components/form';
 import { handleBackendError } from '@constants/handle-backend-error';
 import { useRegisterStudentStore } from '@lib/store';
+import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 
 export type StepType = {
   id: string;
@@ -56,12 +57,13 @@ const useMultiStepFormStore = create<MultiStepType>((set) => ({
 
 type Props = {
   data: StudentRegistrationModelWithDomainType;
+  setData: () => void;
 };
-export const UpdateRegistrationStepperForm = ({ data }: Props) => {
+export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
   const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);
   const { id, setId } = useRegisterStudentStore();
   const formStyle: string = 'w-full sm:col-span-6 md:col-span-6 xl:col-span-4';
-
+  const { options } = useCategorySelectOptions();
   const form = useForm<StudentRegistrationModelWithDomainType>({
     resolver: zodResolver(StudentRegistrationModelWithDomain),
     defaultValues: data
@@ -136,30 +138,30 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
             return false; // Return false if submission failed
           }
           break;
+        // case 1:
+        //   const domainAppliedRes = await studentAppliedDomain(id, data);
+        //   if (!domainAppliedRes.success) {
+        //     showToast(FailedToastTitle, 'Error when adding domain applied');
+        //     return false;
+        //   }
+        //   break;
         case 1:
-          const domainAppliedRes = await studentAppliedDomain(id, data);
-          if (!domainAppliedRes.success) {
-            showToast(FailedToastTitle, 'Error when adding domain applied');
-            return false;
-          }
-          break;
-        case 2:
           const familyRes = await addFamilyDetails(id, data);
           if (!familyRes.success) {
             showToast(FailedToastTitle, 'Error when adding family detail');
             return false;
           }
           break;
-        case 3:
+        case 2:
           const addressRes = await addAddressDetails(id, data);
           if (!addressRes.success) {
             showToast(FailedToastTitle, 'Error when adding address detail');
             return false;
           }
           break;
-        case 4:
+        case 3:
           break;
-        case 5:
+        case 4:
           if (data.is_bpl === 'Yes') {
             const bplRes = await addStudentBpl(id, data);
             if (!bplRes.success) {
@@ -325,9 +327,12 @@ export const UpdateRegistrationStepperForm = ({ data }: Props) => {
 
           <div className="mt-8 pt-5">
             <div className="flex justify-between">
-              <Button type="button" onClick={prev} disabled={currentStep === 0}>
+              <Button
+                type="button"
+                onClick={currentStep === 0 ? setData : prev}
+              >
                 <ArrowLeft className="mr-4" />
-                Back
+                {currentStep > 0 ? 'Back' : 'Reset'}
               </Button>
               <Button type="submit" onClick={next}>
                 {currentStep < steps.length ? (

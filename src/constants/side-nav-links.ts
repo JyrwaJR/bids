@@ -250,6 +250,12 @@ export const navItems: NavItem[] = [
         label: 'sector'
       },
       {
+        title: 'Password',
+        href: '/dashboard/password',
+        icon: 'sun',
+        label: 'Password'
+      },
+      {
         title: 'Staff Category',
         href: '/dashboard/staff-category',
         icon: 'login',

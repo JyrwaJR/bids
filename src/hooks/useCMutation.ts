@@ -74,7 +74,8 @@ const mutationFn = async ({ token, data = {}, method, url }: MutationProps) => {
     if (error instanceof AxiosError) {
       showToast(
         FailedToastTitle,
-        error.response?.data.message || error.response?.data.errors.name
+        error.response?.data.message || error.response?.data.errors.name,
+        'destructive'
       );
       return error.response;
     }
