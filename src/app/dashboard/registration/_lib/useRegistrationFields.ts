@@ -97,8 +97,8 @@ export const useRegistrationFields = ({ form }: Props) => {
           },
           {
             name: 'bpl_card_issue',
-            label: 'BPL Card Issue Date',
-            type: 'date'
+            type: 'number',
+            label: 'BPL Card Issue'
           },
           {
             name: 'is_bpl_certified',
@@ -254,6 +254,12 @@ export const useRegistrationFields = ({ form }: Props) => {
           type: 'number',
           placeholder: 'Enter MGNREGA Hours Worked'
         }
+      ]
+    },{
+      id: '6',
+      name: 'Preview',
+      fields: [
+        
       ]
     }
   ];

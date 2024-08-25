@@ -356,127 +356,6 @@ const studentRegistrationPermanentsAddressDetailFields: FormFieldType[] = [
   }
 ];
 
-// export const studentRegistrationOtherInfoFields: FormFieldType[] = [
-//   {
-//     name: 'is_technical_education',
-//     label: 'Technical Education',
-//     required: false,
-//     select: true,
-//     options: yesNoOptions
-//   },
-//   {
-//     name: 'diploma_certificate',
-//     label: 'Diploma Certificate',
-//     required: false,
-//     type: 'text',
-//     // TODO : Add file upload
-//     placeholder: 'Enter Diploma Certificate'
-//   },
-//   {
-//     name: 'year_passing',
-//     label: 'Year Passing',
-//     required: false,
-//     type: 'date',
-//     placeholder: 'Enter Year Passing'
-//   },
-//   {
-//     name: 'is_employed',
-//     label: 'Employed',
-//     required: false,
-//     select: true,
-//     options: yesNoOptions
-//   },
-//   {
-//     name: 'occupation',
-//     label: 'Occupation',
-//     required: false,
-//     type: 'text',
-//     placeholder: 'Enter Occupation'
-//   },
-//   {
-//     name: 'year_experience',
-//     label: 'Years of Experience',
-//     required: false,
-//     type: 'number',
-//     placeholder: 'Enter Years of Experience'
-//   },
-//   {
-//     name: 'monthly_income',
-//     label: 'Monthly Income',
-//     required: false,
-//     type: 'number',
-//     placeholder: 'Enter Monthly Income'
-//   },
-//   {
-//     name: 'is_bpl',
-//     label: 'BPL (Below Poverty Line)',
-//     required: false,
-//     select: true,
-//     options: yesNoOptions
-//   },
-//   {
-//     name: 'hostel_required',
-//     label: 'Hostel Required',
-//     required: false,
-//     select: true,
-//     options: yesNoOptions
-//   },
-//   {
-//     name: 'will_migrate',
-//     label: 'Will Migrate',
-//     required: false,
-//     select: true,
-//     options: yesNoOptions
-//   },
-//   {
-//     name: 'is_minority',
-//     label: 'Is Minority',
-//     required: false,
-//     select: true,
-//     options: yesNoOptions
-//   },
-//   {
-//     name: 'is_disabled',
-//     label: 'Is Disabled',
-//     required: false,
-//     select: true,
-//     options: yesNoOptions
-//   },
-//   {
-//     name: 'disability_type',
-//     label: 'Disability Type',
-//     required: false,
-//     select: true
-//   },
-//   {
-//     name: 'family_size',
-//     label: 'Family Size',
-//     required: false,
-//     type: 'number',
-//     placeholder: 'Enter Family Size'
-//   },
-//   {
-//     name: 'catchment_area',
-//     label: 'Catchment Area',
-//     required: false,
-//     select: true,
-//     options: yesNoOptions
-//   },
-//   {
-//     name: 'nre_job_card_no',
-//     label: 'NRE Job Card No',
-//     required: false,
-//     type: 'text',
-//     placeholder: 'Enter NRE Job Card No'
-//   },
-//   {
-//     name: 'mgnrega_hours_worked',
-//     label: 'MGNREGA Hours Worked',
-//     required: false,
-//     type: 'number',
-//     placeholder: 'Enter MGNREGA Hours Worked'
-//   }
-// ];
 const studentRegistrationParentDetailFields: FormFieldType[] = [
   {
     name: 'father_name',
@@ -572,20 +451,10 @@ const studentRegistrationParentDetailFields: FormFieldType[] = [
 
 export const studentRegistrationFields: StepType[] = [
   {
-    name: 'Start Registration',
-    id: 'Start Registration',
-    fields: startStudentRegistrationFields
-  },
-  {
     name: 'Personal Information',
     id: 'Personal Information',
     fields: studentRegistrationPersonalDetailsFields
   },
-  // {
-  //   name: 'Apply Domain',
-  //   id: 'Apply Domain',
-  //   fields: studentRegistrationDomain
-  // },
   {
     name: 'Parent Details',
     id: 'Parental Details',

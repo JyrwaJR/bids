@@ -150,13 +150,7 @@ export const StudentRegistrationModel = z.object({
   created_at: z.date().optional(),
   updated_at: z.date().optional(),
   bpl_card_no: z.string().max(50).nullable().optional(),
-  bpl_card_issue: z
-    .string()
-    .refine((val) => format(new Date(val), 'yyyy-MM-dd'), {
-      message: 'Invalid date'
-    })
-    .nullable()
-    .optional(),
+  bpl_card_issue: z.number().nullable().optional(),
   is_bpl_certified: z.enum(['Yes', 'No']).default('No'),
   bpl_certification_authority: z.string().max(100).nullable().optional(),
   bpl_other_certifying_authority: z.string().max(100).nullable().optional(),

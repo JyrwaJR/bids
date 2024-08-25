@@ -11,8 +11,7 @@ import {
   addFamilyDetails,
   addPersonalDetails,
   addStudentBpl,
-  otherDetails,
-  studentAppliedDomain
+  otherDetails
 } from '@src/app/dashboard/registration/_lib/function';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -64,7 +63,6 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
   const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);
   const { id, setId } = useRegisterStudentStore();
   const formStyle: string = 'w-full sm:col-span-6 md:col-span-6 xl:col-span-4';
-  const { options } = useCategorySelectOptions();
   const form = useForm<StudentRegistrationModelWithDomainType>({
     resolver: zodResolver(StudentRegistrationModelWithDomain),
     defaultValues: data
@@ -139,13 +137,6 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
             return false; // Return false if submission failed
           }
           break;
-        // case 1:
-        //   const domainAppliedRes = await studentAppliedDomain(id, data);
-        //   if (!domainAppliedRes.success) {
-        //     showToast(FailedToastTitle, 'Error when adding domain applied');
-        //     return false;
-        //   }
-        //   break;
         case 1:
           const familyRes = await addFamilyDetails(id, data);
           if (!familyRes.success) {
@@ -184,7 +175,7 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
       return true; // Return true if submission was successful
     } catch (error: any) {
       if (error instanceof ZodError) {
-        showToast('Validation Error', error.errors[0].message);
+        showToast('Validation Error', error.errors[0].message, 'destructive');
         return false;
       } else if (error instanceof AxiosError) {
         if (error.response?.data.status === 'error') {
@@ -192,16 +183,25 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
           const parsedErrors = handleBackendError(errorResponse);
           showToast(
             FailedToastTitle,
-            parsedErrors?.message ?? 'An error occurred'
+            parsedErrors?.message ?? 'An error occurred',
+            'destructive'
           );
         }
         if (error.response?.data.success === false) {
-          showToast(FailedToastTitle, error.response.data.message);
+          showToast(
+            FailedToastTitle,
+            error.response.data.message,
+            'destructive'
+          );
           return false;
         }
         return false;
       } else {
-        showToast('Error', error.message || 'An unexpected error occurred');
+        showToast(
+          'Error',
+          error.message || 'An unexpected error occurred',
+          'destructive'
+        );
       }
 
       return false; // Return false if any error was caught
@@ -260,78 +260,80 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {currentStep < steps.length ? (
-            steps
-              .filter((stp) => stp.name !== 'Start Registration')
-              .map((step, index) => (
-                <div
-                  key={step.name + index}
-                  className={index === currentStep ? '' : 'hidden'}
-                >
-                  {step.name === 'Upload Documents' ? (
-                    <UploadImageModal fields={step.fields} />
-                  ) : (
-                    <>
-                      {step.name === 'Address' ? (
-                        <div className="flex flex-col space-y-4">
-                          <Card className="p-4">
-                            <Typography size={'h4'} weight={'bold'}>
-                              Present Address
-                            </Typography>
-                            <CForm
-                              form={form}
-                              className={formStyle}
-                              loading={false}
-                              disabled={false}
-                              fields={step.fields.filter(
-                                (field: FormFieldType) =>
-                                  !field.name.startsWith('p_')
-                              )}
+            steps.map((step, index) => (
+              <div
+                key={step.name + index}
+                className={index === currentStep ? '' : 'hidden'}
+              >
+                {step.name === 'Upload Documents' ? (
+                  <UploadImageModal fields={step.fields} />
+                ) : (
+                  <>
+                    {step.name === 'Address' ? (
+                      <div className="flex flex-col space-y-4">
+                        <Card className="p-4">
+                          <Typography size={'h4'} weight={'bold'}>
+                            Present Address
+                          </Typography>
+                          <CForm
+                            form={form}
+                            className={formStyle}
+                            loading={false}
+                            disabled={false}
+                            fields={step.fields.filter(
+                              (field: FormFieldType) =>
+                                !field.name.startsWith('p_')
+                            )}
+                          />
+                        </Card>
+                        <Separator />
+                        <Card className="p-4">
+                          <Typography size={'h4'} weight={'bold'}>
+                            Parmanent Address
+                          </Typography>
+                          <div className="flex items-center space-x-2 py-4">
+                            <Checkbox
+                              checked={isSameAsPresent}
+                              onClick={() =>
+                                setIsSameAsPresent(!isSameAsPresent)
+                              }
+                              name="address"
                             />
-                          </Card>
-                          <Separator />
-                          <Card className="p-4">
-                            <Typography size={'h4'} weight={'bold'}>
-                              Parmanent Address
-                            </Typography>
-                            <div className="flex items-center space-x-2 py-4">
-                              <Checkbox
-                                checked={isSameAsPresent}
-                                onClick={() =>
-                                  setIsSameAsPresent(!isSameAsPresent)
-                                }
-                                name="address"
-                              />
-                              <Label>Same as present Address</Label>
-                            </div>
-                            <CForm
-                              form={form}
-                              disabled={false}
-                              loading={false}
-                              className={formStyle}
-                              fields={step.fields
-                                .filter((field: FormFieldType) =>
-                                  field.name.startsWith('p_')
-                                )
-                                ?.map((field: FormFieldType) => ({
-                                  ...field,
-                                  readOnly: isSameAsPresent
-                                }))}
-                            />
-                          </Card>
-                        </div>
-                      ) : (
-                        <CForm
-                          form={form}
-                          className={formStyle}
-                          disabled={false}
-                          loading={false}
-                          fields={step.fields}
-                        />
-                      )}
-                    </>
-                  )}
-                </div>
-              ))
+                            <Label>Same as present Address</Label>
+                          </div>
+                          <CForm
+                            form={form}
+                            disabled={false}
+                            loading={false}
+                            className={formStyle}
+                            fields={step.fields
+                              .filter((field: FormFieldType) =>
+                                field.name.startsWith('p_')
+                              )
+                              ?.map((field: FormFieldType) => ({
+                                ...field,
+                                readOnly: isSameAsPresent
+                              }))}
+                          />
+                        </Card>
+                      </div>
+                    ) : step.name === 'Preview' ? (
+                      <>
+                        <PreviewForm fields={steps} form={form} />
+                      </>
+                    ) : (
+                      <CForm
+                        form={form}
+                        className={formStyle}
+                        disabled={false}
+                        loading={false}
+                        fields={step.fields}
+                      />
+                    )}
+                  </>
+                )}
+              </div>
+            ))
           ) : (
             <PreviewForm fields={steps} form={form} />
           )}
@@ -345,14 +347,17 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
                 <ArrowLeft className="mr-4" />
                 {currentStep > 0 ? 'Back' : 'Reset'}
               </Button>
-              <Button type="submit" onClick={next}>
+              <Button
+                type="submit"
+                onClick={currentStep === steps.length - 1 ? setData : next}
+              >
                 {currentStep < steps.length ? (
                   <>
                     Next
                     <ArrowRight className="ml-4" />
                   </>
                 ) : (
-                  'Preview'
+                  'Reset'
                 )}
               </Button>
             </div>
