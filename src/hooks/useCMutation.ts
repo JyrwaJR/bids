@@ -80,7 +80,7 @@ const mutationFn = async ({ token, data = {}, method, url }: MutationProps) => {
     }
     showToast(
       FailedToastTitle,
-      error.message || 'An error occurred',
+      error.message || 'Connection Error',
       'destructive'
     );
     return;

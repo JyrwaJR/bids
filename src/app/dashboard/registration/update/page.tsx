@@ -59,7 +59,7 @@ const Page = () => {
       setIsSearching(true);
       const centerId = user?.role === 'superadmin' ? null : user?.centre_id;
       const res = await searchStudentByName(
-        'applicantes',
+        'applicant',
         data.name.toLowerCase(),
         centerId
       );

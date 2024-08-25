@@ -32,11 +32,14 @@ import { useAuthContext } from '@context/auth';
 const studentsColumn: ColumnDef<any>[] = [
   {
     header: 'Name',
-    accessorKey: 'first_name'
-  },
-  {
-    header: 'Last Name',
-    accessorKey: 'last_name'
+    accessorKey: 'first_name',
+    cell: ({ row }) => (
+      <>
+        <p>
+          {row.original.first_name} {row.original.last_name}
+        </p>
+      </>
+    )
   },
   {
     header: 'DOB',
@@ -50,11 +53,14 @@ const studentsColumn: ColumnDef<any>[] = [
 const applicantsColumn: ColumnDef<any>[] = [
   {
     header: 'Name',
-    accessorKey: 'first_name'
-  },
-  {
-    header: 'Last Name',
-    accessorKey: 'last_name'
+    accessorKey: 'first_name',
+    cell: ({ row }) => (
+      <>
+        <p>
+          {row.original.first_name} {row.original.last_name}
+        </p>
+      </>
+    )
   },
   {
     header: 'DOB',
@@ -68,11 +74,11 @@ const applicantsColumn: ColumnDef<any>[] = [
 const options: OptionsT[] = [
   {
     label: 'Enrolled Students',
-    value: 'enroll'
+    value: 'enrolled'
   },
   {
     label: 'Applicants',
-    value: 'applicants'
+    value: 'applicant'
   }
 ];
 const Model = z.object({
