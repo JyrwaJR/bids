@@ -61,17 +61,13 @@ const PrepareAdmissionList = () => {
   const { setId, id } = useAppliedStudentsStore();
   const [isSelectedProjectId, setIsSelectedProjectId] = useState('');
   const form = useForm<Model>({
-    resolver: zodResolver(Model),
-    defaultValues: {
-      status: 'Applied'
-    }
+    resolver: zodResolver(Model)
   });
   const project_id = useWatch({
     control: form.control,
     name: 'project_id'
   });
-  const { mutateAsync, isLoading, data } = useCMutation({
-    method: 'POST',
+  const { data, refetch } = useCQuery({
     url: 'registration/candidate-registration-list',
     queryKey: appliedApplicantQueryKey
   });
@@ -100,6 +96,7 @@ const PrepareAdmissionList = () => {
       value: item.domain_id
     })
   );
+
   const url: string = `registration/update-candidate-registration-status/${id}`;
   const mutate = useCMutation({
     url: url,
@@ -125,35 +122,29 @@ const PrepareAdmissionList = () => {
 
   async function updateStudentStatus() {
     try {
+      form.trigger();
+      if (!form.formState.isValid) {
+        return;
+      }
       await mutate.mutateAsync({
-        status: 'Selected'
-      });
-    } catch (error: any) {
-      showToast(FailedToastTitle, error.error);
-    } finally {
-      await mutateAsync({
-        status: 'Applied',
+        status: 'Selected',
         project_id: form.getValues('project_id'),
         domain_id: form.getValues('domain_id')
       });
+    } catch (error: any) {
+      showToast(FailedToastTitle, error.message);
+    } finally {
+      refetch();
     }
   }
 
-  const onSubmit = async (data: Model) => {
-    try {
-      await mutateAsync(data);
-    } catch (error: any) {
-      showToast(FailedToastTitle, error.message);
-      return;
-    }
-  };
   useEffect(() => {
     if (project_id && project_id !== isSelectedProjectId) {
       setIsSelectedProjectId(project_id);
       domainQuery.refetch();
     }
   }, [project_id, isSelectedProjectId, domainQuery]);
-  console.log(form.formState.errors);
+
   const columns: ColumnDef<StudentRegistrationModelType | any>[] = [
     {
       id: 'select',
@@ -188,12 +179,9 @@ const PrepareAdmissionList = () => {
         </div>
         <Separator />
         <Form {...form}>
-          <form
-            className="grid grid-cols-12 space-x-2"
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
+          <form className="grid grid-cols-12 gap-x-2">
             {formFields.map((input, i) => (
-              <div className="col-span-4" key={i}>
+              <div className="col-span-12 md:col-span-6" key={i}>
                 <FormField
                   control={form.control}
                   disabled={input.readOnly}
@@ -224,11 +212,6 @@ const PrepareAdmissionList = () => {
                 />
               </div>
             ))}
-            <div className="mt-8">
-              <Button type="submit" disabled={isLoading}>
-                Search
-              </Button>
-            </div>
           </form>
         </Form>
         <Separator />
