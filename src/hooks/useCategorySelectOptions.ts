@@ -7,6 +7,7 @@ import {
   districtQueryKey,
   domainQueryKey,
   projectsQueryKey,
+  sectorQueryKey,
   stateQueryKey
 } from '@constants/query-keys';
 
@@ -22,6 +23,7 @@ type CategoryOptionsT = {
   batch: OptionsT[];
   projects: OptionsT[];
   domain: OptionsT[];
+  sectors: OptionsT[];
 };
 export const defaultOptions: CategoryOptionsT = {
   categories: [],
@@ -34,7 +36,8 @@ export const defaultOptions: CategoryOptionsT = {
   centre: [],
   batch: [],
   projects: [],
-  domain: []
+  domain: [],
+  sectors: []
 };
 type Props = {
   centreId?: string;
@@ -48,6 +51,10 @@ export function useCategorySelectOptions({ centreId, projectId }: Props = {}) {
     queryKey: categoryQueryKey
   });
 
+  const { data: sector, isFetched: isSectorFetched } = useCQuery({
+    url: 'sector',
+    queryKey: sectorQueryKey
+  });
   const { data: state, isFetched: isStateFetched } = useCQuery({
     url: 'state',
     queryKey: stateQueryKey
@@ -71,6 +78,15 @@ export function useCategorySelectOptions({ centreId, projectId }: Props = {}) {
     queryKey: centreQueryKey
   });
 
+  const sectorOptions = useCallback(() => {
+    if (isSectorFetched && sector) {
+      return sector.data.map((domain: { name: string; id: string }) => ({
+        label: domain.name,
+        value: domain.id
+      }));
+    }
+    return [];
+  }, [isSectorFetched, sector]);
   const domainOptions = useCallback(() => {
     if (isDomainFetched && domain) {
       return domain.data.map((domain: { name: string; id: string }) => ({
@@ -139,7 +155,8 @@ export function useCategorySelectOptions({ centreId, projectId }: Props = {}) {
         centre: centerOptions(),
         batch: [],
         projects: projectOptions(),
-        domain: domainOptions()
+        domain: domainOptions(),
+        sectors: sectorOptions()
       });
     }
   }, [

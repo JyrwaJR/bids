@@ -81,6 +81,13 @@ export const navItems: NavItem[] = [
             icon: 'employee',
             disabled: true,
             label: 'add batch'
+          },
+          {
+            title: 'Course Completion',
+            href: '/dashboard/batch',
+            icon: 'employee',
+            label: 'batch',
+            disabled: true
           }
         ]
       }
@@ -166,6 +173,50 @@ export const navItems: NavItem[] = [
         href: '/dashboard/admission/remove?status=selected',
         icon: 'user',
         label: 'remove applicants'
+      }
+    ]
+  },
+  {
+    title: 'Students',
+    icon: 'chevronRight',
+    label: 'student',
+    items: [
+      {
+        title: 'List Student',
+        href: '/dashboard/attendance',
+        icon: 'employee',
+        label: 'Attendance'
+      },
+      {
+        title: 'Follow Up',
+        href: '/dashboard/attendance',
+        icon: 'employee',
+        label: 'Attendance'
+      },
+      {
+        title: 'Grading',
+        href: '/dashboard/attendance',
+        icon: 'employee',
+        label: 'Attendance'
+      },
+      {
+        title: 'Verify Documents',
+        href: '/dashboard/attendance',
+        icon: 'employee',
+        label: 'Attendance'
+      },
+
+      {
+        title: 'Drop Out',
+        href: '/dashboard/attendance',
+        icon: 'employee',
+        label: 'Attendance'
+      },
+      {
+        title: 'Placement',
+        href: '/dashboard/attendance',
+        icon: 'employee',
+        label: 'Attendance'
       }
     ]
   },

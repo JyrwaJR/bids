@@ -22,7 +22,7 @@ export const batchFields: FormFieldType[] = [
   },
   {
     name: 'unit',
-    label: 'Unit',
+    label: 'Hour or Min unit',
     select: true,
     required: true,
     options: [
@@ -35,16 +35,5 @@ export const batchFields: FormFieldType[] = [
     label: 'Capacity',
     type: 'number',
     required: true
-  },
-  {
-    name: 'trainer_id',
-    label: 'Trainer',
-    select: true,
-    required: true
-  },
-  {
-    name: 'support_trainer_id',
-    label: 'Support Trainer',
-    select: true
   }
 ];

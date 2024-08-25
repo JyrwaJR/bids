@@ -48,11 +48,5 @@ export const domainFormFields: FormFieldType[] = [
     name: 'next_review',
     label: 'Next Review',
     type: 'date'
-  },
-  {
-    name: 'sector',
-    label: 'Sector',
-    select: true,
-    options: SectorsOptions
   }
 ];
