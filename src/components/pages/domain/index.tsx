@@ -7,7 +7,6 @@ import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
 import { DataTable } from '@components/ui/data-table';
 import { domainColumn } from '@constants/columns';
-import { AddDomain } from '@components/pages';
 import { OptionsT } from '@components/form/type';
 import { domainQueryKey } from '@constants/query-keys';
 import { ColumnDef } from '@tanstack/react-table';
@@ -15,7 +14,6 @@ import { UpdateDomain } from './update-domain';
 import { DomainModelType } from '@models/domain-model';
 import { CellAction } from '@components/cell-action';
 import { useRouter } from 'next/navigation';
-import { showToast } from '@components/ui/show-toast';
 
 const searchDomainBy: OptionsT[] = [
   {
@@ -85,7 +83,8 @@ const DomainPage = () => {
             id: selectedDomain?.id,
             level: selectedDomain?.level,
             duration: selectedDomain?.duration ?? 0,
-            qp_code: selectedDomain?.qp_code ?? ''
+            qp_code: selectedDomain?.qp_code ?? '',
+            sector: selectedDomain?.sector ?? ''
           }}
           id={selectedDomain?.id ?? ''}
           onClose={() => setOpenUpdate(false)}

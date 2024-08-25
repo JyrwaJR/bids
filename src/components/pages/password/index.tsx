@@ -5,7 +5,6 @@ import { Separator } from '@components/ui/separator';
 import { useCQuery } from '@hooks/useCQuery';
 import React, { useState } from 'react';
 import { DataTable } from '@components/ui/data-table';
-import { DomainModelType } from '@models/domain-model';
 import { CellAction } from '@components/cell-action';
 import { ColumnDef } from '@tanstack/react-table';
 import { ChangeUserPassword } from './change-user-password';

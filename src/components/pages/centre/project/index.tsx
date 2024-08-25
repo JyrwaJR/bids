@@ -6,11 +6,11 @@ import { ProjectColumn } from '@constants/columns';
 import { useCQuery } from '@hooks/useCQuery';
 import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
-import AddCentreProject from './add-centre-project';
 import { ProjectModelType } from '@src/models';
 import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@components/ui/checkbox';
 import { projectsQueryKey } from '@constants/query-keys';
+import AddCentreProject from './add-centre-project';
 interface ColType extends ProjectModelType {
   id: string;
 }

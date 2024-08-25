@@ -1,4 +1,5 @@
 'use client';
+import { ChangePassword } from '@components/pages/password/change-password';
 import { useAuthContext } from '@context/auth';
 import { Avatar, AvatarFallback } from '@src/components/ui/avatar';
 import { Button } from '@src/components/ui/button';
@@ -13,9 +14,11 @@ import {
   DropdownMenuTrigger
 } from '@src/components/ui/dropdown-menu';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export function UserNav() {
   const { onLogout, user } = useAuthContext();
+  const [openChangePassword, setOpenChangePassword] = useState<boolean>(false);
   const userName = user?.name?.split(' ')[0] || '';
   const router = useRouter();
   return (
@@ -45,6 +48,10 @@ export function UserNav() {
               Profile
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setOpenChangePassword(true)}>
+              Change Password
+              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => router.push('/settings')}>
               Settings
               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
@@ -57,6 +64,12 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      {openChangePassword && (
+        <ChangePassword
+          open={openChangePassword}
+          onClose={() => setOpenChangePassword(false)}
+        />
+      )}
     </>
   );
 }

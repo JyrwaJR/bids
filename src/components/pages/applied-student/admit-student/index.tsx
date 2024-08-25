@@ -214,16 +214,16 @@ const AdmitCandidate = () => {
                     watchDomainId
                   );
                 }
-              } else if (row.original.status === 'Alloted' && row.original.id) {
-                setId(row.original.id);
-                if (id) {
-                  await updateStudentStatus(
-                    'Selected',
-                    batchForm.getValues('batch_id'),
-                    id
-                  );
-                }
               }
+              // else if (row.original.status === 'Alloted' && row.original.id) {
+              //   setId(row.original.id);
+              //   if (id) {
+              //     await updateStudentStatus(
+              //       batchForm.getValues('batch_id'),
+              //       id
+              //     );
+              //   }
+              // }
             }}
             onCheckedChange={async () => row.toggleSelected()}
           />
