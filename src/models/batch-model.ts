@@ -2,6 +2,8 @@ import { z } from 'zod';
 import { FieldsIsRequired } from '@src/constants';
 
 export const BatchModel = z.object({
+  project_id: z.string().uuid({}),
+  domain_id: z.string().uuid({}),
   start_date: z
     .string({
       required_error: FieldsIsRequired
