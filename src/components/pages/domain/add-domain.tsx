@@ -1,4 +1,4 @@
-import { Form } from '@src/components';
+import { Form, FormFieldType } from '@src/components';
 import { domainFormFields as domainFields } from '@constants/input-fields/domain/domain-form-fields';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DomainModel, DomainModelType } from '@src/models';
@@ -13,9 +13,11 @@ import { domainQueryKey } from '@constants/query-keys';
 import { useRouter } from 'next/navigation';
 import { Separator } from '@components/ui/separator';
 import { Heading } from '@components/ui/heading';
+import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 
 export const AddDomain = () => {
   const router = useRouter();
+  const {options}=useCategorySelectOptions()
   const form = useForm<DomainModelType>({
     resolver: zodResolver(DomainModel)
   });
@@ -54,12 +56,21 @@ export const AddDomain = () => {
       }
     }
   };
+  const updatedFields:FormFieldType[] = [
+    ...domainFields,
+    {
+      name: 'sector',
+      label: 'Sector',
+      select:true,
+      options:options.sectors
+    }
+  ]
   return (
     <div className="flex-1 space-y-4">
       <Heading title={`Domain`} description="Manage Domain table" />
       <Separator />
       <Form
-        fields={domainFields}
+        fields={updatedFields}
         form={form}
         loading={isLoading}
         onSubmit={onSubmit}

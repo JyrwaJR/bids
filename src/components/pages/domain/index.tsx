@@ -21,8 +21,12 @@ const searchDomainBy: OptionsT[] = [
     value: 'name'
   },
   {
-    label: 'status',
+    label: 'Status',
     value: 'status'
+  },
+  {
+    label: 'Sector',
+    value: 'sector'
   }
 ];
 const DomainPage = () => {
