@@ -49,6 +49,7 @@ const studentImageUploadFields: FormFieldType[] = [
     type: 'file'
   }
 ];
+
 export const startStudentRegistrationFields: FormFieldType[] = [
   {
     name: 'first_name',

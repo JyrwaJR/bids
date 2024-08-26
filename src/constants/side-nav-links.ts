@@ -137,7 +137,7 @@ export const navItems: NavItem[] = [
         description: 'Add New Student Details'
       },
       {
-        title: 'Update Applicant',
+        title: 'Applicant Details',
         href: '/dashboard/registration/update',
         icon: 'settings',
         label: 'registration',
@@ -165,6 +165,12 @@ export const navItems: NavItem[] = [
       {
         title: 'Admit Students',
         href: '/dashboard/admission/admit?status=selected',
+        icon: 'user',
+        label: 'remove applicants'
+      },
+      {
+        title: 'View Admitted Students',
+        href: '/dashboard/admission/view-admit',
         icon: 'user',
         label: 'remove applicants'
       },

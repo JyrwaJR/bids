@@ -3,14 +3,6 @@ import { ColumnDef } from '@tanstack/react-table';
 
 export const eventsMangementColumn: ColumnDef<EventManagementModelType>[] = [
   {
-    accessorKey: 'event_name',
-    header: 'Name'
-  },
-  {
-    accessorKey: 'user',
-    header: 'User'
-  },
-  {
     accessorKey: 'event_location',
     header: 'Location'
   },
@@ -32,6 +24,6 @@ export const eventsMangementColumn: ColumnDef<EventManagementModelType>[] = [
   },
   {
     accessorKey: 'total_participants',
-    header: 'Total Participants'
+    header: 'Total'
   }
 ];

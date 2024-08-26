@@ -8,7 +8,6 @@ import { Separator } from '@src/components/ui/separator';
 import { useCQuery } from '@hooks/useCQuery';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { ColumnDef } from '@tanstack/react-table';
-import { AddEventsManagement } from './add-events-management';
 import { eventsMangementColumn } from '@constants/columns/events-management';
 import { OptionsT } from '@components/form/type';
 import { useAuthContext } from '@context/auth';
@@ -30,6 +29,7 @@ import {
 import { EventManagementModelType } from '@models/events-management-model';
 import { ViewImages } from '@components/view-images';
 import { useRouter } from 'next/navigation';
+import { ViewEvents } from './view-events';
 
 type ImageT = {
   image: string;
@@ -80,7 +80,7 @@ export const EventsManagementPage = () => {
   const [isSelectedEvent, setIsSelectedEvent] =
     useState<EventManagementModelType>(defaultEventsManagement);
   const [isDelConfirm, setIsDelConfirm] = useState<boolean>(false);
-
+  const [viewEvents, setViewEvents] = useState<boolean>(false);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [isSelectedId, setIsSelectedId] = useState<string>('');
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
@@ -139,6 +139,29 @@ export const EventsManagementPage = () => {
     }
   };
   const updatedColumn: ColumnDef<any>[] = [
+    {
+      accessorKey: 'name',
+      header: 'Name',
+      size: 300,
+      cell: ({ row }) => {
+        return (
+          <Button
+            className="text-nowrap"
+            onClick={() => {
+              if (row.original.id) {
+                console.log(row.original);
+                setIsSelectedEvent(row.original);
+                setViewEvents(true);
+              }
+            }}
+            size={'icon'}
+            variant={'link'}
+          >
+            {row.original.event_name}
+          </Button>
+        );
+      }
+    },
     ...eventsMangementColumn,
     {
       header: 'Upload',
@@ -304,6 +327,13 @@ export const EventsManagementPage = () => {
           open={openViewImages}
           onClose={() => setOpenViewImages(false)}
           images={selectedImages}
+        />
+      )}
+      {viewEvents && (
+        <ViewEvents
+          open={viewEvents}
+          onClose={() => setViewEvents(false)}
+          data={isSelectedEvent}
         />
       )}
     </ScrollArea>

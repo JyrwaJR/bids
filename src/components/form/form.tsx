@@ -193,8 +193,6 @@ export const CForm = <T,>({
                                 <span className="text-red-500">*</span>
                               )}
                             </FormLabel>
-                            {/* check if value is null or undefined or ""  */}
-
                             <Input
                               type="file"
                               className="flex"

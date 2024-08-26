@@ -3,29 +3,17 @@ import { ColumnDef } from '@tanstack/react-table';
 export const searchRegistrationStudentColumn: ColumnDef<StudentRegistrationModelWithDomainType>[] =
   [
     {
-      accessorKey: 'first_name',
-      header: 'First Name',
-      id: 'first_name'
+      accessorKey: 'full_name',
+      header: 'Full Name'
     },
     {
-      accessorKey: 'last_name',
-      header: 'Last Name',
-      id: 'last_name'
-    },
-    {
-      accessorKey: 'registration_date',
-      header: 'Date of Registration',
-      id: 'dob'
+      accessorKey: 'registration_no',
+      header: 'Registration No.'
     },
     {
       accessorKey: 'dob',
       header: 'Date of Birth',
       id: 'dob'
-    },
-    {
-      accessorKey: 'email',
-      header: 'Email',
-      id: 'email'
     },
     {
       accessorKey: 'mobile',

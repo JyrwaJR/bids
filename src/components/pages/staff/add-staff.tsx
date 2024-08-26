@@ -19,9 +19,11 @@ import {
 } from '@constants/query-keys';
 import { OptionsT } from '@components/form/type';
 import { Heading } from '@components/ui/heading';
+import { useRouter } from 'next/navigation';
 
 export const AddStaff = () => {
   const { user } = useAuthContext();
+  const router=useRouter()
   const form = useForm<StaffModelType>({
     resolver: zodResolver(StaffModel),
     defaultValues: {
@@ -59,6 +61,7 @@ export const AddStaff = () => {
       const res = await mutateAsync(data);
       if (res.success) {
         showToast(SuccessToastTitle, res.message);
+        router.push('/dashboard/staff')
       }
     } catch (error: any) {
       showToast(FailedToastTitle, error.message);

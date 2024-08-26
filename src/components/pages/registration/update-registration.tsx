@@ -32,7 +32,6 @@ import { FormFieldType, Typography } from '@components/index';
 import { CForm } from '@components/form';
 import { handleBackendError } from '@constants/handle-backend-error';
 import { useRegisterStudentStore } from '@lib/store';
-import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 import { Card } from '@components/ui/card';
 
 export type StepType = {
@@ -65,7 +64,10 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
   const formStyle: string = 'w-full sm:col-span-6 md:col-span-6 xl:col-span-4';
   const form = useForm<StudentRegistrationModelWithDomainType>({
     resolver: zodResolver(StudentRegistrationModelWithDomain),
-    defaultValues: data
+    defaultValues: {
+      ...data,
+      ...data.form3B
+    }
   });
 
   useEffect(() => {
@@ -228,10 +230,10 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
 
   useEffect(() => {
     // passport is not required and should be set to null if not provided
-    if (!form.getValues('passport') || id) {
+    if (id) {
       form.setValue('passport', undefined);
     }
-  }, [form, id]);
+  }, [id]);
 
   return (
     <section>
@@ -319,7 +321,11 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
                       </div>
                     ) : step.name === 'Preview' ? (
                       <>
-                        <PreviewForm fields={steps} form={form} />
+                        <PreviewForm
+                          id={data.id ?? ''}
+                          fields={steps}
+                          form={form}
+                        />
                       </>
                     ) : (
                       <CForm
@@ -335,9 +341,8 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
               </div>
             ))
           ) : (
-            <PreviewForm fields={steps} form={form} />
+            <PreviewForm id={data.id ?? ''} fields={steps} form={form} />
           )}
-
           <div className="mt-8 pt-5">
             <div className="flex justify-between">
               <Button
@@ -345,7 +350,7 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
                 onClick={currentStep === 0 ? setData : prev}
               >
                 <ArrowLeft className="mr-4" />
-                {currentStep > 0 ? 'Back' : 'Reset'}
+                {currentStep > 0 ? 'Back' : 'Back'}
               </Button>
               <Button
                 type="submit"
@@ -357,7 +362,7 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
                     <ArrowRight className="ml-4" />
                   </>
                 ) : (
-                  'Reset'
+                  'Submit'
                 )}
               </Button>
             </div>

@@ -66,7 +66,7 @@ const emptyOptions: OptionsT[] = [
     value: ''
   }
 ];
-const AdmitCandidate = () => {
+const ViewAdmitStudent = () => {
   const { setId, id } = useAppliedStudentsStore();
   const [isSelectedProjectId, setIsSelectedProjectId] = useState('');
   const form = useForm<Model>({
@@ -88,7 +88,7 @@ const AdmitCandidate = () => {
     resolver: zodResolver(BatchModel)
   });
 
-  const { mutateAsync, isLoading, data, reset } = useCMutation({
+  const { mutateAsync, isLoading, data } = useCMutation({
     method: 'POST',
     url: 'registration/get-student-for-batch',
     queryKey: appliedApplicantQueryKey
@@ -105,21 +105,13 @@ const AdmitCandidate = () => {
     method: 'PUT',
     queryKey: appliedApplicantQueryKey
   });
+
   const domainQuery = useCQuery({
     url: `project-domain/get-domain-by-project/${form.watch('project_id')}`,
     queryKey: [projectsQueryKey, domainQueryKey],
     enabled: !!watchProjectId
   });
 
-  const batchQuery = useCQuery({
-    url: `batch`,
-    queryKey: batchQueryKey,
-    enabled: !!watchProjectId && !!watchDomainId
-  });
-  const batchOptions: OptionsT[] = batchQuery.data?.data?.map((item: any) => ({
-    label: item.batch_code,
-    value: item.id
-  }));
   const isProjectOptions: OptionsT[] = projectQuery.data?.data?.map(
     (item: any) => ({
       label: item.name,
@@ -154,26 +146,12 @@ const AdmitCandidate = () => {
       options: isDomainOptions ?? emptyOptions
     }
   ];
-  async function updateStudentStatus(batch_id: string, id: string) {
+  async function updateStudentStatus(id: string) {
     try {
-      // Handle "Alloted" status
-      batchForm.trigger();
-      if (!batch_id) {
-        showToast(
-          FailedToastTitle,
-          'Please select a batch to allot',
-          'destructive'
-        );
-        return;
-      }
-      if (!id) {
-        showToast(FailedToastTitle, 'Domian ID is required', 'destructive');
-        return;
-      }
-      const res = await allotBatch.mutateAsync({
-        status: 'Alloted',
-        batch_id: batch_id,
-        domain_applied_id: id
+      const res = await mutate.mutateAsync({
+        status: 'Applied',
+        project_id: form.watch('project_id'),
+        domain_id: form.watch('domain_id')
       });
 
       if (res.success) {
@@ -194,38 +172,29 @@ const AdmitCandidate = () => {
           'destructive'
         );
       }
-    } finally {
-      mutateAsync({
-        status: 'Selected',
-        project_id: watchProjectId,
-        domain_id: watchDomainId
-      });
     }
   }
   const columns: ColumnDef<StudentRegistrationModelType>[] = [
-    {
-      id: 'select',
-      header: () => <Checkbox disabled aria-label="Select all" />,
-      cell: ({ row }) => {
-        return (
-          <Checkbox
-            checked={row.original.status === 'Alloted'}
-            onClick={async () => {
-              if (row.original.status === 'Selected' && row.original.id) {
-                setId(row.original.id);
-                if (id) {
-                  await updateStudentStatus(
-                    batchForm.getValues('batch_id'),
-                    id
-                  );
-                }
-              }
-            }}
-            onCheckedChange={async () => row.toggleSelected()}
-          />
-        );
-      }
-    },
+    // {
+    //   id: 'select',
+    //   header: () => <Checkbox disabled aria-label="Select all" />,
+    //   cell: ({ row }) => {
+    //     return (
+    //       <Checkbox
+    //         checked={row.original.status === 'Alloted'}
+    //         onClick={async () => {
+    //           if (row.original.status === 'Selected' && row.original.id) {
+    //             setId(row.original.id);
+    //             if (id) {
+    //               await updateStudentStatus(id);
+    //             }
+    //           }
+    //         }}
+    //         onCheckedChange={async () => row.toggleSelected()}
+    //       />
+    //     );
+    //   }
+    // },
     ...addmissionColumn
   ];
 
@@ -250,8 +219,8 @@ const AdmitCandidate = () => {
       <div className="flex-1 space-y-4 px-1">
         <div className="flex items-start justify-between">
           <Heading
-            title={`Admit Candidate`}
-            description="Manage Applied Student"
+            title={`View Admit Student`}
+            description="Manage Admit Student"
           />
         </div>
         <Separator />
@@ -307,22 +276,6 @@ const AdmitCandidate = () => {
           </form>
         </Form>
         <Separator />
-        <Form {...batchForm}>
-          <CForm
-            form={batchForm}
-            fields={[
-              {
-                label: 'Allot to Batch',
-                name: 'batch_id',
-                select: true,
-                options: batchOptions
-              }
-            ]}
-            loading={isLoading}
-            className="sm:col-span-4 md:col-span-4"
-          />
-        </Form>
-        <Separator />
         <DataTable
           searchKey="first_name"
           columns={columns}
@@ -333,4 +286,4 @@ const AdmitCandidate = () => {
   );
 };
 
-export default AdmitCandidate;
+export default ViewAdmitStudent;

@@ -37,6 +37,7 @@ import {
 import { addmissionColumn } from '@constants/columns/admission-column';
 import { Checkbox } from '@components/ui/checkbox';
 import { Heading } from '@components/ui/heading';
+import { AlertModal } from '@components/modal/alert-modal';
 
 const Model = z.object({
   project_id: z.string().uuid(),
@@ -58,13 +59,13 @@ const RemoveSelectedCandidate = () => {
   const form = useForm<Model>({
     resolver: zodResolver(Model),
     defaultValues: {
-      status: 'Selected'
+      status: 'Alloted'
     }
   });
 
   const { mutateAsync, isLoading, data } = useCMutation({
     method: 'POST',
-    url: 'registration/candidate-registration-list',
+    url: 'registration/get-student-for-batch',
     queryKey: appliedApplicantQueryKey
   });
 
@@ -93,10 +94,10 @@ const RemoveSelectedCandidate = () => {
     })
   );
 
-  const url: string = `registration/update-candidate-registration-status/${id}`;
+  const url: string = `registration/undo-student-selection/${id}`;
   const mutate = useCMutation({
     url: url,
-    method: 'PUT',
+    method: 'POST',
     queryKey: appliedApplicantQueryKey
   });
   const formFields: FormFieldType[] = [
@@ -117,13 +118,14 @@ const RemoveSelectedCandidate = () => {
   async function updateStudentStatus() {
     try {
       await mutate.mutateAsync({
-        status: 'Applied'
+        status: 'Applied',
+        domain_applied_id: id
       });
     } catch (error: any) {
       showToast(FailedToastTitle, error.error);
     } finally {
       mutateAsync({
-        status: 'Selected',
+        status: 'Alloted',
         domain_id: form.getValues('domain_id'),
         project_id: form.getValues('project_id')
       });
@@ -136,9 +138,9 @@ const RemoveSelectedCandidate = () => {
       cell: ({ row }) => {
         return (
           <Checkbox
-            checked={row.original.status === 'Selected'}
+            checked={row.original.status === 'Alloted'}
             onClick={async () => {
-              if (row.original.status === 'Selected' && row.original.id) {
+              if (row.original.status === 'Alloted' && row.original.id) {
                 setId(row.original.id);
                 if (id) {
                   await updateStudentStatus();
@@ -185,7 +187,7 @@ const RemoveSelectedCandidate = () => {
       <div className="flex-1 space-y-4">
         <div className="flex items-start justify-between">
           <Heading
-            title={`Remove Selected Candidate`}
+            title={`Remove Admited Candidate`}
             description="Manage Applied Student"
           />
         </div>
@@ -244,6 +246,13 @@ const RemoveSelectedCandidate = () => {
           data={data?.data ? data.data : []}
         />
       </div>
+      <AlertModal
+        isOpen={false}
+        title="Remove Admited Candidate"
+        desc="Are you sure you want to remove selected candidate?"
+        onConfirm={async () => {}}
+        onClose={() => {}}
+      />
     </>
   );
 };

@@ -3,6 +3,7 @@ import { FieldsIsRequired } from '@constants/index';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { BanIcon, EyeIcon, Plus } from 'lucide-react';
 import { z } from 'zod';
 import {
   StudentRegistrationModelWithDomainType,
@@ -26,10 +27,10 @@ import {
 import { Input } from '@components/ui/input';
 import { UpdateRegistrationStepperForm } from '@components/pages/registration/update-registration';
 import { searchRegistrationStudentColumn } from '@constants/columns/search/registration-students-column';
-import { PersonIcon } from '@radix-ui/react-icons';
+import {} from '@radix-ui/react-icons';
 import { useAuthContext } from '@context/auth';
 import { Typography } from '@components/index';
-
+import { useRouter } from 'next/navigation';
 const FindStudentModel = z.object({
   name: z
     .string({
@@ -40,6 +41,7 @@ const FindStudentModel = z.object({
 type FindStudentModelType = z.infer<typeof FindStudentModel>;
 
 const Page = () => {
+  const router = useRouter();
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [isStudentList, setIsStudentList] = React.useState<
     StudentRegistrationModelWithDomainType[]
@@ -74,8 +76,30 @@ const Page = () => {
   const studentColumn: ColumnDef<StudentRegistrationModelWithDomainType>[] = [
     ...searchRegistrationStudentColumn,
     {
+      id: 'view',
+      header: 'View',
+      cell: ({ row }) => {
+        const data = row.original;
+        return (
+          <Button
+            onClick={() => {
+              if (data) {
+                router.push(`/dashboard/registration/view?id=${data.id}`);
+              }
+            }}
+            variant={'outline'}
+            size={'icon'}
+          >
+            <EyeIcon />
+          </Button>
+        );
+      },
+      enableSorting: false,
+      enableHiding: false
+    },
+    {
       id: 'select',
-      header: 'Select',
+      header: 'Update',
       cell: ({ row }) => {
         const data = row.original;
         return (
@@ -85,9 +109,9 @@ const Page = () => {
                 data as StudentRegistrationModelWithDomainType
               );
             }}
-            variant={'secondary'}
+            size={'icon'}
           >
-            Update <PencilIcon className="ml-4 h-4 w-4" />
+            <PencilIcon />
           </Button>
         );
       },

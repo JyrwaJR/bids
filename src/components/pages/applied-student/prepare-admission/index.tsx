@@ -14,7 +14,6 @@ import { ColumnDef } from '@tanstack/react-table';
 import { StudentRegistrationModelType } from '@models/student';
 import { useCMutation } from '@hooks/useCMutation';
 import { FormFieldType } from '@components/form';
-import { Button } from '@components/ui/button';
 import {
   Select,
   SelectContent,
@@ -100,8 +99,7 @@ const PrepareAdmissionList = () => {
   const url: string = `registration/update-candidate-registration-status/${id}`;
   const mutate = useCMutation({
     url: url,
-    method: 'PUT',
-    queryKey: appliedApplicantQueryKey
+    method: 'PUT'
   });
 
   const formFields: FormFieldType[] = [
@@ -123,7 +121,7 @@ const PrepareAdmissionList = () => {
   async function updateStudentStatus() {
     try {
       form.trigger();
-      if (!form.formState.isValid) {
+      if (form.formState.isValid) {
         return;
       }
       await mutate.mutateAsync({

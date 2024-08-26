@@ -73,7 +73,7 @@ const ViewSelectedCandidate = () => {
   });
   const { mutateAsync, isLoading, data } = useCMutation({
     method: 'POST',
-    url: 'registration/candidate-registration-list',
+    url: 'registration/get-student-for-batch',
     queryKey: appliedApplicantQueryKey
   });
 
@@ -102,10 +102,10 @@ const ViewSelectedCandidate = () => {
     })
   );
 
-  const url: string = `registration/update-candidate-registration-status/${id}`;
+  const url: string = `registration/undo-student-selection/${id}`;
   const mutate = useCMutation({
     url: url,
-    method: 'PUT',
+    method: 'POST',
     queryKey: appliedApplicantQueryKey
   });
   const formFields: FormFieldType[] = [
@@ -126,7 +126,8 @@ const ViewSelectedCandidate = () => {
   async function updateStudentStatus() {
     try {
       const res = await mutate.mutateAsync({
-        status: 'Applied'
+        status: 'Applied',
+        id: id,
       });
       if (res.success) {
         setId('');

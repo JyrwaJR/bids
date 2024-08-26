@@ -160,7 +160,74 @@ export const StudentRegistrationModel = z.object({
       message: 'Invalid date'
     })
     .nullable()
-    .optional()
+    .optional(),
+  form3B: z.object({
+    is_technical_education: z.enum(['Yes', 'No']),
+    diploma_certificate: z.string().max(100).nullable().optional(),
+    // convert string to number
+    year_passing: z
+      .number()
+      .refine((val) => format(new Date(val), 'yyyy-MM-dd'))
+      .nullable()
+      .optional(),
+    is_employed: z.enum(['Yes', 'No']).default('No'),
+    occupation: z.string().max(50).nullable().optional(),
+    year_experience: z
+      .number({ required_error: 'Year of experience is required' })
+      .refine((val) => !isNaN(Number(val)), {
+        message: 'Invalid number'
+      })
+      .transform((val) => Number(val))
+      .nullable()
+      .optional(),
+    monthly_income: z
+      .number({ required_error: 'Monthly income is required' })
+      .refine((val) => !isNaN(Number(val)), {
+        message: 'Invalid number'
+      })
+      .transform((val) => Number(val))
+      .nullable()
+      .optional(),
+    is_bpl: z.enum(['Yes', 'No']).default('No'),
+    hostel_required: z.enum(['Yes', 'No']).default('No'),
+    will_migrate: z.enum(['Yes', 'No']).default('No'),
+    is_minority: z.enum(['Yes', 'No']).default('No'),
+    is_disabled: z.enum(['Yes', 'No']).default('No'),
+    disability_type: z.string().max(250).nullable().optional(),
+    family_size: z
+      .number({ required_error: 'Family size is required' })
+      .refine((val) => !isNaN(Number(val)), {
+        message: 'Invalid number'
+      })
+      .transform((val) => Number(val))
+      .nullable()
+      .optional(),
+    catchment_area: z.enum(['Yes', 'No']).default('No'),
+    nre_job_card_no: z.string().max(50).nullable().optional(),
+    mgnrega_hours_worked: z
+      .number({ required_error: 'Mgnrega hours worked is required' })
+      .refine((val) => !isNaN(Number(val)), {
+        message: 'Invalid number'
+      })
+      .transform((val) => Number(val))
+      .nullable()
+      .optional(),
+    status: z.string().max(20).default('Applied'),
+    created_at: z.date().optional(),
+    updated_at: z.date().optional(),
+    bpl_card_no: z.string().max(50).nullable().optional(),
+    bpl_card_issue: z.number().nullable().optional(),
+    is_bpl_certified: z.enum(['Yes', 'No']).default('No'),
+    bpl_certification_authority: z.string().max(100).nullable().optional(),
+    bpl_other_certifying_authority: z.string().max(100).nullable().optional(),
+    bpl_certificate_issue_date: z
+      .string()
+      .refine((val) => format(new Date(val), 'yyyy-MM-dd'), {
+        message: 'Invalid date'
+      })
+      .nullable()
+      .optional()
+  })
 });
 
 export type StudentRegistrationModelType = z.infer<
