@@ -183,7 +183,7 @@ export const navItems: NavItem[] = [
     items: [
       {
         title: 'List Student',
-        href: '/dashboard/attendance',
+        href: '/dashboard/list-student',
         icon: 'employee',
         label: 'Attendance'
       },

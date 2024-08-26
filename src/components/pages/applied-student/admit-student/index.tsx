@@ -127,8 +127,7 @@ const AdmitCandidate = () => {
     })
   );
 
-  const isDomainOptions: OptionsT[] = domainQuery.data?.data?.map(
-    (item: any) => ({
+  const isDomainOptions: OptionsT[] = domainQuery.data?.data?.map( (item: any) => ({
       label: item.domain,
       value: item.domain_id
     })
@@ -214,16 +213,7 @@ const AdmitCandidate = () => {
                   );
                 }
               }
-              // else if (row.original.status === 'Alloted' && row.original.id) {
-              //   setId(row.original.id);
-              //   if (id) {
-              //     await updateStudentStatus(
-              //       batchForm.getValues('batch_id'),
-              //       id
-              //     );
-              //   }
-              // }
-            }}
+           }}
             onCheckedChange={async () => row.toggleSelected()}
           />
         );

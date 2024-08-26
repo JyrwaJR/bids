@@ -80,9 +80,9 @@ export function useCategorySelectOptions({ centreId, projectId }: Props = {}) {
 
   const sectorOptions = useCallback(() => {
     if (isSectorFetched && sector) {
-      return sector.data.map((domain: { name: string; id: string }) => ({
-        label: domain.name,
-        value: domain.id
+      return sector.data.map((sector: { name: string; id: string }) => ({
+        label: sector.name,
+        value: sector.id
       }));
     }
     return [];
