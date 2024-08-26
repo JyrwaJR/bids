@@ -15,7 +15,7 @@ import {
 } from '@src/app/dashboard/registration/_lib/function';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { create } from 'zustand';
 import { Form } from '@components/ui/form';
 import { Button } from '@components/ui/button';
@@ -235,7 +235,10 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
       form.setValue('passport', undefined);
     }
   }, [id]);
-
+  const watchDisabled = useWatch({
+    control: form.control,
+    name: 'is_disabled'
+  });
   return (
     <section>
       <Stepper
@@ -269,7 +272,10 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
                 className={index === currentStep ? '' : 'hidden'}
               >
                 {step.name === 'Upload Documents' ? (
-                  <UploadImageModal fields={step.fields} />
+                  <UploadImageModal
+                    isDisabled={watchDisabled === 'No' ? true : false}
+                    fields={step.fields}
+                  />
                 ) : (
                   <>
                     {step.name === 'Address' ? (

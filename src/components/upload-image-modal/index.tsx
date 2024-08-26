@@ -8,8 +8,10 @@ import { ImageUploadDialog } from './image-upload-dialog';
 
 type Props = {
   fields: FormFieldType[];
+  isDisabled?: boolean;
+  isBpl?: boolean;
 };
-const UploadImageModal = ({ fields }: Props) => {
+const UploadImageModal = ({ fields, isDisabled }: Props) => {
   const {
     setOpen,
     open,
@@ -50,6 +52,9 @@ const UploadImageModal = ({ fields }: Props) => {
             <Button
               className="w-full uppercase"
               variant={'outline'}
+              disabled={
+                field.name === 'Proof of Disability' ? isDisabled : false
+              }
               onClick={() => {
                 setSelectedFilterType(field.name);
                 setOpen(true);
