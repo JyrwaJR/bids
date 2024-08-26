@@ -51,7 +51,7 @@ export function DashboardNav({
     mobilizer: ['admin', 'batch', 'staff', 'settings', 'project'],
     trainer: ['admin', 'staff', 'settings', 'project'],
     director: ['staff', 'project', 'search student', 'batch', 'attendance'],
-    coordinator: ['staff', 'project', 'search student', 'batch', 'attendance'],
+    coordinator: ['staff', 'project', 'batch', 'students', 'attendance'],
     superadmin: ['project', 'batch']
   };
 
