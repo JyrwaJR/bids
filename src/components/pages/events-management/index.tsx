@@ -97,7 +97,7 @@ export const EventsManagementPage = () => {
   const uri = `events/get-event-by-centre/${form.watch('centre_id')}`;
   const { data, isFetched, isLoading, refetch } = useCQuery({
     url: form.watch('centre_id') !== '' ? uri : url,
-    queryKey: eventsManagementQueryKey
+    queryKey: [ eventsManagementQueryKey]
   });
   const centreQuery = useCQuery({
     url: 'centre',
@@ -120,7 +120,7 @@ export const EventsManagementPage = () => {
   const centreOptions: OptionsT[] = [
     {
       label: 'All',
-      value: ''
+      value: 'all'
     },
     ...cOptions // Merge cOptions with centreOptions
   ];
@@ -246,8 +246,7 @@ export const EventsManagementPage = () => {
   };
 
   const onChangeCentreId = useCallback(() => {
-    let id;
-    if (form.getValues('centre_id') !== id) {
+    if (form.getValues('centre_id')) {
       refetch();
     }
   }, [form, refetch]);

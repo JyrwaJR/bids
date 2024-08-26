@@ -234,7 +234,7 @@ const RemoveSelectedCandidate = () => {
             ))}
             <div className="mt-8">
               <Button type="submit" disabled={isLoading}>
-                Search
+               List 
               </Button>
             </div>
           </form>

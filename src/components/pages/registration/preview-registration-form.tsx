@@ -103,7 +103,7 @@ export const PreviewRegistrationForm = ({ form, fields, id }: Props) => {
                 field.fields.map((item, i) => (
                   <div className="col-span-1 flex gap-4" key={i}>
                     <div>
-                      <Typography>{item.label}</Typography>
+                      <Typography weight={'bold'}>{item.label}</Typography>
                     </div>
                     <div>
                       <Typography className="text-muted-foreground">

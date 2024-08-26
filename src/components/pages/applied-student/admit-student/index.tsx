@@ -250,8 +250,8 @@ const AdmitCandidate = () => {
       <div className="flex-1 space-y-4 px-1">
         <div className="flex items-start justify-between">
           <Heading
-            title={`Admit Candidate`}
-            description="Manage Applied Student"
+            title={`Admit Selected Candidate`}
+            description="Manage Selected Student"
           />
         </div>
         <Separator />
@@ -301,7 +301,7 @@ const AdmitCandidate = () => {
                 disabled={isLoading}
                 className="w-full md:w-auto"
               >
-                Search
+               List 
               </Button>
             </div>
           </form>

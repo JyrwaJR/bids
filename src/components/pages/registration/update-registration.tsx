@@ -55,23 +55,24 @@ const useMultiStepFormStore = create<MultiStepType>((set) => ({
 }));
 
 type Props = {
-  data: StudentRegistrationModelWithDomainType;
+  data?: StudentRegistrationModelWithDomainType;
   setData: () => void;
 };
 export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
   const [isSameAsPresent, setIsSameAsPresent] = useState<boolean>(false);
   const { id, setId } = useRegisterStudentStore();
   const formStyle: string = 'w-full sm:col-span-6 md:col-span-6 xl:col-span-4';
+  const datas = data && {
+    ...data,
+    ...data.form3B
+  };
   const form = useForm<StudentRegistrationModelWithDomainType>({
     resolver: zodResolver(StudentRegistrationModelWithDomain),
-    defaultValues: {
-      ...data,
-      ...data.form3B
-    }
+    defaultValues: datas
   });
 
   useEffect(() => {
-    if (data.id) {
+    if (data && data.id) {
       setId(data.id);
     }
   }, [data, setId]);
@@ -122,10 +123,10 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
   };
 
   useEffect(() => {
-    if (data.id !== id) {
+    if (data && data.id !== id) {
       setCurrentStep(0);
     }
-  }, [data.id, id, setCurrentStep]);
+  }, [data, id, setCurrentStep]);
 
   const onSubmit: SubmitHandler<
     StudentRegistrationModelWithDomainType
@@ -322,7 +323,7 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
                     ) : step.name === 'Preview' ? (
                       <>
                         <PreviewForm
-                          id={data.id ?? ''}
+                          id={(data && data.id) ?? ''}
                           fields={steps}
                           form={form}
                         />
@@ -341,7 +342,11 @@ export const UpdateRegistrationStepperForm = ({ data, setData }: Props) => {
               </div>
             ))
           ) : (
-            <PreviewForm id={data.id ?? ''} fields={steps} form={form} />
+            <PreviewForm
+              id={data?.id ? data.id : ''}
+              fields={steps}
+              form={form}
+            />
           )}
           <div className="mt-8 pt-5">
             <div className="flex justify-between">

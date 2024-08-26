@@ -17,6 +17,7 @@ export const PasswordPage = () => {
     url: 'get-user',
     queryKey: ['change-password']
   });
+  
   const column: ColumnDef<any>[] = [
     {
       id: 'name',

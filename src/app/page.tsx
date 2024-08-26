@@ -27,7 +27,7 @@ export default function AuthenticationPage() {
         form.reset();
       }
     } catch (err: any) {
-      showToast(FailedToastTitle, err.message);
+      showToast(FailedToastTitle, err.message,"destructive");
     }
   };
 

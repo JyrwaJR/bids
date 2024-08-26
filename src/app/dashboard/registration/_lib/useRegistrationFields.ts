@@ -13,10 +13,25 @@ import { OptionsT } from '@components/form/type';
 import { useCallback, useEffect, useState } from 'react';
 import { batchQueryKey, domainQueryKey } from '@constants/query-keys';
 import { StepType } from '@components/form/registration-stepper-form';
+import { studentImageUploadFields } from '@constants/input-fields/students/student-registration-fields';
 
 type Props = {
   form: UseFormReturn<StudentRegistrationModelWithDomainType>;
 };
+const employedMentorOptions: OptionsT[] = [
+  {
+    label: 'Yes',
+    value: 'yes'
+  },
+  {
+    label: 'No',
+    value: 'no'
+  }
+  ,{
+    label:"Self Employed",
+    value:"self"
+  }
+]
 const emptyOptions: OptionsT[] = [
   {
     label: 'N/A',
@@ -160,7 +175,7 @@ export const useRegistrationFields = ({ form }: Props) => {
           label: 'Employed',
           required: false,
           select: true,
-          options: yesNoOptions
+          options:employedMentorOptions 
         },
         {
           name: 'occupation',
@@ -255,7 +270,13 @@ export const useRegistrationFields = ({ form }: Props) => {
           placeholder: 'Enter MGNREGA Hours Worked'
         }
       ]
-    },{
+    },
+  {
+    name: 'Upload Documents',
+    id: 'Upload Documents',
+    fields: studentImageUploadFields
+  },
+    {
       id: '6',
       name: 'Preview',
       fields: [

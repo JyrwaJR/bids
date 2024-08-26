@@ -62,7 +62,10 @@ export const AddDomain = () => {
       name: 'sector',
       label: 'Sector',
       select:true,
-      options:options.sectors
+      options:options.sectors.map((sector) => ({
+        label: sector.label,
+        value: sector.label
+      }))
     }
   ]
   return (

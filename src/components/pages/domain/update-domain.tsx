@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Dialog,
@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle
 } from '@components/ui/dialog';
-import { Form } from '@src/components';
+import { Form, FormFieldType } from '@src/components';
 import { domainFormFields as domainFields } from '@constants/input-fields/domain/domain-form-fields';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DomainModel, DomainModelType } from '@src/models';
@@ -18,6 +18,7 @@ import { FailedToastTitle, SuccessToastTitle } from '@constants/toast-message';
 import { AxiosError } from 'axios';
 import { appendNonFileDataToFormData } from '@lib/appendNoneFileDataToFileData';
 import { domainQueryKey } from '@constants/query-keys';
+import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 
 type Props = {
   open: true | false;
@@ -27,11 +28,15 @@ type Props = {
 };
 
 export const UpdateDomain = ({ onClose, id, data, open }: Props) => {
+  console.log(data);
+  const {options}=useCategorySelectOptions()
   const form = useForm<DomainModelType>({
     resolver: zodResolver(DomainModel),
     defaultValues: data
   });
-
+useEffect(()=>{
+  form.reset(data)  
+},[data])
   const { mutateAsync, isLoading } = useCMutation({
     url: `domain/update/${id}`,
     method: 'PUT',
@@ -67,17 +72,26 @@ export const UpdateDomain = ({ onClose, id, data, open }: Props) => {
       }
     }
   };
+  const updatedFields:FormFieldType[] = [
+    ...domainFields,
+    {
+      name: 'sector',
+      label: 'Sector',
+      select:true,
+      options:options.sectors.map((item)=>({label:item.label,value:item.label}))
+    }
+  ]
   return (
     <Dialog modal open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Domain</DialogTitle>
+          <DialogTitle>Update Domain</DialogTitle>
           <DialogDescription>
             Please enter the following details
           </DialogDescription>
         </DialogHeader>
         <Form
-          fields={domainFields}
+          fields={updatedFields}
           form={form}
           loading={isLoading}
           onSubmit={onSubmit}

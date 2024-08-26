@@ -2,7 +2,7 @@ import { StepType } from '@components/form/registration-stepper-form';
 import { FormFieldType } from '@components/index';
 import { MAX_UPLOAD_SIZE } from '@constants/index';
 import { gender, SectorsOptions, yesNoOptions } from '@constants/options';
-const studentImageUploadFields: FormFieldType[] = [
+export const studentImageUploadFields: FormFieldType[] = [
   {
     name: 'ID Proof',
     label: 'ID Proof',
@@ -469,9 +469,4 @@ export const studentRegistrationFields: StepType[] = [
       ...studentRegistrationPermanentsAddressDetailFields
     ]
   },
-  {
-    name: 'Upload Documents',
-    id: 'Upload Documents',
-    fields: studentImageUploadFields
-  }
 ];

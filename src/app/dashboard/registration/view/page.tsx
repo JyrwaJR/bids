@@ -1,6 +1,7 @@
 'use client';
-import { useSearchParams } from 'next/navigation';
+
+import { ViewRegistration } from "@components/pages/registration/view-registration";
+
 export default function page() {
-  const searchId = useSearchParams().get('id');
-  return <div>{searchId}</div>;
+  return <ViewRegistration />;
 }

@@ -55,13 +55,14 @@ export const AuthProvider = ({ children }: Props) => {
         router.refresh();
         localStorage.removeItem('savedRoute');
       } else {
-        showToast(FailedToastTitle, 'Something went wrong');
+        showToast(FailedToastTitle, 'Something went wrong',"destructive");
       }
     } catch (error: any) {
       removeCookie('token');
       showToast(
         FailedToastTitle,
-        error.response?.data.message || 'An error occurred'
+        error.response?.data.message || 'An error occurred',
+        'destructive'
       );
     } finally {
       setIsLoading(false);
@@ -103,12 +104,13 @@ export const AuthProvider = ({ children }: Props) => {
 
         router.refresh();
       } else {
-        showToast(FailedToastTitle, 'Invalid email or password');
+        showToast(FailedToastTitle, 'Invalid email or password',"destructive");
       }
     } catch (error: any) {
       showToast(
         FailedToastTitle,
-        error.response?.data.message || 'An error occurred'
+        error.response?.data.message || 'An error occurred',
+        'destructive'
       );
     } finally {
       setIsLoading(false);

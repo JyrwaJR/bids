@@ -72,7 +72,7 @@ const ViewAdmitStudent = () => {
   const form = useForm<Model>({
     resolver: zodResolver(Model),
     defaultValues: {
-      status: 'Selected'
+      status: 'Alloted'
     }
   });
   const watchProjectId = useWatch({
@@ -270,7 +270,7 @@ const ViewAdmitStudent = () => {
                 disabled={isLoading}
                 className="w-full md:w-auto"
               >
-                Search
+               List 
               </Button>
             </div>
           </form>

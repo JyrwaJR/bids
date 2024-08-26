@@ -97,19 +97,27 @@ export const navItems: NavItem[] = [
     title: 'Staff',
     icon: 'billing',
     href: '/dashboard/staff',
-    label: 'staff'
+    label: 'staff',
+    items: [
+      {
+        title: 'List Staff',
+        href: '/dashboard/staff-category',
+        icon: 'billing',
+        label: 'staff'
+      },
+      {
+        title: 'Update Staff',
+        href: '/dashboard/staff-category',
+        icon: 'billing',
+        label: 'staff'
+      }
+    ]
   },
   {
     title: 'Events',
     icon: 'sun',
     href: '/dashboard/events',
     label: 'events management'
-  },
-  {
-    title: 'Search Student',
-    href: '/dashboard/search?q=applicants',
-    icon: 'search',
-    label: 'search'
   },
   {
     title: 'Project',
@@ -134,7 +142,14 @@ export const navItems: NavItem[] = [
         href: '/dashboard/registration',
         icon: 'profile',
         label: 'registration',
-        description: 'Add New Student Details'
+        description: 'add new student details'
+      },
+      {
+        title: 'Search Applicant',
+        href: '/dashboard/search?q=applicants',
+        icon: 'profile',
+        label: 'registration',
+        description: 'add new student details'
       },
       {
         title: 'Applicant Details',
@@ -190,6 +205,12 @@ export const navItems: NavItem[] = [
       {
         title: 'List Student',
         href: '/dashboard/list-student',
+        icon: 'employee',
+        label: 'Attendance'
+      },
+      {
+        title: 'Search Student',
+        href: '/dashboard/search?q=students',
         icon: 'employee',
         label: 'Attendance'
       },
@@ -292,19 +313,6 @@ export const navItems: NavItem[] = [
         icon: 'post',
         disabled: true,
         label: 'No. applicants reports'
-      }
-    ]
-  },
-  {
-    title: 'Change Password',
-    icon: 'settings',
-    label: 'settings',
-    items: [
-      {
-        title: 'Change Password',
-        href: '/dashboard/change-password',
-        icon: 'sun',
-        label: 'Password'
       }
     ]
   },

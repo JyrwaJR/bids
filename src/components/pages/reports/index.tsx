@@ -39,6 +39,9 @@ export const ReportPage = () => {
         return CentreColumn;
     }
   };
+  const exportData = () => {
+    return data.data.filter((i) => i.id);
+  };
   return (
     <Suspense>
       <div className="flex-1 space-y-4">
@@ -55,7 +58,7 @@ export const ReportPage = () => {
                 about="Download Report"
                 filename={`${search}-reports`}
                 className="flex items-center justify-center gap-2"
-                data={isFetched ? data.data : []}
+                data={isFetched ? data.data.filter((i) => i) : []}
               >
                 CSV Report
                 <Download className="h-4 w-4" />

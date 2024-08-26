@@ -104,7 +104,7 @@ export const StudentRegistrationModel = z.object({
     .refine((val) => format(new Date(val), 'yyyy-MM-dd'))
     .nullable()
     .optional(),
-  is_employed: z.enum(['Yes', 'No']).default('No'),
+  is_employed: z.string().max(4).nullable().optional(),
   occupation: z.string().max(50).nullable().optional(),
   year_experience: z
     .number({ required_error: 'Year of experience is required' })
