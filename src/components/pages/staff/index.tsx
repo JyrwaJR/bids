@@ -27,6 +27,9 @@ import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
+import { ColumnDef } from '@tanstack/react-table';
+import { headers } from 'next/headers';
+import { StaffModelType } from '@models/staff-model';
 
 const Schema = z.object({
   centre_id: z.string().uuid().optional()
@@ -59,7 +62,9 @@ const StaffPage = () => {
       refetch();
     }
   }, [watchCentreChange, refetch]);
-
+  const updatedColumn: ColumnDef<any>[] = [
+    ...staffColumn,
+  ];
   return (
     <ScrollArea>
       <div className="flex w-full flex-col space-y-4">
@@ -110,7 +115,7 @@ const StaffPage = () => {
         <Separator />
         <DataTable
           searchKey="name"
-          columns={staffColumn}
+          columns={updatedColumn}
           isLoading={isLoading}
           data={
             isFetched && !isError && data && data.data

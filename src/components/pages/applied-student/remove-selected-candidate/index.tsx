@@ -55,6 +55,7 @@ const emptyOptions: OptionsT[] = [
 ];
 const RemoveSelectedCandidate = () => {
   const { setId, id } = useAppliedStudentsStore();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isSelectedProjectId, setIsSelectedProjectId] = useState('');
   const form = useForm<Model>({
     resolver: zodResolver(Model),
@@ -129,6 +130,9 @@ const RemoveSelectedCandidate = () => {
         domain_id: form.getValues('domain_id'),
         project_id: form.getValues('project_id')
       });
+
+      setIsDeleteModalOpen(false);
+      setId('');
     }
   }
   const columns: ColumnDef<StudentRegistrationModelType | any>[] = [
@@ -143,11 +147,10 @@ const RemoveSelectedCandidate = () => {
               if (row.original.status === 'Alloted' && row.original.id) {
                 setId(row.original.id);
                 if (id) {
-                  await updateStudentStatus();
+                  setIsDeleteModalOpen(true);
                 }
               }
             }}
-            onCheckedChange={() => row.toggleSelected()}
           />
         );
       }
@@ -234,7 +237,7 @@ const RemoveSelectedCandidate = () => {
             ))}
             <div className="mt-8">
               <Button type="submit" disabled={isLoading}>
-               List 
+                List
               </Button>
             </div>
           </form>
@@ -246,13 +249,15 @@ const RemoveSelectedCandidate = () => {
           data={data?.data ? data.data : []}
         />
       </div>
-      <AlertModal
-        isOpen={false}
-        title="Remove Admited Candidate"
-        desc="Are you sure you want to remove selected candidate?"
-        onConfirm={async () => {}}
-        onClose={() => {}}
-      />
+      {isDeleteModalOpen && (
+        <AlertModal
+          isOpen={isDeleteModalOpen}
+          title="Remove Admited Candidate"
+          desc="Are you sure you want to remove selected candidate?"
+          onConfirm={async () => await updateStudentStatus()}
+          onClose={() => setIsDeleteModalOpen(false)}
+        />
+      )}
     </>
   );
 };

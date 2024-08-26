@@ -101,13 +101,13 @@ export const navItems: NavItem[] = [
     items: [
       {
         title: 'List Staff',
-        href: '/dashboard/staff-category',
+        href: '/dashboard/staff',
         icon: 'billing',
         label: 'staff'
       },
       {
         title: 'Update Staff',
-        href: '/dashboard/staff-category',
+        href: '/dashboard/staff/update',
         icon: 'billing',
         label: 'staff'
       }
