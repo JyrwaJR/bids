@@ -14,11 +14,11 @@ import {
 } from '@components/ui/carousel';
 import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
-import { StudentRegistrationModelWithDomainType } from '@src/app/dashboard/registration/_lib/function';
 import { StepsFieldFormT } from '@src/types';
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { useCQuery } from '@hooks/useCQuery';
+import { StudentRegistrationModelWithDomainType } from '@src/app/dashboard/registration/_lib/function';
 
 type Props = {
   form: UseFormReturn<StudentRegistrationModelWithDomainType>;

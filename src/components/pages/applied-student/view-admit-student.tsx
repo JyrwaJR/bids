@@ -2,7 +2,6 @@ import { Separator } from '@components/ui/separator';
 import React, { useEffect, useState } from 'react';
 import { DataTable } from '@components/ui/data-table';
 import { ColumnDef } from '@tanstack/react-table';
-import { StudentRegistrationModelType } from '@models/student';
 import { useCMutation } from '@hooks/useCMutation';
 import { FormFieldType } from '@components/form';
 import {
@@ -20,7 +19,6 @@ import { FailedToastTitle } from '@constants/toast-message';
 import { showToast } from '@components/ui/show-toast';
 import { useCQuery } from '@hooks/useCQuery';
 import { z } from 'zod';
-import { useAppliedStudentsStore } from '@lib/store';
 import {
   appliedApplicantQueryKey,
   domainQueryKey,
@@ -28,7 +26,6 @@ import {
 } from '@constants/query-keys';
 import { addmissionColumn } from '@constants/columns/admission-column';
 import { Heading } from '@components/ui/heading';
-import { AxiosError } from 'axios';
 import { Button } from '@components/ui/button';
 import {
   Select,
@@ -37,7 +34,10 @@ import {
   SelectTrigger,
   SelectValue
 } from '@components/ui/select';
+import { PreviewRegistrationForm } from '../registration/preview-registration-form';
+import { EyeIcon } from 'lucide-react';
 import { useRegistrationFields } from '@src/app/dashboard/registration/_lib/useRegistrationFields';
+import { StudentRegistrationModelWithDomainType } from '@src/app/dashboard/registration/_lib/function';
 
 const Model = z.object({
   project_id: z.string().uuid({
@@ -61,9 +61,21 @@ const ViewAdmitStudent = () => {
   const [isPreview, setIsPreview] = useState(false);
   const [isSelectedProjectId, setIsSelectedProjectId] = useState('');
   const [isSelectedApplicant, setSelectedApplicant] =
-    useState<StudentRegistrationModelType>();
-  const previewForm = useForm<StudentRegistrationModelType>();
-  // const { field: steps } = useRegistrationFields({ form: previewForm });
+    useState<StudentRegistrationModelWithDomainType>();
+  const previewForm = useForm({
+    defaultValues: isSelectedApplicant
+  });
+
+  useEffect(() => {
+    if (isPreview) {
+      previewForm.reset(isSelectedApplicant);
+    }
+  }, [isPreview, isSelectedApplicant, previewForm]);
+
+  const { field: steps } = useRegistrationFields({
+    form: previewForm
+  });
+
   const form = useForm<Model>({
     resolver: zodResolver(Model),
     defaultValues: {
@@ -121,8 +133,34 @@ const ViewAdmitStudent = () => {
       options: isDomainOptions ?? emptyOptions
     }
   ];
-  const columns: ColumnDef<StudentRegistrationModelType>[] = [
-    ...addmissionColumn
+  const columns: ColumnDef<StudentRegistrationModelWithDomainType>[] = [
+    ...addmissionColumn,
+    {
+      id: 'view',
+      header: 'View',
+      cell: ({ row }) => {
+        const data = row.original;
+        return (
+          <Button
+            onClick={() => {
+              if (row.original && data) {
+                if (row.original.id && data.id) {
+                  setSelectedApplicant(data);
+                  setIsPreview(true);
+                 console.log("data",previewForm.getValues()); 
+                }
+              }
+            }}
+            variant={'outline'}
+            size={'icon'}
+          >
+            <EyeIcon />
+          </Button>
+        );
+      },
+      enableSorting: false,
+      enableHiding: false
+    }
   ];
 
   const onSubmit = async (data: Model) => {
@@ -147,11 +185,11 @@ const ViewAdmitStudent = () => {
           <div className="flex w-full justify-end">
             <Button onClick={() => setIsPreview(false)}>Close</Button>
           </div>
-          {/* <PreviewForm */}
-          {/*   fields={steps} */}
-          {/*   id={isSelectedApplicant?.id ?? ''} */}
-          {/*   form={previewForm} */}
-          {/* /> */}
+          <PreviewRegistrationForm
+            fields={steps}
+            id={isSelectedApplicant?.id ?? ''}
+            form={previewForm}
+          />
         </div>
       ) : (
         <div className="flex-1 space-y-4 px-1">

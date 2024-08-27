@@ -11,6 +11,8 @@ import { FormFieldType } from './type';
 import { Form } from './form';
 import { startStudentRegistrationFields } from '@constants/input-fields/students/student-registration-fields';
 import { useCMutation } from '@hooks/useCMutation';
+import { useState } from 'react';
+import { Typography } from '..';
 
 export type StepType = {
   id: string;
@@ -41,6 +43,7 @@ const Model = z.object({
 type Model = z.infer<typeof Model>;
 
 export const RegistrationStepperForm = () => {
+  const [registrationNo, setRegistrationNo] = useState<string | null>(null);
   const form = useForm<Model>({
     resolver: zodResolver(Model)
   });
@@ -53,6 +56,8 @@ export const RegistrationStepperForm = () => {
       const res = await mutate.mutateAsync(data);
       if (res.success === true) {
         form.reset();
+        const { data } = res;
+        setRegistrationNo(data.registration_no);
         showToast(SuccessToastTitle, 'Registration started successfully');
       }
     } catch (error: any) {
@@ -74,6 +79,13 @@ export const RegistrationStepperForm = () => {
 
   return (
     <div className="flex w-full flex-col space-y-4">
+      {registrationNo && (
+        <div className="flex w-full flex-col py-4">
+          <Typography size={'h2'} weight={'bold'} className="text-green-500">
+            Registration No : {registrationNo}
+          </Typography>
+        </div>
+      )}
       <Form
         form={form}
         loading={mutate.isLoading}

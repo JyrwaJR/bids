@@ -14,9 +14,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { batchQueryKey, domainQueryKey } from '@constants/query-keys';
 import { StepType } from '@components/form/registration-stepper-form';
 import { studentImageUploadFields } from '@constants/input-fields/students/student-registration-fields';
+import { StudentRegistrationModelType } from '@models/student';
 
 type Props = {
-  form: UseFormReturn<StudentRegistrationModelWithDomainType>;
+  form: UseFormReturn<StudentRegistrationModelType>;
 };
 const employedMentorOptions: OptionsT[] = [
   {
@@ -80,7 +81,6 @@ export const useRegistrationFields = ({ form }: Props) => {
   useEffect(() => {
     handleProjectIdChange();
   }, [handleProjectIdChange]);
-    
 
   const domainOptions: OptionsT[] =
     domainQuery.isFetched &&

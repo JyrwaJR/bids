@@ -12,7 +12,7 @@ import { eventsMangementColumn } from '@constants/columns/events-management';
 import { OptionsT } from '@components/form/type';
 import { useAuthContext } from '@context/auth';
 import { CForm } from '@components/form';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { Form } from '@components/ui/form';
 import { showToast } from '@components/ui/show-toast';
 import { FailedToastTitle } from '@constants/toast-message';
@@ -30,6 +30,7 @@ import { EventManagementModelType } from '@models/events-management-model';
 import { ViewImages } from '@components/view-images';
 import { useRouter } from 'next/navigation';
 import { ViewEvents } from './view-events';
+import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 
 type ImageT = {
   image: string;
@@ -85,23 +86,25 @@ export const EventsManagementPage = () => {
   const [isSelectedId, setIsSelectedId] = useState<string>('');
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const isSuperAdmin: boolean = user?.role === 'superadmin';
+  const { options } = useCategorySelectOptions();
   const router = useRouter();
   const form = useForm({
     defaultValues: {
-      centre_id: isSuperAdmin ? '' : user?.centre_id
+      centre_id: isSuperAdmin ? 'all' : user?.centre_id
     }
   });
-  const url = isSuperAdmin
-    ? 'events'
-    : `events/get-event-by-centre/${user?.centre_id}`;
+  const url =
+    isSuperAdmin && form.watch('centre_id') === 'all'
+      ? 'events'
+      : `events/get-event-by-centre/${user?.centre_id}`;
   const uri = `events/get-event-by-centre/${form.watch('centre_id')}`;
   const { data, isFetched, isLoading, refetch } = useCQuery({
     url: form.watch('centre_id') !== '' ? uri : url,
-    queryKey: [ eventsManagementQueryKey]
+    queryKey: [eventsManagementQueryKey]
   });
-  const centreQuery = useCQuery({
-    url: 'centre',
-    queryKey: centreQueryKey
+  const watchCenterId = useWatch({
+    control: form.control,
+    name: 'centre_id'
   });
   const delMutate = useCMutation({
     url: `events/${isSelectedId}`,
@@ -109,20 +112,12 @@ export const EventsManagementPage = () => {
     queryKey: eventsManagementQueryKey
   });
 
-  const cOptions: OptionsT[] =
-    centreQuery.isFetched && centreQuery.data?.data
-      ? centreQuery.data.data.map((item: any) => ({
-          label: item.name,
-          value: item.id
-        }))
-      : []; // Default to an empty array if data is not fetched
-
   const centreOptions: OptionsT[] = [
     {
       label: 'All',
       value: 'all'
     },
-    ...cOptions // Merge cOptions with centreOptions
+    ...options.centre // Merge cOptions with centreOptions
   ];
   const onDeleteEvents = async () => {
     try {
@@ -246,10 +241,10 @@ export const EventsManagementPage = () => {
   };
 
   const onChangeCentreId = useCallback(() => {
-    if (form.getValues('centre_id')) {
+    if (watchCenterId) {
       refetch();
     }
-  }, [form, refetch]);
+  }, [watchCenterId, refetch]);
 
   useEffect(() => {
     onChangeCentreId();
