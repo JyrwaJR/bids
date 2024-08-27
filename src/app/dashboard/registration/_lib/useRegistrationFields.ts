@@ -26,12 +26,12 @@ const employedMentorOptions: OptionsT[] = [
   {
     label: 'No',
     value: 'no'
+  },
+  {
+    label: 'Self Employed',
+    value: 'self'
   }
-  ,{
-    label:"Self Employed",
-    value:"self"
-  }
-]
+];
 const emptyOptions: OptionsT[] = [
   {
     label: 'N/A',
@@ -80,6 +80,7 @@ export const useRegistrationFields = ({ form }: Props) => {
   useEffect(() => {
     handleProjectIdChange();
   }, [handleProjectIdChange]);
+    
 
   const domainOptions: OptionsT[] =
     domainQuery.isFetched &&
@@ -175,7 +176,7 @@ export const useRegistrationFields = ({ form }: Props) => {
           label: 'Employed',
           required: false,
           select: true,
-          options:employedMentorOptions 
+          options: employedMentorOptions
         },
         {
           name: 'occupation',
@@ -271,17 +272,15 @@ export const useRegistrationFields = ({ form }: Props) => {
         }
       ]
     },
-  {
-    name: 'Upload Documents',
-    id: 'Upload Documents',
-    fields: studentImageUploadFields
-  },
+    {
+      name: 'Upload Documents',
+      id: 'Upload Documents',
+      fields: studentImageUploadFields
+    },
     {
       id: '6',
       name: 'Preview',
-      fields: [
-        
-      ]
+      fields: []
     }
   ];
 

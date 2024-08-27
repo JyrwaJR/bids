@@ -23,20 +23,26 @@ import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 type Props = {
   open: true | false;
   onClose: () => void;
-  data?: DomainModelType;
+  data: DomainModelType | any;
   id: string;
 };
 
 export const UpdateDomain = ({ onClose, id, data, open }: Props) => {
-  console.log(data);
-  const {options}=useCategorySelectOptions()
+  const { options } = useCategorySelectOptions();
   const form = useForm<DomainModelType>({
     resolver: zodResolver(DomainModel),
     defaultValues: data
   });
-useEffect(()=>{
-  form.reset(data)  
-},[data])
+  useEffect(() => {
+    if (!(data.curriculum instanceof File)) {
+      form.setValue('curriculum', undefined);
+    }
+
+    if (!(data.guide instanceof File)) {
+      form.setValue('guide', undefined);
+    }
+  }, [data, form]);
+
   const { mutateAsync, isLoading } = useCMutation({
     url: `domain/update/${id}`,
     method: 'PUT',
@@ -72,15 +78,18 @@ useEffect(()=>{
       }
     }
   };
-  const updatedFields:FormFieldType[] = [
+  const updatedFields: FormFieldType[] = [
     ...domainFields,
     {
       name: 'sector',
       label: 'Sector',
-      select:true,
-      options:options.sectors.map((item)=>({label:item.label,value:item.label}))
+      select: true,
+      options: options.sectors.map((item) => ({
+        label: item.label,
+        value: item.label
+      }))
     }
-  ]
+  ];
   return (
     <Dialog modal open={open} onOpenChange={onClose}>
       <DialogContent>

@@ -14,7 +14,6 @@ import {
 } from '@components/ui/carousel';
 import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
-import { useUploadDocStore } from '@lib/store';
 import { StudentRegistrationModelWithDomainType } from '@src/app/dashboard/registration/_lib/function';
 import { StepsFieldFormT } from '@src/types';
 import React from 'react';

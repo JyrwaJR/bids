@@ -81,15 +81,7 @@ const DomainPage = () => {
       {openUpdate && (
         <UpdateDomain
           open={openUpdate}
-          data={{
-            name: selectedDomain?.name ?? '',
-            status: selectedDomain?.status ?? '',
-            id: selectedDomain?.id,
-            level: selectedDomain?.level,
-            duration: selectedDomain?.duration ?? 0,
-            qp_code: selectedDomain?.qp_code ?? '',
-            sector: selectedDomain?.sector ?? ''
-          }}
+          data={selectedDomain}
           id={selectedDomain?.id ?? ''}
           onClose={() => setOpenUpdate(false)}
         />

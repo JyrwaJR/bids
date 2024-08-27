@@ -4,7 +4,13 @@ import { searchStudentByName } from '@src/app/dashboard/registration/_lib/functi
 import { ColumnDef } from '@tanstack/react-table';
 import { useSearchParams } from 'next/navigation';
 import { useMutation } from 'react-query';
-import { FormControl, FormField, FormItem, Form, FormMessage } from '@components/ui/form';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  Form,
+  FormMessage
+} from '@components/ui/form';
 import { Input } from '@components/ui/input';
 import { Button } from '@components/ui/button';
 import { FailedToastTitle } from '@constants/toast-message';
@@ -87,10 +93,8 @@ type Model = z.infer<typeof Model>;
 export const SearchPage = () => {
   const search = useSearchParams().get('q');
   const { user } = useAuthContext();
-
   const defaultQuery = search || 'enrolled';
   const isSearchApplicants = defaultQuery === 'applicants';
-
   const form = useForm<Model>({
     resolver: zodResolver(Model),
     defaultValues: {
@@ -104,7 +108,8 @@ export const SearchPage = () => {
   const id = user?.role !== 'superadmin' ? user?.centre_id : null;
 
   const studentMutation = useMutation({
-    mutationFn: async (data: Model) => await searchStudentByName(data.type, data.name, id)
+    mutationFn: async (data: Model) =>
+      await searchStudentByName(data.type, data.name, id)
   });
 
   const onSubmit: SubmitHandler<Model> = async (data) => {
@@ -129,7 +134,9 @@ export const SearchPage = () => {
       <div className="space-y-2">
         <Heading
           title={`Search ${isSearchApplicants ? 'Applicants' : 'Students'}`}
-          description={`Search ${isSearchApplicants ? 'Applicants' : 'Students'} by name, title, mobile number, registration number`}
+          description={`Search ${
+            isSearchApplicants ? 'Applicants' : 'Students'
+          } by name, title, mobile number, registration number`}
         />
         <Form {...form}>
           <form className="flex space-x-2" onSubmit={handleSubmit(onSubmit)}>
@@ -157,7 +164,9 @@ export const SearchPage = () => {
       <div className="space-y-2">
         <DataTable
           enableSearch={false}
-          columns={getValues('type') !== 'enrolled' ? applicantsColumn : studentsColumn}
+          columns={
+            getValues('type') !== 'enrolled' ? applicantsColumn : studentsColumn
+          }
           data={studentMutation.isSuccess && studentMutation.data.data}
           searchKey="name"
         />

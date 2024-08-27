@@ -206,7 +206,8 @@ const studentRegistrationPersonalDetailsFields: FormFieldType[] = [
     required: false,
     type: 'file',
     placeholder: 'Enter Passport',
-    helperText: `file size < ${MAX_UPLOAD_SIZE / 1024 / 1024} MB`
+    helperText: `file size < ${MAX_UPLOAD_SIZE / 1024 / 1024} MB`,
+    accept: 'image/*'
   }
 ];
 const studentRegistrationPresentAddressFields: FormFieldType[] = [
@@ -468,5 +469,5 @@ export const studentRegistrationFields: StepType[] = [
       ...studentRegistrationPresentAddressFields,
       ...studentRegistrationPermanentsAddressDetailFields
     ]
-  },
+  }
 ];
