@@ -147,7 +147,7 @@ const ViewAdmitStudent = () => {
                 if (row.original.id && data.id) {
                   setSelectedApplicant(data);
                   setIsPreview(true);
-                 console.log("data",previewForm.getValues()); 
+                  console.log('data', previewForm.getValues());
                 }
               }
             }}

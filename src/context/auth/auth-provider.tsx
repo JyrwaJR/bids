@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }: Props) => {
         router.refresh();
         localStorage.removeItem('savedRoute');
       } else {
-        showToast(FailedToastTitle, 'Something went wrong',"destructive");
+        showToast(FailedToastTitle, 'Something went wrong', 'destructive');
       }
     } catch (error: any) {
       removeCookie('token');
@@ -104,7 +104,7 @@ export const AuthProvider = ({ children }: Props) => {
 
         router.refresh();
       } else {
-        showToast(FailedToastTitle, 'Invalid email or password',"destructive");
+        showToast(FailedToastTitle, 'Invalid email or password', 'destructive');
       }
     } catch (error: any) {
       showToast(

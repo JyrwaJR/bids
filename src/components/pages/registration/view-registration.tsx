@@ -7,7 +7,5 @@ export const ViewRegistration = () => {
   if (!search) {
     router.push(`/dashboard/registration/update`);
   }
-  return <div>
-
-    </div>;
+  return <div></div>;
 };

@@ -17,7 +17,7 @@ import { useCategorySelectOptions } from '@hooks/useCategorySelectOptions';
 
 export const AddDomain = () => {
   const router = useRouter();
-  const {options}=useCategorySelectOptions()
+  const { options } = useCategorySelectOptions();
   const form = useForm<DomainModelType>({
     resolver: zodResolver(DomainModel)
   });
@@ -56,18 +56,18 @@ export const AddDomain = () => {
       }
     }
   };
-  const updatedFields:FormFieldType[] = [
+  const updatedFields: FormFieldType[] = [
     ...domainFields,
     {
       name: 'sector',
       label: 'Sector',
-      select:true,
-      options:options.sectors.map((sector) => ({
+      select: true,
+      options: options.sectors.map((sector) => ({
         label: sector.label,
         value: sector.label
       }))
     }
-  ]
+  ];
   return (
     <div className="flex-1 space-y-4">
       <Heading title={`Domain`} description="Manage Domain table" />

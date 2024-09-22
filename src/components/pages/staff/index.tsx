@@ -62,9 +62,7 @@ const StaffPage = () => {
       refetch();
     }
   }, [watchCentreChange, refetch]);
-  const updatedColumn: ColumnDef<any>[] = [
-    ...staffColumn,
-  ];
+  const updatedColumn: ColumnDef<any>[] = [...staffColumn];
   return (
     <ScrollArea>
       <div className="flex w-full flex-col space-y-4">

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { AddBatch } from '@components/pages/batch/add-batch';

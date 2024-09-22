@@ -127,7 +127,7 @@ const ViewSelectedCandidate = () => {
     try {
       const res = await mutate.mutateAsync({
         status: 'Applied',
-        id: id,
+        id: id
       });
       if (res.success) {
         setId('');
@@ -242,7 +242,7 @@ const ViewSelectedCandidate = () => {
           ))}
           <div className="mt-8">
             <Button type="submit" disabled={isLoading}>
-             List 
+              List
             </Button>
           </div>
         </form>

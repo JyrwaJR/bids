@@ -301,7 +301,7 @@ const AdmitCandidate = () => {
                 disabled={isLoading}
                 className="w-full md:w-auto"
               >
-               List 
+                List
               </Button>
             </div>
           </form>

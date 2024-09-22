@@ -37,7 +37,7 @@ export const ViewEvents = ({ open, onClose, data }: Props) => {
   // Render preview content
   const renderValue = (key: string, value: any) => {
     if (key === 'image' && value) {
-      return <img src={value} alt="Event" className="w-32 h-32 object-cover" />;
+      return <img src={value} alt="Event" className="h-32 w-32 object-cover" />;
     }
     if (key === 'event_date' || key === 'extended_till') {
       return formatDate(value);
@@ -52,13 +52,13 @@ export const ViewEvents = ({ open, onClose, data }: Props) => {
           <DialogTitle>View Event</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
-          {Object.entries(data).map(([key, value]) => 
+          {Object.entries(data).map(([key, value]) =>
             key !== 'event_images' ? (
               <div key={key} className="flex items-center space-x-4">
-                <Typography weight="bold">{convertKeyToString(key)}:</Typography>
-                <div className="flex-1">
-                  {renderValue(key, value)}
-                </div>
+                <Typography weight="bold">
+                  {convertKeyToString(key)}:
+                </Typography>
+                <div className="flex-1">{renderValue(key, value)}</div>
               </div>
             ) : null
           )}
